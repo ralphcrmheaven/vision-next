@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-visionnext-dev-221412-authRole",
+      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-221412-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-221412-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-visionnext-dev-221412-deployment",
+      "UnauthRoleName": "amplify-visionnext-dev-221412-unauthRole",
+      "StackName": "amplify-visionnext-dev-221412",
+      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-dev-221412/33179f10-add8-11ec-b532-0a6a53c5fe8f",
+      "AmplifyAppId": "d1dxl6qiy7l56q"
+    },
+    "categories": {
+      "function": {
+        "visionSampleLamba": {
+          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
+          "s3Key": "amplify-builds/visionSampleLamba-5a6c3767774f465a716e-build.zip"
+        }
+      }
+    }
+  }
+}
