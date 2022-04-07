@@ -10,7 +10,8 @@ import {
   MeetingStatus,
   useMeetingStatus,
   VideoInputControl,
-  VideoTileGrid
+  VideoTileGrid,
+  ContentShareControl
 } from 'amazon-chime-sdk-component-library-react';
 import { endMeeting } from '../utils/api';
 
@@ -38,6 +39,7 @@ const Meeting: FC = () => {
             <VideoInputControl />
             <AudioOutputControl />
             <ControlBarButton icon={<Phone />} onClick={clickedEndMeeting} label="End" />
+            <ContentShareControl />
           </ControlBar> 
           :
           <div/>
