@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import Base from './layout/Base'
+import Home from './pages/Home'
+import Conference from './pages/Conference'
+import Settings from './pages/Settings'
+import Meetings from './pages/Meetings'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Base />}>
+        <Route index element={<Home />} />
+        <Route path="/conference" element={<Conference />} />
+        <Route path="/meetings" element={<Meetings />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  )
 }
 
-export default App;
+export default App
