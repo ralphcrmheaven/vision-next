@@ -1,55 +1,83 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import Logo from './Logo'
+import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon } from './icons';
 
 export default function Sidebar() {
+
+
   return (
-    <div className="w-60 shadow-md bg-white h-screen">
-      <div className="pt-4 pb-2 px-6">
-        <a href="#!">
-          <div className="flex items-center">
-            <div className="shrink-0">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp"
-                className="rounded-full w-10"
-                alt="Avatar"
-              />
-            </div>
-            <div className="grow ml-3">
-              <p className="text-sm font-semibold text-blue-600">
-                Administrator
-              </p>
-            </div>
-          </div>
-        </a>
+    <div className="w-60">
+      <div className="flex flex-col items-center w-24 mx-auto mt-14 gap-y-16">
+        <Logo />
+        <ul className="flex flex-col w-20 gap-y-10">
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) => {
+                  return [ 
+                    'p-4 rounded-2xl',
+                    'flex flex-col items-center space-y-1',
+                    `${isActive ? 'bg-white' : ''}`
+                  ].join(' ')
+                }
+              }
+            >
+              <HomeIcon />
+              <span className="text-sm">Home</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/conference"
+              className={({ isActive }) => {
+                  return [ 
+                    'p-4 rounded-2xl',
+                    'flex flex-col items-center space-y-1',
+                    `${isActive ? 'bg-white' : ''}`
+                  ].join(' ')
+                }
+              }
+            >
+              <CameraIcon />
+              <span className="text-sm">Conference</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/meetings"
+              className={({ isActive }) => {
+                  return [ 
+                    'p-4 rounded-2xl',
+                    'flex flex-col items-center space-y-1',
+                    `${isActive ? 'bg-white' : ''}`
+                  ].join(' ')
+                }
+              }
+            >
+              <UsersIcon />
+              <span className="text-sm">Meetings</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) => {
+                return [ 
+                  'p-4 rounded-2xl',
+                  'flex flex-col items-center space-y-1',
+                  `${isActive ? 'bg-white' : ''}`
+                ].join(' ')
+              }
+            }
+            >
+              <SettingsIcon />
+              <span className="text-sm">Settings</span>
+            </NavLink>
+          </li>
+        </ul>
       </div>
-
-      <ul className="relative px-1">
-        <li className="relative">
-          <Link
-            to="/"
-            className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-blue-600 hover:bg-blue-50 transition duration-300 ease-in-out"
-          >
-            <span>Dashboard</span>
-          </Link>
-        </li>
-
-        <li className="relative">
-          <Link
-            to="/create-meeting"
-            className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-blue-600 hover:bg-blue-50 transition duration-300 ease-in-out"
-          >
-            <span>Create Meeting</span>
-          </Link>
-        </li>
-
-        <li className="relative">
-          <Link
-            to="/join-meeting"
-            className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-blue-600 hover:bg-blue-50 transition duration-300 ease-in-out"
-          >
-            <span>Join Meeting</span>
-          </Link>
-        </li>
-      </ul>
     </div>
   )
 }
