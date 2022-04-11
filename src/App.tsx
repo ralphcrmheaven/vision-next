@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import Conference from './pages/Conference'
 import Settings from './pages/Settings'
 import Meetings from './pages/Meetings'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css'
 
 function App() {
   return (
@@ -19,4 +21,4 @@ function App() {
   )
 }
 
-export default App
+export default withAuthenticator(App)
