@@ -1,21 +1,21 @@
+import { useState } from 'react'
+
+import '@aws-amplify/ui-react/styles.css'
 import './App.css'
-import { Route, Routes } from 'react-router-dom'
-import Base from './layout/Base'
-import Home from './pages/Home'
-import Conference from './pages/Conference'
-import Settings from './pages/Settings'
-import Meetings from './pages/Meetings'
+
+import { AuthContext, IAuth } from './contexts/AuthContext'
+import AppRoutes from './Routes'
 
 function App() {
+  const [auth, setAuth] = useState<IAuth>({
+    isAuthenticated: false,
+    user: null,
+  })
+
   return (
-    <Routes>
-      <Route path="/" element={<Base />}>
-        <Route index element={<Home />} />
-        <Route path="/conference" element={<Conference />} />
-        <Route path="/meetings" element={<Meetings />} />
-        <Route path="/settings" element={<Settings />} />
-      </Route>
-    </Routes>
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      <AppRoutes />
+    </AuthContext.Provider>
   )
 }
 
