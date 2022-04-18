@@ -10,6 +10,7 @@ interface Props {
   name: string
   className?: string
   placeholder?: string
+  error?: string
 }
 
 const FormInput: React.FC<Props> = ({
@@ -17,13 +18,27 @@ const FormInput: React.FC<Props> = ({
   name,
   className = '',
   placeholder = '',
-}) => (
-  <input
-    type={type}
-    name={name}
-    className={className}
-    placeholder={placeholder}
-  />
-)
+  error = '',
+  ...props
+}) => {
+  if (error !== '') {
+    className +=
+      ' border border-red-400 focus-visible:outline-red-400 placeholder:text-red-400'
+  }
+
+  return (
+    <>
+      <input
+        type={type}
+        name={name}
+        className={className}
+        placeholder={placeholder}
+        {...props}
+      />
+
+      {error && <span>{error}</span>}
+    </>
+  )
+}
 
 export default FormInput

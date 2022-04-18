@@ -1,14 +1,16 @@
 import { ReactElement } from 'react'
 import { Navigate, RouteProps } from 'react-router-dom'
+import { useAuthContext } from './contexts/AuthContext'
 
 interface Props extends RouteProps {
-  user: object
   redirectPath?: string
   children: ReactElement
 }
 
-const ProtectedRoute = ({ user, redirectPath = '/login', children }: Props) => {
-  if (Object.keys(user).length === 0) {
+const ProtectedRoute = ({ redirectPath = '/login', children }: Props) => {
+  const { auth } = useAuthContext()
+
+  if (!auth.isAuthenticated) {
     return <Navigate to={redirectPath} replace />
   }
 

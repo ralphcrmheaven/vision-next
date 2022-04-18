@@ -59,9 +59,7 @@ const Signup: React.FC = () => (
           placeholder="Password"
         />
 
-        <Button className="rounded-xl block py-3 px-5 bg-vision-dark-blue mx-auto text-white w-full font-semibold">
-          Signup
-        </Button>
+        <Button>Signup</Button>
       </Form>
 
       <span className="block mx-auto mb-3">
