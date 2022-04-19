@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
+import { useSelector } from 'react-redux'
 import { Navigate, RouteProps } from 'react-router-dom'
-import { useAuthContext } from './contexts/AuthContext'
+import { selectUser } from './redux/features/userSlice'
 
 interface Props extends RouteProps {
   redirectPath?: string
@@ -8,9 +9,10 @@ interface Props extends RouteProps {
 }
 
 const ProtectedRoute = ({ redirectPath = '/login', children }: Props) => {
-  const { auth } = useAuthContext()
+  const { username } = useSelector(selectUser)
+  console.log(username)
 
-  if (!auth.isAuthenticated) {
+  if (!username) {
     return <Navigate to={redirectPath} replace />
   }
 

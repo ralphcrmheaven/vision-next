@@ -1,5 +1,5 @@
 import { Link, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 import Logo from '../components/Logo'
 import Form from '../components/form/Form'
@@ -7,45 +7,41 @@ import FormInput, { InputTypes } from '../components/form/FormInput'
 import Button, { ButtonTypes } from '../components/Button'
 
 import cham3 from '../assets/images/cham3.png'
-import { useAuthContext } from '../contexts/AuthContext'
 // import { Auth } from 'aws-amplify'
-import { SubmitHandler, useForm } from 'react-hook-form'
-
-type FormData = {
-  username: string
-  password: string
-}
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser, selectUser } from '../redux/features/userSlice'
 
 const Login = () => {
-  const { auth, setAuth } = useAuthContext()
+  const user = useSelector(selectUser)
   const [isLoading] = useState<boolean>(false)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>()
+  const dispatch = useDispatch()
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
-  if (auth.isAuthenticated) {
+  if (user.username) {
     return <Navigate to={'/'} replace />
   }
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data)
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
 
-    // setIsLoading(true)
+    const data = {
+      username,
+      password,
+    }
+
+    dispatch(loginUser(data))
 
     // try {
     //   const user = await Auth.signIn('albertgaya', 'P@ssw0rd1231')
-
     //   console.log(user)
     // } catch (error) {
     //   console.log(error)
     // }
-
-    setAuth({
-      ...auth,
-      isAuthenticated: true,
-    })
+    // setAuth({
+    //   ...auth,
+    //   isAuthenticated: true,
+    // })
   }
 
   return (
@@ -55,27 +51,27 @@ const Login = () => {
           <Logo />
         </div>
 
-        <div className="bg-white mx-auto w-972 rounded-3xl px-9 pt-14 pb-36 text-center relative">
-          <h1 className="text-vision-dark-blue font-bold text-3xl mb-2">
+        <div className="relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36">
+          <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
             Login to your account
           </h1>
 
           <span>See the world right in front of you</span>
 
-          <Form className="mt-10 mb-8" onSubmit={handleSubmit(onSubmit)}>
+          <Form className="mt-10 mb-8" onSubmit={handleSubmit}>
             <FormInput
               name="username"
-              className="rounded-xl bg-slate-200 py-3 px-5 w-455 mb-3"
+              className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
               placeholder="Username"
-              error={errors.username?.message ? errors.username.message : ''}
+              onChange={(e: any) => setUsername(e.target.value)}
             />
 
             <FormInput
               type={InputTypes.Password}
               name="password"
-              className="rounded-xl bg-slate-200 py-3 px-5 w-455 mb-3"
+              className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
               placeholder="Password"
-              error={errors.password?.message}
+              onChange={(e: any) => setPassword(e.target.value)}
             />
 
             <Button type={ButtonTypes.Submit} isLoading={isLoading}>
@@ -85,7 +81,7 @@ const Login = () => {
 
           <span className="block mx-auto mb-3">
             Don’t have an account yet?{' '}
-            <Link to={'/signup'} className="text-vision-dark-blue font-bold">
+            <Link to={'/signup'} className="font-bold text-vision-dark-blue">
               Signup
             </Link>
           </span>
@@ -94,7 +90,7 @@ const Login = () => {
             Forgot Password?{' '}
             <Link
               to={'/forgot-password'}
-              className="text-vision-dark-blue font-bold"
+              className="font-bold text-vision-dark-blue"
             >
               Click here
             </Link>
