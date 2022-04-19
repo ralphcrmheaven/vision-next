@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEventHandler } from 'react'
 
 export enum InputTypes {
   Text = 'text',
@@ -11,6 +11,7 @@ interface Props {
   className?: string
   placeholder?: string
   error?: string
+  onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 const FormInput: React.FC<Props> = ({
@@ -19,7 +20,7 @@ const FormInput: React.FC<Props> = ({
   className = '',
   placeholder = '',
   error = '',
-  ...props
+  onChange = () => {},
 }) => {
   if (error !== '') {
     className +=
@@ -33,10 +34,8 @@ const FormInput: React.FC<Props> = ({
         name={name}
         className={className}
         placeholder={placeholder}
-        {...props}
+        onChange={onChange}
       />
-
-      {error && <span>{error}</span>}
     </>
   )
 }
