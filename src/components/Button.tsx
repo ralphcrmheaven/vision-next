@@ -16,7 +16,7 @@ const Button: React.FC<Props> = ({
   loadingText = 'Processing',
 }) => {
   let className =
-    'rounded-xl block py-3 px-5 w-455 mx-auto text-white font-semibold'
+    'block px-5 py-3 mx-auto font-semibold text-white rounded-xl w-455'
   className += isLoading ? 'bg-slate-500' : 'bg-vision-dark-blue'
 
   if (isLoading) {
@@ -30,7 +30,7 @@ const Button: React.FC<Props> = ({
       {isLoading ? (
         <>
           <svg
-            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -62,11 +62,11 @@ export default Button
 
 /* <button
           type="button"
-          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 cursor-not-allowed"
+          className="inline-flex items-center px-4 py-2 text-sm font-semibold leading-6 text-white transition duration-150 ease-in-out bg-indigo-500 rounded-md shadow cursor-not-allowed hover:bg-indigo-400"
           disabled
         >
           <svg
-            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
