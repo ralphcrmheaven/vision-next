@@ -6,6 +6,7 @@ import {
 } from 'amazon-chime-sdk-component-library-react';
 import Meeting from '../components/Meeting'
 import MeetingForm from '../components/MeetingForm';
+import Messages from '../components/Messages';
 
 const Conference: FC = () => {
   return (
@@ -14,7 +15,10 @@ const Conference: FC = () => {
       <ThemeProvider theme={lightTheme}>
         <MeetingProvider>
           <MeetingForm />
-          <Meeting/>
+          <div className="flex">
+            <Meeting/>
+            <Messages />
+          </div>
         </MeetingProvider>
       </ThemeProvider>
      </div>

@@ -5,6 +5,12 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
+        },
+        "visionnext0362659cCustomMessage": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
+            "Region": "string"
         }
     },
     "api": {
@@ -15,7 +21,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "auth": {
-        "visionnext4ee6c12f": {
+        "visionnext0362659c": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",

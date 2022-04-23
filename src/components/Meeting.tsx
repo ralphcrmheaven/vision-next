@@ -28,7 +28,7 @@ const Meeting: FC = () => {
   }
   
   return (
-      <div style={{marginTop: '2rem', height: '40rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+    <div className="w-3/4" style={{marginTop: '2rem', height: '40rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <VideoTileGrid/>
         {meetingStatus === MeetingStatus.Succeeded ? 
           <ControlBar
