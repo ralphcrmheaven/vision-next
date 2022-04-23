@@ -110,6 +110,7 @@ async function listChannelMessages(channelArn, userId, nextToken = null) {
 
   const request = (await chimeMessagingClient()).listChannelMessages(params);
   const response = await request.promise();
+
   const messageList = response.ChannelMessages;
   messageList.sort(function(a, b) {
     // eslint-disable-next-line no-nested-ternary

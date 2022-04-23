@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
+import AWS from 'aws-sdk';
+import { Auth } from '@aws-amplify/auth';
 import {
     InfiniteList,
     PopOverItem,
@@ -20,6 +22,7 @@ import {
     updateChannelMessage,
 } from '../api/ChimeAPI';
 import insertDateHeaders from '../utils/insertDateHeaders';
+import appConfig from '../Config';
 
 const DirectMessages: FC = () => {
     // Variables
@@ -37,15 +40,66 @@ const DirectMessages: FC = () => {
     const [redactingMessageId, setRedactingMessageId] = useState('');
 
     // Functions
-    const createOrJoinMeetingChannel = async () => {
-        const channelArn = 'arn:aws:chime:us-east-1:205131113421:app-instance/ed7e6c2a-061d-47c7-8327-36fec15c8222/channel/0f3c6bdccb4e950a0ecf3cbc2d3572a6a9ea84822f5c76313160bdd599b9b5e0';
-        const userId = 'us-east-1:09ae0841-81e1-4bde-8ab8-22487bcf2ceb';
-            
-        const newMessages = await listChannelMessages(channelArn, userId);
-        const channel = await describeChannel(channelArn, userId);
+    const getAwsCredentialsFromCognito = async () => {
+        const creds = await Auth.currentCredentials();
+        const essentialCreds = await Auth.essentialCredentials(creds);
+        AWS.config.region = appConfig.region;
+        AWS.config.credentials = essentialCreds;
+        console.log(essentialCreds)
+        return essentialCreds;
+      };
+    
+      const setAuthenticatedUserFromCognito = async () => {
+        await Auth.currentUserInfo()
+            .then(curUser => {
+              console.log(curUser)
+              if (curUser.attributes?.profile === 'none') {
+               updateUserAttributes(curUser.id);
+              } else {
+              }
+            })
+            .catch((err) => {
+              console.log(`Failed to set authenticated user! ${err}`);
+            });
+        await getAwsCredentialsFromCognito();
+      };
+    
+      const updateUserAttributes = async (userId: any) => {
+        try {
+          const user = await Auth.currentAuthenticatedUser();
+    
+          await Auth.updateUserAttributes(user, {
+            profile: userId,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    
+      const userSignIn = async (username: any, password: any) => {
+        await Auth.signIn({ username, password })
+            .then(setAuthenticatedUserFromCognito)
+            .catch((err) => {
+              console.log(err);
+            });
+      };
 
-        //setMessages(newMessages);
-        //console.log(newMessages, channel);
+    const createOrJoinMeetingChannel = async () => {
+        await userSignIn('Mark2', 'P@ssword123');
+
+        const user = await Auth.currentAuthenticatedUser();
+        console.log(user)
+
+        // const channelArn = 'arn:aws:chime:us-east-1:205131113421:app-instance/ed7e6c2a-061d-47c7-8327-36fec15c8222/channel/0f3c6bdccb4e950a0ecf3cbc2d3572a6a9ea84822f5c76313160bdd599b9b5e0';
+        // const userId = 'us-east-1:09ae0841-81e1-4bde-8ab8-22487bcf2ceb';
+        
+        const channelArn = 'arn:aws:chime:us-east-1:205131113421:app-instance/ed7e6c2a-061d-47c7-8327-36fec15c8222/channel/0f3c6bdccb4e950a0ecf3cbc2d3572a6a9ea84822f5c76313160bdd599b9b5e0';
+        const userId = user.attributes.profile;
+
+        const newMessages = await listChannelMessages(channelArn, userId);
+        console.log(newMessages)
+
+        const channel = await describeChannel(channelArn, userId);
     };
 
     // const flattenedMessages = messages.Messages.map((m: any) => {

@@ -142,14 +142,14 @@ const MeetingForm: FC = () => {
 
   const createOrJoinMeetingChannel = async () => {
     // Simulate login
-    await userSignIn('a9e81731-768a-4d8a-82ea-c15210da8599', 'P@ssword123');
+    //await userSignIn('a9e81731-768a-4d8a-82ea-c15210da8599', 'P@ssword123');
     const channelArn = 'arn:aws:chime:us-east-1:205131113421:app-instance/ed7e6c2a-061d-47c7-8327-36fec15c8222/channel/0f3c6bdccb4e950a0ecf3cbc2d3572a6a9ea84822f5c76313160bdd599b9b5e0';
     const userId = 'us-east-1:09ae0841-81e1-4bde-8ab8-22487bcf2ceb';
 
     //const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(userId);
       
-    const newMessages = await listChannelMessages(channelArn, userId);
-    const channel = await describeChannel(channelArn, userId);
+    // const newMessages = await listChannelMessages(channelArn, userId);
+    // const channel = await describeChannel(channelArn, userId);
   };
 
   // Events
