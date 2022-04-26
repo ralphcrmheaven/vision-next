@@ -12,6 +12,7 @@ interface Props {
   placeholder?: string
   error?: string
   onChange?: ChangeEventHandler<HTMLInputElement>
+  required?: boolean
 }
 
 const FormInput: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const FormInput: React.FC<Props> = ({
   placeholder = '',
   error = '',
   onChange = () => {},
+  required = false,
 }) => {
   if (error !== '') {
     className +=
@@ -35,6 +37,7 @@ const FormInput: React.FC<Props> = ({
         className={className}
         placeholder={placeholder}
         onChange={onChange}
+        required={required}
       />
     </>
   )
