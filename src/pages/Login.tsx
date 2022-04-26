@@ -7,13 +7,12 @@ import FormInput, { InputTypes } from '../components/form/FormInput'
 import Button, { ButtonTypes } from '../components/Button'
 
 import cham3 from '../assets/images/cham3.png'
-// import { Auth } from 'aws-amplify'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, selectUser } from '../redux/features/userSlice'
 
-const Login = () => {
+const Login: React.FC = () => {
   const user = useSelector(selectUser)
-  const [isLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -25,23 +24,16 @@ const Login = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
+    setIsLoading(true)
+
     const data = {
       username,
       password,
     }
 
-    dispatch(loginUser(data))
+    await dispatch(loginUser(data))
 
-    // try {
-    //   const user = await Auth.signIn('albertgaya', 'P@ssw0rd1231')
-    //   console.log(user)
-    // } catch (error) {
-    //   console.log(error)
-    // }
-    // setAuth({
-    //   ...auth,
-    //   isAuthenticated: true,
-    // })
+    setIsLoading(false)
   }
 
   return (
@@ -64,6 +56,7 @@ const Login = () => {
               className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
               placeholder="Username"
               onChange={(e: any) => setUsername(e.target.value)}
+              required
             />
 
             <FormInput
@@ -72,6 +65,7 @@ const Login = () => {
               className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
               placeholder="Password"
               onChange={(e: any) => setPassword(e.target.value)}
+              required
             />
 
             <Button type={ButtonTypes.Submit} isLoading={isLoading}>
