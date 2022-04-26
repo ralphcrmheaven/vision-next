@@ -15,12 +15,7 @@ export interface ILoginUser {
 export const loginUser: any = createAsyncThunk(
   'auth/login',
   async (data: ILoginUser) => {
-    const response = await Auth.signIn(data.username, data.password)
-    const user = await Auth.currentUserPoolUser()
-
-    console.log(user)
-
-    return response
+    return await Auth.signIn(data.username, data.password)
   }
 )
 export interface ISignupUser {
