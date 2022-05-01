@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { Auth } from 'aws-amplify'
-import { setLocalStorage } from '../../utils/localStorage'
+import { clearLocalStorage, setLocalStorage } from '../../utils/localStorage'
 
 const initialState = {
   username: null,
@@ -18,11 +18,38 @@ export const loginUser: any = createAsyncThunk(
     return await Auth.signIn(data.username, data.password)
   }
 )
+export interface ISignupUser {
+  firstname: string
+  lastname: string
+  username: string
+  email: string
+  password: string
+}
+
+export const signupUser: any = createAsyncThunk(
+  'auth/signup',
+  async (data: ISignupUser) => {
+    return await Auth.signUp({
+      username: data.username,
+      password: data.password,
+      attributes: {
+        given_name: data.firstname,
+        family_name: data.lastname,
+        email: data.email,
+      },
+    })
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser: (state) => {
+      state.username = null
+      clearLocalStorage()
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true
@@ -40,5 +67,7 @@ export const userSlice = createSlice({
 })
 
 export const selectUser = (state: any) => state.user
+
+export const { logoutUser } = userSlice.actions
 
 export default userSlice.reducer
