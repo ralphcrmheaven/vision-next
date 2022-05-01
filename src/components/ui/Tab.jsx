@@ -29,7 +29,7 @@ export default function Tab({ tabs }) {
           );
         })}
       </ol>
-      <div key={tabs[tab].label} className="rounded-lg relative mt-10 p-2 pt-1 md:p-4 bg-gray-200">
+      <div key={tabs[tab].label} className="rounded-lg relative mt-10 p-2 pt-1 md:p-4 bg-gray-200" style={{height: 'inherit'}}>
         {tabs[tab] &&
           React.createElement(tabs[tab].component, {
             key: tabs[tab].label,

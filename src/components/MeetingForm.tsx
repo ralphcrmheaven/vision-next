@@ -1,6 +1,4 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
-import AWS from 'aws-sdk';
-import { Auth } from '@aws-amplify/auth';
 import {
   Flex,
   FormField,
@@ -11,40 +9,43 @@ import {
   useMeetingStatus,
 } from 'amazon-chime-sdk-component-library-react';
 import {
-  Persistence,
-  MessageType,
-  associateChannelFlow,
-  createMemberArn,
   createChannelMembership,
   createChannel,
-  updateChannel,
   listChannelMessages,
-  sendChannelMessage,
   listChannels,
-  listChannelMembershipsForAppInstanceUser,
-  deleteChannel,
   describeChannel,
   listChannelMemberships,
-  deleteChannelMembership,
-  listChannelModerators,
-  listChannelBans,
-  createChannelBan,
-  deleteChannelBan,
-  createAttendee,
-  endMeeting,
-  createGetAttendeeCallback,
   describeChannelFlow,
-  disassociateChannelFlow,
 } from '../api/ChimeAPI';
+import { useAuthContext } from '../providers/AuthProvider';
+import {
+  useChatChannelState,
+  useChatMessagingState,
+} from '../providers/ChatMessagesProvider';
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import appConfig from '../Config';
 
 const MeetingForm: FC = () => {
   // Hooks
+  const { member } = useAuthContext();
   const meetingStatus = useMeetingStatus();
   const meetingManager = useMeetingManager();
   const [meetingTitle, setMeetingTitle] = useState('');
   const [attendeeName, setName] = useState('');
+  const {
+    setActiveChannel,
+    activeChannel,
+    activeChannelMemberships,
+    setActiveChannelMemberships,
+    setChannelMessageToken,
+    unreadChannels,
+    setUnreadChannels,
+    setActiveChannelFlow,
+  } = useChatChannelState();
+  const {
+    setMessages,
+  } = useChatMessagingState();
+  const { username, userId } = member;
 
   // Functions
   const getAttendeeCallback = () => {
@@ -57,48 +58,38 @@ const MeetingForm: FC = () => {
     }
   };
 
-  const getAwsCredentialsFromCognito = async () => {
-    const creds = await Auth.currentCredentials();
-    const essentialCreds = await Auth.essentialCredentials(creds);
-    AWS.config.region = appConfig.region;
-    AWS.config.credentials = essentialCreds;
-    console.log(essentialCreds)
-    return essentialCreds;
-  };
-
-  const setAuthenticatedUserFromCognito = async () => {
-    await Auth.currentUserInfo()
-        .then(curUser => {
-          console.log(curUser)
-          if (curUser.attributes?.profile === 'none') {
-           updateUserAttributes(curUser.id);
-          } else {
-          }
-        })
-        .catch((err) => {
-          console.log(`Failed to set authenticated user! ${err}`);
-        });
-    await getAwsCredentialsFromCognito();
-  };
-
-  const updateUserAttributes = async (userId: any) => {
-    try {
-      const user = await Auth.currentAuthenticatedUser();
-
-      await Auth.updateUserAttributes(user, {
-        profile: userId,
-      });
-    } catch (err) {
-      console.log(err);
+  const loadChannelFlow = async (channel: any) => {
+    if (channel.ChannelFlowArn == null) {
+      setActiveChannelFlow({});
+    } else {
+      let flow;
+      try {
+        flow = await describeChannelFlow(channel.ChannelFlowArn);
+        setActiveChannelFlow(flow);
+      } catch (err) {
+        console.error('ERROR', err);
+      }
     }
   };
 
-  const userSignIn = async (username: any, password: any) => {
-    await Auth.signIn({ username, password })
-        .then(setAuthenticatedUserFromCognito)
-        .catch((err) => {
-          console.log(err);
-        });
+  const fetchMemberships = async () => {
+    const memberships = await listChannelMemberships(
+      activeChannel.ChannelArn,
+      userId
+    );
+    setActiveChannelMemberships(memberships);
+  };
+
+  const addMember = async () => {
+    const member = activeChannelMemberships.find((m:any) => m.Member.Name === username);
+
+    if(!member){
+      const membership = createChannelMembership(
+        activeChannel.ChannelArn,
+        `${appConfig.appInstanceArn}/user/${userId}`,
+        userId
+      );
+    }
   };
 
   const createOrJoinMeeting = async () => {
@@ -141,30 +132,56 @@ const MeetingForm: FC = () => {
   };
 
   const createOrJoinMeetingChannel = async () => {
-    // Simulate login
-    //await userSignIn('a9e81731-768a-4d8a-82ea-c15210da8599', 'P@ssword123');
-    const channelArn = 'arn:aws:chime:us-east-1:205131113421:app-instance/ed7e6c2a-061d-47c7-8327-36fec15c8222/channel/0f3c6bdccb4e950a0ecf3cbc2d3572a6a9ea84822f5c76313160bdd599b9b5e0';
-    const userId = 'us-east-1:09ae0841-81e1-4bde-8ab8-22487bcf2ceb';
+    const availableChannels = await listChannels(
+      appConfig.appInstanceArn,
+      userId
+    );
 
-    //const userChannelMemberships = await listChannelMembershipsForAppInstanceUser(userId);
-      
-    // const newMessages = await listChannelMessages(channelArn, userId);
-    // const channel = await describeChannel(channelArn, userId);
+    let channelArn = availableChannels.find((c:any) => c.Name === meetingTitle)?.ChannelArn;
+
+    if(typeof channelArn === 'undefined'){
+      channelArn = await createChannel(
+        appConfig.appInstanceArn,
+        null,
+        meetingTitle,
+        'UNRESTRICTED',
+        'PUBLIC',
+        userId
+      );
+    }
+
+    const newMessages = await listChannelMessages(channelArn, userId);
+    const channel = await describeChannel(channelArn, userId);
+    setMessages(newMessages.Messages);
+    setChannelMessageToken(newMessages.NextToken);
+    setActiveChannel(channel);
+    await loadChannelFlow(channel);
+    setUnreadChannels(unreadChannels.filter((c:any) => c !== channelArn));
   };
 
   // Events
   const clickedJoinMeeting = async (event: FormEvent) => {
     event.preventDefault();
   
-    createOrJoinMeeting();
+    await createOrJoinMeeting();
 
-    createOrJoinMeetingChannel()
+    await createOrJoinMeetingChannel()
   };
 
   // Lifecycle Hooks
   useEffect(() => {
-    // console.log('abc')
-    // createOrJoinMeetingChannel()
+    if(activeChannel && Object.keys(activeChannel).length !== 0){
+      fetchMemberships();
+    }
+  }, [activeChannel]);
+
+  useEffect(() => {
+    if(activeChannelMemberships && activeChannelMemberships.length !== 0){
+      addMember();
+    }
+  }, [activeChannelMemberships]);
+
+  useEffect(() => {
   }, []);
 
   return (

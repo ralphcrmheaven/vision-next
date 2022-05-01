@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import {
     MeetingStatus,
     useMeetingStatus,
-  } from 'amazon-chime-sdk-component-library-react';
+} from 'amazon-chime-sdk-component-library-react';
 import {
     Tab
 } from '../components/ui';
@@ -17,13 +17,15 @@ const Messages: FC = () => {
         { label: "Group Chat", component: GroupChatMessages },
     ];
 
-    return <>
-        {meetingStatus === MeetingStatus.Succeeded && 
-            <div className="w-1/4">
-                <Tab tabs={tabs} />
-            </div>
-        }
-    </>;
+    return (
+        <>
+            {meetingStatus === MeetingStatus.Succeeded && 
+                <div className="w-1/4" style={{height: '40rem'}}>
+                    <Tab tabs={tabs} />
+                </div>
+            }
+        </>
+    );
 };
 
 export default Messages;
