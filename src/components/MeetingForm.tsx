@@ -24,6 +24,7 @@ import {
 } from '../providers/ChatMessagesProvider';
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import appConfig from '../Config';
+import { createNextState } from '@reduxjs/toolkit';
 
 const MeetingForm: FC = () => {
   // Hooks
@@ -81,15 +82,11 @@ const MeetingForm: FC = () => {
   };
 
   const addMember = async () => {
-    const member = activeChannelMemberships.find((m:any) => m.Member.Name === username);
-
-    if(!member){
-      const membership = createChannelMembership(
+      const membership = await createChannelMembership(
         activeChannel.ChannelArn,
         `${appConfig.appInstanceArn}/user/${userId}`,
         userId
       );
-    }
   };
 
   const createOrJoinMeeting = async () => {
@@ -151,11 +148,13 @@ const MeetingForm: FC = () => {
     }
 
     const newMessages = await listChannelMessages(channelArn, userId);
-    const channel = await describeChannel(channelArn, userId);
     setMessages(newMessages.Messages);
     setChannelMessageToken(newMessages.NextToken);
+
+    const channel = await describeChannel(channelArn, userId);
     setActiveChannel(channel);
     await loadChannelFlow(channel);
+
     setUnreadChannels(unreadChannels.filter((c:any) => c !== channelArn));
   };
 
@@ -165,24 +164,28 @@ const MeetingForm: FC = () => {
   
     await createOrJoinMeeting();
 
-    await createOrJoinMeetingChannel()
+    //await createOrJoinMeetingChannel()
   };
 
   // Lifecycle Hooks
   useEffect(() => {
-    if(activeChannel && Object.keys(activeChannel).length !== 0){
-      fetchMemberships();
+    const doActions = async() => {
+      if(activeChannel && Object.keys(activeChannel).length !== 0){
+        await addMember();
+        await fetchMemberships();
+      }
     }
+    doActions();
   }, [activeChannel]);
 
   useEffect(() => {
-    if(activeChannelMemberships && activeChannelMemberships.length !== 0){
-      addMember();
-    }
-  }, [activeChannelMemberships]);
-
-  useEffect(() => {
-  }, []);
+    const doActions = async() => {
+      if(meetingStatus === MeetingStatus.Succeeded){
+        createOrJoinMeetingChannel();
+      }
+    };
+    doActions();
+  }, [meetingStatus]);
 
   return (
     <form>
