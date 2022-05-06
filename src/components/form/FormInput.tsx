@@ -3,6 +3,7 @@ import React, { ChangeEventHandler } from 'react'
 export enum InputTypes {
   Text = 'text',
   Password = 'password',
+  Email = 'email',
 }
 
 interface Props {

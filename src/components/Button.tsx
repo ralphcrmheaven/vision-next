@@ -7,6 +7,9 @@ interface Props {
   type?: ButtonTypes
   isLoading?: boolean
   loadingText?: string
+  full?: boolean
+  className?: string
+  handleClick?: () => void
 }
 
 const Button: React.FC<Props> = ({
@@ -14,9 +17,12 @@ const Button: React.FC<Props> = ({
   type = ButtonTypes.Button,
   isLoading = false,
   loadingText = 'Processing',
+  full = false,
+  className = '',
+  handleClick = () => {},
 }) => {
-  let className =
-    'block px-5 py-3 mx-auto font-semibold text-white rounded-xl w-455'
+  className +=
+    ' block px-5 py-3 mx-auto font-semibold text-white rounded-xl w-455'
   className += isLoading ? 'bg-slate-500' : 'bg-vision-dark-blue'
 
   if (isLoading) {
@@ -25,8 +31,17 @@ const Button: React.FC<Props> = ({
     className += ' bg-vision-dark-blue'
   }
 
+  if (full) {
+    className += ' w-100'
+  }
+
   return (
-    <button type={type} className={className} disabled={isLoading}>
+    <button
+      type={type}
+      className={className}
+      disabled={isLoading}
+      onClick={handleClick}
+    >
       {isLoading ? (
         <>
           <svg

@@ -40,6 +40,17 @@ export const signupUser: any = createAsyncThunk(
     })
   }
 )
+export interface IConfirmSignup {
+  username: string
+  code: string
+}
+
+export const confirmSignup: any = createAsyncThunk(
+  'auth/confirm',
+  async (data: IConfirmSignup) => {
+    return await Auth.confirmSignUp(data.username, data.code)
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',

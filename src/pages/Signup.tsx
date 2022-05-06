@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Button, { ButtonTypes } from '../components/Button'
 import Form from '../components/form/Form'
@@ -9,21 +9,25 @@ import Logo from '../components/Logo'
 import cham3 from '../assets/images/cham3.png'
 import { useDispatch } from 'react-redux'
 import { signupUser } from '../redux/features/userSlice'
+import { Alert } from '@aws-amplify/ui-react'
 
 const Signup: React.FC = () => {
-  const [isLoading, setIsloading] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [isLoading, setIsloading] = useState(false)
   const [firstname, setFirstname] = useState<string>('')
   const [lastname, setLastname] = useState<string>('')
   const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const navigate = useNavigate()
+  const [error, setError] = useState<string>('')
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     setIsloading(true)
+    setError('')
 
     const data = {
       firstname,
@@ -33,11 +37,17 @@ const Signup: React.FC = () => {
       password,
     }
 
-    await dispatch(signupUser(data))
+    const { error, payload } = await dispatch(signupUser(data))
 
-    setIsloading(false)
-
-    navigate('/login', { replace: true })
+    if (error) {
+      setError(error.message)
+      setIsloading(false)
+    } else {
+      navigate({
+        pathname: '/verify-account',
+        search: `?username=${payload.user.username}`,
+      })
+    }
   }
 
   return (
@@ -54,6 +64,12 @@ const Signup: React.FC = () => {
         <span>Start your 14 day trial. No credit card account.</span>
 
         <Form className="mx-auto mt-10 mb-8 w-455" onSubmit={handleSubmit}>
+          {error && (
+            <Alert variation="error" className="mb-3 text-left">
+              {error}
+            </Alert>
+          )}
+
           <div className="mb-3 columns-2">
             <div>
               <FormInput
@@ -75,6 +91,7 @@ const Signup: React.FC = () => {
           </div>
 
           <FormInput
+            type={InputTypes.Email}
             name="username"
             className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
             placeholder="Username"
@@ -83,6 +100,7 @@ const Signup: React.FC = () => {
           />
 
           <FormInput
+            type={InputTypes.Email}
             name="email"
             className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
             placeholder="Email Address"
