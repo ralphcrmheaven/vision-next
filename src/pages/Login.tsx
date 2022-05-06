@@ -1,5 +1,6 @@
 import { Link, Navigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
+import { Alert } from '@aws-amplify/ui-react'
 
 import Logo from '../components/Logo'
 import Form from '../components/form/Form'
@@ -12,10 +13,12 @@ import { loginUser, selectUser } from '../redux/features/userSlice'
 
 const Login: React.FC = () => {
   const user = useSelector(selectUser)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [error, setErrror] = useState<string>('')
 
   if (user.username) {
     return <Navigate to={'/'} replace />
@@ -25,13 +28,18 @@ const Login: React.FC = () => {
     e.preventDefault()
 
     setIsLoading(true)
+    setErrror('')
 
     const data = {
       username,
       password,
     }
 
-    await dispatch(loginUser(data))
+    const { error } = await dispatch(loginUser(data))
+
+    if (error) {
+      setErrror(error.message)
+    }
 
     setIsLoading(false)
   }
@@ -51,6 +59,12 @@ const Login: React.FC = () => {
           <span>See the world right in front of you</span>
 
           <Form className="mt-10 mb-8" onSubmit={handleSubmit}>
+            {error && (
+              <Alert variation="error" className="mx-auto mb-3 text-left w-455">
+                {error}
+              </Alert>
+            )}
+
             <FormInput
               name="username"
               className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"

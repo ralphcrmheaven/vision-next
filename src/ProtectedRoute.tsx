@@ -10,7 +10,6 @@ interface Props extends RouteProps {
 
 const ProtectedRoute = ({ redirectPath = '/login', children }: Props) => {
   const { username } = useSelector(selectUser)
-  console.log(username)
 
   if (!username) {
     return <Navigate to={redirectPath} replace />
