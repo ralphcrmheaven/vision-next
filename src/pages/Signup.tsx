@@ -18,7 +18,6 @@ const Signup: React.FC = () => {
   const [isLoading, setIsloading] = useState(false)
   const [firstname, setFirstname] = useState<string>('')
   const [lastname, setLastname] = useState<string>('')
-  const [username, setUsername] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('')
@@ -32,7 +31,6 @@ const Signup: React.FC = () => {
     const data = {
       firstname,
       lastname,
-      username,
       email,
       password,
     }
@@ -69,7 +67,6 @@ const Signup: React.FC = () => {
               {error}
             </Alert>
           )}
-
           <div className="mb-3 columns-2">
             <div>
               <FormInput
@@ -89,16 +86,6 @@ const Signup: React.FC = () => {
               />
             </div>
           </div>
-
-          <FormInput
-            type={InputTypes.Email}
-            name="username"
-            className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
-            placeholder="Username"
-            onChange={(e: any) => setUsername(e.target.value)}
-            required
-          />
-
           <FormInput
             type={InputTypes.Email}
             name="email"
@@ -116,7 +103,6 @@ const Signup: React.FC = () => {
             onChange={(e: any) => setPassword(e.target.value)}
             required
           />
-
           <Button type={ButtonTypes.Submit} isLoading={isLoading}>
             Signup
           </Button>
