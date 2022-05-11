@@ -3,6 +3,8 @@ import VCard from '../components/Cards'
 import { IUser, selectUser } from '../redux/features/userSlice'
 import { useSelector } from 'react-redux'
 
+import cham1 from '../assets/images/cham1.png'
+
 export default function Home() {
   const user: IUser = useSelector(selectUser)
 
@@ -127,7 +129,7 @@ export default function Home() {
                     className="absolute bottom-0 left-0 h-14 blur-md"
                   />
                   <img
-                    src="/images/cham2.png"
+                    src={cham1}
                     alt="cham"
                     className="absolute scale-75 -top-20"
                   />
