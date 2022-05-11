@@ -30,7 +30,6 @@ export const loginUser: any = createAsyncThunk(
 export interface ISignupUser {
   firstname: string
   lastname: string
-  username: string
   email: string
   password: string
 }
@@ -39,7 +38,7 @@ export const signupUser: any = createAsyncThunk(
   'auth/signup',
   async (data: ISignupUser) => {
     return await Auth.signUp({
-      username: data.username,
+      username: data.email,
       password: data.password,
       attributes: {
         given_name: data.firstname,
