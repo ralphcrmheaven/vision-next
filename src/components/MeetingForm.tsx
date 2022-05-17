@@ -25,13 +25,17 @@ import {
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import appConfig from '../Config';
 import { createNextState } from '@reduxjs/toolkit';
+import {useLocation} from "react-router-dom";
 
 const MeetingForm: FC = () => {
   // Hooks
   const { member } = useAuthContext();
   const meetingStatus = useMeetingStatus();
   const meetingManager = useMeetingManager();
-  const [meetingTitle, setMeetingTitle] = useState('');
+  const search = useLocation().search
+  const meetingId = new URLSearchParams(search).get('meetingId');
+  const [meetingTitle, setMeetingTitle] = useState(meetingId || '');
+  
   const [attendeeName, setName] = useState('');
   const {
     setActiveChannel,
