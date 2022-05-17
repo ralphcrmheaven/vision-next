@@ -25,14 +25,22 @@ import {
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import appConfig from '../Config';
 import { createNextState } from '@reduxjs/toolkit';
+import {useLocation} from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { selectUser } from '../redux/features/userSlice'
+
 
 const MeetingForm: FC = () => {
   // Hooks
   const { member } = useAuthContext();
   const meetingStatus = useMeetingStatus();
   const meetingManager = useMeetingManager();
-  const [meetingTitle, setMeetingTitle] = useState('');
-  const [attendeeName, setName] = useState('');
+  const search = useLocation().search
+  const meetingId = new URLSearchParams(search).get('meetingId');
+  const [meetingTitle, setMeetingTitle] = useState(meetingId || '');
+  const user = useSelector(selectUser)
+  console.log('user:', user)
+  const [attendeeName, setName] = useState(user.given_name || '');
   const {
     setActiveChannel,
     activeChannel,
@@ -111,7 +119,7 @@ const MeetingForm: FC = () => {
           attendeeInfo: joinInfo.Attendee
         });
       } else {
-        const joinInfo = await createMeeting(title, name, 'us-east-1');
+        const joinInfo = await createMeeting(title, name, 'us-east-1'); // TODO
         await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
   
