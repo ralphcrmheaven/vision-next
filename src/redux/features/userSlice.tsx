@@ -2,9 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { Auth } from 'aws-amplify'
 import { clearLocalStorage, setLocalStorage } from '../../utils/localStorage'
 
-const initialState = {
-  username: null,
-  loading: false,
+export interface IUser {
+  username: string
+  given_name: string
+  family_name: string
+  email: string
+}
+
+const initialState: IUser = {
+  username: '',
+  given_name: '',
+  family_name: '',
+  email: '',
 }
 
 export interface ILoginUser {
@@ -21,7 +30,6 @@ export const loginUser: any = createAsyncThunk(
 export interface ISignupUser {
   firstname: string
   lastname: string
-  username: string
   email: string
   password: string
 }
@@ -30,7 +38,7 @@ export const signupUser: any = createAsyncThunk(
   'auth/signup',
   async (data: ISignupUser) => {
     return await Auth.signUp({
-      username: data.username,
+      username: data.email,
       password: data.password,
       attributes: {
         given_name: data.firstname,
@@ -40,28 +48,43 @@ export const signupUser: any = createAsyncThunk(
     })
   }
 )
+export interface IConfirmSignup {
+  username: string
+  code: string
+}
+
+export const confirmSignup: any = createAsyncThunk(
+  'auth/confirm',
+  async (data: IConfirmSignup) => {
+    return await Auth.confirmSignUp(data.username, data.code)
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     logoutUser: (state) => {
-      state.username = null
+      state.username = ''
+      state.given_name = ''
+      state.family_name = ''
+      state.email = ''
       clearLocalStorage()
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.pending, (state) => {
-      state.loading = true
-    })
-
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-      const username = payload.username
+      console.log(payload)
 
-      state.username = username
-      state.loading = false
+      state.username = payload.username
 
-      setLocalStorage('username', username)
+      if (payload.attributes) {
+        state.given_name = payload.attributes.given_name ?? 'Juan'
+        state.family_name = payload.attributes.family_name ?? 'Dela Cruz'
+        state.email = payload.attributes.email
+      }
+
+      setLocalStorage('username', state)
     })
   },
 })

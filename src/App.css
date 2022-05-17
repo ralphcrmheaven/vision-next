@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* .messaging-container {
+  background-color: #f0f1f2;
+  height: inherit;
+  overflow-y: scroll;
+} */

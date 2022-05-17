@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo'
 import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon } from './icons'
+import { LogoutIcon } from '@heroicons/react/outline'
 import { useDispatch } from 'react-redux'
 import { logoutUser } from '../redux/features/userSlice'
 
@@ -84,7 +85,7 @@ export default function Sidebar() {
               onClick={logout}
               className="flex flex-col items-center p-4 space-y-1 cursor-pointer rounded-2xl"
             >
-              <SettingsIcon />
+              <LogoutIcon className="h-6" />
               <span className="text-sm">Logout</span>
             </div>
           </li>

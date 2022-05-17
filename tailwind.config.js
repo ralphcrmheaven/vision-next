@@ -1,4 +1,5 @@
 module.exports = {
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   content: ['./src/**/*.{html,js,tsx}'],
   theme: {
     extend: {
@@ -31,6 +32,7 @@ module.exports = {
       },
       width: {
         455: '455px',
+        360: '360px',
         972: '972px',
       },
     },
