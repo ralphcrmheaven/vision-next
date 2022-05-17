@@ -26,6 +26,9 @@ import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getM
 import appConfig from '../Config';
 import { createNextState } from '@reduxjs/toolkit';
 import {useLocation} from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { selectUser } from '../redux/features/userSlice'
+
 
 const MeetingForm: FC = () => {
   // Hooks
@@ -35,8 +38,9 @@ const MeetingForm: FC = () => {
   const search = useLocation().search
   const meetingId = new URLSearchParams(search).get('meetingId');
   const [meetingTitle, setMeetingTitle] = useState(meetingId || '');
-  
-  const [attendeeName, setName] = useState('');
+  const user = useSelector(selectUser)
+  console.log('user:', user)
+  const [attendeeName, setName] = useState(user.given_name || '');
   const {
     setActiveChannel,
     activeChannel,
@@ -115,7 +119,7 @@ const MeetingForm: FC = () => {
           attendeeInfo: joinInfo.Attendee
         });
       } else {
-        const joinInfo = await createMeeting(title, name, 'us-east-1');
+        const joinInfo = await createMeeting(title, name, 'us-east-1'); // TODO
         await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
   
