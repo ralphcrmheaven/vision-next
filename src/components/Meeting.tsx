@@ -9,11 +9,13 @@ import {
   useMeetingManager,
   MeetingStatus,
   useMeetingStatus,
-  VideoInputControl,
   VideoTileGrid,
-  ContentShareControl
+  ContentShareControl,
+  VideoInputControl,
+  ContentShare
 } from 'amazon-chime-sdk-component-library-react';
 import { endMeeting } from '../utils/api';
+import Roaster from '../components/Roaster'
 
 const Meeting: FC = () => {
   const meetingManager = useMeetingManager();
@@ -28,23 +30,42 @@ const Meeting: FC = () => {
   }
   
   return (
-    <div className="w-3/4" style={{marginTop: '2rem', height: '40rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <VideoTileGrid/>
+    <>
+    {/* {meetingStatus === MeetingStatus.Loading &&
+      <h3> LOADING ...... {meetingStatus} </h3>
+    } */}
+    <div className="flex w-full h-full">
         {meetingStatus === MeetingStatus.Succeeded ? 
-          <ControlBar
-            layout="undocked-horizontal"
-            showLabels
-          >
-            <AudioInputControl />
-            <VideoInputControl />
-            <AudioOutputControl />
-            <ControlBarButton icon={<Phone />} onClick={clickedEndMeeting} label="End" />
-            <ContentShareControl />
-          </ControlBar> 
+          <>
+            <div className='flex-1'>
+              <ContentShare />
+              <VideoTileGrid/>
+            </div>
+ 
+          </>
           :
           <div/>
         }
-      </div>
+    </div>
+    {meetingStatus === MeetingStatus.Succeeded &&
+      <>
+        <div className="absolute inset-y-0 left-0">
+            <Roaster/>
+        </div>
+        <ControlBar
+            layout="bottom"
+            showLabels
+            className='flex flex-row h-2'
+          >
+            <AudioInputControl />
+            <VideoInputControl /> 
+            <AudioOutputControl />
+            <ControlBarButton icon={<Phone />} onClick={clickedEndMeeting} label="End" />
+            <ContentShareControl />
+          </ControlBar>
+      </>
+      } 
+   </>
   );
 };
 

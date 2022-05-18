@@ -28,7 +28,7 @@ import { createNextState } from '@reduxjs/toolkit';
 import {useLocation} from "react-router-dom";
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/features/userSlice'
-
+import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
 
 const MeetingForm: FC = () => {
   // Hooks
@@ -98,10 +98,12 @@ const MeetingForm: FC = () => {
   };
 
   const createOrJoinMeeting = async () => {
-    meetingManager.getAttendee = getAttendeeCallback();
     const title = meetingTitle.trim().toLocaleLowerCase();
     const name = attendeeName.trim();
-  
+
+
+    meetingManager.getAttendee = getAttendeeCallback();
+
     // Fetch the Meeting via AWS AppSync - if it exists, then the meeting has already
     // been created, and you just need to join it - you don't need to create a new meeting
     const meetingResponse: any = await getMeetingFromDB(title);
@@ -114,19 +116,21 @@ const MeetingForm: FC = () => {
         const joinInfo = await joinMeeting(meetingData.MeetingId, name);
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
   
-        await meetingManager.join({
-          meetingInfo: meetingData,
-          attendeeInfo: joinInfo.Attendee
-        });
+
+        const meetingSessionConfiguration = new MeetingSessionConfiguration(
+          meetingData,
+          joinInfo.Attendee
+        );
+
+        await meetingManager.join(meetingSessionConfiguration);
       } else {
         const joinInfo = await createMeeting(title, name, 'us-east-1'); // TODO
         await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
-  
-        await meetingManager.join({
-          meetingInfo: joinInfo.Meeting,
-          attendeeInfo: joinInfo.Attendee
-        });
+        const meetingSessionConfiguration = new MeetingSessionConfiguration(
+          joinInfo.Meeting, joinInfo.Attendee
+        );
+        await meetingManager.join(meetingSessionConfiguration);
       }
     } catch (error) {
       console.log(error);
