@@ -4,7 +4,7 @@ import {
     useMeetingStatus,
 } from 'amazon-chime-sdk-component-library-react';
 import {
-    Tab
+    VTab
 } from '../components/ui';
 import DirectMessages from './DirectMessages';
 import GroupChatMessages from './GroupChatMessages';
@@ -21,7 +21,7 @@ const Messages: FC = () => {
         <>
             {meetingStatus === MeetingStatus.Succeeded && 
                 <div className="w-1/4" style={{height: '40rem'}}>
-                    <Tab tabs={tabs} />
+                    <VTab tabs={tabs} />
                 </div>
             }
         </>

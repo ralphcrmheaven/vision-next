@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-
+import React, { FC, useEffect } from 'react';
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -14,21 +13,44 @@ import {
   VideoInputControl,
   ContentShare
 } from 'amazon-chime-sdk-component-library-react';
+import {
+  useMeetings
+} from '../providers/MeetingsProvider';
 import { endMeeting } from '../utils/api';
 import Roaster from '../components/Roaster'
+import { getLocalStorage } from '../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 
 const Meeting: FC = () => {
+  let navigate = useNavigate();
+
+  const {
+    createOrJoinTheMeeting,
+    joinTheMeeting,
+  } = useMeetings();
+
   const meetingManager = useMeetingManager();
   const meetingStatus = useMeetingStatus();
+
+  console.log(meetingStatus)
 
   const clickedEndMeeting = async () => {
     const meetingId = meetingManager.meetingId;
     if (meetingId) {
       await endMeeting(meetingId);
       await meetingManager.leave();
+      navigate('/');
     }
   }
   
+  useEffect(() => {
+    //alert(meetingId)
+    const meetingId = getLocalStorage('meetingId');
+    const meetingType = getLocalStorage('meetingType');
+    createOrJoinTheMeeting?.(meetingId, meetingType)
+    //joinTheMeeting?.('7c0-2d7-c03');
+  }, []);
+
   return (
     <>
     {/* {meetingStatus === MeetingStatus.Loading &&

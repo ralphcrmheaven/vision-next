@@ -1,0 +1,8 @@
+.v-modal section{
+    border-radius: 1rem !important;
+    padding: 3rem !important;
+}
+
+.v-modal section > header, .v-modal section > div {
+    padding: 0 !important;
+}
