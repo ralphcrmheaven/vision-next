@@ -116,7 +116,6 @@ const MeetingForm: FC = () => {
         const joinInfo = await joinMeeting(meetingData.MeetingId, name);
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
   
-
         const meetingSessionConfiguration = new MeetingSessionConfiguration(
           meetingData,
           joinInfo.Attendee

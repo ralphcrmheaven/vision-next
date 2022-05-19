@@ -7,4 +7,12 @@
     body {
       @apply bg-neutral-100 overflow-y-hidden
     }
+
+    .v-ui-element {
+      @apply w-full p-2 mb-1 border border-black rounded-lg
+    }
+
+    .v-ui-button {
+      @apply w-full bg-sky-900 text-white border p-2 rounded-lg
+    }
 }

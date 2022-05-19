@@ -1,3 +1,9 @@
+/*  Custom css utils */
+.cursor-pointer {
+  cursor: pointer;
+}
+/*  End Custom css utils */
+
 .App {
   text-align: center;
 }
@@ -42,3 +48,37 @@
   height: inherit;
   overflow-y: scroll;
 } */
+
+.video > div:nth-child(1) {
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: transparent !important;
+}
+
+.meeting-details {
+  margin-right: 10px;
+}
+
+.meeting-details > div:nth-child(1) {
+  box-shadow: 0px 15px 10px -15px #666;
+}
+
+.meeting-details .time img, .meeting-details .user-count img {
+  width: 18px;
+  height: fit-content;
+  margin-right: 5px;
+}
+
+.meeting-container .top .back a{
+  box-shadow: 0px 15px 10px -15px #666;
+}
+
+.meeting-container .top .back a img{
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+
+.meeting-container .top .logo img {
+  margin: 0 auto;
+}

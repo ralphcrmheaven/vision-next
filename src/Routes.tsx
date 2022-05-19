@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Base from './layout/Base'
 import FullScreen from './layout/FullScreen'
 import Conference from './pages/Conference'
+import SingleMeeting from './pages/SingleMeeting'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Meetings from './pages/Meetings'
@@ -39,6 +40,7 @@ const AppRoutes: React.FC = () => {
         }
       >
         <Route path="/conference" element={<Conference />} />
+        <Route path="/meeting/:meetingId" element={<SingleMeeting />} />
       </Route>
     </Routes>
   )
