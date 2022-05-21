@@ -24,17 +24,21 @@ export default function Home() {
   const fullname = user.given_name + ' ' + user.family_name
 
   const {
+    currentMeetingId,
+    activeMeeting,
+    setTheMeeting,
     showNewMeetingModal,
     showJoinMeetingModal,
     setShowNewMeetingModal,
     setShowJoinMeetingModal,
+    setTheCurrentMeetingId,
   } = useMeetings();
 
   return (
     <>
       {(showNewMeetingModal === true) && <NewMeetingModal setIsOpen={() => setShowNewMeetingModal?.(false)} />}
 
-      {(showJoinMeetingModal === true) && <JoinMeetingModal setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
+      {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
 
       <div className="relative h-full px-14 pt-14">
         <div className="flex">
@@ -86,7 +90,11 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => setShowJoinMeetingModal?.(true) }>
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {
+                    setTheCurrentMeetingId?.('');
+                    setShowJoinMeetingModal?.(true)
+                   } 
+                   }>
                     <span>Join Meeting</span>
                     <span className="text-sm">via invitation link</span>
                   </p>

@@ -4,9 +4,11 @@ import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 
 import userReducer from './features/userSlice'
+import meetingReducer from './features/meetingSlice'
 
 const reducers = combineReducers({
   user: userReducer,
+  meeting: meetingReducer,
 })
 
 const persistConfig = {

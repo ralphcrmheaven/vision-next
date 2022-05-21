@@ -7,22 +7,24 @@ import JoinMeetingModalWrapper from './modals/wrappers/JoinMeetingModalWrapper';
 import JoinMeetingModal from './modals/JoinMeetingModal';
 import { VButton } from './ui';
 import { ClockIcon } from './icons';
-// import { getRandomString } from '../utils/utils';
+import { getRandomString } from '../utils/utils';
 
 // mock
 const today = new Date().toISOString().slice(0, 10)
-const mockMeetingId = `${today}`.replace(/[^\w\s]/gi, '');
+//const mockMeetingId = `${today}`.replace(/[^\w\s]/gi, '');
+const mockMeetingId = getRandomString(3,3,'-');
 
 const MeetingList: FC = () => {
     const {
         showJoinMeetingModal,
         setTheMeeting,
         setShowJoinMeetingModal,
+        setTheCurrentMeetingId,
     } = useMeetings();
 
     return (
         <>
-          {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={mockMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
+          {/* {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={mockMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />} */}
 
           <VCard {...{ className: 'rounded-3xl border h-40 p-8' }}>
             <div className="flex mb-2">
@@ -40,7 +42,10 @@ const MeetingList: FC = () => {
               <div className="self-center w-1/2">Attendees here...</div>
               <div className="flex w-1/2">
                 <div className="inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsi">{mockMeetingId}</div>
-                <VButton className="w/14" onClick={() => setShowJoinMeetingModal?.(true) }>Join</VButton>
+                <VButton className="w/14" onClick={() => {
+                  setTheCurrentMeetingId?.(mockMeetingId);
+                  setShowJoinMeetingModal?.(true)
+                 } }>Join</VButton>
               </div>
             </div>
           </VCard>

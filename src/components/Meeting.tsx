@@ -26,6 +26,7 @@ const Meeting: FC = () => {
   let navigate = useNavigate();
 
   const {
+    activeMeeting,
     createOrJoinTheMeeting,
     joinTheMeeting,
   } = useMeetings();
@@ -45,11 +46,7 @@ const Meeting: FC = () => {
   }
   
   useEffect(() => {
-    //alert(meetingId)
-    const meetingId = getLocalStorage('meetingId');
-    const meetingType = getLocalStorage('meetingType');
-    createOrJoinTheMeeting?.(meetingId, meetingType)
-    //joinTheMeeting?.('7c0-2d7-c03');
+    createOrJoinTheMeeting?.(activeMeeting.id, activeMeeting.type)
   }, []);
 
   return (
