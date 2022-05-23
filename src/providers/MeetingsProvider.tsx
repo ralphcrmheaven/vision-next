@@ -6,7 +6,7 @@ import {
     useMeetingStatus,
 } from 'amazon-chime-sdk-component-library-react';
 import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
-import { selectMeeting, setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, resetActiveMeeting } from '../redux/features/meetingSlice';
+import { readMeetings, selectMeeting, setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, resetActiveMeeting } from '../redux/features/meetingSlice';
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import { getRandomString } from '../utils/utils';
 import { setLocalStorage } from '../utils/localStorage';
@@ -27,6 +27,7 @@ interface IMeetingsContext {
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
+    readTheMeetings?: () => void;
 }
 
 const defaultState = {
@@ -142,6 +143,14 @@ export const MeetingsProvider: FC = ({ children }) => {
         await meetingManager.start();
     };
 
+    const readTheMeetings = async () => {
+        const data = {
+        };
+        const { payload } = await dispatch(readMeetings(data));
+
+        console.log(payload)
+    };
+
     const setTheCurrentMeetingId = async (currentMeetingId:string) => {
         dispatch(setCurrentMeetingId(currentMeetingId));
     };
@@ -176,6 +185,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     createTheMeeting,
                     joinTheMeeting,
                     setTheCurrentMeetingId,
+                    readTheMeetings,
                 }}>
             { children }
         </MeetingsContext.Provider>

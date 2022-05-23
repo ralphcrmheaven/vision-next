@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
     useMeetings
 } from '../providers/MeetingsProvider';
@@ -20,7 +20,13 @@ const MeetingList: FC = () => {
         setTheMeeting,
         setShowJoinMeetingModal,
         setTheCurrentMeetingId,
+        readTheMeetings,
     } = useMeetings();
+
+    useEffect(() => {
+      console.log('a')
+      readTheMeetings?.();
+    }, []);
 
     return (
         <>

@@ -1,14 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import meetingAPI from '../../api/meeting';
 
 export interface IMeeting {
     currentMeetingId: string
     activeMeeting: object
+    meetings: Array<object>
 }
 
 const initialState: IMeeting = {
     currentMeetingId: '',
     activeMeeting: {},
+    meetings: [],
 };
+
+export const readMeetings: any = createAsyncThunk(
+    'meeting/read',
+    async (data:any) => {
+      const res = await meetingAPI().read(data);
+      return res.data;
+    }
+);
 
 const meetingSlice = createSlice({
     name: 'meeting',
@@ -33,8 +44,22 @@ const meetingSlice = createSlice({
         resetActiveMeeting: (state) => {
             state.activeMeeting = initialState.activeMeeting;
         },
+        resetMeetings: (state, action) => {
+            state.meetings = initialState.meetings;
+        },
     },
-    extraReducers: {
+    extraReducers: (builder) => {
+        builder
+            .addCase(readMeetings.pending, (state, action) => {
+                console.log('c')
+            })
+            .addCase(readMeetings.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.meetings = action.payload;
+            })
+            .addCase(readMeetings.rejected, (state, action) => {
+                console.log(action)
+            })
     }
 });
 
