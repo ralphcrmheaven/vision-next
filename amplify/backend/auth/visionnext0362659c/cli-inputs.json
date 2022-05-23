@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "vision2020",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "vision0362659c",
     "userPoolName": "visionnext0362659c_userpool_0362659c",
     "autoVerifiedAttributes": [
@@ -103,7 +103,9 @@
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"CustomMessage\",\n    \"lambdaFunctionName\": \"visionnext0362659cCustomMessage\"\n  }\n]",
+    "authTriggerConnections": [
+      "{\"triggerType\":\"CustomMessage\",\"lambdaFunctionName\":\"visionnext0362659cCustomMessage\"}"
+    ],
     "permissions": [],
     "authProviders": [],
     "thirdPartyAuth": false
