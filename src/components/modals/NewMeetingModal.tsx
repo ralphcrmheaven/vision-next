@@ -130,7 +130,7 @@ const NewMeetingForm = () => {
 
     const {
         meetingId,
-        setMeeting,
+        saveMeeting,
     } = useMeetings();
 
     const [topic, setTopic] = useState('');
@@ -165,7 +165,7 @@ const NewMeetingForm = () => {
     };
 
     const onSetMettingClick = () => {
-        setMeeting?.(topic, editorState.getCurrentContent(), startDate, startTime, durationTimeHours, durationTimeMinutes);
+        saveMeeting?.(topic, editorState.getCurrentContent(), startDate, startTime, durationTimeHours, durationTimeMinutes);
     };
 
     return (

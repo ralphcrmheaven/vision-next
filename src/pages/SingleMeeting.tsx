@@ -5,6 +5,7 @@ import {
   lightTheme,
   RosterAttendee,
 } from 'amazon-chime-sdk-component-library-react';
+import MeetingWrapper from '../components/MeetingWrapper';
 import { MeetingsProvider } from '../providers/MeetingsProvider';
 import { AuthProvider } from '../providers/AuthProvider';
 import { MessagingProvider } from '../providers/ChatMessagesProvider';

@@ -1,28 +1,38 @@
 import React, { createContext, useContext, useState, FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-    MeetingProvider,
     useMeetingManager,
-    MeetingStatus,
     useMeetingStatus,
 } from 'amazon-chime-sdk-component-library-react';
 import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
+import { readMeetings, selectMeeting, setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, resetActiveMeeting } from '../redux/features/meetingSlice';
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
 import { getRandomString } from '../utils/utils';
 import { setLocalStorage } from '../utils/localStorage';
 
 interface IMeetingsContext {
+    currentMeetingId?: string,
+    activeMeeting?: any,
+    showNewMeetingModal: boolean,
+    showJoinMeetingModal: boolean,
     meeting: any;
-    setTheMeeting?: React.Dispatch<React.SetStateAction<any>>;
     meetingId: string;
+    setShowNewMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowJoinMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
+    setTheMeeting?: React.Dispatch<React.SetStateAction<any>>;
     setTheMeetingId?: React.Dispatch<React.SetStateAction<string>>;
-    setMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => void;
+    saveMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => void;
     createOrJoinTheMeeting?: (mId:any, type:any) => void;
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
+    setTheCurrentMeetingId?: (currentMeetingId:string) => void;
+    readTheMeetings?: () => void;
 }
 
 const defaultState = {
+    showNewMeetingModal: false,
+    showJoinMeetingModal: false,
     meeting: {
         id: null,
         type: '',
@@ -39,9 +49,15 @@ export const useMeetings = () => {
 export const MeetingsProvider: FC = ({ children }) => {
     let navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
+    const { currentMeetingId, activeMeeting } = useSelector(selectMeeting);
+
     const meetingManager = useMeetingManager();
     const meetingStatus = useMeetingStatus();
 
+    const [showNewMeetingModal, setShowNewMeetingModal] = useState(defaultState.showNewMeetingModal);
+    const [showJoinMeetingModal, setShowJoinMeetingModal] = useState(defaultState.showJoinMeetingModal);
     const [meeting, setTheMeeting] = useState(defaultState.meeting);
     const [meetingId, setTheMeetingId] = useState(defaultState.meetingId);
 
@@ -57,49 +73,11 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
 
     // Public functions
-    const setMeeting = (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
+    const saveMeeting = (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
         // Save to a cloud db
         const mId = getRandomString(3, 3, '-');
         //setMeetingId(mId);
     };
-
-    // const createOrJoinTheMeeting = async(mId:any) => {
-    //     let joinInfo = null;
-    //     let meetingData = null;
-
-    //     meetingManager.getAttendee = getAttendeeCallback();
-    
-    //     // Fetch the Meeting via AWS AppSync - if it exists, then the meeting has already
-    //     // been created, and you just need to join it - you don't need to create a new meeting
-    //     const meetingResponse: any = await getMeetingFromDB(mId);
-        
-    //     const meetingJson = meetingResponse.data.getMeeting;
-    //     try {
-    //       if (meetingJson) {
-    //         meetingData = JSON.parse(meetingJson.data);
-    //         joinInfo = await joinMeeting(meetingData.MeetingId, 'Mark');
-    //       }else{
-    //         joinInfo = await createMeeting(mId, 'Mark', 'us-east-1'); // TODO
-    //         await addMeetingToDB(mId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));   
-    //         meetingData = joinInfo.Meeting;
-    //       }
-    //     } catch (error) {
-    //         alert(error)
-    //         console.log(error);
-    //     }
-        
-    //     await addAttendeeToDB(joinInfo.Attendee.AttendeeId, 'Mark');
-      
-    //     const meetingSessionConfiguration = new MeetingSessionConfiguration(
-    //         meetingData,
-    //         joinInfo.Attendee
-    //     );
-
-    //     await meetingManager.join(meetingSessionConfiguration);
-
-    //     // At this point you can let users setup their devices, or start the session immediately
-    //     await meetingManager.start();
-    // };
 
     const createOrJoinTheMeeting = async(mId:any, type:any) => {
         switch (type) {
@@ -117,8 +95,6 @@ export const MeetingsProvider: FC = ({ children }) => {
     const createTheMeeting = async(mId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
     
-        // Fetch the Meeting via AWS AppSync - if it exists, then the meeting has already
-        // been created, and you just need to join it - you don't need to create a new meeting
         const meetingResponse: any = await getMeetingFromDB(mId);
         
         const meetingJson = meetingResponse.data.getMeeting;
@@ -137,15 +113,12 @@ export const MeetingsProvider: FC = ({ children }) => {
             console.log(error);
         }
         
-        // At this point you can let users setup their devices, or start the session immediately
         await meetingManager.start();
     };
 
     const joinTheMeeting = async (mId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
     
-        // Fetch the Meeting via AWS AppSync - if it exists, then the meeting has already
-        // been created, and you just need to join it - you don't need to create a new meeting
         const meetingResponse: any = await getMeetingFromDB(mId);
         
         const meetingJson = meetingResponse.data.getMeeting;
@@ -167,36 +140,52 @@ export const MeetingsProvider: FC = ({ children }) => {
             console.log(error);
         }
         
-        // At this point you can let users setup their devices, or start the session immediately
         await meetingManager.start();
     };
 
-    useEffect(() => {
-        if(meetingId){
-            setLocalStorage('meetingId', meetingId);
-            navigate('/meeting/' + meetingId);
-        }
-    }, [meetingId]);
+    const readTheMeetings = async () => {
+        const data = {
+        };
+        const { payload } = await dispatch(readMeetings(data));
+
+        console.log(payload)
+    };
+
+    const setTheCurrentMeetingId = async (currentMeetingId:string) => {
+        dispatch(setCurrentMeetingId(currentMeetingId));
+    };
 
     useEffect(() => {
         if(meeting?.id){
-            setLocalStorage('meetingId', meeting?.id);
-            setLocalStorage('meetingType', meeting?.type);
+            dispatch(setActiveMeeting({
+                id: meeting?.id,
+                type: meeting?.type,
+            }));
             navigate('/meeting/' + meeting?.id);
+        }else{
+            dispatch(resetActiveMeeting());
         }
     }, [meeting]);
 
     return (
         <MeetingsContext.Provider 
             value={{ 
+                    currentMeetingId,
+                    activeMeeting,
+                    showNewMeetingModal,
+                    showJoinMeetingModal,
                     meeting,
                     meetingId,
+                    setShowNewMeetingModal,
+                    setShowJoinMeetingModal,
                     setTheMeeting,
                     setTheMeetingId,
-                    setMeeting,
+                    saveMeeting,
                     createOrJoinTheMeeting,
                     createTheMeeting,
                     joinTheMeeting,
+                    setTheCurrentMeetingId,
+                    readTheMeetings,
                 }}>
             { children }
         </MeetingsContext.Provider>
