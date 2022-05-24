@@ -71,7 +71,7 @@ const Meeting: FC = () => {
     </div>
     {meetingStatus === MeetingStatus.Succeeded &&
       <>
-        <div className="absolute inset-y-0 left-0">
+        <div className="absolute inset-y-0 right-0">
           <Roaster/>
         </div>
         <ControlBar
