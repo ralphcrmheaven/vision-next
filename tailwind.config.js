@@ -1,5 +1,5 @@
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   content: ['./src/**/*.{html,js,tsx}'],
   theme: {
     extend: {
@@ -29,12 +29,19 @@ module.exports = {
       spacing: {
         '220px': '220px',
         '100px': '100px',
-        '72.5': '18.5rem'
+        72.5: '18.5rem',
+        '2px': '2px',
       },
       width: {
         455: '455px',
         360: '360px',
         972: '972px',
+      },
+      height: {
+        '310px': '310px',
+      },
+      padding: {
+        '20px': '20px',
       },
     },
   },
