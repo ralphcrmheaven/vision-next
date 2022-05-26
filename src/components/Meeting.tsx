@@ -57,7 +57,7 @@ const Meeting: FC = () => {
     <div className="flex w-full h-full">
         {meetingStatus === MeetingStatus.Succeeded ? 
           <>
-            <div className='flex-1 pb-20 pr-72.5'>
+            <div className='flex-1 pb-20 pl-72.5'>
               <VideoTileGrid layout="standard"/>
             </div>
             {/* <div className='flex flex-col w-44'>
