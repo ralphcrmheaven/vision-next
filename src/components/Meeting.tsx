@@ -170,7 +170,7 @@ const Meeting: FC = () => {
       <div className="flex w-full h-full">
         {meetingStatus === MeetingStatus.Succeeded ? (
           <>
-            <div className="flex-1 pb-20 pl-72.5">
+            <div className="flex-1 pb-20 pr-72.5">
               <VideoTileGrid layout="standard" />
             </div>
             {/* <div className='flex flex-col w-44'>
@@ -184,7 +184,7 @@ const Meeting: FC = () => {
       </div>
       {meetingStatus === MeetingStatus.Succeeded && (
         <>
-          <div className="absolute inset-y-0 left-0 right-0">
+          <div className="absolute inset-y-0 right-0">
             <Roaster />
           </div>
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
