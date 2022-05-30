@@ -52,3 +52,7 @@ export const SDK_LOG_LEVELS = {
   'error': LogLevel.ERROR,
   'off': LogLevel.OFF,
 }
+
+export const APINAME: string = 'visionRestApi';
+export const MEETINGENDPOINT: string = '/meeting';
+export const REGION = 'us-east-1';

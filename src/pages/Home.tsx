@@ -7,10 +7,10 @@ import HomeFooter from '../components/HomeFooter'
 import VCard from '../components/Cards'
 import NewMeetingModalWrapper from '../components/modals/wrappers/NewMeetingModalWrapper';
 import JoinMeetingModalWrapper from '../components/modals/wrappers/JoinMeetingModalWrapper';
-import MeetingListWrapper from '../components/MeetingListWrapper';
+import MeetingListWrapper from '../components/meetinglist/wrappers/MeetingListWrapper';
 import NewMeetingModal from '../components/modals/NewMeetingModal';
 import JoinMeetingModal from '../components/modals/JoinMeetingModal';
-import MeetingList from '../components/MeetingList';
+import MeetingList from '../components/meetinglist/MeetingList';
 
 import { IUser, selectUser } from '../redux/features/userSlice'
 
