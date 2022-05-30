@@ -1,5 +1,5 @@
 import { API } from 'aws-amplify';
-import { APINAME, MEETINGENDPOINT } from '../utils/constants';
+import { APINAME, MEETINGENDPOINT } from '../constants';
 
 const meeting = () => {
     return {

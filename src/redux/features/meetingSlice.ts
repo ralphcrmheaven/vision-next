@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { IMeetingRecord } from '../../interfaces';
 import meetingAPI from '../../api/meeting';
 
-export interface IMeeting {
+interface IMeeting {
     currentMeetingId: string
     activeMeeting: object
-    meetings: Array<object>
+    meetings: Array<IMeetingRecord>
 }
 
 const initialState: IMeeting = {
@@ -13,11 +14,19 @@ const initialState: IMeeting = {
     meetings: [],
 };
 
-export const readMeetings: any = createAsyncThunk(
+export const meetingCreate: any = createAsyncThunk(
+    'meeting/create',
+    async (data:any) => {
+      const res = await meetingAPI().create(data);
+      return res;
+    }
+);
+
+export const meetingRead: any = createAsyncThunk(
     'meeting/read',
     async (data:any) => {
       const res = await meetingAPI().read(data);
-      return res.data;
+      return res;
     }
 );
 
@@ -50,15 +59,20 @@ const meetingSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(readMeetings.pending, (state, action) => {
-                console.log('c')
+            .addCase(meetingRead.pending, (state, action) => {
             })
-            .addCase(readMeetings.fulfilled, (state, action) => {
-                console.log(action.payload)
+            .addCase(meetingRead.fulfilled, (state, action) => {
                 state.meetings = action.payload;
             })
-            .addCase(readMeetings.rejected, (state, action) => {
-                console.log(action)
+            .addCase(meetingRead.rejected, (state, action) => {
+            })
+            .addCase(meetingCreate.pending, (state, action) => {
+            })
+            .addCase(meetingCreate.fulfilled, (state, action) => {
+                const { data } = action.payload;
+                state.meetings = [data, ...state.meetings];
+            })
+            .addCase(meetingCreate.rejected, (state, action) => {
             })
     }
 });
