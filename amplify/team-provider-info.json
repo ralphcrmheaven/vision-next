@@ -21,7 +21,7 @@
         },
         "visionnext0362659cCustomMessage": {
           "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/visionnext0362659cCustomMessage-4a35484e4a49676c356b-build.zip"
+          "s3Key": "amplify-builds/visionnext0362659cCustomMessage-6f6a356133554e616450-build.zip"
         },
         "meetingFunction": {
           "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",

@@ -55,7 +55,7 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const dispatch = useDispatch();
 
-    const { username } = useSelector(selectUser);
+    const { username, given_name } = useSelector(selectUser);
     const { currentMeetingId, activeMeeting, meetings } = useSelector(selectMeeting);
 
     const meetingManager = useMeetingManager();
@@ -99,9 +99,9 @@ export const MeetingsProvider: FC = ({ children }) => {
         const meetingJson = meetingResponse.data.getMeeting;
         try {
           if (!meetingJson) {
-            const joinInfo = await createMeeting(mId, username, REGION); // TODO
+            const joinInfo = await createMeeting(mId, given_name, REGION); // TODO
             await addMeetingToDB(mId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
-            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, username);
+            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               joinInfo.Meeting, joinInfo.Attendee
             );
@@ -124,8 +124,8 @@ export const MeetingsProvider: FC = ({ children }) => {
         try {
           if (meetingJson) {
             const meetingData = JSON.parse(meetingJson.data);
-            const joinInfo = await joinMeeting(meetingData.MeetingId, username);
-            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, username);
+            const joinInfo = await joinMeeting(meetingData.MeetingId, given_name);
+            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
       
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               meetingData,
