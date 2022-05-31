@@ -62,7 +62,10 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
               <div className="self-center w-1/2">Attendees here...</div>
               <div className="flex w-1/2">
                 <div className="inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsi">{meeting?.id}</div>
-                {(meeting?.user === username) ?
+                <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.id, type: 'C'}) }>
+                  Start
+                </VButton>
+                {/* {(meeting?.user === username) ?
                     <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.id, type: 'C'}) }>
                       Start
                     </VButton>
@@ -75,7 +78,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                     >
                       Join
                     </VButton>
-                }
+                } */}
                 
               </div>
             </div>
