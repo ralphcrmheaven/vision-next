@@ -28,6 +28,25 @@
           }
         }
       ]
+    },
+    "meetingPathFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "meetingTable",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
     }
   },
   "api": {
@@ -53,6 +72,20 @@
         {
           "category": "function",
           "resourceName": "meetingFunction",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "visionRestApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "meetingPathFunction",
           "attributes": [
             "Name",
             "Arn"
@@ -149,6 +182,10 @@
   },
   "storage": {
     "meetingTbl": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    },
+    "meetingTable": {
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
     }

@@ -1,0 +1,10 @@
+{
+  "resourceName": "meetingTable",
+  "tableName": "meetingTable",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

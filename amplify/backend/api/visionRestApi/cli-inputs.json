@@ -3,7 +3,7 @@
   "paths": {
     "/meeting": {
       "name": "/meeting",
-      "lambdaFunction": "meetingFunction",
+      "lambdaFunction": "meetingPathFunction",
       "permissions": {
         "setting": "protected",
         "auth": [
@@ -13,7 +13,10 @@
           "delete"
         ],
         "guest": [
-          "read"
+          "create",
+          "read",
+          "update",
+          "delete"
         ]
       }
     }

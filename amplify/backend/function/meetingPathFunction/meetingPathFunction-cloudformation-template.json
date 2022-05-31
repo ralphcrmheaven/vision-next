@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagemeetingTblName": {
+    "storagemeetingTableName": {
       "Type": "String",
-      "Default": "storagemeetingTblName"
+      "Default": "storagemeetingTableName"
     },
-    "storagemeetingTblArn": {
+    "storagemeetingTableArn": {
       "Type": "String",
-      "Default": "storagemeetingTblArn"
+      "Default": "storagemeetingTableArn"
     }
   },
   "Conditions": {
@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "meetingFunction",
+            "meetingPathFunction",
             {
               "Fn::Join": [
                 "",
                 [
-                  "meetingFunction",
+                  "meetingPathFunction",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "visionnextLambdaRole57c8fe0a",
+            "visionnextLambdaRoled71b838e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "visionnextLambdaRole57c8fe0a",
+                  "visionnextLambdaRoled71b838e",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagemeetingTblArn"
+                  "Ref": "storagemeetingTableArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagemeetingTblArn"
+                        "Ref": "storagemeetingTableArn"
                       },
                       "index/*"
                     ]

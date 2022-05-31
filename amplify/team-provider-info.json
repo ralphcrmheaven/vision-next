@@ -21,11 +21,15 @@
         },
         "visionnext0362659cCustomMessage": {
           "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/visionnext0362659cCustomMessage-537a573462644e6c376c-build.zip"
+          "s3Key": "amplify-builds/visionnext0362659cCustomMessage-4a35484e4a49676c356b-build.zip"
         },
         "meetingFunction": {
           "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
           "s3Key": "amplify-builds/meetingFunction-5673516d352f55704e37-build.zip"
+        },
+        "meetingPathFunction": {
+          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
+          "s3Key": "amplify-builds/meetingPathFunction-7a723063554977565868-build.zip"
         }
       },
       "hosting": {

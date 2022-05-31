@@ -12,7 +12,7 @@ export type AmplifyDependentResourcesAttributes = {
             "LambdaExecutionRole": "string",
             "Region": "string"
         },
-        "meetingFunction": {
+        "meetingPathFunction": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
@@ -25,7 +25,7 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         },
-        "visionApi": {
+        "visionRestApi": {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"
@@ -46,7 +46,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "storage": {
-        "meetingTbl": {
+        "meetingTable": {
             "Name": "string",
             "Arn": "string",
             "StreamArn": "string",
