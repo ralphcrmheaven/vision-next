@@ -166,9 +166,14 @@ app.put(path, function(req, res) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+  const timeStamp = new Date().toISOString();
+  
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: {
+      ...req.body,
+      updatedat: timeStamp
+    }
   }
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
@@ -190,9 +195,15 @@ app.post(path, function(req, res) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+  const timeStamp = new Date().toISOString();
+
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: {
+      ...req.body,
+      createdat: timeStamp,
+      updatedat: timeStamp
+    }
   }
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
