@@ -10,6 +10,7 @@ import Login from './pages/Login'
 import Meetings from './pages/Meetings'
 import Settings from './pages/Settings'
 import Signup from './pages/Signup'
+import Schedule from './pages/Schedule'
 import VerifyAccount from './pages/VerifyAccount'
 import ProtectedRoute from './ProtectedRoute'
 
@@ -31,6 +32,7 @@ const AppRoutes: React.FC = () => {
         <Route index element={<MeetingWrapper><Home /></MeetingWrapper>} />
         <Route path="/meetings" element={<Meetings />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/schedule" element={<Schedule />} />
       </Route>
       <Route
         path="/"

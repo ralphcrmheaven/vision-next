@@ -5,7 +5,7 @@ export default function Base() {
   return (
     <div className="flex h-screen bg-nuetral-100">
       <Sidebar />
-      <div className="flex-1 bg-white shadow-sm rounded-l-6xl">
+      <div className="flex-1 overflow-hidden bg-white shadow-sm">
         <Outlet />
       </div>
     </div>

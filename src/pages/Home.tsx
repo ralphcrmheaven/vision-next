@@ -111,7 +111,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white">
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {}}>
                     <span>Schedule</span>
                     <span className="text-sm">plan your meetings</span>
                   </p>
