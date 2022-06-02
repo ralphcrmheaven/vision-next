@@ -32,7 +32,7 @@ const AppRoutes: React.FC = () => {
         <Route index element={<MeetingWrapper><Home /></MeetingWrapper>} />
         <Route path="/meetings" element={<Meetings />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/schedule" element={<MeetingWrapper><Schedule /></MeetingWrapper>} />
       </Route>
       <Route
         path="/"

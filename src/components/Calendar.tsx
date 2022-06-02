@@ -1,5 +1,7 @@
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar, { EventSourceInput } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 import styled from '@emotion/styled'
 
 const StyleWrapper = styled.div`
@@ -15,37 +17,29 @@ const StyleWrapper = styled.div`
   }
 `
 
-const Calendar = () => {
+interface Props {
+  events?: EventSourceInput
+}
+
+const Calendar = (props: Props) => {
   const handleEventClick = (info: any) => {
-    console.log(info)
+    alert(info.event.title)
   }
 
   return (
     <StyleWrapper>
       <FullCalendar
-        plugins={[dayGridPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
         initialView="dayGridMonth"
         viewClassNames="Calendar"
         eventClick={handleEventClick}
+        headerToolbar={{
+          start: 'prev,next today',
+          center: 'title',
+          end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+        }}
         navLinks
-        events={[
-          {
-            title: 'Hello World',
-            start: '2022-05-16',
-          },
-          {
-            title: 'Hello World',
-            start: '2022-05-16',
-          },
-          {
-            title: 'Hello World',
-            start: '2022-05-16',
-          },
-          {
-            title: 'Hello World',
-            start: '2022-05-16',
-          },
-        ]}
+        events={props.events}
       />
     </StyleWrapper>
   )
