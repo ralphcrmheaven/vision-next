@@ -15,24 +15,25 @@ const StyleWrapper = styled.div`
     padding: 10px;
     margin-bottom: 0;
   }
+
+  .fc-event {
+    cursor: pointer;
+  }
 `
 
 interface Props {
   events?: EventSourceInput
+  eventClick?: (event: any) => void
 }
 
 const Calendar = (props: Props) => {
-  const handleEventClick = (info: any) => {
-    alert(info.event.title)
-  }
-
   return (
     <StyleWrapper>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
         initialView="dayGridMonth"
         viewClassNames="Calendar"
-        eventClick={handleEventClick}
+        eventClick={props.eventClick}
         headerToolbar={{
           start: 'prev,next today',
           center: 'title',
