@@ -62,7 +62,9 @@ const meetingSlice = createSlice({
             .addCase(meetingRead.pending, (state, action) => {
             })
             .addCase(meetingRead.fulfilled, (state, action) => {
-                state.meetings = action.payload;
+                let meetings = action.payload;
+                meetings = meetings.filter((m:any) => { return typeof m.createdat !== 'undefined' }).sort((a:any, b:any) => new Date(a.createdat) > new Date(b.createdat) ? 1 : -1);
+                state.meetings = meetings;
             })
             .addCase(meetingRead.rejected, (state, action) => {
             })

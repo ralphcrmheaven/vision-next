@@ -144,7 +144,8 @@ const NewMeetingForm = (props:any) => {
     const [startTime, setStartTime] = useState('');
     const [durationTimeHours, setDurationTimeHours] = useState('');
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
-
+    const [timezone, setTimezone] = useState('');
+    
     const onTopicChange = (value:any) => {
         setTopic(value);
     };
@@ -167,6 +168,10 @@ const NewMeetingForm = (props:any) => {
 
     const onDurationTimeMinutesChange = (value:any) => {
         setDurationTimeMinutes(value);
+    };
+
+    const onTimezoneChange = (value:any) => {
+        setTimezone(value);
     };
 
     const onSetMeetingClick = async () => {
@@ -227,6 +232,16 @@ const NewMeetingForm = (props:any) => {
                     </div>
                 </div>
             </div>
+
+            {/* <div className="mb-5">
+                <VLabel htmlFor="timezone">Time Zone</VLabel>
+                <VSelect 
+                    id="timezone"
+                    options={minuteOptions}
+                    value={timezone}
+                    onChange={(e:any) => onTimezoneChange(e.target.value)}
+                />
+            </div> */}
 
             <div className="mb-5">
                 <VButton 
