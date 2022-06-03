@@ -15,6 +15,7 @@ import MeetingList from '../components/meetinglist/MeetingList';
 import { IUser, selectUser } from '../redux/features/userSlice'
 
 import cham1 from '../assets/images/cham1.png'
+import { useNavigate } from 'react-router-dom'
 
 export default function Home() {
   const user: IUser = useSelector(selectUser)
@@ -33,6 +34,8 @@ export default function Home() {
     setShowJoinMeetingModal,
     setTheCurrentMeetingId,
   } = useMeetings();
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -111,7 +114,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white">
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {navigate('/schedule', {replace:true})}}>
                     <span>Schedule</span>
                     <span className="text-sm">plan your meetings</span>
                   </p>

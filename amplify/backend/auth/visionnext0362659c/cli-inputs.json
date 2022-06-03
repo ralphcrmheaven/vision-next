@@ -17,13 +17,8 @@
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
-    "passwordPolicyMinLength": "8",
-    "passwordPolicyCharacters": [
-      "Requires Lowercase",
-      "Requires Uppercase",
-      "Requires Numbers",
-      "Requires Symbols"
-    ],
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
     "requiredAttributes": [
       "email"
     ],
@@ -57,7 +52,7 @@
     "sharedId": "0362659c",
     "resourceName": "visionnext0362659c",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "manual",
+    "useDefault": "defaultSocial",
     "usernameAttributes": [
       "email, phone_number"
     ],
@@ -98,7 +93,7 @@
         "verification-link"
       ]
     },
-    "hostedUI": false,
+    "hostedUI": true,
     "verificationBucketName": "visionnext0362659cverificationbucket",
     "parentStack": {
       "Ref": "AWS::StackId"
@@ -107,7 +102,10 @@
       "{\"triggerType\":\"CustomMessage\",\"lambdaFunctionName\":\"visionnext0362659cCustomMessage\"}"
     ],
     "permissions": [],
-    "authProviders": [],
-    "thirdPartyAuth": false
+    "hostedUIDomainName": "visionnextd18fece4-d18fece4",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost/\"],\"LogoutURLs\":[\"https://localhost/\"]}",
+    "authProviders": []
   }
 }
