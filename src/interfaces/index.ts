@@ -10,4 +10,5 @@ export interface IMeetingRecord {
     startdatetimeutc: string
     createdat: string
     updatedat: string
-}
+    topicdetails: string
+};
