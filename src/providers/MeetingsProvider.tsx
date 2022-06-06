@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, FC, useEffect } from 'react';
+//import 'moment-timezone';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -154,6 +156,7 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
         // Save to a cloud db
+        const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
         const data = {
             id: id,
@@ -163,9 +166,11 @@ export const MeetingsProvider: FC = ({ children }) => {
             starttime: startTime,
             durationhrs: Number(durationTimeInHours),
             durationmins: Number(durationTimeInMinutes),
+            startdatetimeutc: startDateTimeUTC.format(),
             user: username,
         };
-        console.log(data)
+        //console.log(startDateTimeUTC.format('hh:mm A'))
+        //console.log(moment.utc(startDateTimeUTC.format()).tz('America/Los_Angeles').format('hh:mm A'))
         await dispatch(meetingCreate(data));
     };
 

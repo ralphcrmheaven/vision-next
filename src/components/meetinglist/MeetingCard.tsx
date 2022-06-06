@@ -26,16 +26,19 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
     let startDateTime = null;
     let endDateTime = null;
+    let startTime = null;
     let endTime = null;
     let startsIn = '';
 
     try{
-      startDateTime = (moment(meeting?.startdate + ' ' + meeting?.starttime));
-      endDateTime = startDateTime.add(meeting?.durationhrs, 'hours').add(meeting?.durationmins, 'minutes');
+      //startDateTime = moment(meeting?.startdate + ' ' + meeting?.starttime);
+      startDateTime = moment.utc(meeting?.startdatetimeutc);
+      endDateTime = startDateTime.clone().add(meeting?.durationhrs, 'hours').add(meeting?.durationmins, 'minutes');
 
-      endTime = endDateTime.format('H:mm');
+      startTime = startDateTime.format('hh:mm A');
+      endTime = endDateTime.format('hh:mm A');
 
-      const hours = startDateTime.diff(moment(), 'hours');
+      const hours = startDateTime.diff(moment().utc(), 'hours');
 
       if(hours < 24){
         startsIn = `${hours} hours`;
@@ -55,17 +58,14 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
             </div>
             <div className="flex">
               <span className="self-center w-4 h-4"><ClockIcon /></span>
-              <span className="px-4 text-gray-600 border-r border-r-gray-500">{meeting?.starttime} - {endTime}</span>
+              <span className="px-4 text-gray-600 border-r border-r-gray-500">{startTime} - {endTime}</span>
               <span className="px-4 text-gray-600">Starts in {startsIn}</span>
             </div>
             <div className="flex">
               <div className="self-center w-1/2">Attendees here...</div>
               <div className="flex w-1/2">
                 <div className="inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsi">{meeting?.id}</div>
-                <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.id, type: 'C'}) }>
-                  Start
-                </VButton>
-                {/* {(meeting?.user === username) ?
+                {(meeting?.user === username) ?
                     <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.id, type: 'C'}) }>
                       Start
                     </VButton>
@@ -78,8 +78,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                     >
                       Join
                     </VButton>
-                } */}
-                
+                }
               </div>
             </div>
         </div>

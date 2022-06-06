@@ -58,6 +58,24 @@ const convertUrlType = (param, type) => {
 /********************************
  * HTTP Get method for list objects *
  ********************************/
+//  app.get(path, function(req, res) {
+//   let queryParams = {
+//     TableName: tableName,
+//     ExpressionAttributeValues: {
+//       ':u': {S: 'e7a7fdff-45ec-4fb1-8ac6-6d0c1eeb78a3'}
+//     },
+//     KeyConditionExpression: 'user_id = :u'
+//   }
+
+//   dynamodb.scan(queryParams, (err, data) => {
+//     if (err) {
+//       res.statusCode = 500;
+//       res.json({error: 'Could not load items: ' + err});
+//     } else {
+//       res.json(data.Items);
+//     }
+//   });
+// });
 
  app.get(path, function(req, res) {
   let queryParams = {
