@@ -10,7 +10,7 @@ const VSelect = (props:any) => {
                 return  <option 
                             value={option?.value}
                             key={index}
-                            selected={(option?.value === props.value)? true : false}
+                            // selected={(option?.value === props.value)? true : false}
                         >
                             {option?.label}
                         </option>

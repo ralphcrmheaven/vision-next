@@ -1,4 +1,8 @@
-.v-modal section{
+.v-modal {
+    background-color: rgba(125,129,139,0.5) !important;
+}
+
+.v-modal section {
     border-radius: 1rem !important;
     padding: 3rem !important;
 }

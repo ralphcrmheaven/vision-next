@@ -12,7 +12,7 @@ const VModal = (props:any) => {
     const { size, dismissible, title, body, setIsOpen } = props;
     return (
         <Modal className="v-modal" size={size} dismissible={dismissible} onClose={() => setIsOpen()}>
-            <ModalHeader title={title} className="text-center mb-5 font-bold text-sky-900"/>
+            <ModalHeader title={title} displayClose={true} className="text-center mb-5 font-bold text-sky-900"/>
             <ModalBody>
                 {body}    
             </ModalBody>

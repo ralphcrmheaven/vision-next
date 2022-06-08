@@ -1,24 +1,21 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import {
-  MeetingProvider,
-  lightTheme,
-  RosterAttendee,
-} from 'amazon-chime-sdk-component-library-react';
 
-import MeetingList from '../components/MeetingList';
+import { useMeetings } from '../providers/MeetingsProvider';
+
 import HomeFooter from '../components/HomeFooter'
 import VCard from '../components/Cards'
+import NewMeetingModalWrapper from '../components/modals/wrappers/NewMeetingModalWrapper';
+import JoinMeetingModalWrapper from '../components/modals/wrappers/JoinMeetingModalWrapper';
+import MeetingListWrapper from '../components/meetinglist/wrappers/MeetingListWrapper';
 import NewMeetingModal from '../components/modals/NewMeetingModal';
 import JoinMeetingModal from '../components/modals/JoinMeetingModal';
-import { VButton } from '../components/ui';
-import { UsersIcon, ClockIcon } from '../components/icons';
-
-import { MeetingsProvider } from '../providers/MeetingsProvider';
+import MeetingList from '../components/meetinglist/MeetingList';
 
 import { IUser, selectUser } from '../redux/features/userSlice'
 
 import cham1 from '../assets/images/cham1.png'
+import { useNavigate } from 'react-router-dom'
 
 export default function Home() {
   const user: IUser = useSelector(selectUser)
@@ -27,30 +24,24 @@ export default function Home() {
     user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
 
-  const [showNewMeetingModal, setShowNewMeetingModal] = useState(false);
-  const [showJoinMeetingModal, setShowJoinMeetingModal] = useState(false);
+  const {
+    currentMeetingId,
+    activeMeeting,
+    setTheMeeting,
+    showNewMeetingModal,
+    showJoinMeetingModal,
+    setShowNewMeetingModal,
+    setShowJoinMeetingModal,
+    setTheCurrentMeetingId,
+  } = useMeetings();
+
+  const navigate = useNavigate();
 
   return (
     <>
-    {(showNewMeetingModal === true) &&  
+      {(showNewMeetingModal === true) && <NewMeetingModal setIsOpen={() => setShowNewMeetingModal?.(false)} />}
 
-      <MeetingProvider>
-        <MeetingsProvider>
-              <NewMeetingModal setIsOpen={() => setShowNewMeetingModal(false)} />
-        </MeetingsProvider>
-      </MeetingProvider>
-
-      }
-
-      {(showJoinMeetingModal === true) &&  
-
-      <MeetingProvider>
-        <MeetingsProvider>
-          <JoinMeetingModal setIsOpen={() => setShowJoinMeetingModal(false)} />
-        </MeetingsProvider>
-      </MeetingProvider>
-
-      }
+      {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
 
       <div className="relative h-full px-14 pt-14">
         <div className="flex">
@@ -85,7 +76,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => setShowNewMeetingModal(true) }>
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => setShowNewMeetingModal?.(true) }>
                     <span>New Meeting</span>
                     <span className="text-sm">setup a new meeting</span>
                   </p>
@@ -102,7 +93,11 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => setShowJoinMeetingModal(true) }>
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {
+                    setTheCurrentMeetingId?.('');
+                    setShowJoinMeetingModal?.(true)
+                   } 
+                   }>
                     <span>Join Meeting</span>
                     <span className="text-sm">via invitation link</span>
                   </p>
@@ -119,7 +114,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white">
+                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {navigate('/schedule', {replace:true})}}>
                     <span>Schedule</span>
                     <span className="text-sm">plan your meetings</span>
                   </p>
@@ -174,51 +169,8 @@ export default function Home() {
                 </div>
               </div>
             </VCard>
-            <MeetingProvider>
-              <MeetingsProvider>
-                <MeetingList />
-              </MeetingsProvider>
-            </MeetingProvider>
-            {/* <VCard {...{ className: 'rounded-3xl border h-40 p-8' }}>
-              <div className="flex mb-2">
-                <h1 className="text-xl font-bold text-vision-blue w-3/4">Test Meeting 1</h1>
-                <div className="grid justify-items-end w-1/4">
-                  <button className="border rounded-lg bg-gray-300 inline-block self-center font-bold text-gray-600 w-1/4">...</button>
-                </div>
-              </div>
-              <div className="flex">
-                <span className="w-4 h-4 self-center"><ClockIcon /></span>
-                <span className="border-r border-r-gray-500 text-gray-600 px-4">10:00 - 11:30</span>
-                <span className="text-gray-600 px-4">Starts in 1 hour</span>
-              </div>
-              <div className="flex">
-                <div className="self-center w-1/2">Attendees here...</div>
-                <div className="flex w-1/2">
-                  <div className="border border-gray rounded-lg bg-gray-300 inline-block align-middle text-center text-gray-600 p-2 mr-2 w-3/4">111-222-333</div>
-                  <VButton className="w/14">Join</VButton>
-                </div>
-              </div>
-            </VCard>
-            <VCard {...{ className: 'rounded-3xl border h-40 p-8' }}>
-              <div className="flex mb-2">
-                <h1 className="text-xl font-bold text-vision-blue w-3/4">Test Meeting 2</h1>
-                <div className="grid justify-items-end w-1/4">
-                  <button className="border rounded-lg bg-gray-300 inline-block self-center font-bold text-gray-600 w-1/4">...</button>
-                </div>
-              </div>
-              <div className="flex">
-                <span className="w-4 h-4 self-center"><ClockIcon /></span>
-                <span className="border-r border-r-gray-500 text-gray-600 px-4">10:00 - 11:30</span>
-                <span className="text-gray-600 px-4">Starts in 1 hour</span>
-              </div>
-              <div className="flex">
-                <div className="self-center w-1/2">Attendees here...</div>
-                <div className="flex w-1/2">
-                  <div className="border border-gray rounded-lg bg-gray-300 inline-block align-middle text-center text-gray-600 p-2 mr-2 w-3/4">444-555-666</div>
-                  <VButton className="w/14">Start</VButton>
-                </div>
-              </div>
-            </VCard> */}
+            <MeetingList />
+            {/* <MeetingListWrapper /> */}
           </div>
         </div>
         <HomeFooter />

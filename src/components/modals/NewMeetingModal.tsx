@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
 import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 
-const NewMeetingForm = () => {
+const NewMeetingForm = (props:any) => {
+    const { setIsOpen } = props;
+
     const hourOptions = [
         {
             value: '0',
@@ -130,16 +133,19 @@ const NewMeetingForm = () => {
 
     const {
         meetingId,
-        setMeeting,
+        saveTheMeeting,
     } = useMeetings();
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState('');
     const [topic, setTopic] = useState('');
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [startDate, setStartDate] = useState('');
     const [startTime, setStartTime] = useState('');
     const [durationTimeHours, setDurationTimeHours] = useState('');
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
-
+    const [timezone, setTimezone] = useState('');
+    
     const onTopicChange = (value:any) => {
         setTopic(value);
     };
@@ -164,8 +170,20 @@ const NewMeetingForm = () => {
         setDurationTimeMinutes(value);
     };
 
-    const onSetMettingClick = () => {
-        setMeeting?.(topic, editorState.getCurrentContent(), startDate, startTime, durationTimeHours, durationTimeMinutes);
+    const onTimezoneChange = (value:any) => {
+        setTimezone(value);
+    };
+
+    const onSetMeetingClick = async () => {
+        setIsLoading(true);
+        setLoadingText('Saving');
+
+        await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes);
+
+        setIsLoading(false);
+        setLoadingText('');
+
+        setIsOpen();
     };
 
     return (
@@ -215,8 +233,22 @@ const NewMeetingForm = () => {
                 </div>
             </div>
 
+            {/* <div className="mb-5">
+                <VLabel htmlFor="timezone">Time Zone</VLabel>
+                <VSelect 
+                    id="timezone"
+                    options={minuteOptions}
+                    value={timezone}
+                    onChange={(e:any) => onTimezoneChange(e.target.value)}
+                />
+            </div> */}
+
             <div className="mb-5">
-                <VButton onClick={(e:any) => onSetMettingClick()}>
+                <VButton 
+                    isLoading={isLoading}
+                    loadingText={loadingText}
+                    onClick={(e:any) => onSetMeetingClick()}
+                >
                     Set Meeting
                 </VButton>
             </div>
@@ -227,7 +259,7 @@ const NewMeetingForm = () => {
 const NewMeetingModal = (props:any) => {
     const { setIsOpen } = props;
     return (
-        <VModal size="lg" dismissible={true} title="New Meeting" body={<NewMeetingForm />} setIsOpen={setIsOpen} />
+        <VModal size="lg" dismissible={true} title="New Meeting" body={<NewMeetingForm setIsOpen={setIsOpen} />} setIsOpen={setIsOpen} />
     );
 };
 
