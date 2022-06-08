@@ -12,9 +12,9 @@ type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "delet
 }
 
 type Query {
-  createChimeMeeting(title: String, name: String, region: String): Response @function(name: "visionSampleLamba-${env}")
-  joinChimeMeeting(meetingId: String, name: String): Response @function(name: "visionSampleLamba-${env}")
-  endChimeMeeting(meetingId: String): Response  @function(name: "visionSampleLamba-${env}")
+  createChimeMeeting(title: String, name: String, region: String): Response @function(name: "handleMeeting-${env}")
+  joinChimeMeeting(meetingId: String, name: String): Response @function(name: "handleMeeting-${env}")
+  endChimeMeeting(meetingId: String): Response  @function(name: "handleMeeting-${env}")
 }
 
 type Response {

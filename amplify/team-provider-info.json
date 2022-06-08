@@ -1,48 +1,25 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-visionnext-dev-221412-authRole",
-      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-221412-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-221412-authRole",
+      "AuthRoleName": "amplify-visionnext-dev-224155-authRole",
+      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-224155-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-224155-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-      "UnauthRoleName": "amplify-visionnext-dev-221412-unauthRole",
-      "StackName": "amplify-visionnext-dev-221412",
-      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-dev-221412/33179f10-add8-11ec-b532-0a6a53c5fe8f",
-      "AmplifyAppId": "d1dxl6qiy7l56q",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-visionnext-dev-221412-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-visionnext-dev-221412-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+      "DeploymentBucketName": "amplify-visionnext-dev-224155-deployment",
+      "UnauthRoleName": "amplify-visionnext-dev-224155-unauthRole",
+      "StackName": "amplify-visionnext-dev-224155",
+      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-dev-224155/280f3480-e739-11ec-a95b-0e882e124107",
+      "AmplifyAppId": "d34rgk8hhv6zt9"
     },
     "categories": {
       "function": {
-        "visionSampleLamba": {
-          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/visionSampleLamba-5a6c3767774f465a716e-build.zip"
-        },
-        "visionnext0362659cCustomMessage": {
-          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/visionnext0362659cCustomMessage-6f6a356133554e616450-build.zip"
-        },
-        "meetingFunction": {
-          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/meetingFunction-5673516d352f55704e37-build.zip"
-        },
-        "meetingPathFunction": {
-          "deploymentBucketName": "amplify-visionnext-dev-221412-deployment",
-          "s3Key": "amplify-builds/meetingPathFunction-4953356353653172342f-build.zip"
-        }
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d1dxl6qiy7l56q",
-          "type": "manual"
+        "visionHandleMeeting": {
+          "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
+          "s3Key": "amplify-builds/visionHandleMeeting-6f4c41514334506b435a-build.zip"
         }
       },
       "auth": {
-        "visionnext4ee6c12f": {},
-        "visionnext0362659c": {},
-        "userPoolGroups": {},
-        "true": {}
+        "visionnext783447e5": {}
       }
     }
   }

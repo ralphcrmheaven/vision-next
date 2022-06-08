@@ -1,18 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
     "function": {
-        "visionSampleLamba": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "visionnext0362659cCustomMessage": {
-            "Name": "string",
-            "Arn": "string",
-            "LambdaExecutionRole": "string",
-            "Region": "string"
-        },
-        "meetingPathFunction": {
+        "visionHandleMeeting": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
@@ -20,19 +8,14 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "api": {
-        "visionnext": {
+        "visionMeeting": {
             "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
-        },
-        "visionRestApi": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
         }
     },
     "auth": {
-        "visionnext0362659c": {
+        "visionnext783447e5": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
@@ -40,19 +23,6 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string"
-        },
-        "userPoolGroups": {
-            "visionGroupRole": "string"
-        }
-    },
-    "storage": {
-        "meetingTable": {
-            "Name": "string",
-            "Arn": "string",
-            "StreamArn": "string",
-            "PartitionKeyName": "string",
-            "PartitionKeyType": "string",
-            "Region": "string"
         }
     }
 }

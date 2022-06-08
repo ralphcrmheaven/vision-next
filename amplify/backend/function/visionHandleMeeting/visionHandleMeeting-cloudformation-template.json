@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.26\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.4.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "visionSampleLamba",
+            "visionHandleMeeting",
             {
               "Fn::Join": [
                 "",
                 [
-                  "visionSampleLamba",
+                  "visionHandleMeeting",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "visionnextLambdaRole239a1800",
+            "visionnextLambdaRoleb42ca296",
             {
               "Fn::Join": [
                 "",
                 [
-                  "visionnextLambdaRole239a1800",
+                  "visionnextLambdaRoleb42ca296",
                   "-",
                   {
                     "Ref": "env"
