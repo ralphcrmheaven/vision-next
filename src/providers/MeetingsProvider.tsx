@@ -149,9 +149,8 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
     
     const readTheMeetings = async () => {
-        const data = {
-        };
-        await dispatch(meetingRead(data));
+        const data = {};
+        await dispatch(meetingRead(username, data));
     };
 
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
@@ -159,15 +158,15 @@ export const MeetingsProvider: FC = ({ children }) => {
         const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
         const data = {
-            id: id,
-            topic: topic,
-            topicdetails: topicDetails,
-            startdate: startDate,
-            starttime: startTime,
-            durationhrs: Number(durationTimeInHours),
-            durationmins: Number(durationTimeInMinutes),
-            startdatetimeutc: startDateTimeUTC.format(),
-            user: username,
+            MeetingId: id,
+            Topic: topic,
+            TopicDetails: topicDetails,
+            StartDate: startDate,
+            StartTime: startTime,
+            DurationHrs: Number(durationTimeInHours),
+            DurationMins: Number(durationTimeInMinutes),
+            StartDateTimeUTC: startDateTimeUTC.format(),
+            User: username,
         };
         //console.log(startDateTimeUTC.format('hh:mm A'))
         //console.log(moment.utc(startDateTimeUTC.format()).tz('America/Los_Angeles').format('hh:mm A'))

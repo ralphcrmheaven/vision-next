@@ -21,19 +21,19 @@ const Schedule = () => {
   const { meetings } = useMeetings()
 
   // Remove empty dates
-  const filteredMeetings = meetings?.filter((meeting) => meeting.startdate)
+  const filteredMeetings = meetings?.filter((meeting) => meeting.StartDate)
 
   const events: IEvent[] | undefined = filteredMeetings?.map(
     (meeting): IEvent => {
-      const startdatetime = moment(`${meeting.startdate} ${meeting.starttime}`)
+      const startdatetime = moment(`${meeting.StartDate} ${meeting.StartTime}`)
       const enddatetime = startdatetime
         .clone()
-        .add(meeting.durationhrs, 'h')
-        .add(meeting.durationmins, 'm')
+        .add(meeting.DurationHrs, 'h')
+        .add(meeting.DurationMins, 'm')
 
       return {
-        title: meeting.topic,
-        details: meeting.topicdetails,
+        title: meeting.Topic,
+        details: meeting.TopicDetails,
         start: startdatetime.format(),
         end: enddatetime.format(),
       }

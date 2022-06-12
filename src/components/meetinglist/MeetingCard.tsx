@@ -32,8 +32,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
     try{
       //startDateTime = moment(meeting?.startdate + ' ' + meeting?.starttime);
-      startDateTime = moment.utc(meeting?.startdatetimeutc);
-      endDateTime = startDateTime.clone().add(meeting?.durationhrs, 'hours').add(meeting?.durationmins, 'minutes');
+      startDateTime = moment.utc(meeting?.StartDateTimeUTC);
+      endDateTime = startDateTime.clone().add(meeting?.DurationHrs, 'hours').add(meeting?.DurationMins, 'minutes');
 
       startTime = startDateTime.format('hh:mm A');
       endTime = endDateTime.format('hh:mm A');
@@ -51,7 +51,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     return (
         <div className="v-card">
             <div className="flex mb-2">
-              <h1 className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.topic}</h1>
+              <h1 className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
               <div className="grid w-1/4 justify-items-end">
                 <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg">...</button>
               </div>
@@ -64,14 +64,14 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
             <div className="flex">
               <div className="self-center w-1/2">Attendees here...</div>
               <div className="flex w-1/2">
-                <div className="inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsi">{meeting?.id}</div>
-                {(meeting?.user === username) ?
-                    <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.id, type: 'C'}) }>
+                <div className="inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsi">{meeting?.MeetingId}</div>
+                {(meeting?.User === username) ?
+                    <VButton className="w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, type: 'C'}) }>
                       Start
                     </VButton>
                   :
                     <VButton className="w/14" onClick={() => {
-                          setTheCurrentMeetingId?.(meeting?.id);
+                          setTheCurrentMeetingId?.(meeting?.MeetingId);
                           setShowJoinMeetingModal?.(true);
                         } 
                       }

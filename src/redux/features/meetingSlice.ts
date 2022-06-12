@@ -24,8 +24,8 @@ export const meetingCreate: any = createAsyncThunk(
 
 export const meetingRead: any = createAsyncThunk(
     'meeting/read',
-    async (data:any) => {
-      const res = await meetingAPI().read(data);
+    async (pkValue:any, data:any) => {
+      const res = await meetingAPI().read(pkValue, data);
       return res;
     }
 );
@@ -63,7 +63,7 @@ const meetingSlice = createSlice({
             })
             .addCase(meetingRead.fulfilled, (state, action) => {
                 let meetings = action.payload;
-                meetings = meetings.filter((m:any) => { return typeof m.createdat !== 'undefined' }).sort((a:any, b:any) => new Date(a.createdat) > new Date(b.createdat) ? 1 : -1);
+                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' }).sort((a:any, b:any) => new Date(a.CreatedAt) > new Date(b.CreatedAt) ? 1 : -1);
                 state.meetings = meetings;
             })
             .addCase(meetingRead.rejected, (state, action) => {
