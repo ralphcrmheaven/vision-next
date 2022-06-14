@@ -91,6 +91,11 @@
     "MeetingTable": {
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
+    },
+    "visionFileStorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

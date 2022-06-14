@@ -187,9 +187,9 @@ const Meeting: FC = () => {
           <div className="absolute inset-y-0 right-0">
             <Roaster />
           </div>
-          <div className="absolute inset-y-0 left-0 h-5/6">
+          {/* <div className="absolute inset-y-0 left-0 h-5/6">
             <DirectMessages />
-          </div>
+          </div> */}
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
             <AudioInputControl />
             <VideoInputControl>
