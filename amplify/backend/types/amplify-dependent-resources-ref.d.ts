@@ -46,6 +46,10 @@ export type AmplifyDependentResourcesAttributes = {
             "SortKeyName": "string",
             "SortKeyType": "string",
             "Region": "string"
+        },
+        "visionFileStorage": {
+            "BucketName": "string",
+            "Region": "string"
         }
     }
 }

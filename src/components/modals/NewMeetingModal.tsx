@@ -198,7 +198,7 @@ const NewMeetingForm = (props:any) => {
                 <VRichTextEditor id="topic-details" editorState={editorState} onEditorStateChange={onEditorStateChange}/>
             </div>
 
-            <div className="mb-5 flex">
+            <div className="flex mb-5">
                 <div className="w-1/2 mr-2">
                     <VLabel htmlFor="start-date">Start Date</VLabel>
                     <VInput type="date" id="start-date" value={startDate} onChange={(e:any) => onStartDateChange(e.target.value)} />
