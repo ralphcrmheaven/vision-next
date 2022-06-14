@@ -31,21 +31,16 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     let startsIn = '';
 
     try{
-      //startDateTime = moment(meeting?.startdate + ' ' + meeting?.starttime);
+      //startDateTime = moment(meeting?.StartDate + ' ' + meeting?.StartTime);
       startDateTime = moment.utc(meeting?.StartDateTimeUTC);
       endDateTime = startDateTime.clone().add(meeting?.DurationHrs, 'hours').add(meeting?.DurationMins, 'minutes');
 
-      startTime = startDateTime.format('hh:mm A');
-      endTime = endDateTime.format('hh:mm A');
+      startTime = startDateTime.local().format('hh:mm A');
+      endTime = endDateTime.local().format('hh:mm A');
 
-      const hours = startDateTime.diff(moment().utc(), 'hours');
+      const currDTStartDTDiffMins = startDateTime.local().diff(moment(), 'minutes');
 
-      if(hours < 24){
-        startsIn = `${hours} hours`;
-      }else{
-        const days = startDateTime.diff(moment(), 'days');
-        startsIn = `${days} day${(days > 1)? 's':''}`;
-      }
+      startsIn = `Start${(currDTStartDTDiffMins > 0)? 's' : 'ed'} ${startDateTime.local().fromNow()}`;
     }catch(err){}
 
     return (
@@ -59,7 +54,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
             <div className="flex">
               <span className="self-center w-4 h-4"><ClockIcon /></span>
               <span className="px-4 text-gray-600 border-r border-r-gray-500">{startTime} - {endTime}</span>
-              <span className="px-4 text-gray-600">Starts in {startsIn}</span>
+              <span className="px-4 text-gray-600">{startsIn}</span>
             </div>
             <div className="flex">
               <div className="self-center w-1/2">Attendees here...</div>
