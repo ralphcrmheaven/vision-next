@@ -149,19 +149,21 @@ app.put(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
+  const item = {
+    ...req.body,
+    UpdatedAt: timeStamp
+  };
+
   let putItemParams = {
     TableName: tableName,
-    Item: {
-      ...req.body,
-      UpdatedAt: timeStamp
-    }
+    Item: item
   }
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url, body: req.body });
     } else{
-      res.json({ success: 'put call succeed!', url: req.url, data: req.body })
+      res.json({ success: 'put call succeed!', url: req.url, data: item })
     }
   });
 });
@@ -178,20 +180,22 @@ app.post(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
+  const item = {
+    ...req.body,
+    CreatedAt: timeStamp,
+    UpdatedAt: timeStamp
+  };
+
   let putItemParams = {
     TableName: tableName,
-    Item: {
-      ...req.body,
-      CreatedAt: timeStamp,
-      UpdatedAt: timeStamp
-    }
+    Item: item
   }
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: req.body})
+      res.json({success: 'post call succeed!', url: req.url, data: item})
     }
   });
 });

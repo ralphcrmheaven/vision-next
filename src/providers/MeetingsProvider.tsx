@@ -155,7 +155,8 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
         // Save to a cloud db
-        const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
+        //const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
+        const startDateTimeUTC = moment(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
         const data = {
             MeetingId: id,
