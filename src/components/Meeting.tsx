@@ -37,6 +37,7 @@ import {
 } from 'amazon-chime-sdk-js'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import DirectMessages from './DirectMessages'
+import loading from '../assets/images/loading.gif'
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
@@ -164,10 +165,14 @@ const Meeting: FC = () => {
 
   return (
     <>
-      {/* {meetingStatus === MeetingStatus.Loading &&
-      <h3> LOADING ...... {meetingStatus} </h3>
-    } */}
-      <div className="flex w-full h-full">
+
+      <div className="flex content-center w-full h-full">
+        {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading )&&
+          <div className="m-auto">
+            <h1 className="text-lg text-center">Loading . . . </h1>
+            <img src={loading} alt="loading" className="h-96"/>
+          </div>
+        }
         {meetingStatus === MeetingStatus.Succeeded ? (
           <>
             <div className="flex-1 pb-20 pr-72.5">

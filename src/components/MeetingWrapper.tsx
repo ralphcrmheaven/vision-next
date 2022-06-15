@@ -4,6 +4,8 @@ import {
     useMeetingStatus,
     useMeetingManager
   } from 'amazon-chime-sdk-component-library-react';
+
+import loading from '../assets/images/loading.gif'
  
 
 interface IProps {
@@ -17,10 +19,12 @@ const  MeetingWrapper: FC<IProps>  = ({children, ...others}) => {
     const meetingId = meetingManager.meetingId;
 	return (
 		<>
-			<div {...others} className={others.className}>
+			<div {...others} className={[others.className, 'test'].join(' ')}>
                 {(meetingId && meetingStatus === MeetingStatus.Loading) ?
                     <>
-                        <img src='./images/loading.gif' alt="loading" />
+                        <div className="flex flex-row h-screen">
+                            <img src={loading} alt="loading" />
+                        </div>
                     </>
 				: 
                     <>

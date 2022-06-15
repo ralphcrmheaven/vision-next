@@ -81,16 +81,31 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     // Public functions
     const createOrJoinTheMeeting = async(mId:any, type:any) => {
-        switch (type) {
-            case 'C':
-                await createTheMeeting(mId);
-                break;
-            case 'J':
-                await joinTheMeeting(mId);
-                break;
-            default:
-                break;
+        let meetingId = mId;
+        console.log('createOrJoinTheMeeting', mId, type)
+        if (!mId) {
+            meetingId = window.location.href.split('/').pop();
         }
+        console.log('createOrJoinTheMeeting > meetingId', meetingId, type)
+        const meetingResponse: any = await getMeetingFromDB(meetingId);
+        console.log('meetingResponse', meetingResponse.data)
+        if (!meetingResponse.data?.getMeeting) {
+            return createTheMeeting(meetingId);
+            console.log('creating meeting', meetingResponse)
+            return joinTheMeeting(meetingId);
+        }
+        console.log('Joining meeting', meetingResponse)
+        return joinTheMeeting(meetingId);
+        // switch (type) {
+        //     case 'C':
+        //         await createTheMeeting(mId);
+        //         break;
+        //     case 'J':
+        //         await joinTheMeeting(mId);
+        //         break;
+        //     default:
+        //         break;
+        // }
     };
     
     const createTheMeeting = async(mId:any) => {
