@@ -21,7 +21,13 @@ const MeetingList: FC = () => {
   return (
       <>
         {
-          meetings?.slice(0, itemToShowCount).map((meeting, index) => {
+          // eslint-disable-next-line array-callback-return
+          meetings?.filter((meeting, index) => {
+            if(Date.parse(meeting.StartDateTimeUTC) > (new Date()).getTime()) {
+              return meeting
+            }
+          }).slice(0, itemToShowCount).map((meeting, index) => {
+            // eslint-disable-next-line no-lone-blocks
             return <MeetingCard meeting={meeting} key={index} />
           })
         }
