@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { selectUser } from '../../redux/features/userSlice';
 import {
@@ -8,6 +8,12 @@ import {
 import { VButton } from '../ui';
 import { ClockIcon } from '../icons';
 import { IMeetingRecord } from '../../interfaces';
+import { EyeIcon } from '@heroicons/react/solid'
+
+import {
+  Modal,
+  ModalBody,
+} from 'amazon-chime-sdk-component-library-react';
 
 interface  IMeetingCardProps {
     meeting: IMeetingRecord
@@ -16,8 +22,8 @@ interface  IMeetingCardProps {
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
     const { meeting } = props;
 
-    const { username } = useSelector(selectUser);
-
+    const { username, given_name } = useSelector(selectUser);
+    const [ showMeetingDetail, setShowMeetingDetail ] = useState(false);
     const {
         setShowJoinMeetingModal,
         setTheCurrentMeetingId,
@@ -57,8 +63,9 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
               <span className="px-4 text-gray-600">{startsIn}</span>
             </div>
             <div className="flex">
-              <div className="self-center w-1/2">Attendees here...</div>
-              <div className="flex w-1/2">
+              <div className="self-center w-1/2"></div>
+              <div className="flex w-1/2 space-x-1">
+                <button className="z-20" onClick={() => setShowMeetingDetail(!showMeetingDetail)}><EyeIcon className="w-5 h-5 text-blue-500"/></button>
                 <input type="text" className="z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" value={meeting?.MeetingId}/>
                 {(meeting?.User === username) ?
                     <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, type: 'C'}) }>
@@ -76,6 +83,21 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                 }
               </div>
             </div>
+            {
+                showMeetingDetail && (
+                  <Modal size="md" onClose={() => setShowMeetingDetail(false)} rootId="modal-root">
+                    <ModalBody>
+                      <div className="p-10 px-2">
+                      <p>{given_name} is inviting you to a scheduled Vision meeting.</p>
+                      <h3 className="my-1 font-bold">Topic</h3>
+                      <p>{meeting?.Topic}</p>
+                      <h3 className="my-1 font-bold">Join Vision Meeting </h3>
+                      <a href={`${window.location.origin}/meeting/${meeting?.MeetingId}`}>{`${window.location.origin}/meeting/${meeting?.MeetingId}`}</a>
+                      </div>
+                    </ModalBody>
+                  </Modal>
+                )
+              }
         </div>
     );
 };
