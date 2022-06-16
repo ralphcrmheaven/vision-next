@@ -97,7 +97,7 @@ const Signup: React.FC = () => {
 
           <FormInput
             type={InputTypes.Password}
-            name="username"
+            name="password"
             className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
             placeholder="Password"
             onChange={(e: any) => setPassword(e.target.value)}
