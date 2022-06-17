@@ -26,6 +26,8 @@ import AttachmentService from '../../../../services/AttachmentService';
 import { useChatMessagingState, useChatChannelState, } from '../../../../providers/ChatMessagesProvider';
 import { useAuthContext, } from '../../../../providers/AuthProvider';
 
+import { SendMessageIcon } from '../../../icons';
+
 import './Input.css';
 
 const uploadObjDefaults = {
@@ -164,6 +166,12 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
       icon={<Attachment width="1.5rem" height="1.5rem" />}
   />;
 
+  const sendButton = <IconButton
+    className="sendmessage"
+    onClick={onSubmit}
+    icon={<SendMessageIcon width="1rem" height="1rem" />}
+  />;
+
   if (hasMembership) {
     return (
       <div className="message-input-container">
@@ -172,7 +180,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
             onChange={onChange}
             value={text}
             type="text"
-            placeholder="Type your message"
+            placeholder="Send message"
             autoFocus
             className="text-input"
             ref={inputRef}
@@ -190,6 +198,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
           ) : null}
         </form>
         {isAnonymous ? '\u00a0\u00a0' : uploadButton}
+        {isAnonymous ? '\u00a0\u00a0' : sendButton}
         <input
           type="file"
           accept="file_extension|audio/*|video/*|image/*|media_type"

@@ -48,6 +48,10 @@
   height: inherit;
   overflow-y: scroll;
 } */
+.tele-chat {
+  background-color: #f0f1f2;
+  height: 95%;
+}
 
 .video > div:nth-child(1) {
   border-radius: 20px;

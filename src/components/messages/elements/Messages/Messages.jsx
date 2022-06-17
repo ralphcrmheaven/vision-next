@@ -280,27 +280,33 @@ const Messages = ({
               showTail={showTail}
             />
           ) : (
-            <ChatBubble
-              variant={variant}
-              senderName={m.senderName}
-              redacted={m.redacted}
-              showName={showName}
-              showTail={showTail}
-            >
+            <>
               <div>
-                {m.content}
-                {m.editedNote}
-                {m.statusNote}
+                {/* <span className="border border-gray rounded-sm">Pic</span> */}
+                <img src="https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg" className="border border-gray rounded-lg"/>
+                <ChatBubble
+                  variant={variant}
+                  senderName={m.senderName}
+                  redacted={m.redacted}
+                  showName={showName}
+                  showTail={showTail}
+                >
+                  <div>
+                    {m.content}
+                    {m.editedNote}
+                    {m.statusNote}
+                  </div>
+                  {m.metadata && attachment(m.metadata) && (
+                    <div style={{ marginTop: '10px' }}>
+                      <AttachmentProcessor
+                        senderId={m.senderId}
+                        {...attachment(m.metadata)}
+                      />
+                    </div>
+                  )}
+                </ChatBubble>
               </div>
-              {m.metadata && attachment(m.metadata) && (
-                <div style={{ marginTop: '10px' }}>
-                  <AttachmentProcessor
-                    senderId={m.senderId}
-                    {...attachment(m.metadata)}
-                  />
-                </div>
-              )}
-            </ChatBubble>
+            </>
           )}
         </ChatBubbleContainer>
       </div>
