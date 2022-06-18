@@ -231,7 +231,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
   }
   return (
     <div className="message-input-container join-channel-message">
-      Join this channel to send messages.
+      Joining...
     </div>
   );
 };

@@ -35,6 +35,12 @@ import {
   toPresenceMap,
 } from "../../utils/presence";
 
+// Additional
+// import {
+//   MeetingStatus,
+//   useMeetingStatus,
+// } from 'amazon-chime-sdk-component-library-react';
+
 const ChatMessagingServiceContext = createContext(MessagingService);
 const ChatMessagingState = createContext();
 const ChatChannelState = createContext();
@@ -67,6 +73,8 @@ const MessagingProvider = ({ children }) => {
   const channelMessageTokenRef = useRef(channelMessageToken);
   // Meeting
   const [meetingInfo, setMeetingInfo] = useState('');
+  // Additional
+  // const meetingStatus = useMeetingStatus();
 
   useEffect(() => {
     isAuthenticatedRef.current = isAuthenticated;
@@ -403,6 +411,16 @@ const MessagingProvider = ({ children }) => {
       messagingService.unsubscribeFromMessageUpdate(messagesProcessor);
     };
   }, [messagingService, isAuthenticated]);
+
+  // useEffect(() => {
+  //   // const doActions = async() => {
+  //   //   if(meetingStatus === MeetingStatus.Succeeded){
+  //   //     createOrJoinMeetingChannel();
+  //   //   }
+  //   // };
+  //   // doActions();
+  //   console.log(meetingStatus)
+  // }, [meetingStatus]);
 
   // Providers values
   const messageStateValue = {

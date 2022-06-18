@@ -43,6 +43,7 @@ span.text-input {
   margin-bottom: 0;
   background: #fff;
   padding: 5px;
+  width: 100% !important;
   /* min-height: 4rem;
   position: absolute;
   bottom: 0;

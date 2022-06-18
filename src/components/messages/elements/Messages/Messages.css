@@ -1,5 +1,6 @@
 .messaging-container{
   height: 100%;
+  min-width: 15rem;
 }
 
 /* .message {

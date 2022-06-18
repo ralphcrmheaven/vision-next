@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -9,50 +10,36 @@ import {
   MeetingStatus,
   useMeetingStatus,
   VideoTileGrid,
-  LocalVideo,
   ContentShareControl,
   VideoInputControl,
-  ContentShare,
-  Remove,
   useVideoInputs,
-  useBackgroundReplacement,
   useLogger,
   PopOverItem,
-} from 'amazon-chime-sdk-component-library-react'
-import { useMeetings } from '../providers/MeetingsProvider'
-import { endMeeting } from '../utils/api'
-import Roaster from '../components/Roaster'
-import { getLocalStorage } from '../utils/localStorage'
-import { useNavigate } from 'react-router-dom'
-import VMeetingRemoteVideoTile from './ui/VMeetingRemoteVideoTile'
+} from 'amazon-chime-sdk-component-library-react';
 import {
   BackgroundBlurVideoFrameProcessor,
-  BackgroundReplacementProcessor,
   BackgroundReplacementVideoFrameProcessor,
   DefaultVideoTransformDevice,
-  Device,
   isVideoTransformDevice,
-  VideoFrameProcessor,
-  VideoInputDevice,
-} from 'amazon-chime-sdk-js'
+} from 'amazon-chime-sdk-js';
+import { useMeetings } from '../providers/MeetingsProvider';
+import { endMeeting } from '../utils/api'
+import Roaster from '../components/Roaster'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
-import DirectMessages from './DirectMessages'
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading.gif'
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
 
+  const meetingManager = useMeetingManager();
+
+  const meetingStatus = useMeetingStatus();
+
   const { 
     activeMeeting, 
-    createOrJoinTheMeeting, 
-    joinTheMeeting 
-  } = useMeetings()
-
-  const meetingManager = useMeetingManager()
-  const meetingStatus = useMeetingStatus()
-
-  console.log(meetingStatus)
+    createOrJoinTheMeeting
+  } = useMeetings();
 
   const clickedEndMeeting = async () => {
     const meetingId = meetingManager.meetingId
