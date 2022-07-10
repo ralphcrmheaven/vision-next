@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import { selectUser } from '../../redux/features/userSlice';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
@@ -8,6 +11,10 @@ import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui
 
 const NewMeetingForm = (props:any) => {
     const { setIsOpen } = props;
+
+    const { given_name } = useSelector(selectUser);
+    
+    const currentDate = moment();
 
     const hourOptions = [
         {
@@ -138,10 +145,10 @@ const NewMeetingForm = (props:any) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [loadingText, setLoadingText] = useState('');
-    const [topic, setTopic] = useState('');
+    const [topic, setTopic] = useState(`${given_name}'s Meeting`);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [startDate, setStartDate] = useState('');
-    const [startTime, setStartTime] = useState('');
+    const [startDate, setStartDate] = useState(currentDate.format('yyyy-MM-DD'));
+    const [startTime, setStartTime] = useState(currentDate.format('HH:mm'));
     const [durationTimeHours, setDurationTimeHours] = useState('');
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
     const [timezone, setTimezone] = useState('');
@@ -198,7 +205,7 @@ const NewMeetingForm = (props:any) => {
                 <VRichTextEditor id="topic-details" editorState={editorState} onEditorStateChange={onEditorStateChange}/>
             </div>
 
-            <div className="mb-5 flex">
+            <div className="flex mb-5">
                 <div className="w-1/2 mr-2">
                     <VLabel htmlFor="start-date">Start Date</VLabel>
                     <VInput type="date" id="start-date" value={startDate} onChange={(e:any) => onStartDateChange(e.target.value)} />

@@ -1,0 +1,14 @@
+{
+  "resourceName": "MeetingTable",
+  "tableName": "MeetingTable",
+  "partitionKey": {
+    "fieldName": "User",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "MeetingId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

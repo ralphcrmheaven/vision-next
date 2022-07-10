@@ -6,8 +6,8 @@ const meeting = () => {
         create: (data:any) => {
             return API.post(APINAME, MEETINGENDPOINT, { body: data });
         },
-        read: (data:any) => {
-            return API.get(APINAME, MEETINGENDPOINT, { params: data });
+        read: (pkValue:any, data:any) => {
+            return API.get(APINAME, `${MEETINGENDPOINT}/${pkValue}`, { params: data });
         },
         update: (data:any) => {
             return API.put(APINAME, MEETINGENDPOINT, { body: data });

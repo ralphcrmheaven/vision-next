@@ -14,19 +14,25 @@ const MeetingList: FC = () => {
   } = useMeetings();
 
   useEffect(() => {
-    //console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
+    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
     readTheMeetings?.();
   }, []);
 
-    return (
-        <>
-          {
-            meetings?.slice(0, itemToShowCount).map((meeting, index) => {
-              return <MeetingCard meeting={meeting} key={index} />
-            })
-          }
-        </>
-    );
+  return (
+      <>
+        {
+          // eslint-disable-next-line array-callback-return
+          meetings?.filter((meeting, index) => {
+            if(Date.parse(meeting.StartDateTimeUTC) > (new Date()).getTime()) {
+              return meeting
+            }
+          }).slice(0, itemToShowCount).map((meeting, index) => {
+            // eslint-disable-next-line no-lone-blocks
+            return <MeetingCard meeting={meeting} key={index} />
+          })
+        }
+      </>
+  );
 };
 
 export default MeetingList;

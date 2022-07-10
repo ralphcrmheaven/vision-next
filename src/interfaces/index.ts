@@ -1,14 +1,13 @@
 export interface IMeetingRecord {
-    id: string
-    topic: string
-    description: string
-    startdate: string
-    starttime: string
-    durationhrs: number
-    durationmins: number
-    user: string
-    startdatetimeutc: string
-    createdat: string
-    updatedat: string
-    topicdetails: string
+    User: string
+    MeetingId: string
+    Topic: string
+    TopicDetails: string
+    StartDate: string
+    StartTime: string
+    DurationHrs: number
+    DurationMins: number
+    StartDateTimeUTC: string
+    CreatedAt: string
+    UpdatedAt: string
 };

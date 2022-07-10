@@ -36,6 +36,8 @@ import {
   VideoInputDevice,
 } from 'amazon-chime-sdk-js'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
+import DirectMessages from './DirectMessages'
+import loading from '../assets/images/loading.gif'
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
@@ -163,10 +165,14 @@ const Meeting: FC = () => {
 
   return (
     <>
-      {/* {meetingStatus === MeetingStatus.Loading &&
-      <h3> LOADING ...... {meetingStatus} </h3>
-    } */}
-      <div className="flex w-full h-full">
+
+      <div className="flex content-center w-full h-full">
+        {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading )&&
+          <div className="m-auto">
+            <h1 className="text-lg text-center">Loading . . . </h1>
+            <img src={loading} alt="loading" className="h-96"/>
+          </div>
+        }
         {meetingStatus === MeetingStatus.Succeeded ? (
           <>
             <div className="flex-1 pb-20 pr-72.5">
@@ -186,6 +192,9 @@ const Meeting: FC = () => {
           <div className="absolute inset-y-0 right-0">
             <Roaster />
           </div>
+          {/* <div className="absolute inset-y-0 left-0 h-5/6">
+            <DirectMessages />
+          </div> */}
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
             <AudioInputControl />
             <VideoInputControl>
