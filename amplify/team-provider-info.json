@@ -28,5 +28,34 @@
         "true": {}
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-visionnext-prod-101415-authRole",
+      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-prod-101415-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-prod-101415-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-visionnext-prod-101415-deployment",
+      "UnauthRoleName": "amplify-visionnext-prod-101415-unauthRole",
+      "StackName": "amplify-visionnext-prod-101415",
+      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-prod-101415/fd4fda20-003c-11ed-90c5-0e5ad8eae911",
+      "AmplifyAppId": "d34rgk8hhv6zt9",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-visionnext-prod-101415-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "visionnext783447e5": {}
+      },
+      "function": {
+        "visionHandleMeeting": {
+          "deploymentBucketName": "amplify-visionnext-prod-101415-deployment",
+          "s3Key": "amplify-builds/visionHandleMeeting-6f4c41514334506b435a-build.zip"
+        },
+        "MeetingPath": {
+          "deploymentBucketName": "amplify-visionnext-prod-101415-deployment",
+          "s3Key": "amplify-builds/MeetingPath-6b5233775a6f432f2f62-build.zip"
+        }
+      }
+    }
   }
 }
