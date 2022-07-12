@@ -51,5 +51,14 @@ export type AmplifyDependentResourcesAttributes = {
             "BucketName": "string",
             "Region": "string"
         }
+    },
+    "custom": {
+        "visionNextChatResources": {
+            "cognitoUserPoolId": "string",
+            "cognitoAppClientId": "string",
+            "cognitoIdentityPoolId": "string",
+            "appInstanceArn": "string",
+            "attachmentsS3BucketName": "string"
+        }
     }
 }
