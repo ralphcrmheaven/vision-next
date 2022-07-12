@@ -97,5 +97,12 @@
       "providerPlugin": "awscloudformation",
       "dependsOn": []
     }
+  },
+  "custom": {
+    "visionNextChatResources": {
+      "service": "customCloudformation",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }
