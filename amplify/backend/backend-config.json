@@ -60,31 +60,12 @@
     }
   },
   "auth": {
-    "visionnext783447e5": {
+    "visionnext82217719": {
       "service": "Cognito",
+      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": []
-        },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      }
+      "customAuth": false
     }
   },
   "storage": {
@@ -99,7 +80,7 @@
     }
   },
   "custom": {
-    "visionNextChatResources": {
+    "visionChatResources": {
       "service": "customCloudformation",
       "providerPlugin": "awscloudformation",
       "dependsOn": []

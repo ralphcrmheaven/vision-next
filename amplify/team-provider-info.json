@@ -24,8 +24,20 @@
         }
       },
       "auth": {
-        "visionnext783447e5": {},
-        "true": {}
+        "true": {},
+        "visionnext82217719": {
+          "userPoolId": "us-east-1_hrThz9zsd",
+          "userPoolName": "visionnext783447e5_userpool_783447e5-dev",
+          "webClientId": "7klejjc7831a32mdg0mnahqm1f",
+          "nativeClientId": "7klejjc7831a32mdg0mnahqm1f",
+          "identityPoolId": "us-east-1:791424a8-8e72-4361-aafd-e6f60ecc0f8d",
+          "identityPoolName": "visionnext72132b6_identitypool_72132b6_dev",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-22415-CognitoAuthorizedRole-W4WP5C2Z9OZO",
+          "authRoleName": "amplify-visionnext-dev-22415-CognitoAuthorizedRole-W4WP5C2Z9OZO",
+          "unauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-224-CognitoUnAuthorizedRole-1IRJUB8MZK0DL",
+          "unauthRoleName": "amplify-visionnext-dev-224-CognitoUnAuthorizedRole-1IRJUB8MZK0DL"
+        }
       }
     }
   },

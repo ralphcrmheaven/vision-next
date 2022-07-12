@@ -1,0 +1,19 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "visionnext82217719",
+  "serviceType": "imported",
+  "region": "us-east-1",
+  "requiredAttributes": [],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers",
+    "Requires Symbols"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

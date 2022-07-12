@@ -25,17 +25,6 @@ export type AmplifyDependentResourcesAttributes = {
             "ApiId": "string"
         }
     },
-    "auth": {
-        "visionnext783447e5": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string"
-        }
-    },
     "storage": {
         "MeetingTable": {
             "Name": "string",
@@ -53,7 +42,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "custom": {
-        "visionNextChatResources": {
+        "visionChatResources": {
             "cognitoUserPoolId": "string",
             "cognitoAppClientId": "string",
             "cognitoIdentityPoolId": "string",

@@ -5,10 +5,14 @@
     "env": {
       "Type": "String"
     },
-    "DemoName": {
-      "Type": "String",
-      "Default": "VisionNextChatDemo",
-      "Description": "Unique Name for Demo Resources"
+    "userPoolName": {
+      "Type": "String"
+    },
+    "identityPoolName": {
+      "Type": "String"
+    },
+    "resourceName": {
+      "Type": "String"
     }
   },
   "Resources": {
@@ -110,7 +114,7 @@
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-CognitoSNSPolicy"
+              "Fn::Sub": "${resourceName}-CognitoSNSPolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -130,7 +134,7 @@
       "Type": "AWS::IAM::Role",
       "Properties": {
         "RoleName": {
-          "Fn::Sub": "${DemoName}-lambdarole"
+          "Fn::Sub": "${resourceName}-lambdarole-${env}"
         },
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -151,7 +155,7 @@
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-LambdaUserCreatePolicy"
+              "Fn::Sub": "${resourceName}-LambdaUserCreatePolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -168,7 +172,7 @@
           },
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-LambdaCreateLogGroup"
+              "Fn::Sub": "${resourceName}-LambdaCreateLogGroup-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -199,7 +203,7 @@
       "DependsOn": "TriggerChimeAppInstanceLambda",
       "Properties": {
         "FunctionName": {
-          "Fn::Sub": "${DemoName}-SignInHook"
+          "Fn::Sub": "${resourceName}-SignInHook-${env}"
         },
         "Handler": "index.handler",
         "Runtime": "nodejs12.x",
@@ -255,7 +259,7 @@
       "DependsOn": "SignInHookLambda",
       "Properties": {
         "UserPoolName": {
-          "Fn::Sub": "${DemoName}-user-pool"
+          "Fn::Sub": "${userPoolName}-${env}"
         },
         "LambdaConfig": {
           "PostAuthentication": {
@@ -274,7 +278,7 @@
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
         "ClientName": {
-          "Fn::Sub": "${DemoName}-client"
+          "Fn::Sub": "${resourceName}-client-${env}"
         },
         "GenerateSecret": false,
         "UserPoolId": {
@@ -286,7 +290,7 @@
       "Type": "AWS::Cognito::IdentityPool",
       "Properties": {
         "IdentityPoolName": {
-          "Fn::Sub": "${DemoName}-IdentityPool"
+          "Fn::Sub": "${identityPoolName}_${env}"
         },
         "AllowUnauthenticatedIdentities": true,
         "CognitoIdentityProviders": [
@@ -334,7 +338,7 @@
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-CognitoUnauthorizedPolicy"
+              "Fn::Sub": "${resourceName}-CognitoUnauthorizedPolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -383,7 +387,7 @@
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-CognitoAuthorizedPolicy"
+              "Fn::Sub": "${resourceName}-CognitoAuthorizedPolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -409,7 +413,7 @@
           },
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-AttachmentsS3PermissionPolicy"
+              "Fn::Sub": "${resourceName}-AttachmentsS3PermissionPolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
@@ -457,7 +461,7 @@
           },
           {
             "PolicyName": {
-              "Fn::Sub": "${DemoName}-ChimeSDKDemoUserPolicy"
+              "Fn::Sub": "${resourceName}-ChimeSDKDemoUserPolicy-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
