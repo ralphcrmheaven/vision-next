@@ -561,12 +561,14 @@
               "Version": "2012-10-17",
               "Statement": [
                   {
-                      "Effect": "Allow",
-                      "Principal": {
-                          "AWS": "*"
-                      },
-                      "Action": "execute-api:Invoke",
-                      "Resource": "arn:aws:execute-api:*"
+                      "Action": [
+                          "execute-api:Invoke"
+                      ],
+                      "Resource": [
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/dev/*/meeting/*",
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/dev/*/meeting"
+                      ],
+                      "Effect": "Allow"
                   }
               ]
             }
