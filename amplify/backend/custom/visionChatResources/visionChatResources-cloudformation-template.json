@@ -551,6 +551,25 @@
                 }
               ]
             }
+          },
+          
+          {
+            "PolicyName": {
+              "Fn::Sub": "${resourceName}-AttachmentsS3PermissionPolicy-${env}"
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Principal": {
+                          "AWS": "*"
+                      },
+                      "Action": "execute-api:Invoke",
+                      "Resource": "arn:aws:execute-api:*"
+                  }
+              ]
+            }
           }
         ]
       }
