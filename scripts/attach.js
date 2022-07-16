@@ -1,39 +1,11 @@
-const AWS = require('aws-sdk');
-
-AWS.config.update({ region: 'us-east-1' });
-const chime = new AWS.Chime({ region: process.env.AWS_REGION });
-
-const { CHIME_APP_INSTANCE_ARN } = process.env;
-
-exports.handler = async (event, context, callback) => {
-  const username = event.userName;
-  const userId = event.request.userAttributes.profile;
-
-  // 'none' is default user profile attribute in Cognito upon registration which
-  if (userId === 'none') {
-    console.log(`User hasn't logged in yet and hasn't been setup with profile`);
-    callback(null, event);
-  }
-  // Create a Chime App Instance User for the user
-  const chimeCreateAppInstanceUserParams = {
-    AppInstanceArn: CHIME_APP_INSTANCE_ARN,
-    AppInstanceUserId: userId,
-    Name: username
-  };
-
-  try {
-    console.log(`Creating ${userId} app instance user for ${userId}`);
-    await chime
-      .createAppInstanceUser(chimeCreateAppInstanceUserParams)
-      .promise();
-  } catch (e) {
-    console.log(JSON.stringify(e));
-    return {
-      statusCode: 500,
-      body: e.stack
-    };
-  }
-  // Return to Amazon Cognito
-  context.done(null, event);
-  
+const chimeCreateAppInstanceUserParams = {
+  AppInstanceArn: [YOUR APP INSTANCE ARN],
+  AppInstanceUserId: [YOUR USER IDENTITY ID],
+  Name: [YOUR USERNAME]
 };
+const chime = new Chime({
+  region: [YOUR APP REGION],
+  credentials: [YOUR USER CREDENTIALS(accessKeyId, authenticated, identityId, secretAccessKey, sessionToken)]
+});
+const request = chime.createAppInstanceUser(chimeCreateAppInstanceUserParams);
+const response = request.promise();

@@ -90,7 +90,8 @@ const AuthProvider = ({ children }) => {
     setUseCognitoIdp(true);
     Auth.currentUserInfo()
         .then(curUser => {
-          setMember({ username: curUser.username, userId: curUser.id });
+          console.log("curUser: ", curUser);
+          setMember({ username: curUser.username, userId: curUser.attributes.sub });
           if (curUser.attributes?.profile === 'none') {
             updateUserAttributes(curUser.id);
             // Once we set attribute let's have user relogin to refresh SigninHookFn trigger.

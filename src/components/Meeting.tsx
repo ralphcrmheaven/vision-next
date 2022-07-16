@@ -180,7 +180,7 @@ const Meeting: FC = () => {
           <div className="absolute inset-y-0 right-0">
             <Roaster />
           </div>
-          <div className="tele-chat absolute inset-y-0 left-0 px-2 border border-gray">
+          <div className="absolute inset-y-0 left-0 px-2 border tele-chat border-gray">
             <GroupChatMessages />
           </div>
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">

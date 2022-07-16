@@ -5,14 +5,8 @@
       "name": "/meeting",
       "lambdaFunction": "MeetingPath",
       "permissions": {
-        "setting": "protected",
+        "setting": "private",
         "auth": [
-          "create",
-          "read",
-          "update",
-          "delete"
-        ],
-        "guest": [
           "create",
           "read",
           "update",
