@@ -555,7 +555,7 @@
           
           {
             "PolicyName": {
-              "Fn::Sub": "${resourceName}-AttachmentsS3PermissionPolicy-${env}"
+              "Fn::Sub": "${resourceName}-ApiGateWay-${env}"
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
