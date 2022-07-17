@@ -24,8 +24,9 @@ export async function endMeeting(meetingId: string) {
   return endInfoJson;
 }
 
-export async function addMeetingToDB(title: string, meetingId: string, meetingData: string) {
-  await API.graphql(graphqlOperation(createMeetingGraphQL, {input: {title: title, meetingId: meetingId, data: meetingData, }}));
+export async function addMeetingToDB(title: string, meetingId: string, meetingData: string, passcode: string) {
+  const meetingInfo = await API.graphql(graphqlOperation(createMeetingGraphQL, {input: {title: title, meetingId: meetingId, data: meetingData, passcode: passcode }}));
+  return meetingInfo
 }
 
 export async function addAttendeeToDB(attendeeID: string, attendeeName: string) {

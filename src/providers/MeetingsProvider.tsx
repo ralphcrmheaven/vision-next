@@ -46,7 +46,7 @@ import {
     getAttendeeFromDB, 
     getMeetingFromDB, 
     joinMeeting } from '../utils/api';
-import { getRandomString } from '../utils/utils';
+import { getRandomString, randomString } from '../utils/utils';
 import { REGION } from '../constants';
 import appConfig from '../Config';
 
@@ -162,6 +162,7 @@ export const MeetingsProvider: FC = ({ children }) => {
             `${appConfig.appInstanceArn}/user/${userId}`,
             userId
         );
+        console.log('Member:', membership)
     };
 
     const createOrJoinMeetingChannel = async () => {
@@ -197,55 +198,38 @@ export const MeetingsProvider: FC = ({ children }) => {
     // Public functions
     const createOrJoinTheMeeting = async(mtId:any, type:any) => {
         let meetingId = mtId;
-        console.log('createOrJoinTheMeeting', mtId, type)
+        console.log('createOrJoinTheMeeting', mtId)
         if (!mtId) {
-            // meetingId = window.location.href.split('/').pop();
             meetingId = mId;
         }
-        console.log('createOrJoinTheMeeting > meetingId', meetingId, type)
-        const meetingResponse: any = await getMeetingFromDB(meetingId);
-        console.log('meetingResponse', meetingResponse.data)
-        if (!meetingResponse.data?.getMeeting) {
-            return createTheMeeting(meetingId);
-            console.log('creating meeting', meetingResponse)
-            return joinTheMeeting(meetingId);
+        let dbMeeting: any = await getMeetingFromDB(meetingId);
+        if (!dbMeeting.data?.getMeeting) {
+            dbMeeting = await createTheMeeting(meetingId);
+            return dbMeeting;
         }
-        console.log('Joining meeting', meetingResponse)
-        return joinTheMeeting(meetingId);
-        // switch (type) {
-        //     case 'C':
-        //         await createTheMeeting(mId);
-        //         break;
-        //     case 'J':
-        //         await joinTheMeeting(mId);
-        //         break;
-        //     default:
-        //         break;
-        // }
+        console.log('Joining meeting', dbMeeting)
+        joinTheMeeting(meetingId)
+
+        return dbMeeting;
     };
     
     const createTheMeeting = async(mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
-    
-        const meetingResponse: any = await getMeetingFromDB(mtId);
-        
-        const meetingJson = meetingResponse.data.getMeeting;
         try {
-          if (!meetingJson) {
             const joinInfo = await createMeeting(mtId, given_name, REGION); // TODO
-            await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
+            const dbMeeting = await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString());  
+            console.log("addMeetingToDB dbMeeting", dbMeeting);    
             await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               joinInfo.Meeting, joinInfo.Attendee
             );
             await meetingManager.join(meetingSessionConfiguration);
-          }
+            await meetingManager.start()
+            return dbMeeting;
         } catch (error) {
-            alert(error)
-            console.log(error);
+            console.error(error);
         }
-        
-        await meetingManager.start();
+
     };
 
     const joinTheMeeting = async (mtId:any) => {
@@ -268,8 +252,8 @@ export const MeetingsProvider: FC = ({ children }) => {
             await meetingManager.join(meetingSessionConfiguration);
           }
         } catch (error) {
-            alert(error)
-            console.log(error);
+            //  alert(error)
+            console.error(error);
         }
         
         await meetingManager.start();

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { selectUser } from '../../redux/features/userSlice';
@@ -9,7 +9,6 @@ import { VButton } from '../ui';
 import { ClockIcon } from '../icons';
 import { IMeetingRecord } from '../../interfaces';
 import { EyeIcon } from '@heroicons/react/solid'
-
 import {
   Modal,
   ModalBody,
@@ -20,8 +19,7 @@ interface  IMeetingCardProps {
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
-    const { meeting } = props;
-
+    const { meeting } = props;    
     const { username, given_name } = useSelector(selectUser);
     const [ showMeetingDetail, setShowMeetingDetail ] = useState(false);
     const {
@@ -92,7 +90,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                       <h3 className="my-1 font-bold">Topic</h3>
                       <p>{meeting?.Topic}</p>
                       <h3 className="my-1 font-bold">Join Vision Meeting </h3>
-                      <a href={`${window.location.origin}/meeting/${meeting?.MeetingId}`}>{`${window.location.origin}/meeting/${meeting?.MeetingId}`}</a>
+                      <a href={`${window.location.origin}/meeting/${meeting?.MeetingId}?passcode=${meeting.MeetingId}`}>{`${window.location.origin}/meeting/${meeting?.MeetingId}`}</a>
                       </div>
                     </ModalBody>
                   </Modal>

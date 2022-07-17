@@ -28,12 +28,13 @@ import Roaster from '../components/Roaster'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading.gif'
+import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
 
   const meetingManager = useMeetingManager();
-
+  console.log('meetignManger:', meetingManager)
   const meetingStatus = useMeetingStatus();
 
   const { 
@@ -50,13 +51,32 @@ const Meeting: FC = () => {
     }
   }
 
+  const [dbMeeting, setDbMeeting] = useState<any>(null);
+
+  // useEffect(() => {
   useEffect(() => {
-    createOrJoinTheMeeting?.(activeMeeting.id, activeMeeting.type)
+    //
+    const handleCreateOrJoinTheMeeting = async () => {
+      return await createOrJoinTheMeeting?.(activeMeeting.id, activeMeeting.type);
+    }
+    const res = handleCreateOrJoinTheMeeting()
+    res.then((res:any) => {
+      console.log("res?.getMeeting:", res)
+      if (res?.data.getMeeting) {
+        console.log("getMeeting:", res)
+        setDbMeeting(res?.data.getMeeting)
+      } else if (res?.data.createMeetingGraphQL) {
+        setDbMeeting(res?.data.createMeetingGraphQL)
+      }
+    })
+    
   }, [])
 
   // Background Replacement
   const [showModal, setShowModal] = useState<boolean>(false)
   const [background, setBackground] = useState<string>('')
+  const [currentPanel, setCurrentPanel] = useState<string>('roaster')
+  
   const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
   const logger = useLogger()
   const createBackgroundReplacementDevice = async (device: any) => {
@@ -98,58 +118,6 @@ const Meeting: FC = () => {
     // if (background)
   }, [background])
 
-  // const [isVideoTransformChecked, setIsVideoTransformCheckOn] = useState(false)
-  // const {
-  //   isBackgroundReplacementSupported,
-  //   createBackgroundReplacementDevice,
-  // } = useBackgroundReplacement()
-  // const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
-
-  // const logger = useLogger()
-  // const test = async (device: any) => {
-  //   const processors: Array<any> = []
-  //   if (await BackgroundReplacementVideoFrameProcessor.isSupported()) {
-  //     const image = await fetch(
-  //       'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_960_720.jpg'
-  //     )
-  //     const imageBlob = await image.blob()
-  //     const options = { imageBlob }
-  //     const replacementProcessor =
-  //       await BackgroundReplacementVideoFrameProcessor.create(
-  //         undefined,
-  //         options
-  //       )
-  //     processors.push(replacementProcessor)
-  //   }
-  //   return new DefaultVideoTransformDevice(logger, device, processors)
-  // }
-
-  // useEffect(() => {
-  //   async function toggleBackgroundReplacement() {
-  //     try {
-  //       let current = selectedDevice
-  //       if (isVideoTransformChecked) {
-  //         current = await test(selectedDevice)
-  //       } else {
-  //         if (isVideoTransformDevice(selectedDevice)) {
-  //           let intrinsicDevice = await selectedDevice.intrinsicDevice()
-  //           selectedDevice.stop()
-  //           current = intrinsicDevice
-  //         }
-  //       }
-  //       await meetingManager.startVideoInputDevice(current)
-  //     } catch (error) {
-  //       // Handle device selection failure here
-  //       console.error('Failed to toggle Background Replacement')
-  //     }
-  //   }
-
-  //   toggleBackgroundReplacement()
-  // }, [isVideoTransformChecked])
-
-  // const onTest = () => {
-  //   setIsVideoTransformCheckOn((current) => !current)
-  // }
 
   return (
     <>
@@ -166,10 +134,6 @@ const Meeting: FC = () => {
             <div className="flex-1 pb-20 pr-72.5">
               <VideoTileGrid layout="standard" />
             </div>
-            {/* <div className='flex flex-col w-44'>
-              <VMeetingRemoteVideoTile />
-            </div> */}
-            {/*<VideoTileGrid/> */}
           </>
         ) : (
           <div />
@@ -178,11 +142,41 @@ const Meeting: FC = () => {
       {meetingStatus === MeetingStatus.Succeeded && (
         <>
           <div className="absolute inset-y-0 right-0">
-            <Roaster />
+            <div className="w-full h-[calc(100%_-_5rem)] bg-gray-100 pb-4 pt-2 px-0">
+              <ul className="flex flex-row items-center">
+                <li className="flex items-center w-1/3">
+                  <button onClick={() => setCurrentPanel('roaster')} className="flex flex-col m-auto">
+                    <ViewListIcon className="w-4 h-4 mx-auto"/>
+                    <span className="mx-auto">Attendees</span>
+                  </button>
+                </li>
+                <li className="flex items-center w-1/3">
+                  <button onClick={() => setCurrentPanel('chat')} className="flex flex-col m-auto">
+                    <ChatAlt2Icon className="w-4 h-4 mx-auto"/>
+                    <span className="mx-auto">Chat</span>
+                  </button>
+                </li>
+                <li className="flex items-center w-1/3">
+                  <button onClick={() => setCurrentPanel('share')} className="flex flex-col m-auto">
+                    <UserAddIcon className="w-4 h-4 mx-auto"/>
+                    <span className="mx-auto">Invite</span>
+                  </button>
+                </li>
+              </ul>
+              <div className={ `h-full w-72.5 ${currentPanel !== 'roaster' ? 'hidden' : ''}` }>
+                <Roaster/>
+              </div>
+              <div className={ `h-full w-72.5 ${currentPanel !== 'chat' ? 'hidden' : ''}` }>
+                <GroupChatMessages />
+              </div>
+              <div className={ `h-full w-72.5 ${currentPanel !== 'share' ? 'hidden' : ''}` }>
+                {/* <GroupChatMessages /> */}
+              </div>
+            </div>
           </div>
-          <div className="absolute inset-y-0 left-0 px-2 border tele-chat border-gray">
+          {/* <div className="absolute inset-y-0 left-0 px-2 border tele-chat border-gray">
             <GroupChatMessages />
-          </div>
+          </div> */}
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
             <AudioInputControl />
             <VideoInputControl>

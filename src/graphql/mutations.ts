@@ -11,6 +11,7 @@ export const createMeetingGraphQL = /* GraphQL */ `
       meetingId
       title
       data
+      passcode
       createdAt
       updatedAt
     }
@@ -25,6 +26,7 @@ export const deleteMeetingGraphQL = /* GraphQL */ `
       meetingId
       title
       data
+      passcode
       createdAt
       updatedAt
     }

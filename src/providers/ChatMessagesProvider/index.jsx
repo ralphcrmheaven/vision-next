@@ -501,6 +501,5 @@ export {
   MessagingProvider,
   useChatChannelState,
   useChatMessagingService,
-  useChatMessagingState,
-  
+  useChatMessagingState
 };

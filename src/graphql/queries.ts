@@ -38,6 +38,7 @@ export const getMeeting = /* GraphQL */ `
       meetingId
       title
       data
+      passcode
       createdAt
       updatedAt
     }
@@ -62,6 +63,7 @@ export const listMeetings = /* GraphQL */ `
         meetingId
         title
         data
+        passcode
         createdAt
         updatedAt
       }

@@ -25,7 +25,7 @@ const GroupChatMessages: FC = () => {
 
     return (
         <>
-          <div className="messaging-container">
+          <div className="p-2 messaging-container">
             <Messages
               messages={messages}
               messagesRef={messagesRef}

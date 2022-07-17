@@ -23,6 +23,7 @@ import {
   useChatMessagingState,
 } from '../providers/ChatMessagesProvider';
 import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
+import {  randomString } from '../utils/utils';
 import appConfig from '../Config';
 import { createNextState } from '@reduxjs/toolkit';
 import {useLocation} from "react-router-dom";
@@ -124,7 +125,7 @@ const MeetingForm: FC = () => {
         await meetingManager.join(meetingSessionConfiguration);
       } else {
         const joinInfo = await createMeeting(title, name, 'us-east-1'); // TODO
-        await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
+        await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString(5));       
         await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
         const meetingSessionConfiguration = new MeetingSessionConfiguration(
           joinInfo.Meeting, joinInfo.Attendee

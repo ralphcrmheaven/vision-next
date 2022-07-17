@@ -4,6 +4,7 @@ type Meeting @model(mutations: {create: "createMeetingGraphQL", delete: "deleteM
   meetingId: String! 
   title: String! @primaryKey
   data: String!
+  passcode: String
 }
 
 type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "deleteAttendeeGraphQL"}, subscriptions: null) {
