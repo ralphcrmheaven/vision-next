@@ -1,18 +1,31 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import FullCalendar, { EventSourceInput, PluginDef, ToolbarInput } from '@fullcalendar/react'
 import {
   Modal,
   ModalBody,
   ModalHeader,
 } from 'amazon-chime-sdk-component-library-react'
 import moment from 'moment'
-import Calendar from '../components/Calendar'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import { useMeetings } from '../providers/MeetingsProvider'
-import camera from '../assets/images/camera.png'
+import { useMeetings } from '../../providers/MeetingsProvider'
+import styled from '@emotion/styled'
 import { VideoCameraIcon } from '@heroicons/react/solid'
 
+const StyleWrapper = styled.div`
+  height: 100%;
+
+  .fc {
+    height: 100%;
+  }
+
+  .fc-header-toolbar {
+    padding: 10px;
+    margin-bottom: 0;
+  }
+
+  .fc-event {
+    cursor: pointer;
+  }
+`
 interface IEvent {
   title: string
   details?: string
@@ -21,13 +34,22 @@ interface IEvent {
   meetingId: string
 }
 
-const Schedule = () => {
+interface Props {
+  plugins?: PluginDef[]
+  initialView?: string
+  viewClassNames?: string
+  headerToolbar?: ToolbarInput
+  events?: EventSourceInput
+  eventClick?: (event: any) => void
+}
+
+const MeetingCalendar = (props: Props) => {
   const { meetings } = useMeetings()
+
+  const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null)
 
   // Remove empty dates
   const filteredMeetings = meetings?.filter((meeting) => meeting.StartDate)
-
-  console.log(filteredMeetings)
 
   const events: IEvent[] | undefined = filteredMeetings?.map(
     (meeting): IEvent => {
@@ -47,10 +69,7 @@ const Schedule = () => {
     }
   )
 
-  const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null)
-
   const handleEventClick = (data: any) => {
-    console.log(data.event);
     const event: IEvent = {
       title: data.event.title,
       start: data.event.start,
@@ -63,18 +82,15 @@ const Schedule = () => {
   }
 
   return (
-    <>
-      <Calendar 
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView="dayGridMonth"
-        viewClassNames="Calendar"
-        headerToolbar={{
-          start: 'prev,next today',
-          center: 'title',
-          end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-        }}
-        events={events} 
-        eventClick={handleEventClick} 
+    <StyleWrapper>
+      <FullCalendar
+        plugins={props.plugins}
+        initialView={props.initialView}
+        viewClassNames={props.viewClassNames}
+        headerToolbar={props.headerToolbar}
+        navLinks
+        events={events}
+        eventClick={handleEventClick}
       />
 
       {selectedEvent && (
@@ -140,8 +156,8 @@ const Schedule = () => {
           </ModalBody>
         </Modal>
       )}
-    </>
+    </StyleWrapper>
   )
 }
 
-export default Schedule
+export default MeetingCalendar

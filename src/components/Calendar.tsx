@@ -1,4 +1,4 @@
-import FullCalendar, { EventSourceInput } from '@fullcalendar/react'
+import FullCalendar, { EventSourceInput, PluginDef, ToolbarInput } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
@@ -22,6 +22,10 @@ const StyleWrapper = styled.div`
 `
 
 interface Props {
+  plugins?: PluginDef[]
+  initialView?: string
+  viewClassNames?: string
+  headerToolbar?: ToolbarInput
   events?: EventSourceInput
   eventClick?: (event: any) => void
 }
@@ -29,7 +33,7 @@ interface Props {
 const Calendar = (props: Props) => {
   return (
     <StyleWrapper>
-      <FullCalendar
+      {/* <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
         initialView="dayGridMonth"
         viewClassNames="Calendar"
@@ -39,6 +43,15 @@ const Calendar = (props: Props) => {
           center: 'title',
           end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
         }}
+        navLinks
+        events={props.events}
+      /> */}
+      <FullCalendar
+        plugins={props.plugins}
+        initialView={props.initialView}
+        viewClassNames={props.viewClassNames}
+        eventClick={props.eventClick}
+        headerToolbar={props.headerToolbar}
         navLinks
         events={props.events}
       />

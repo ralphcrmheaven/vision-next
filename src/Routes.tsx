@@ -39,7 +39,14 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
-        <Route path="/meetings" element={<Meetings />} />
+        <Route 
+          path="/meetings" 
+          element={
+            <MeetingWrapper>
+              <Meetings />
+            </MeetingWrapper>
+          }
+        />
         <Route path="/settings" element={<Settings />} />
         <Route
           path="/schedule"
