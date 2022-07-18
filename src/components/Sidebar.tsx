@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import Logo from './Logo'
 import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon } from './icons'
 import { LogoutIcon } from '@heroicons/react/outline'
+import { PhoneIcon } from '@heroicons/react/solid'
 import { useDispatch } from 'react-redux'
 import { logoutUser } from '../redux/features/userSlice'
 
@@ -25,6 +26,7 @@ export default function Sidebar() {
                   'p-4 rounded-2xl',
                   'flex flex-col items-center space-y-1',
                   `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
                 ].join(' ')
               }}
             >
@@ -34,17 +36,18 @@ export default function Sidebar() {
           </li>
           <li>
             <NavLink
-              to="/conference"
+              to="/contacts"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
                   'flex flex-col items-center space-y-1',
                   `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
                 ].join(' ')
               }}
             >
-              <CameraIcon />
-              <span className="text-sm">Conference</span>
+              <PhoneIcon className="h-6 text-vision-light-blue" />
+              <span className="text-sm">Contacts</span>
             </NavLink>
           </li>
 
@@ -56,6 +59,7 @@ export default function Sidebar() {
                   'p-4 rounded-2xl',
                   'flex flex-col items-center space-y-1',
                   `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
                 ].join(' ')
               }}
             >
@@ -72,6 +76,7 @@ export default function Sidebar() {
                   'p-4 rounded-2xl',
                   'flex flex-col items-center space-y-1',
                   `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
                 ].join(' ')
               }}
             >
@@ -83,9 +88,9 @@ export default function Sidebar() {
           <li>
             <div
               onClick={logout}
-              className="flex flex-col items-center p-4 space-y-1 cursor-pointer rounded-2xl"
+              className="flex flex-col items-center p-4 space-y-1 cursor-pointer rounded-2xl hover:bg-gray-200 hover:rounded-3xl"
             >
-              <LogoutIcon className="h-6" />
+              <LogoutIcon className="h-6 text-vision-light-blue" />
               <span className="text-sm">Logout</span>
             </div>
           </li>
