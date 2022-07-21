@@ -59,15 +59,7 @@
       ]
     }
   },
-  "auth": {
-    "visionnext82217719": {
-      "service": "Cognito",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  },
+  "auth": {},
   "storage": {
     "MeetingTable": {
       "service": "DynamoDB",
