@@ -183,22 +183,30 @@ const Meeting: FC = () => {
               </div>
               <div className={ `h-full w-72.5 ${currentPanel !== 'share' ? 'hidden' : ''}` }>
                 {/* <GroupChatMessages /> */}
-                <div className="flex flex-col p-4 space-y-4">
+                <div className="flex flex-col p-4 space-y-4 text-sm">
                   <span className='hidden'>{JSON.stringify(dbMeeting)}</span>
                   <div className="p-2 bg-white rounded">
                     <h3 className="font-bold text-vision-lighter-blue">Join Manually</h3>
-                    <p>
-                      <a href={`${window.location.origin}/meeting/${dbMeeting.title}`}> 
-                        {`${window.location.origin}/meeting/${dbMeeting.title}`}
-                      </a>
-                      <p> passcode: {dbMeeting.passcode}</p>
-                    </p>
+                    <ul className="flex flex-col space-y-1.5 pt-3">
+                      <li>
+                        <a href={`${window.location.origin}/meeting/${dbMeeting.title}`}> 
+                          {`${window.location.origin}/meeting/${dbMeeting.title}`}
+                        </a>
+                      </li>
+                      <li> <b>MeetingId:</b> {dbMeeting.title}</li>
+                      <li> <b>Passcode:</b> {dbMeeting.passcode}</li>
+                    </ul>
                   </div>
                   <div className="p-2 bg-white rounded">
                     <h3 className="font-bold text-vision-lighter-blue">Join by using Email App</h3>
-                    <a target="_blank" rel="noopener noreferrer" href={getGooglePresetEmail(dbMeeting)}> 
-                      Gmail
-                    </a>
+                    <ul className="flex flex-col space-y-1.5 pt-3">
+                      <li>
+                        <a target="_blank" rel="noopener noreferrer" href={getGooglePresetEmail(dbMeeting)}> 
+                          <img src="https://img.icons8.com/fluency/100/gmail-new.png" alt="google gmail" className="w-10 h-10"/>
+                            Gmail
+                        </a>
+                      </li>
+                    </ul>
                   </div>
                   <div>
                     <h3>Join by Vision Sending Email Function</h3>
