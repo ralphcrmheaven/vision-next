@@ -113,6 +113,18 @@ const Meeting: FC = () => {
     }
   }
 
+  const getGooglePresetEmail = (dbMeeting: any) => {
+    const params:any = {
+      fs: 1,
+      tf: 'cm',
+      to: '',
+      su: `Please join Vision meeting in progress`,
+      body: `Join Vision Meeting%0D%0DURL: ${window.location.origin}/meeting/${dbMeeting.title}%0D%0DMeeting ID: ${dbMeeting.title}%0DPasscode: ${dbMeeting.passcode}`
+    }
+    const query = Object.keys(params).map(key => key + '=' + params[key]).join('&');
+    return `https://mail.google.com/mail/u/0/?${query}`
+  }
+
   useEffect(() => {
     toggleBackgroundReplacement()
     // if (background)
@@ -171,6 +183,27 @@ const Meeting: FC = () => {
               </div>
               <div className={ `h-full w-72.5 ${currentPanel !== 'share' ? 'hidden' : ''}` }>
                 {/* <GroupChatMessages /> */}
+                <div className="flex flex-col p-4 space-y-4">
+                  <span className='hidden'>{JSON.stringify(dbMeeting)}</span>
+                  <div className="p-2 bg-white rounded">
+                    <h3 className="font-bold text-vision-lighter-blue">Join Manually</h3>
+                    <p>
+                      <a href={`${window.location.origin}/meeting/${dbMeeting.title}`}> 
+                        {`${window.location.origin}/meeting/${dbMeeting.title}`}
+                      </a>
+                      <p> passcode: {dbMeeting.passcode}</p>
+                    </p>
+                  </div>
+                  <div className="p-2 bg-white rounded">
+                    <h3 className="font-bold text-vision-lighter-blue">Join by using Email App</h3>
+                    <a target="_blank" rel="noopener noreferrer" href={getGooglePresetEmail(dbMeeting)}> 
+                      Gmail
+                    </a>
+                  </div>
+                  <div>
+                    <h3>Join by Vision Sending Email Function</h3>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

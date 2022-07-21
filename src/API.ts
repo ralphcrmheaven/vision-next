@@ -96,6 +96,47 @@ export type DeleteAttendeeInput = {
   attendeeId: string,
 };
 
+export type CreateContactInput = {
+  id?: string | null,
+  userId: string,
+  email: string,
+  phoneNumber?: string | null,
+  group?: string | null,
+};
+
+export type ModelContactConditionInput = {
+  userId?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  group?: ModelStringInput | null,
+  and?: Array< ModelContactConditionInput | null > | null,
+  or?: Array< ModelContactConditionInput | null > | null,
+  not?: ModelContactConditionInput | null,
+};
+
+export type Contact = {
+  __typename: "Contact",
+  id: string,
+  userId: string,
+  email: string,
+  phoneNumber?: string | null,
+  group?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type DeleteContactInput = {
+  id: string,
+};
+
+export type UpdateContactInput = {
+  id: string,
+  userId?: string | null,
+  email?: string | null,
+  phoneNumber?: string | null,
+  group?: string | null,
+};
+
 export type Response = {
   __typename: "Response",
   statusCode: string,
@@ -137,6 +178,23 @@ export type ModelAttendeeFilterInput = {
 export type ModelAttendeeConnection = {
   __typename: "ModelAttendeeConnection",
   items:  Array<Attendee | null >,
+  nextToken?: string | null,
+};
+
+export type ModelContactFilterInput = {
+  id?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  group?: ModelStringInput | null,
+  and?: Array< ModelContactFilterInput | null > | null,
+  or?: Array< ModelContactFilterInput | null > | null,
+  not?: ModelContactFilterInput | null,
+};
+
+export type ModelContactConnection = {
+  __typename: "ModelContactConnection",
+  items:  Array<Contact | null >,
   nextToken?: string | null,
 };
 
@@ -199,6 +257,60 @@ export type DeleteAttendeeGraphQLMutation = {
     __typename: "Attendee",
     attendeeId: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateContactGraphQLMutationVariables = {
+  input: CreateContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type CreateContactGraphQLMutation = {
+  createContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteContactGraphQLMutationVariables = {
+  input: DeleteContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type DeleteContactGraphQLMutation = {
+  deleteContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateContactGraphQLMutationVariables = {
+  input: UpdateContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type UpdateContactGraphQLMutation = {
+  updateContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -318,6 +430,48 @@ export type ListAttendeesQuery = {
       __typename: "Attendee",
       attendeeId: string,
       name: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetContactQueryVariables = {
+  id: string,
+};
+
+export type GetContactQuery = {
+  getContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListContactsQueryVariables = {
+  id?: string | null,
+  filter?: ModelContactFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListContactsQuery = {
+  listContacts?:  {
+    __typename: "ModelContactConnection",
+    items:  Array< {
+      __typename: "Contact",
+      id: string,
+      userId: string,
+      email: string,
+      phoneNumber?: string | null,
+      group?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,

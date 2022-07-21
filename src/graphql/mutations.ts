@@ -58,3 +58,51 @@ export const deleteAttendeeGraphQL = /* GraphQL */ `
     }
   }
 `;
+export const createContactGraphQL = /* GraphQL */ `
+  mutation CreateContactGraphQL(
+    $input: CreateContactInput!
+    $condition: ModelContactConditionInput
+  ) {
+    createContactGraphQL(input: $input, condition: $condition) {
+      id
+      userId
+      email
+      phoneNumber
+      group
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteContactGraphQL = /* GraphQL */ `
+  mutation DeleteContactGraphQL(
+    $input: DeleteContactInput!
+    $condition: ModelContactConditionInput
+  ) {
+    deleteContactGraphQL(input: $input, condition: $condition) {
+      id
+      userId
+      email
+      phoneNumber
+      group
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateContactGraphQL = /* GraphQL */ `
+  mutation UpdateContactGraphQL(
+    $input: UpdateContactInput!
+    $condition: ModelContactConditionInput
+  ) {
+    updateContactGraphQL(input: $input, condition: $condition) {
+      id
+      userId
+      email
+      phoneNumber
+      group
+      createdAt
+      updatedAt
+    }
+  }
+`;

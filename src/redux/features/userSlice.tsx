@@ -3,6 +3,7 @@ import { Auth } from 'aws-amplify'
 import { clearLocalStorage, setLocalStorage } from '../../utils/localStorage'
 
 export interface IUser {
+  id: string
   username: string
   given_name: string
   family_name: string
@@ -10,6 +11,7 @@ export interface IUser {
 }
 
 const initialState: IUser = {
+  id: '',
   username: '',
   given_name: '',
   family_name: '',
@@ -74,7 +76,7 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-      console.log(payload)
+      console.log('payload user:', payload)
 
       state.username = payload.username
 
@@ -82,6 +84,7 @@ export const userSlice = createSlice({
         state.given_name = payload.attributes.given_name ?? 'Juan'
         state.family_name = payload.attributes.family_name ?? 'Dela Cruz'
         state.email = payload.attributes.email
+        state.id = payload.attributes.sub
       }
 
       setLocalStorage('username', state)

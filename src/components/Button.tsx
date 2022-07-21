@@ -9,7 +9,7 @@ interface Props {
   loadingText?: string
   full?: boolean
   className?: string
-  handleClick?: () => void
+  handleClick?: (e?:any) => void
 }
 
 const Button: React.FC<Props> = ({

@@ -106,3 +106,44 @@ export const listAttendees = /* GraphQL */ `
     }
   }
 `;
+export const getContact = /* GraphQL */ `
+  query GetContact($id: String!) {
+    getContact(id: $id) {
+      id
+      userId
+      email
+      phoneNumber
+      group
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listContacts = /* GraphQL */ `
+  query ListContacts(
+    $id: String
+    $filter: ModelContactFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listContacts(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        userId
+        email
+        phoneNumber
+        group
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

@@ -261,6 +261,15 @@ const Messages = ({
       return false;
     };
 
+    const getInitials = (str) => {
+      return str.substring(0, 2);
+    }
+
+    const getOnlyTextFromEmail = (email) => {
+      // return str.substring(0, 2);
+      return email.substring(0, email.lastIndexOf("@"));
+    }
+
     return (
       <div className="message">
         <ChatBubbleContainer
@@ -282,29 +291,28 @@ const Messages = ({
           ) : (
             <>
               <div>
-                {/* <span className="border border-gray rounded-sm">Pic</span> */}
-                <img src="https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg" className="border border-gray rounded-lg"/>
+                <img src={ `https://ui-avatars.com/api/?name=${getInitials(m.senderName)}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
                 <ChatBubble
-                  variant={variant}
-                  senderName={m.senderName}
-                  redacted={m.redacted}
-                  showName={showName}
-                  showTail={showTail}
-                >
-                  <div>
-                    {m.content}
-                    {m.editedNote}
-                    {m.statusNote}
-                  </div>
-                  {m.metadata && attachment(m.metadata) && (
-                    <div style={{ marginTop: '10px' }}>
-                      <AttachmentProcessor
-                        senderId={m.senderId}
-                        {...attachment(m.metadata)}
-                      />
+                    variant={variant}
+                    senderName={getOnlyTextFromEmail(m.senderName)}
+                    redacted={m.redacted}
+                    showName={showName}
+                    showTail={showTail}
+                  >
+                    <div>
+                      {m.content}
+                      {m.editedNote}
+                      {m.statusNote}
                     </div>
-                  )}
-                </ChatBubble>
+                    {m.metadata && attachment(m.metadata) && (
+                      <div style={{ marginTop: '10px' }}>
+                        <AttachmentProcessor
+                          senderId={m.senderId}
+                          {...attachment(m.metadata)}
+                        />
+                      </div>
+                    )}
+                  </ChatBubble>
               </div>
             </>
           )}
