@@ -58,7 +58,7 @@ async function sendChannelMessage(
   member,
   options = null
 ) {
-  console.log('sendChannelMessage called');
+  console.log('sendChannelMessage called:', channelArn);
 
   const chimeBearerArn = createMemberArn(member.userId);
 

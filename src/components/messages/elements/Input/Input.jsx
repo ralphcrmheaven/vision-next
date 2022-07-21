@@ -45,7 +45,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
   const [uploadObj, setUploadObj] = useState(uploadObjDefaults);
   const notificationDispatch = useNotificationDispatch();
   const { messages, setMessages } = useChatMessagingState();
-  const { activeChannel, } = useChatChannelState();
+  const { activeChannel } = useChatChannelState();
 
   const { isAnonymous } = useAuthContext();
 
@@ -74,6 +74,8 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
 
   const eventHandler = async () => {
     const content = JSON.stringify({Typing: 'Indicator'});
+    console.log('INPUT activeChannel:', activeChannel)
+    console.log('INPUT activeChannelArn:', activeChannelArn)
     await sendChannelMessage(
         activeChannel.ChannelArn,
         content,
