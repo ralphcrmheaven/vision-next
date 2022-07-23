@@ -24,6 +24,7 @@
     "amazon-chime-sdk-js": "^3.2.0",
     "aws-amplify": "^4.3.19",
     "aws-sdk": "^2.1116.0",
+    "buffer": "^6.0.3",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "immutable": "^4.1.0",
