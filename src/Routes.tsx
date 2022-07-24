@@ -6,6 +6,7 @@ import MeetingWrapper from './wrappers/MeetingWrapper'
 import Contacts from './pages/Contacts'
 import SingleMeeting from './pages/SingleMeeting'
 import SingleMeetingPassword from './pages/SingleMeetingPassword'
+import DeleteAllChannels from './pages/DeleteAllChannels'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Meetings from './pages/Meetings'
@@ -75,6 +76,11 @@ const AppRoutes: React.FC = () => {
         <Route path="/meeting/:mId/:ePass" element={
           <MeetingWrapper>
             <SingleMeeting />
+          </MeetingWrapper>
+        } />
+        <Route path="/deleteallchannels" element={
+          <MeetingWrapper>
+            <DeleteAllChannels />
           </MeetingWrapper>
         } />
       </Route>

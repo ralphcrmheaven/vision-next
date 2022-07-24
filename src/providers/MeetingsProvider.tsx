@@ -38,7 +38,7 @@ import {
     describeChannel,
     listChannelMemberships,
     describeChannelFlow,
-  } from '../api/ChimeAPI';
+} from '../api/ChimeAPI';
 import { 
     addAttendeeToDB, 
     addMeetingToDB, 
