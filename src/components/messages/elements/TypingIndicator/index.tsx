@@ -1,18 +1,10 @@
-// Copyright 2020-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { ChatBubble, } from "amazon-chime-sdk-component-library-react";
-
-import { useChatChannelState, } from "../../../../providers/ChatMessagesProvider";
-
-import "./index.css";
-
-const TypingIndicatorSection = styled.div`
-  background-color: #f0f1f2;
-  padding: 1rem;
-`;
+import { useEffect } from 'react';
+import { ChatBubble, } from 'amazon-chime-sdk-component-library-react';
+import { useChatChannelState } from '../../../../providers/ChatMessagesProvider';
+import './index.css';
 
 const TypingIndicator = () => {
   const {
@@ -32,22 +24,20 @@ const TypingIndicator = () => {
 
   return (
     <>
-      {typingIndicator && (
-        <TypingIndicatorSection>
-          <div className="message">
-            <ChatBubble
-              variant={'incoming'}
-              senderName={typingIndicator.SenderName}
-            >
-              <div className="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </ChatBubble>
-          </div>
-        </TypingIndicatorSection>
-      )}
+      <div className="typing-indicator-container">
+        {typingIndicator && (
+          <ChatBubble
+            variant={'incoming'}
+            senderName={''}
+          >
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </ChatBubble>
+        )}
+      </div>
     </>
   );
 };

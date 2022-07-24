@@ -75,6 +75,7 @@ const defaultState = {
     showJoinMeetingModal: false,
     meeting: {
         id: null,
+        password: null,
         type: '',
     },
     meetingId: '',
@@ -124,16 +125,6 @@ export const MeetingsProvider: FC = ({ children }) => {
     const [meetingId, setTheMeetingId] = useState(defaultState.meetingId);
 
     // Internal functions
-    const getAttendeeCallback = () => {
-        return async (chimeAttendeeId: string, externalUserId?: string) => {
-            const attendeeInfo: any = await getAttendeeFromDB(chimeAttendeeId);
-            const attendeeData = attendeeInfo.data.getAttendee;
-            return {
-            name: attendeeData.name
-            };
-        }
-    };
-
     const loadChannelFlow = async (channel: any) => {
         if (channel.ChannelFlowArn == null) {
           setActiveChannelFlow({});
@@ -162,17 +153,11 @@ export const MeetingsProvider: FC = ({ children }) => {
             `${appConfig.appInstanceArn}/user/${userId}`,
             userId
         );
-        console.log('Member:', membership)
     };
 
     const createOrJoinMeetingChannel = async () => {
-        const availableChannels = await listChannels(
-            appConfig.appInstanceArn,
-            userId
-        );
-
+        const availableChannels = await getAvailableChannels();
         let channelArn = availableChannels.find((c:any) => c.Name === mId)?.ChannelArn;
-
         if(typeof channelArn === 'undefined'){
             channelArn = await createChannel(
                 appConfig.appInstanceArn,
@@ -183,7 +168,6 @@ export const MeetingsProvider: FC = ({ children }) => {
                 userId
             );
         }
-
         const newMessages = await listChannelMessages(channelArn, userId);
         setMessages(newMessages.Messages);
         setChannelMessageToken(newMessages.NextToken);
@@ -191,14 +175,37 @@ export const MeetingsProvider: FC = ({ children }) => {
         const channel = await describeChannel(channelArn, userId);
         setActiveChannel(channel);
         await loadChannelFlow(channel);
-
         setUnreadChannels(unreadChannels.filter((c:any) => c !== channelArn));
+    };
+
+    const getAttendeeCallback = () => {
+        return async (chimeAttendeeId: string, externalUserId?: string) => {
+            const attendeeInfo: any = await getAttendeeFromDB(chimeAttendeeId);
+            const attendeeData = attendeeInfo.data.getAttendee;
+            return {
+                name: attendeeData.name
+            };
+        }
+    };
+
+    const getAvailableChannels = async() => {
+        let availableChannels: any[] = [];
+        let nextToken: string | null = null;
+
+        // listChannels returns only 50 channels at once, so we need to loop to get all channels
+        do {
+            const channelsList: any = await listChannels(appConfig.appInstanceArn, userId, nextToken);
+            availableChannels = [...availableChannels, ...channelsList.Channels];
+            nextToken = channelsList.NextToken;
+        }
+        while (nextToken !== null);
+
+        return availableChannels;
     };
 
     // Public functions
     const createOrJoinTheMeeting = async(mtId:any, type:any) => {
         let meetingId = mtId;
-        console.log('createOrJoinTheMeeting', mtId)
         if (!mtId) {
             meetingId = mId;
         }
@@ -207,7 +214,6 @@ export const MeetingsProvider: FC = ({ children }) => {
             dbMeeting = await createTheMeeting(meetingId);
             return dbMeeting;
         }
-        console.log('Joining meeting', dbMeeting)
         joinTheMeeting(meetingId)
 
         return dbMeeting;
@@ -217,8 +223,7 @@ export const MeetingsProvider: FC = ({ children }) => {
         meetingManager.getAttendee = getAttendeeCallback();
         try {
             const joinInfo = await createMeeting(mtId, given_name, REGION); // TODO
-            const dbMeeting = await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString());  
-            console.log("addMeetingToDB dbMeeting", dbMeeting);    
+            const dbMeeting = await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString());    
             await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               joinInfo.Meeting, joinInfo.Attendee
@@ -252,7 +257,6 @@ export const MeetingsProvider: FC = ({ children }) => {
             await meetingManager.join(meetingSessionConfiguration);
           }
         } catch (error) {
-            //  alert(error)
             console.error(error);
         }
         
@@ -270,7 +274,6 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
         // Save to a cloud db
-        //const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
         const startDateTimeUTC = moment(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
         const data = {
@@ -284,8 +287,6 @@ export const MeetingsProvider: FC = ({ children }) => {
             StartDateTimeUTC: startDateTimeUTC.format(),
             User: username,
         };
-        //console.log(startDateTimeUTC.format('hh:mm A'))
-        //console.log(moment.utc(startDateTimeUTC.format()).tz('America/Los_Angeles').format('hh:mm A'))
         await dispatch(meetingCreate(data));
     };
 
@@ -309,7 +310,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                 id: meeting?.id,
                 type: meeting?.type,
             }));
-            navigate('/meeting/' + meeting?.id);
+            navigate('/meeting/' + meeting?.id + '/' + meeting?.password);
         }else{
             dispatch(resetActiveMeeting());
         }

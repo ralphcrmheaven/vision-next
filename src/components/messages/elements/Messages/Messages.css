@@ -3,15 +3,9 @@
   min-width: 15rem;
 }
 
-/* .message {
-  margin: 0 1.5rem 0.5rem 0.5rem;
-} */
-
 .message-list-container {
-  /* background-color: #f0f1f2;
-  overflow-y: scroll; */
   position: relative;
-  height: 90%;
+  height: 88%;
 }
 
 .message-list-header {
@@ -41,13 +35,6 @@
   background: transparent !important;
   margin: 0 !important;
   display: block !important;
-}
-
-.message-list-container .message > div > div:nth-child(1){
-  /* max-width: 100% !important;
-  width: 100% !important; 
-  border-radius: 20px !important; */
-  /* box-shadow: 0px 15px 10px -15px #666; */
 }
 
 .message-list-container .message > div > div:nth-child(1) > img{

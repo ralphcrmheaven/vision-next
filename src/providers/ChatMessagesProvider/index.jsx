@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
 import React, {
@@ -35,12 +34,6 @@ import {
   toPresenceMap,
 } from "../../utils/presence";
 
-// Additional
-// import {
-//   MeetingStatus,
-//   useMeetingStatus,
-// } from 'amazon-chime-sdk-component-library-react';
-
 const ChatMessagingServiceContext = createContext(MessagingService);
 const ChatMessagingState = createContext();
 const ChatChannelState = createContext();
@@ -48,6 +41,7 @@ const ChatChannelState = createContext();
 const MessagingProvider = ({ children }) => {
   const { member, isAuthenticated } = useAuthContext();
   const [messagingService] = useState(() => new MessagingService());
+
   // Channel related
   const [activeChannel, setActiveChannel] = useState({});
   const [activeChannelFlow, setActiveChannelFlow]= useState({});
@@ -58,10 +52,8 @@ const MessagingProvider = ({ children }) => {
   const [typingIndicator, setTypingIndicator] = useState(null);
   const [unreadChannels, setUnreadChannels] = useState([]);
   const unreadChannelsListRef = useRef(unreadChannels);
-  const hasMembership =
-    activeChannelMemberships
-      .map((m) => m.Member.Arn)
-      .indexOf(createMemberArn(member.userId)) > -1;
+  const hasMembership = activeChannelMemberships.map((m) => m.Member.Arn).indexOf(createMemberArn(member.userId)) > -1;
+
   // Messages
   const [messages, setMessages] = useState([]);
   const isAuthenticatedRef = useRef(isAuthenticated);
@@ -71,10 +63,9 @@ const MessagingProvider = ({ children }) => {
   const activeChannelMembershipsWithPresenceRef = useRef(activeChannelMembershipsWithPresence);
   const [channelMessageToken, setChannelMessageToken] = useState('');
   const channelMessageTokenRef = useRef(channelMessageToken);
+  
   // Meeting
   const [meetingInfo, setMeetingInfo] = useState('');
-  // Additional
-  // const meetingStatus = useMeetingStatus();
 
   useEffect(() => {
     isAuthenticatedRef.current = isAuthenticated;
@@ -170,7 +161,6 @@ const MessagingProvider = ({ children }) => {
 
     messagesRef.current.forEach((m, i, self) => {
       if ((m.response?.MessageId || m.MessageId) === newMessage.MessageId) {
-        console.log('Duplicate message found', newMessage);
         isDuplicate = true;
         self[i] = newMessage;
       }
@@ -189,7 +179,6 @@ const MessagingProvider = ({ children }) => {
     const status = `${PresenceStatusPrefix.Auto}${PresenceAutoStatus.Online}`;
     let channelMetadata = JSON.parse(newChannel.Metadata || '{}');
     if (!channelMetadata.Presence) {
-      console.log('channel does not use persistent presence. skip.')
       return;
     }
 
@@ -234,8 +223,6 @@ const MessagingProvider = ({ children }) => {
   const messagesProcessor = async (message) => {
     const messageType = message?.headers['x-amz-chime-event-type'];
     const record = JSON.parse(message?.payload);
-    console.log(record)
-    console.log('Incoming Message', message);
     switch (messageType) {
       // Channel Messages
       case 'CREATE_CHANNEL_MESSAGE':
@@ -275,7 +262,6 @@ const MessagingProvider = ({ children }) => {
         // Process channel presence status control message
         if (!!(record.Content?.match(PRESENCE_REGEX))) {
           if (record.Sender.Arn !== createMemberArn(member.userId)) {
-            console.log('presence info accepted. content: ' + JSON.stringify(record));
             if (activeChannelRef.current.ChannelArn === record?.ChannelArn) {
               const updatedMemberships = activeChannelMembershipsWithPresenceRef.current.map(
                   (m) => {
@@ -398,7 +384,6 @@ const MessagingProvider = ({ children }) => {
         }
         break;
       default:
-        console.log(`Unexpected message type! ${messageType}`);
     }
   };
 
@@ -411,16 +396,6 @@ const MessagingProvider = ({ children }) => {
       messagingService.unsubscribeFromMessageUpdate(messagesProcessor);
     };
   }, [messagingService, isAuthenticated]);
-
-  // useEffect(() => {
-  //   // const doActions = async() => {
-  //   //   if(meetingStatus === MeetingStatus.Succeeded){
-  //   //     createOrJoinMeetingChannel();
-  //   //   }
-  //   // };
-  //   // doActions();
-  //   console.log(meetingStatus)
-  // }, [meetingStatus]);
 
   // Providers values
   const messageStateValue = {

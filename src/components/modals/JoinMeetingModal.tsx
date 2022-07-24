@@ -11,14 +11,20 @@ const JoinMeetingForm = (props:any) => {
 
     const [meetingId, setMeetingId] = useState('');
     const [password, setPassword] = useState('');
+    const [disabled, setDisabled] = useState(true);
 
     const onJoinMeetingClick = () => {
         setTheMeeting?.({
             id: meetingId,
+            password: 'xxxxyyyy',
             type: 'J'
         })
     };
 
+    useEffect(() => {
+        setDisabled(() => (meetingId && password ? false : true));
+    }, [meetingId, password]);
+    
     useEffect(() => {
         if(props.meetingId){
             setMeetingId(props.meetingId);
@@ -38,7 +44,7 @@ const JoinMeetingForm = (props:any) => {
             </div>
 
             <div className="mb-5">
-                <VButton onClick={(e:any) => onJoinMeetingClick()}>
+                <VButton className={(disabled)? 'bg-slate-500' : ''} disabled={disabled} onClick={(e:any) => onJoinMeetingClick()}>
                     Join Meeting
                 </VButton>
             </div>
@@ -49,7 +55,16 @@ const JoinMeetingForm = (props:any) => {
 const JoinMeetingModal = (props:any) => {
     const { meetingId, setIsOpen } = props;
     return (
-        <VModal size="md" dismissible={true} title="Join Meeting" body={<JoinMeetingForm meetingId={meetingId} />} setIsOpen={setIsOpen} />
+        <VModal
+            size="md" 
+            dismissible={props.dismissible ?? true} 
+            displayClose={props.displayClose ?? true}
+            title="Join Meeting" 
+            body={<JoinMeetingForm 
+                meetingId={meetingId} 
+            />} 
+            setIsOpen={setIsOpen} 
+        />
     );
 };
 
