@@ -55,6 +55,46 @@ const convertUrlType = (param, type) => {
   }
 }
 
+// additional functions
+const crypto = require('crypto');
+const algorithm = 'aes-256-ctr';
+const secretKey = 'v!$!oNn3xt@20222022@v!$!oNn3xt!!';
+
+const getRandomString = (instanceCount, charCount, separator) => {
+  let rs = '';
+  const finalCharCount = charCount + 2; // Compensate for the missing char since substring starts at 2
+
+  for (let i = 1; i <= instanceCount; i++) {
+      rs += Math.random().toString(16).substring(2, finalCharCount);
+      if(i < instanceCount){
+          rs += separator;
+      }
+  }
+
+  return rs;
+}
+
+// const encrypt = (text) => {
+//   const iv = crypto.randomBytes(16);
+//   const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+//   const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+
+//   return {
+//       iv: iv.toString('hex'),
+//       content: encrypted.toString('hex')
+//   };
+// };
+
+const encrypt = (text) => {
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+  const encrypted = cipher.update(text, 'utf8', 'hex');
+  return [
+    encrypted + cipher.final('hex'),
+    Buffer.from(iv).toString('hex'),
+  ].join('|');
+};
+
 /********************************
  * HTTP Get method for list objects *
  ********************************/
@@ -180,8 +220,11 @@ app.post(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
+  let password = encrypt(getRandomString(1, 6, ''));
+
   const item = {
     ...req.body,
+    Password: password,
     CreatedAt: timeStamp,
     UpdatedAt: timeStamp
   };
