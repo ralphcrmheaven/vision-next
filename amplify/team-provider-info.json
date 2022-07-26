@@ -24,7 +24,7 @@
         },
         "visionEmailNotification": {
           "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
-          "s3Key": "amplify-builds/visionEmailNotification-624d3151357a4e4e4f4f-build.zip"
+          "s3Key": "amplify-builds/visionEmailNotification-55463645634e6b356d49-build.zip"
         }
       },
       "auth": {

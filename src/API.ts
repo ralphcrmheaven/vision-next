@@ -361,6 +361,22 @@ export type EndChimeMeetingQuery = {
   } | null,
 };
 
+export type SendEmailNotificationQueryVariables = {
+  email?: string | null,
+  msg?: string | null,
+  subject?: string | null,
+};
+
+export type SendEmailNotificationQuery = {
+  sendEmailNotification?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type GetMeetingQueryVariables = {
   title: string,
 };
@@ -476,5 +492,44 @@ export type ListContactsQuery = {
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateContactSubscription = {
+  onCreateContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateContactSubscription = {
+  onUpdateContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteContactSubscription = {
+  onDeleteContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

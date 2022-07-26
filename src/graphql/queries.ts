@@ -32,6 +32,16 @@ export const endChimeMeeting = /* GraphQL */ `
     }
   }
 `;
+export const sendEmailNotification = /* GraphQL */ `
+  query SendEmailNotification($email: String, $msg: String, $subject: String) {
+    sendEmailNotification(email: $email, msg: $msg, subject: $subject) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
