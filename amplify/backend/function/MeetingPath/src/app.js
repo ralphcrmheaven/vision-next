@@ -28,7 +28,7 @@ const partitionKeyType = "S";
 const sortKeyName = "MeetingId";
 const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
-const path = "/meeting";
+const path = "/meetings";
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
@@ -126,7 +126,21 @@ app.get(path + hashKeyPath, function(req, res) {
       res.statusCode = 500;
       res.json({error: 'Could not load items: ' + err});
     } else {
-      res.json(data.Items);
+      const finalItems = data.Items.map(item => {
+        const password = () => {
+          try{
+            return (item.Password)? item.Password.split('|')[0] : '';
+          }catch(err){
+            return '';
+          }
+        };
+        return {
+          ...item,
+          Password: password()
+        }
+      });
+      //res.json(data.Items);
+      res.json(finalItems);
     }
   });
 });
@@ -238,7 +252,7 @@ app.post(path, function(req, res) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: item})
+      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: password.split('|')[0]}});
     }
   });
 });

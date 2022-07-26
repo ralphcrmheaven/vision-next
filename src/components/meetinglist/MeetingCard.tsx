@@ -33,6 +33,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     let startTime = null;
     let endTime = null;
     let startsIn = '';
+    let href = '';
 
     try{
       //startDateTime = moment(meeting?.StartDate + ' ' + meeting?.StartTime);
@@ -45,6 +46,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
       const currDTStartDTDiffMins = startDateTime.local().diff(moment(), 'minutes');
 
       startsIn = `Start${(currDTStartDTDiffMins > 0)? 's' : 'ed'} ${startDateTime.local().fromNow()}`;
+
+      href = `${window.location.origin}/meeting/${meeting?.MeetingId}/${meeting?.Password ?? ''}`;
     }catch(err){}
 
     return (
@@ -66,7 +69,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                 <button className="z-20" onClick={() => setShowMeetingDetail(!showMeetingDetail)}><EyeIcon className="w-5 h-5 text-blue-500"/></button>
                 <input type="text" className="z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" value={meeting?.MeetingId}/>
                 {(meeting?.User === username) ?
-                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, type: 'C'}) }>
+                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', type: 'C'}) }>
                       Start
                     </VButton>
                   :
@@ -89,8 +92,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                       <p>{given_name} is inviting you to a scheduled Vision meeting.</p>
                       <h3 className="my-1 font-bold">Topic</h3>
                       <p>{meeting?.Topic}</p>
-                      <h3 className="my-1 font-bold">Join Vision Meeting </h3>
-                      <a href={`${window.location.origin}/meeting/${meeting?.MeetingId}?passcode=${meeting.MeetingId}`}>{`${window.location.origin}/meeting/${meeting?.MeetingId}`}</a>
+                      <h3 className="my-1 font-bold">Join Vision Meeting</h3>
+                      <a href={href}>{href}</a>
                       </div>
                     </ModalBody>
                   </Modal>
