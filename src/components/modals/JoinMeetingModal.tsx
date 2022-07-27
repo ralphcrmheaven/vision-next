@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Notification, Severity } from 'amazon-chime-sdk-component-library-react';
+import meetingAPI from '../../api/meeting';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
-import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
+import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal, VNotification } from '../ui';
 
 const JoinMeetingForm = (props:any) => {
     const {
@@ -13,12 +15,19 @@ const JoinMeetingForm = (props:any) => {
     const [password, setPassword] = useState('');
     const [disabled, setDisabled] = useState(true);
 
-    const onJoinMeetingClick = () => {
-        setTheMeeting?.({
-            id: meetingId,
-            password: 'xxxxyyyy',
-            type: 'J'
-        })
+    const onJoinMeetingClick = async() => {
+        const res = await meetingAPI().validateMeeting(meetingId, {});
+        const { valid, message, password } = res;
+        console.log(res);
+        if(valid){
+            setTheMeeting?.({
+                id: meetingId,
+                password: password,
+                type: 'J'
+            })
+        }else{
+            
+        }
     };
 
     useEffect(() => {
@@ -33,6 +42,9 @@ const JoinMeetingForm = (props:any) => {
 
     return (
         <div className="meeting-form">
+            
+            {/* <VNotification type="success" message="test" /> */}
+
             <div className="mb-5">
                 <VLabel htmlFor="meeting-id">Meeting Id</VLabel>
                 <VInput id="meeting-id" value={meetingId} onChange={(e:any) => setMeetingId(e.target.value)} />
@@ -55,16 +67,23 @@ const JoinMeetingForm = (props:any) => {
 const JoinMeetingModal = (props:any) => {
     const { meetingId, setIsOpen } = props;
     return (
-        <VModal
-            size="md" 
-            dismissible={props.dismissible ?? true} 
-            displayClose={props.displayClose ?? true}
-            title="Join Meeting" 
-            body={<JoinMeetingForm 
-                meetingId={meetingId} 
-            />} 
-            setIsOpen={setIsOpen} 
-        />
+        <>
+            {/* <Notification
+                onClose={() => {console.log('Close notification')}}
+                severity={Severity.ERROR}
+                message='Failed to join the meeting'
+            /> */}
+            <VModal
+                size="md" 
+                dismissible={props.dismissible ?? true} 
+                displayClose={props.displayClose ?? true}
+                title="Join Meeting" 
+                body={<JoinMeetingForm 
+                    meetingId={meetingId} 
+                />} 
+                setIsOpen={setIsOpen} 
+            />
+        </>
     );
 };
 

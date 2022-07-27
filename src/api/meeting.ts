@@ -14,7 +14,10 @@ const meeting = () => {
         },
         delete: (data:any) => {
             return API.del(APINAME, MEETINGENDPOINT, {});
-        }
+        },
+        validateMeeting: (meetingId:any, data:any) => {
+            return API.post(APINAME, `${MEETINGENDPOINT}/${meetingId}/validate`, { body: data });
+        },
     };
 };
 

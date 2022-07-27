@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CxLabel = (props:any) => {
+const VLabel = (props:any) => {
     return <label 
                 {...props}
                 className={`${props?.className ?? ''} w-full mb-4`}
@@ -10,4 +10,4 @@ const CxLabel = (props:any) => {
             </label>;
 };
 
-export default CxLabel;
+export default VLabel;

@@ -297,6 +297,19 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
   });
 });
 
+/*******************************************
+ * HTTP post method for meeting validation *
+ *******************************************/
+ 
+app.post(path + '/:id/validate', function(req, res) {
+  res.json({
+            id: req.params.id,
+            valid: true, 
+            message: 'Meeting valid', 
+            password: 'xxxxxx'
+          });
+});
+
 app.listen(3000, function() {
   console.log("App started")
 });
