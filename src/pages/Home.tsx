@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import moment from 'moment';
 
 import { useMeetings } from '../providers/MeetingsProvider';
 
@@ -24,7 +25,10 @@ export default function Home() {
     user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
 
+  const currentDate = moment();
+
   const {
+    meetingId,
     currentMeetingId,
     activeMeeting,
     setTheMeeting,
@@ -33,12 +37,34 @@ export default function Home() {
     setShowNewMeetingModal,
     setShowJoinMeetingModal,
     setTheCurrentMeetingId,
+    saveTheMeeting,
   } = useMeetings();
 
   const navigate = useNavigate();
 
-  const handleStartNewMeeting = () => {
+  const handleStartNewMeeting = async () => {
     
+  }
+
+  const onNewMeetingCardClick = async () => {
+    const topic = `${user.given_name}'s Meeting`;
+    const topicDetails = '';
+    const startDate = currentDate.format('yyyy-MM-DD');
+    const startTime = currentDate.format('HH:mm');
+    const durationTimeHours = '0';
+    const durationTimeMinutes = '0';
+    const isScheduled = false;
+
+    //await saveTheMeeting?.(topic, topicDetails, startDate, startTime, durationTimeHours, durationTimeMinutes, isScheduled);
+
+    setTheCurrentMeetingId?.('aaa')
+    console.log(currentMeetingId)
+
+    // setTheMeeting?.({
+    //   id: meetingId,
+    //   password: password,
+    //   type: 'J'
+    // });
   }
 
   return (
@@ -72,7 +98,11 @@ export default function Home() {
               <VCard
                 {...{ className: 'relative rounded-3xl bg-vision-blue h-40 text-white hover:bg-vision-lighter-blue hover:text-gray-900' }}
               >
-                <div className="w-full h-full cursor-pointer" onClick={() => {navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})}} >
+                <div className="w-full h-full cursor-pointer" onClick={() => {
+                                                                                //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
+                                                                                onNewMeetingCardClick()
+                                                                              }}
+                >
                   <div className="absolute border border-vision-lighter-blue top-4 left-4 bg-vision-light-blue rounded-3xl">
                     <img
                       src="./images/camera-white.png"
@@ -88,6 +118,7 @@ export default function Home() {
                   </div>
                 </div>
               </VCard>
+
               <VCard
                 {...{ className: 'relative rounded-3xl bg-vision-yellow h-40 cursor text-white hover:bg-vision-lighter-yellow hover:text-gray-900' }}
               >
@@ -111,6 +142,7 @@ export default function Home() {
                   </div>
                 </div>
               </VCard>
+
               <VCard
                 {...{ className: 'relative rounded-3xl bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
               >

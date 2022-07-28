@@ -67,7 +67,7 @@ interface IMeetingsContext {
     joinTheMeeting?: (mId:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
     readTheMeetings?: () => void;
-    saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => void;
+    saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
 
 const defaultState = {
@@ -272,7 +272,7 @@ export const MeetingsProvider: FC = ({ children }) => {
         await dispatch(meetingRead(username, data));
     };
 
-    const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
+    const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any='0', durationTimeInMinutes:any='0', isScheduled:any) => {
         // Save to a cloud db
         const startDateTimeUTC = moment(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
@@ -286,8 +286,11 @@ export const MeetingsProvider: FC = ({ children }) => {
             DurationMins: Number(durationTimeInMinutes),
             StartDateTimeUTC: startDateTimeUTC.format(),
             User: username,
+            IsScheduled: isScheduled,
         };
         await dispatch(meetingCreate(data));
+
+        await setTheCurrentMeetingId(id);
     };
 
     // Lifecycle hooks

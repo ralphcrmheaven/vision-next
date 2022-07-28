@@ -301,13 +301,48 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
  * HTTP post method for meeting validation *
  *******************************************/
  
-app.post(path + '/:id/validate', function(req, res) {
+app.post(path + '/:meeting_id/validate', function(req, res) {
+  // let queryParams = {
+  //   TableName: tableName,
+  //   IndexName: 'MeetingId',
+  //   KeyConditionExpression: '#MeetingId = :meeting_id',
+  //   ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+  //   ExpressionAttributeValues: { ':meeting_id': { 'S': req.params.meeting_id } }
+  // }
+
+  // dynamodb.query(queryParams, (err, data) => {
+  //   if (err) {
+  //     res.statusCode = 500;
+  //     res.json({error: 'Could not load items: ' + err});
+  //   } else {
+  //     // const finalItems = data.Items.map(item => {
+  //     //   const password = () => {
+  //     //     try{
+  //     //       return (item.Password)? item.Password.split('|')[0] : '';
+  //     //     }catch(err){
+  //     //       return '';
+  //     //     }
+  //     //   };
+  //     //   return {
+  //     //     ...item,
+  //     //     Password: password()
+  //     //   }
+  //     // });
+  //     res.json({
+  //       id: req.params.meeting_id,
+  //       valid: true, 
+  //       message: 'Meeting valid', 
+  //       password: 'xxxxxx',
+  //       items: data.Items
+  //     });
+  //   }
+  // });
   res.json({
-            id: req.params.id,
-            valid: true, 
-            message: 'Meeting valid', 
-            password: 'xxxxxx'
-          });
+    id: req.params.meeting_id,
+    valid: true, 
+    message: 'Meeting valid', 
+    password: 'xxxxxx'
+  });
 });
 
 app.listen(3000, function() {
