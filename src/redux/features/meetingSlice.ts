@@ -43,14 +43,18 @@ const meetingSlice = createSlice({
             state.currentMeetingId = initialState.currentMeetingId;
         },
         setActiveMeeting: (state, action) => {
-            const { id, type } = action.payload;
+            const { id, password, url, type } = action.payload;
 
+            console.log(action.payload)
             state.activeMeeting = {
                 id: id,
+                password: password,
+                url: url,
                 type: type,
             };
         },
         resetActiveMeeting: (state) => {
+            console.log('resetActiveMeeting')
             state.activeMeeting = initialState.activeMeeting;
         },
         resetMeetings: (state, action) => {

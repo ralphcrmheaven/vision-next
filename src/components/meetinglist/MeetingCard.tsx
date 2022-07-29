@@ -47,7 +47,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
       startsIn = `Start${(currDTStartDTDiffMins > 0)? 's' : 'ed'} ${startDateTime.local().fromNow()}`;
 
-      href = `${window.location.origin}/meeting/${meeting?.MeetingId}/${meeting?.Password ?? ''}`;
+      //href = `${window.location.origin}/meeting/${meeting?.MeetingId}/${meeting?.Password ?? ''}`;
+      href = `${window.location.origin}/meeting${meeting?.Url}`;
     }catch(err){}
 
     return (
@@ -69,7 +70,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                 <button className="z-20" onClick={() => setShowMeetingDetail(!showMeetingDetail)}><EyeIcon className="w-5 h-5 text-blue-500"/></button>
                 <input type="text" className="z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" value={meeting?.MeetingId}/>
                 {(meeting?.User === username) ?
-                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', type: 'C'}) }>
+                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: ''}) }>
                       Start
                     </VButton>
                   :

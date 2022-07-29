@@ -127,6 +127,7 @@ app.get(path + hashKeyPath, function(req, res) {
       res.json({error: 'Could not load items: ' + err});
     } else {
       const finalItems = data.Items.map(item => {
+
         const password = () => {
           try{
             return (item.Password)? item.Password.split('|')[0] : '';
@@ -134,9 +135,19 @@ app.get(path + hashKeyPath, function(req, res) {
             return '';
           }
         };
+
+        const url = () => {
+          try{
+            return `/${item.MeetingId}/${(item.Password)? item.Password.split('|')[0] : ''}`;
+          }catch(err){
+            return '';
+          }
+        };
+
         return {
           ...item,
-          Password: password()
+          Password: password(),
+          Url: url(),
         }
       });
       //res.json(data.Items);
@@ -234,14 +245,17 @@ app.post(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
-  let password = encrypt(getRandomString(1, 6, ''));
+  const encPassword = encrypt(getRandomString(1, 6, ''));
 
   const item = {
     ...req.body,
-    Password: password,
+    Password: encPassword,
     CreatedAt: timeStamp,
     UpdatedAt: timeStamp
   };
+
+  const password = item.Password.split('|')[0];
+  const url = `/${item.MeetingId}/${password}`;
 
   let putItemParams = {
     TableName: tableName,
@@ -252,7 +266,7 @@ app.post(path, function(req, res) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: password.split('|')[0]}});
+      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: password, Url: url}});
     }
   });
 });

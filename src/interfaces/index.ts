@@ -9,6 +9,7 @@ export interface IMeetingRecord {
     DurationHrs: number
     DurationMins: number
     StartDateTimeUTC: string
+    Url: string
     CreatedAt: string
     UpdatedAt: string
 };

@@ -55,16 +55,7 @@ export default function Home() {
     const durationTimeMinutes = '0';
     const isScheduled = false;
 
-    //await saveTheMeeting?.(topic, topicDetails, startDate, startTime, durationTimeHours, durationTimeMinutes, isScheduled);
-
-    setTheCurrentMeetingId?.('aaa')
-    console.log(currentMeetingId)
-
-    // setTheMeeting?.({
-    //   id: meetingId,
-    //   password: password,
-    //   type: 'J'
-    // });
+    await saveTheMeeting?.(topic, topicDetails, startDate, startTime, durationTimeHours, durationTimeMinutes, isScheduled);
   }
 
   return (

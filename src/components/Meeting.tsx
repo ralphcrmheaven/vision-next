@@ -38,7 +38,7 @@ const Meeting: FC = () => {
   const meetingStatus = useMeetingStatus();
 
   const { 
-    activeMeeting, 
+    activeMeeting,
     createOrJoinTheMeeting
   } = useMeetings();
 
@@ -57,19 +57,11 @@ const Meeting: FC = () => {
   useEffect(() => {
     //
     const handleCreateOrJoinTheMeeting = async () => {
-      return await createOrJoinTheMeeting?.(activeMeeting.id, activeMeeting.type);
+      await createOrJoinTheMeeting?.();
+
+      console.log(activeMeeting)
     }
-    const res = handleCreateOrJoinTheMeeting()
-    res.then((res:any) => {
-      console.log("res?.getMeeting:", res)
-      if (res?.data.getMeeting) {
-        console.log("getMeeting:", res)
-        setDbMeeting(res?.data.getMeeting)
-      } else if (res?.data.createMeetingGraphQL) {
-        setDbMeeting(res?.data.createMeetingGraphQL)
-      }
-    })
-    
+    handleCreateOrJoinTheMeeting();
   }, [])
 
   // Background Replacement
@@ -113,13 +105,13 @@ const Meeting: FC = () => {
     }
   }
 
-  const getGooglePresetEmail = (dbMeeting: any) => {
+  const getGooglePresetEmail = () => {
     const params:any = {
       fs: 1,
       tf: 'cm',
       to: '',
       su: `Please join Vision meeting in progress`,
-      body: `Join Vision Meeting%0D%0DURL: ${window.location.origin}/meeting/${dbMeeting.title}%0D%0DMeeting ID: ${dbMeeting.title}%0DPasscode: ${dbMeeting.passcode}`
+      body: `Join Vision Meeting%0D%0DURL: ${window.location.origin}/meeting${activeMeeting.url}%0D%0DMeeting ID: ${activeMeeting.id}%0DPasscode: ${activeMeeting.password}`
     }
     const query = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     return `https://mail.google.com/mail/u/0/?${query}`
@@ -184,24 +176,25 @@ const Meeting: FC = () => {
               <div className={ `h-full w-72.5 ${currentPanel !== 'share' ? 'hidden' : ''}` }>
                 {/* <GroupChatMessages /> */}
                 <div className="flex flex-col p-4 space-y-4 text-sm">
-                  <span className='hidden'>{JSON.stringify(dbMeeting)}</span>
+                  <span className='hidden'>{JSON.stringify(activeMeeting)}</span>
                   <div className="p-2 bg-white rounded">
                     <h3 className="font-bold text-vision-lighter-blue">Join Manually</h3>
                     <ul className="flex flex-col space-y-1.5 pt-3">
                       <li>
-                        <a href={`${window.location.origin}/meeting/${dbMeeting.title}`}> 
-                          {`${window.location.origin}/meeting/${dbMeeting.title}`}
+                        <a href={`${window.location.origin}/meeting${activeMeeting.url}`}> 
+                          {`${window.location.origin}/meeting${activeMeeting.url}`}
                         </a>
                       </li>
-                      <li> <b>MeetingId:</b> {dbMeeting.title}</li>
-                      <li> <b>Passcode:</b> {dbMeeting.passcode}</li>
+                      {/* <li> <b>MeetingId:</b> {dbMeeting.title}</li> */}
+                      <li> <b>MeetingId:</b> {activeMeeting.id}</li>
+                      <li> <b>Passcode:</b> {activeMeeting.password}</li>
                     </ul>
                   </div>
                   <div className="p-2 bg-white rounded">
                     <h3 className="font-bold text-vision-lighter-blue">Join by using Email App</h3>
                     <ul className="flex flex-col space-y-1.5 pt-3">
                       <li>
-                        <a target="_blank" rel="noopener noreferrer" href={getGooglePresetEmail(dbMeeting)}> 
+                        <a target="_blank" rel="noopener noreferrer" href={getGooglePresetEmail()}> 
                           <img src="https://img.icons8.com/fluency/100/gmail-new.png" alt="google gmail" className="w-10 h-10"/>
                             Gmail
                         </a>
