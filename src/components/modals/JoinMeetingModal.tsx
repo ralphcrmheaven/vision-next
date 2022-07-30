@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Notification, Severity } from 'amazon-chime-sdk-component-library-react';
 import meetingAPI from '../../api/meeting';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
-import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal, VNotification } from '../ui';
+import { VInput, VLabel, VButton, VModal, VNotification } from '../ui';
+
+const defaultNotification = {show: false, type: '', message: ''};
 
 const JoinMeetingForm = (props:any) => {
     const {
         setTheMeeting
     } = useMeetings();
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState('');
     const [meetingId, setMeetingId] = useState('');
     const [password, setPassword] = useState('');
     const [disabled, setDisabled] = useState(true);
+    const [notification, setNotification] = useState(defaultNotification);
 
     const onJoinMeetingClick = async() => {
-        const res = await meetingAPI().validateMeeting(meetingId, {});
-        const { valid, message, password } = res;
-        console.log(res);
-        if(valid){
-            setTheMeeting?.({
-                id: meetingId,
-                password: password,
-                type: 'J'
-            })
-        }else{
-            
+        try{
+            setIsLoading(true);
+            setLoadingText('Joining...');
+
+            const res = await meetingAPI().validateMeeting(meetingId, {password: password, ie: true});
+            console.log(res);
+            if(res.success){
+                setNotification(defaultNotification);
+                setTheMeeting?.({
+                    id: meetingId,
+                    url: res.data.Url
+                });
+                return;
+            }
+        }catch(err){
+            setNotification({show: true, type: 'error', message: 'Invalid meeting id or password'});
+        }finally{
+            setIsLoading(false);
+            setLoadingText('');
         }
     };
 
@@ -43,7 +55,7 @@ const JoinMeetingForm = (props:any) => {
     return (
         <div className="meeting-form">
             
-            {/* <VNotification type="success" message="test" /> */}
+            {notification.show === true && <VNotification type={notification?.type} message={notification?.message} className="mb-5" />}
 
             <div className="mb-5">
                 <VLabel htmlFor="meeting-id">Meeting Id</VLabel>
@@ -56,7 +68,12 @@ const JoinMeetingForm = (props:any) => {
             </div>
 
             <div className="mb-5">
-                <VButton className={(disabled)? 'bg-slate-500' : ''} disabled={disabled} onClick={(e:any) => onJoinMeetingClick()}>
+                <VButton 
+                    isLoading={isLoading}
+                    loadingText={loadingText}
+                    className={(disabled)? 'bg-slate-500' : ''} disabled={disabled} 
+                    onClick={(e:any) => onJoinMeetingClick()}
+                >
                     Join Meeting
                 </VButton>
             </div>
@@ -68,11 +85,6 @@ const JoinMeetingModal = (props:any) => {
     const { meetingId, setIsOpen } = props;
     return (
         <>
-            {/* <Notification
-                onClose={() => {console.log('Close notification')}}
-                severity={Severity.ERROR}
-                message='Failed to join the meeting'
-            /> */}
             <VModal
                 size="md" 
                 dismissible={props.dismissible ?? true} 

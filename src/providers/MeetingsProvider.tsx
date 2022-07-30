@@ -223,6 +223,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     // };
     
     const createOrJoinTheMeeting = async() => {
+        console.log('createOrJoinTheMeeting');
         let meetingId = mId;
 
         let dbMeeting: any = await getMeetingFromDB(meetingId);
@@ -338,6 +339,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     useEffect(() => {
         //console.log(meeting)
         if(meeting?.id){
+            console.log(meeting)
             // dispatch(setActiveMeeting({
             //     id: meeting?.id,
             //     password: meeting?.password,

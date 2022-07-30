@@ -74,17 +74,6 @@ const getRandomString = (instanceCount, charCount, separator) => {
   return rs;
 }
 
-// const encrypt = (text) => {
-//   const iv = crypto.randomBytes(16);
-//   const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
-//   const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
-
-//   return {
-//       iv: iv.toString('hex'),
-//       content: encrypted.toString('hex')
-//   };
-// };
-
 const encrypt = (text) => {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
@@ -94,6 +83,17 @@ const encrypt = (text) => {
     Buffer.from(iv).toString('hex'),
   ].join('|');
 };
+
+const decrypt = (encryptedText) => {
+  const [encrypted, iv] = encryptedText.split('|');
+  if (!iv) throw new Error('IV not found');
+  const decipher = crypto.createDecipheriv(
+    algorithm,
+    secretKey,
+    Buffer.from(iv, 'hex')
+  );
+  return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
+}
 
 /********************************
  * HTTP Get method for list objects *
@@ -201,7 +201,6 @@ app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
   });
 });
 
-
 /************************************
 * HTTP put method for insert object *
 *************************************/
@@ -245,7 +244,9 @@ app.post(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
-  const encPassword = encrypt(getRandomString(1, 6, ''));
+  const plainPassword = getRandomString(1, 6, '');
+  console.log('plainPassword', plainPassword);
+  const encPassword = encrypt(plainPassword);
 
   const item = {
     ...req.body,
@@ -266,7 +267,7 @@ app.post(path, function(req, res) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: password, Url: url}});
+      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: plainPassword, Url: url}});
     }
   });
 });
@@ -316,46 +317,52 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
  *******************************************/
  
 app.post(path + '/:meeting_id/validate', function(req, res) {
-  // let queryParams = {
-  //   TableName: tableName,
-  //   IndexName: 'MeetingId',
-  //   KeyConditionExpression: '#MeetingId = :meeting_id',
-  //   ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
-  //   ExpressionAttributeValues: { ':meeting_id': { 'S': req.params.meeting_id } }
-  // }
+  const reqPassword = req.body.password;
+  const isEncrypted = req.body.ie;
 
-  // dynamodb.query(queryParams, (err, data) => {
-  //   if (err) {
-  //     res.statusCode = 500;
-  //     res.json({error: 'Could not load items: ' + err});
-  //   } else {
-  //     // const finalItems = data.Items.map(item => {
-  //     //   const password = () => {
-  //     //     try{
-  //     //       return (item.Password)? item.Password.split('|')[0] : '';
-  //     //     }catch(err){
-  //     //       return '';
-  //     //     }
-  //     //   };
-  //     //   return {
-  //     //     ...item,
-  //     //     Password: password()
-  //     //   }
-  //     // });
-  //     res.json({
-  //       id: req.params.meeting_id,
-  //       valid: true, 
-  //       message: 'Meeting valid', 
-  //       password: 'xxxxxx',
-  //       items: data.Items
-  //     });
-  //   }
-  // });
-  res.json({
-    id: req.params.meeting_id,
-    valid: true, 
-    message: 'Meeting valid', 
-    password: 'xxxxxx'
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'MeetingId-index',
+    KeyConditionExpression: '#MeetingId = :meeting_id',
+    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
+  }
+
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: err});
+    } else {
+      if (!data.Items.length) {
+        res.statusCode = 401;
+        res.json({error: 'Meeting invalid!'});
+        return;
+      }
+
+      const encPassword = data.Items[0].Password;
+      const passwordPart = encPassword.split('|')[0];
+      try{
+        let password = '';
+
+        if(isEncrypted === true){
+          password = decrypt(encPassword);
+        }else{
+          password = passwordPart;
+        }
+
+        if (password === reqPassword) {
+          const url = `/${req.params.meeting_id}/${passwordPart}`;
+          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url}});
+        }else{
+          res.statusCode = 401;
+          res.json({error: 'Meeting invalid!'});
+        }
+      }catch(e){
+        res.statusCode = 500;
+        res.json({error: 'Something went wrong!'});
+        return;
+      }
+    }
   });
 });
 

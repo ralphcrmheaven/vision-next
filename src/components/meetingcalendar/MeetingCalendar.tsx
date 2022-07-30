@@ -32,6 +32,7 @@ interface IEvent {
   start: string
   end: string
   meetingId: string
+  meetingUrl: string
 }
 
 interface Props {
@@ -64,18 +65,21 @@ const MeetingCalendar = (props: Props) => {
         details: meeting.TopicDetails,
         start: startdatetime.format(),
         end: enddatetime.format(),
-        meetingId: meeting.MeetingId
+        meetingId: meeting.MeetingId,
+        meetingUrl: meeting.Url,
       }
     }
   )
 
   const handleEventClick = (data: any) => {
+    console.log(data)
     const event: IEvent = {
       title: data.event.title,
       start: data.event.start,
       end: data.event.end,
       details: data.event.extendedProps.details,
-      meetingId: data.event.extendedProps.meetingId
+      meetingId: data.event.extendedProps.meetingId,
+      meetingUrl: data.event.extendedProps.meetingUrl,
     }
 
     setSelectedEvent(event)
@@ -151,7 +155,7 @@ const MeetingCalendar = (props: Props) => {
             >
               {/* <img src={camera} alt="camera" className="inline-block mr-3" /> */}
               <VideoCameraIcon className="inline-block w-5 h-5 mr-3 text-gray-900"/>
-              {`${window.location.origin}/meeting/${selectedEvent.meetingId}`}
+              {`${window.location.origin}/meeting${selectedEvent.meetingUrl}`}
             </a>
           </ModalBody>
         </Modal>
