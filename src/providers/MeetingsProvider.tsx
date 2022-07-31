@@ -48,6 +48,7 @@ import {
     joinMeeting 
 } from '../utils/api';
 import { getRandomString, randomString } from '../utils/utils';
+import { decrypt } from '../utils/crypt';
 import { REGION } from '../constants';
 import appConfig from '../Config';
 
@@ -63,11 +64,11 @@ interface IMeetingsContext {
     setShowJoinMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
     setTheMeeting?: React.Dispatch<React.SetStateAction<any>>;
     setTheMeetingId?: React.Dispatch<React.SetStateAction<string>>;
-    // createOrJoinTheMeeting?: (mId:any, type:any) => void;
     createOrJoinTheMeeting?: () => void;
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
+    setTheActiveMeeting?: (iv:any) => void;
     readTheMeetings?: () => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -206,22 +207,7 @@ export const MeetingsProvider: FC = ({ children }) => {
         return availableChannels;
     };
 
-    // Public functions
-    // const createOrJoinTheMeeting = async(mtId:any, type:any) => {
-    //     let meetingId = mtId;
-    //     if (!mtId) {
-    //         meetingId = mId;
-    //     }
-    //     let dbMeeting: any = await getMeetingFromDB(meetingId);
-    //     if (!dbMeeting.data?.getMeeting) {
-    //         dbMeeting = await createTheMeeting(meetingId);
-    //         return dbMeeting;
-    //     }
-    //     joinTheMeeting(meetingId)
-
-    //     return dbMeeting;
-    // };
-    
+    // Public functions    
     const createOrJoinTheMeeting = async() => {
         console.log('createOrJoinTheMeeting');
         let meetingId = mId;
@@ -229,15 +215,9 @@ export const MeetingsProvider: FC = ({ children }) => {
         let dbMeeting: any = await getMeetingFromDB(meetingId);
         if (!dbMeeting.data?.getMeeting) {
             await createTheMeeting(meetingId);
+        }else{
+            await joinTheMeeting(meetingId);
         }
-        await joinTheMeeting(meetingId);
-
-        dispatch(setActiveMeeting({
-            id: meetingId,
-            password: ePass,
-            url: `/${meetingId}/${ePass}`,
-            type: '',
-        }));
     };
 
     const createTheMeeting = async(mtId:any) => {
@@ -288,6 +268,15 @@ export const MeetingsProvider: FC = ({ children }) => {
         dispatch(setCurrentMeetingId(currentMeetingId));
     };
     
+    const setTheActiveMeeting = async (iv:any) => {
+        const password = decrypt([ePass, iv].join('|'));
+        dispatch(setActiveMeeting({
+            id: mId,
+            password: password,
+            url: `/${mId}/${ePass}`,
+        }));
+    }
+
     const readTheMeetings = async () => {
         const data = {};
         await dispatch(meetingRead(username, data));
@@ -322,12 +311,15 @@ export const MeetingsProvider: FC = ({ children }) => {
         }
     };
 
-    // Lifecycle hooks
+    // Lifecycle hooks    
     useEffect(() => {
-        if(activeChannel && Object.keys(activeChannel).length !== 0){
-            addMember();
-            fetchMemberships();
+        const doActions = async () => {
+            if(activeChannel && Object.keys(activeChannel).length !== 0){
+                await addMember();
+                await fetchMemberships();
+            }
         }
+        doActions();
     }, [activeChannel]);
 
     useEffect(() => {
@@ -337,16 +329,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     }, [meetingStatus]);
 
     useEffect(() => {
-        //console.log(meeting)
         if(meeting?.id){
-            console.log(meeting)
-            // dispatch(setActiveMeeting({
-            //     id: meeting?.id,
-            //     password: meeting?.password,
-            //     url: meeting?.url,
-            //     type: meeting?.type,
-            // }));
-            //navigate('/meeting/' + meeting?.id + '/' + meeting?.password);
             navigate('/meeting' + meeting?.url);
         }else{
             dispatch(resetActiveMeeting());
@@ -367,6 +350,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     setShowJoinMeetingModal,
                     setTheMeeting,
                     setTheMeetingId,
+                    setTheActiveMeeting,
                     createOrJoinTheMeeting,
                     createTheMeeting,
                     joinTheMeeting,

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -23,12 +23,14 @@ import {
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
 import { useMeetings } from '../providers/MeetingsProvider';
-import { endMeeting } from '../utils/api'
+import meetingAPI from '../api/meeting';
+import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import Roaster from '../components/Roaster'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
+import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading.gif'
-import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
+import { endMeeting } from '../utils/api'
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
@@ -39,30 +41,14 @@ const Meeting: FC = () => {
 
   const { 
     activeMeeting,
+    setTheActiveMeeting,
     createOrJoinTheMeeting
   } = useMeetings();
 
-  const clickedEndMeeting = async () => {
-    const meetingId = meetingManager.meetingId
-    if (meetingId) {
-      await endMeeting(meetingId)
-      await meetingManager.leave()
-      navigate('/')
-    }
-  }
+  const { mId, ePass } = useParams();
 
-  const [dbMeeting, setDbMeeting] = useState<any>(null);
-
-  // useEffect(() => {
-  useEffect(() => {
-    //
-    const handleCreateOrJoinTheMeeting = async () => {
-      await createOrJoinTheMeeting?.();
-
-      console.log(activeMeeting)
-    }
-    handleCreateOrJoinTheMeeting();
-  }, [])
+  const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
+  const [meetingPassword, setMeetingPassword] = useState<string>('')
 
   // Background Replacement
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -70,7 +56,9 @@ const Meeting: FC = () => {
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   
   const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
+
   const logger = useLogger()
+
   const createBackgroundReplacementDevice = async (device: any) => {
     const processors: Array<any> = []
 
@@ -85,6 +73,7 @@ const Meeting: FC = () => {
 
     return new DefaultVideoTransformDevice(logger, device, processors)
   }
+
   const toggleBackgroundReplacement = async () => {
     try {
       let current = selectedDevice
@@ -117,22 +106,60 @@ const Meeting: FC = () => {
     return `https://mail.google.com/mail/u/0/?${query}`
   }
 
+  // Events
+  const doActionsOnLoad = async () => {
+    try{
+      const res = await meetingAPI().validateMeeting(mId, {password: ePass, ie: false});
+      console.log(res);
+      if(res.success){
+        setIsValidMeeting(true);
+        await createOrJoinTheMeeting?.();
+        await setTheActiveMeeting?.(res.data.I);
+      }
+    }catch(error){
+      console.log(error);
+      setIsValidMeeting(false);
+    }
+  }
+
+  const clickedEndMeeting = async () => {
+    const meetingId = meetingManager.meetingId
+    if (meetingId) {
+      await endMeeting(meetingId)
+      await meetingManager.leave()
+      navigate('/')
+    }
+  }
+
+  // Lifecycle hooks
   useEffect(() => {
     toggleBackgroundReplacement()
-    // if (background)
   }, [background])
 
+  useEffect(() => {
+    doActionsOnLoad();
+  }, [])
+
+  if(isValidMeeting === false){
+    return <ErrorModal
+            message="Invalid meeting id or password"
+            showButton={true}
+            buttonText="Leave"
+            buttonAction={() => { navigate('/') }}
+            setIsOpen={() => {}}
+          />
+  }
 
   return (
     <>
-
       <div className="flex content-center w-full h-full">
-        {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading )&&
-          <div className="m-auto">
+        {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading ) &&
+           <div className="m-auto">
             <h1 className="text-lg text-center">Loading . . . </h1>
             <img src={loading} alt="loading" className="h-96"/>
           </div>
         }
+        
         {meetingStatus === MeetingStatus.Succeeded ? (
           <>
             <div className="flex-1 pb-20 pr-72.5">
@@ -174,7 +201,6 @@ const Meeting: FC = () => {
                 <GroupChatMessages />
               </div>
               <div className={ `h-full w-72.5 ${currentPanel !== 'share' ? 'hidden' : ''}` }>
-                {/* <GroupChatMessages /> */}
                 <div className="flex flex-col p-4 space-y-4 text-sm">
                   <span className='hidden'>{JSON.stringify(activeMeeting)}</span>
                   <div className="p-2 bg-white rounded">
@@ -208,9 +234,6 @@ const Meeting: FC = () => {
               </div>
             </div>
           </div>
-          {/* <div className="absolute inset-y-0 left-0 px-2 border tele-chat border-gray">
-            <GroupChatMessages />
-          </div> */}
           <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
             <AudioInputControl />
             <VideoInputControl>
@@ -225,7 +248,6 @@ const Meeting: FC = () => {
               label="End"
             />
             <ContentShareControl />
-            {/* <ControlBarButton icon={<Remove />} onClick={onTest} label="End" /> */}
           </ControlBar>
 
           <SelectBackgroundImagesModal

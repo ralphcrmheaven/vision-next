@@ -169,7 +169,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     onClick={onSubmit}
     icon={<SendMessageIcon width="1rem" height="1rem" />}
   />;
-
+  console.log(hasMembership)
   if (hasMembership) {
     return (
       <div className="message-input-container">

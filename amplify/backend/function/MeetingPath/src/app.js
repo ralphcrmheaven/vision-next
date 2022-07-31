@@ -57,7 +57,7 @@ const convertUrlType = (param, type) => {
 
 // additional functions
 const crypto = require('crypto');
-const algorithm = 'aes-256-ctr';
+const algorithm = 'aes-256-cbc';
 const secretKey = 'v!$!oNn3xt@20222022@v!$!oNn3xt!!';
 
 const getRandomString = (instanceCount, charCount, separator) => {
@@ -76,13 +76,14 @@ const getRandomString = (instanceCount, charCount, separator) => {
 
 const encrypt = (text) => {
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
-  const encrypted = cipher.update(text, 'utf8', 'hex');
+  const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv)
+  let encrypted = cipher.update(text)
+  encrypted = Buffer.concat([encrypted, cipher.final()])
   return [
-    encrypted + cipher.final('hex'),
-    Buffer.from(iv).toString('hex'),
+    encrypted.toString('hex'),
+    iv.toString('hex'),
   ].join('|');
-};
+}
 
 const decrypt = (encryptedText) => {
   const [encrypted, iv] = encryptedText.split('|');
@@ -352,7 +353,8 @@ app.post(path + '/:meeting_id/validate', function(req, res) {
 
         if (password === reqPassword) {
           const url = `/${req.params.meeting_id}/${passwordPart}`;
-          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url}});
+          const ivPart = encPassword.split('|')[1];
+          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url, I: ivPart}});
         }else{
           res.statusCode = 401;
           res.json({error: 'Meeting invalid!'});
