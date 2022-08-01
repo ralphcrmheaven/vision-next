@@ -41,7 +41,7 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-.env
-.env.dev
-.env.prod
+# .env
+# .env.dev
+# .env.prod
 #amplify-do-not-edit-end
