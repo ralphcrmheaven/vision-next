@@ -6,11 +6,13 @@ export type CreateMeetingInput = {
   meetingId: string,
   title: string,
   data: string,
+  passcode?: string | null,
 };
 
 export type ModelMeetingConditionInput = {
   meetingId?: ModelStringInput | null,
   data?: ModelStringInput | null,
+  passcode?: ModelStringInput | null,
   and?: Array< ModelMeetingConditionInput | null > | null,
   or?: Array< ModelMeetingConditionInput | null > | null,
   not?: ModelMeetingConditionInput | null,
@@ -61,6 +63,7 @@ export type Meeting = {
   meetingId: string,
   title: string,
   data: string,
+  passcode?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -93,6 +96,47 @@ export type DeleteAttendeeInput = {
   attendeeId: string,
 };
 
+export type CreateContactInput = {
+  id?: string | null,
+  userId: string,
+  email: string,
+  phoneNumber?: string | null,
+  group?: string | null,
+};
+
+export type ModelContactConditionInput = {
+  userId?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  group?: ModelStringInput | null,
+  and?: Array< ModelContactConditionInput | null > | null,
+  or?: Array< ModelContactConditionInput | null > | null,
+  not?: ModelContactConditionInput | null,
+};
+
+export type Contact = {
+  __typename: "Contact",
+  id: string,
+  userId: string,
+  email: string,
+  phoneNumber?: string | null,
+  group?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type DeleteContactInput = {
+  id: string,
+};
+
+export type UpdateContactInput = {
+  id: string,
+  userId?: string | null,
+  email?: string | null,
+  phoneNumber?: string | null,
+  group?: string | null,
+};
+
 export type Response = {
   __typename: "Response",
   statusCode: string,
@@ -105,6 +149,7 @@ export type ModelMeetingFilterInput = {
   meetingId?: ModelStringInput | null,
   title?: ModelStringInput | null,
   data?: ModelStringInput | null,
+  passcode?: ModelStringInput | null,
   and?: Array< ModelMeetingFilterInput | null > | null,
   or?: Array< ModelMeetingFilterInput | null > | null,
   not?: ModelMeetingFilterInput | null,
@@ -136,6 +181,23 @@ export type ModelAttendeeConnection = {
   nextToken?: string | null,
 };
 
+export type ModelContactFilterInput = {
+  id?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  group?: ModelStringInput | null,
+  and?: Array< ModelContactFilterInput | null > | null,
+  or?: Array< ModelContactFilterInput | null > | null,
+  not?: ModelContactFilterInput | null,
+};
+
+export type ModelContactConnection = {
+  __typename: "ModelContactConnection",
+  items:  Array<Contact | null >,
+  nextToken?: string | null,
+};
+
 export type CreateMeetingGraphQLMutationVariables = {
   input: CreateMeetingInput,
   condition?: ModelMeetingConditionInput | null,
@@ -147,6 +209,7 @@ export type CreateMeetingGraphQLMutation = {
     meetingId: string,
     title: string,
     data: string,
+    passcode?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -163,6 +226,7 @@ export type DeleteMeetingGraphQLMutation = {
     meetingId: string,
     title: string,
     data: string,
+    passcode?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -193,6 +257,60 @@ export type DeleteAttendeeGraphQLMutation = {
     __typename: "Attendee",
     attendeeId: string,
     name: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateContactGraphQLMutationVariables = {
+  input: CreateContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type CreateContactGraphQLMutation = {
+  createContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteContactGraphQLMutationVariables = {
+  input: DeleteContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type DeleteContactGraphQLMutation = {
+  deleteContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateContactGraphQLMutationVariables = {
+  input: UpdateContactInput,
+  condition?: ModelContactConditionInput | null,
+};
+
+export type UpdateContactGraphQLMutation = {
+  updateContactGraphQL?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -243,6 +361,22 @@ export type EndChimeMeetingQuery = {
   } | null,
 };
 
+export type SendEmailNotificationQueryVariables = {
+  email?: string | null,
+  msg?: string | null,
+  subject?: string | null,
+};
+
+export type SendEmailNotificationQuery = {
+  sendEmailNotification?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type GetMeetingQueryVariables = {
   title: string,
 };
@@ -253,6 +387,7 @@ export type GetMeetingQuery = {
     meetingId: string,
     title: string,
     data: string,
+    passcode?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -274,6 +409,7 @@ export type ListMeetingsQuery = {
       meetingId: string,
       title: string,
       data: string,
+      passcode?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -314,5 +450,86 @@ export type ListAttendeesQuery = {
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type GetContactQueryVariables = {
+  id: string,
+};
+
+export type GetContactQuery = {
+  getContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListContactsQueryVariables = {
+  id?: string | null,
+  filter?: ModelContactFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListContactsQuery = {
+  listContacts?:  {
+    __typename: "ModelContactConnection",
+    items:  Array< {
+      __typename: "Contact",
+      id: string,
+      userId: string,
+      email: string,
+      phoneNumber?: string | null,
+      group?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateContactSubscription = {
+  onCreateContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateContactSubscription = {
+  onUpdateContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteContactSubscription = {
+  onDeleteContact?:  {
+    __typename: "Contact",
+    id: string,
+    userId: string,
+    email: string,
+    phoneNumber?: string | null,
+    group?: string | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

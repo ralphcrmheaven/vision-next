@@ -11,6 +11,12 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
+        },
+        "visionEmailNotification": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     },
     "api": {
@@ -23,17 +29,6 @@ export type AmplifyDependentResourcesAttributes = {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"
-        }
-    },
-    "auth": {
-        "visionnext783447e5": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string"
         }
     },
     "storage": {
@@ -50,6 +45,15 @@ export type AmplifyDependentResourcesAttributes = {
         "visionFileStorage": {
             "BucketName": "string",
             "Region": "string"
+        }
+    },
+    "custom": {
+        "visionChatResources": {
+            "cognitoUserPoolId": "string",
+            "cognitoAppClientId": "string",
+            "cognitoIdentityPoolId": "string",
+            "appInstanceArn": "string",
+            "attachmentsS3BucketName": "string"
         }
     }
 }

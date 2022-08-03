@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import moment from 'moment';
 
 import { useMeetings } from '../providers/MeetingsProvider';
 
@@ -11,7 +12,7 @@ import MeetingListWrapper from '../components/meetinglist/wrappers/MeetingListWr
 import NewMeetingModal from '../components/modals/NewMeetingModal';
 import JoinMeetingModal from '../components/modals/JoinMeetingModal';
 import MeetingList from '../components/meetinglist/MeetingList';
-
+import { getRandomString } from '../utils/utils'
 import { IUser, selectUser } from '../redux/features/userSlice'
 
 import cham1 from '../assets/images/cham1.png'
@@ -24,7 +25,10 @@ export default function Home() {
     user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
 
+  const currentDate = moment();
+
   const {
+    meetingId,
     currentMeetingId,
     activeMeeting,
     setTheMeeting,
@@ -33,9 +37,26 @@ export default function Home() {
     setShowNewMeetingModal,
     setShowJoinMeetingModal,
     setTheCurrentMeetingId,
+    saveTheMeeting,
   } = useMeetings();
 
   const navigate = useNavigate();
+
+  const handleStartNewMeeting = async () => {
+    
+  }
+
+  const onNewMeetingCardClick = async () => {
+    const topic = `${user.given_name}'s Meeting`;
+    const topicDetails = '';
+    const startDate = currentDate.format('yyyy-MM-DD');
+    const startTime = currentDate.format('HH:mm');
+    const durationTimeHours = '0';
+    const durationTimeMinutes = '0';
+    const isScheduled = false;
+
+    await saveTheMeeting?.(topic, topicDetails, startDate, startTime, durationTimeHours, durationTimeMinutes, isScheduled);
+  }
 
   return (
     <>
@@ -66,61 +87,74 @@ export default function Home() {
           <div className="w-1/2 h-auto">
             <div className="grid grid-cols-2 gap-4">
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-blue h-40' }}
+                {...{ className: 'relative rounded-3xl bg-vision-blue h-40 text-white hover:bg-vision-lighter-blue hover:text-gray-900' }}
               >
-                <div className="absolute border border-vision-lighter-blue top-4 left-4 bg-vision-light-blue rounded-3xl">
-                  <img
-                    src="./images/camera-white.png"
-                    alt="Camera"
-                    className="p-4"
-                  />
-                </div>
-                <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => setShowNewMeetingModal?.(true) }>
-                    <span>New Meeting</span>
-                    <span className="text-sm">setup a new meeting</span>
-                  </p>
+                <div className="w-full h-full cursor-pointer" onClick={() => {
+                                                                                //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
+                                                                                onNewMeetingCardClick()
+                                                                              }}
+                >
+                  <div className="absolute border border-vision-lighter-blue top-4 left-4 bg-vision-light-blue rounded-3xl">
+                    <img
+                      src="./images/camera-white.png"
+                      alt="Camera"
+                      className="p-4"
+                    />
+                  </div>
+                  <div className="absolute left-4 bottom-4">
+                    <p className="flex flex-col">
+                      <span>New Meeting</span>
+                      <span className="text-sm">setup a new meeting</span>
+                    </p>
+                  </div>
                 </div>
               </VCard>
+
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-yellow h-40' }}
+                {...{ className: 'relative rounded-3xl bg-vision-yellow h-40 cursor text-white hover:bg-vision-lighter-yellow hover:text-gray-900' }}
               >
-                <div className="absolute border border-vision-lighter-yellow top-4 left-4 bg-vision-light-yellow rounded-3xl">
-                  <img
-                    src="./images/rectangle-white.png"
-                    alt="Camera"
-                    className="p-4"
-                  />
-                </div>
-                <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {
-                    setTheCurrentMeetingId?.('');
-                    setShowJoinMeetingModal?.(true)
-                   } 
-                   }>
-                    <span>Join Meeting</span>
-                    <span className="text-sm">via invitation link</span>
-                  </p>
+                <div className="w-full h-full cursor-pointer" onClick={() => {
+                      setTheCurrentMeetingId?.('');
+                      setShowJoinMeetingModal?.(true)
+                    } 
+                  }>
+                  <div className="absolute border border-vision-lighter-yellow top-4 left-4 bg-vision-light-yellow rounded-3xl">
+                    <img
+                      src="./images/rectangle-white.png"
+                      alt="Camera"
+                      className="p-4"
+                    />
+                  </div>
+                  <div className="absolute left-4 bottom-4">
+                    <p className="flex flex-col">
+                      <span>Join Meeting</span>
+                      <span className="text-sm">via invitation link</span>
+                    </p>
+                  </div>
                 </div>
               </VCard>
+
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-sky h-40' }}
+                {...{ className: 'relative rounded-3xl bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
               >
-                <div className="absolute border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-3xl">
-                  <img
-                    src="./images/calendar-white.png"
-                    alt="Camera"
-                    className="p-4"
-                  />
-                </div>
-                <div className="absolute left-4 bottom-4">
-                  <p className="flex flex-col text-white cursor-pointer" onClick={() => {navigate('/schedule', {replace:true})}}>
-                    <span>Schedule</span>
-                    <span className="text-sm">plan your meetings</span>
-                  </p>
+                <div className="w-full h-full cursor-pointer " onClick={() => setShowNewMeetingModal?.(true) }>
+                  <div className="absolute border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-3xl">
+                    <img
+                      src="./images/calendar-white.png"
+                      alt="Camera"
+                      className="p-4"
+                    />
+                  </div>
+                  <div className="absolute left-4 bottom-4">
+                    {/* onClick={() => {navigate('/schedule', {replace:true})}}  */}
+                    <p className="flex flex-col">
+                      <span>Schedule</span>
+                      <span className="text-sm">plan your meetings</span>
+                    </p>
+                  </div>
                 </div>
               </VCard>
-              <VCard
+              {/* <VCard
                 {...{ className: 'relative rounded-3xl bg-vision-green h-40' }}
               >
                 <div className="absolute border border-vision-lighter-green top-4 left-4 bg-vision-light-green rounded-3xl">
@@ -136,7 +170,7 @@ export default function Home() {
                     <span className="text-sm">show your work</span>
                   </p>
                 </div>
-              </VCard>
+              </VCard> */}
             </div>
           </div>
           <div className="flex flex-col w-1/2 gap-3">

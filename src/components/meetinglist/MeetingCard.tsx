@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { selectUser } from '../../redux/features/userSlice';
@@ -9,7 +9,6 @@ import { VButton } from '../ui';
 import { ClockIcon } from '../icons';
 import { IMeetingRecord } from '../../interfaces';
 import { EyeIcon } from '@heroicons/react/solid'
-
 import {
   Modal,
   ModalBody,
@@ -20,8 +19,7 @@ interface  IMeetingCardProps {
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
-    const { meeting } = props;
-
+    const { meeting } = props;    
     const { username, given_name } = useSelector(selectUser);
     const [ showMeetingDetail, setShowMeetingDetail ] = useState(false);
     const {
@@ -35,6 +33,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     let startTime = null;
     let endTime = null;
     let startsIn = '';
+    let href = '';
 
     try{
       //startDateTime = moment(meeting?.StartDate + ' ' + meeting?.StartTime);
@@ -47,6 +46,9 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
       const currDTStartDTDiffMins = startDateTime.local().diff(moment(), 'minutes');
 
       startsIn = `Start${(currDTStartDTDiffMins > 0)? 's' : 'ed'} ${startDateTime.local().fromNow()}`;
+
+      //href = `${window.location.origin}/meeting/${meeting?.MeetingId}/${meeting?.Password ?? ''}`;
+      href = `${window.location.origin}/meeting${meeting?.Url}`;
     }catch(err){}
 
     return (
@@ -68,7 +70,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                 <button className="z-20" onClick={() => setShowMeetingDetail(!showMeetingDetail)}><EyeIcon className="w-5 h-5 text-blue-500"/></button>
                 <input type="text" className="z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" value={meeting?.MeetingId}/>
                 {(meeting?.User === username) ?
-                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, type: 'C'}) }>
+                    <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: ''}) }>
                       Start
                     </VButton>
                   :
@@ -91,8 +93,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                       <p>{given_name} is inviting you to a scheduled Vision meeting.</p>
                       <h3 className="my-1 font-bold">Topic</h3>
                       <p>{meeting?.Topic}</p>
-                      <h3 className="my-1 font-bold">Join Vision Meeting </h3>
-                      <a href={`${window.location.origin}/meeting/${meeting?.MeetingId}`}>{`${window.location.origin}/meeting/${meeting?.MeetingId}`}</a>
+                      <h3 className="my-1 font-bold">Join Vision Meeting</h3>
+                      <a href={href}>{href}</a>
                       </div>
                     </ModalBody>
                   </Modal>

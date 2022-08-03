@@ -18,8 +18,8 @@ const VButton = (props:any) => {
         >
             {props.isLoading ? (
                 <>
-                <CircularLoader />
-                {props.loadingText}
+                    <CircularLoader />
+                    {props.loadingText}
                 </>
             ) : (
                 props.children

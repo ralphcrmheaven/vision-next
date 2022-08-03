@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable import/no-unresolved */
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -12,7 +10,6 @@ import {
   Remove,
   Label,
 } from 'amazon-chime-sdk-component-library-react';
-
 import debounce from 'lodash/debounce';
 
 import {
@@ -25,6 +22,8 @@ import formatBytes from '../../../../utils/formatBytes';
 import AttachmentService from '../../../../services/AttachmentService';
 import { useChatMessagingState, useChatChannelState, } from '../../../../providers/ChatMessagesProvider';
 import { useAuthContext, } from '../../../../providers/AuthProvider';
+
+import { SendMessageIcon } from '../../../icons';
 
 import './Input.css';
 
@@ -43,7 +42,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
   const [uploadObj, setUploadObj] = useState(uploadObjDefaults);
   const notificationDispatch = useNotificationDispatch();
   const { messages, setMessages } = useChatMessagingState();
-  const { activeChannel, } = useChatChannelState();
+  const { activeChannel } = useChatChannelState();
 
   const { isAnonymous } = useAuthContext();
 
@@ -64,29 +63,18 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     setText('');
   };
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [activeChannelArn]);
-
   const eventHandler = async () => {
     const content = JSON.stringify({Typing: 'Indicator'});
     await sendChannelMessage(
-        activeChannel.ChannelArn,
-        content,
-        'NON_PERSISTENT',
-        'CONTROL',
-        member,
+      activeChannelArn,
+      content,
+      'NON_PERSISTENT',
+      'CONTROL',
+      member,
     );
   };
-  const eventHandlerWithDebounce = React.useCallback(debounce(eventHandler, 500), []);
 
-  useEffect(() => {
-    if (text) {
-      eventHandlerWithDebounce();
-    }
-  }, [text]);
+  const eventHandlerWithDebounce = React.useCallback(debounce(eventHandler, 500), [activeChannelArn]);
 
   const onChange = (e) => {
     setText(e.target.value);
@@ -142,7 +130,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
       sendMessageResponse = await sendChannelMessage(activeChannelArn, text, Persistence.PERSISTENT, MessageType.STANDARD, member);
     }
     resetState();
-    if (sendMessageResponse.response.Status == 'PENDING') {
+    if (sendMessageResponse.response.Status.Value == 'PENDING') {
       const sentMessage = await getChannelMessage(activeChannelArn, member, sendMessageResponse.response.MessageId);
       const newMessages = [...messages, sentMessage];
       setMessages(newMessages);
@@ -155,6 +143,18 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     setUploadObj(uploadObjDefaults);
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [activeChannelArn]);
+
+  useEffect(() => {
+    if (text) {
+      eventHandlerWithDebounce();
+    }
+  }, [text]);
+
   const uploadButton = <IconButton
       className="write-link attach"
       onClick={(_event) => {
@@ -164,6 +164,12 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
       icon={<Attachment width="1.5rem" height="1.5rem" />}
   />;
 
+  const sendButton = <IconButton
+    className="sendmessage"
+    onClick={onSubmit}
+    icon={<SendMessageIcon width="1rem" height="1rem" />}
+  />;
+  console.log(hasMembership)
   if (hasMembership) {
     return (
       <div className="message-input-container">
@@ -172,7 +178,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
             onChange={onChange}
             value={text}
             type="text"
-            placeholder="Type your message"
+            placeholder="Send message"
             autoFocus
             className="text-input"
             ref={inputRef}
@@ -190,6 +196,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
           ) : null}
         </form>
         {isAnonymous ? '\u00a0\u00a0' : uploadButton}
+        {isAnonymous ? '\u00a0\u00a0' : sendButton}
         <input
           type="file"
           accept="file_extension|audio/*|video/*|image/*|media_type"
@@ -222,7 +229,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
   }
   return (
     <div className="message-input-container join-channel-message">
-      Join this channel to send messages.
+      Joining...
     </div>
   );
 };

@@ -23,6 +23,11 @@
           }
         }
       ]
+    },
+    "visionEmailNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "api": {
@@ -60,31 +65,12 @@
     }
   },
   "auth": {
-    "visionnext783447e5": {
+    "visionnext34956236": {
       "service": "Cognito",
+      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": []
-        },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      }
+      "customAuth": false
     }
   },
   "storage": {
@@ -94,6 +80,13 @@
     },
     "visionFileStorage": {
       "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  },
+  "custom": {
+    "visionChatResources": {
+      "service": "customCloudformation",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
     }

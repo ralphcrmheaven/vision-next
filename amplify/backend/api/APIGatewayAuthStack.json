@@ -64,7 +64,7 @@
                           }
                         ]
                       },
-                      "/*/meeting/*"
+                      "/*/meetings/*"
                     ]
                   ]
                 },
@@ -94,7 +94,7 @@
                           }
                         ]
                       },
-                      "/*/meeting"
+                      "/*/meetings"
                     ]
                   ]
                 }
@@ -147,7 +147,7 @@
                           }
                         ]
                       },
-                      "/*/meeting/*"
+                      "/DELETE/meetings/*"
                     ]
                   ]
                 },
@@ -177,7 +177,7 @@
                           }
                         ]
                       },
-                      "/*/meeting"
+                      "/DELETE/meetings"
                     ]
                   ]
                 }

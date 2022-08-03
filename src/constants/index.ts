@@ -54,5 +54,5 @@ export const SDK_LOG_LEVELS = {
 }
 
 export const APINAME: string = 'VisionRESTAPI';
-export const MEETINGENDPOINT: string = '/meeting';
+export const MEETINGENDPOINT: string = '/meetings';
 export const REGION = 'us-east-1';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CxInput = (props:any) => {
+const VInput = (props:any) => {
     return (
         <input 
             {...props}
@@ -9,4 +9,4 @@ const CxInput = (props:any) => {
     );
 };
 
-export default CxInput;
+export default VInput;

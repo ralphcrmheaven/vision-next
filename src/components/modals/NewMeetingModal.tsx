@@ -185,7 +185,7 @@ const NewMeetingForm = (props:any) => {
         setIsLoading(true);
         setLoadingText('Saving');
 
-        await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes);
+        await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
 
         setIsLoading(false);
         setLoadingText('');

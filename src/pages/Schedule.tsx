@@ -1,15 +1,18 @@
+import { useState } from 'react'
 import {
   Modal,
   ModalBody,
   ModalHeader,
 } from 'amazon-chime-sdk-component-library-react'
 import moment from 'moment'
-import { useState } from 'react'
 import Calendar from '../components/Calendar'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 import { useMeetings } from '../providers/MeetingsProvider'
-
 import camera from '../assets/images/camera.png'
 import { VideoCameraIcon } from '@heroicons/react/solid'
+
 interface IEvent {
   title: string
   details?: string
@@ -23,6 +26,8 @@ const Schedule = () => {
 
   // Remove empty dates
   const filteredMeetings = meetings?.filter((meeting) => meeting.StartDate)
+
+  console.log(filteredMeetings)
 
   const events: IEvent[] | undefined = filteredMeetings?.map(
     (meeting): IEvent => {
@@ -59,7 +64,18 @@ const Schedule = () => {
 
   return (
     <>
-      <Calendar events={events} eventClick={handleEventClick} />
+      <Calendar 
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+        initialView="dayGridMonth"
+        viewClassNames="Calendar"
+        headerToolbar={{
+          start: 'prev,next today',
+          center: 'title',
+          end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+        }}
+        events={events} 
+        eventClick={handleEventClick} 
+      />
 
       {selectedEvent && (
         <Modal onClose={() => setSelectedEvent(null)}>

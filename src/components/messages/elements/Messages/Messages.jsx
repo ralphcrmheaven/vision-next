@@ -1,6 +1,4 @@
-/* eslint-disable react/no-children-prop */
-/* eslint-disable no-console */
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
 import React, { useState, useEffect } from 'react';
@@ -261,6 +259,15 @@ const Messages = ({
       return false;
     };
 
+    const getInitials = (str) => {
+      return str.substring(0, 2);
+    }
+
+    const getOnlyTextFromEmail = (email) => {
+      // return str.substring(0, 2);
+      return email.substring(0, email.lastIndexOf("@"));
+    }
+
     return (
       <div className="message">
         <ChatBubbleContainer
@@ -280,27 +287,32 @@ const Messages = ({
               showTail={showTail}
             />
           ) : (
-            <ChatBubble
-              variant={variant}
-              senderName={m.senderName}
-              redacted={m.redacted}
-              showName={showName}
-              showTail={showTail}
-            >
+            <>
               <div>
-                {m.content}
-                {m.editedNote}
-                {m.statusNote}
+                <img src={ `https://ui-avatars.com/api/?name=${getInitials(m.senderName)}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
+                <ChatBubble
+                    variant={variant}
+                    senderName={getOnlyTextFromEmail(m.senderName)}
+                    redacted={m.redacted}
+                    showName={showName}
+                    showTail={showTail}
+                  >
+                    <div>
+                      {m.content}
+                      {m.editedNote}
+                      {m.statusNote}
+                    </div>
+                    {m.metadata && attachment(m.metadata) && (
+                      <div style={{ marginTop: '10px' }}>
+                        <AttachmentProcessor
+                          senderId={m.senderId}
+                          {...attachment(m.metadata)}
+                        />
+                      </div>
+                    )}
+                  </ChatBubble>
               </div>
-              {m.metadata && attachment(m.metadata) && (
-                <div style={{ marginTop: '10px' }}>
-                  <AttachmentProcessor
-                    senderId={m.senderId}
-                    {...attachment(m.metadata)}
-                  />
-                </div>
-              )}
-            </ChatBubble>
+            </>
           )}
         </ChatBubbleContainer>
       </div>

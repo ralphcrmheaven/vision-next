@@ -3,8 +3,10 @@ import { Route, Routes } from 'react-router-dom'
 import Base from './layout/Base'
 import FullScreen from './layout/FullScreen'
 import MeetingWrapper from './wrappers/MeetingWrapper'
-import Conference from './pages/Conference'
+import Contacts from './pages/Contacts'
 import SingleMeeting from './pages/SingleMeeting'
+import SingleMeetingPassword from './pages/SingleMeetingPassword'
+import DeleteAllChannels from './pages/DeleteAllChannels'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Meetings from './pages/Meetings'
@@ -39,7 +41,14 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
-        <Route path="/meetings" element={<Meetings />} />
+        <Route 
+          path="/meetings" 
+          element={
+            <MeetingWrapper>
+              <Meetings />
+            </MeetingWrapper>
+          }
+        />
         <Route path="/settings" element={<Settings />} />
         <Route
           path="/schedule"
@@ -49,6 +58,7 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
+        <Route path="/contacts" element={<Contacts />} />
       </Route>
       <Route
         path="/"
@@ -58,8 +68,21 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       >
-        <Route path="/conference" element={<Conference />} />
-        <Route path="/meeting/:meetingId" element={<SingleMeeting />} />
+        <Route path="/meeting/:mId" element={
+          <MeetingWrapper>
+            <SingleMeetingPassword />
+          </MeetingWrapper>
+        } />
+        <Route path="/meeting/:mId/:ePass" element={
+          <MeetingWrapper>
+            <SingleMeeting />
+          </MeetingWrapper>
+        } />
+        <Route path="/deleteallchannels" element={
+          <MeetingWrapper>
+            <DeleteAllChannels />
+          </MeetingWrapper>
+        } />
       </Route>
     </Routes>
   )

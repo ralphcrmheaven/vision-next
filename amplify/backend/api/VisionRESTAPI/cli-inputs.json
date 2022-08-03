@@ -1,8 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/meeting": {
-      "name": "/meeting",
+    "/meetings": {
+      "name": "/meetings",
       "lambdaFunction": "MeetingPath",
       "permissions": {
         "setting": "protected",
@@ -13,9 +13,6 @@
           "delete"
         ],
         "guest": [
-          "create",
-          "read",
-          "update",
           "delete"
         ]
       }

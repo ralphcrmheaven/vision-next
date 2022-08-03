@@ -1,11 +1,9 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
 import routes from '../constants/routes';
 import appConfig from '../Config';
-// eslint-disable-next-line no-unused-vars
+
 const ChimeIdentity = require('aws-sdk/clients/chimesdkidentity');
 const ChimeMessaging = require('aws-sdk/clients/chimesdkmessaging');
 
@@ -58,8 +56,6 @@ async function sendChannelMessage(
   member,
   options = null
 ) {
-  console.log('sendChannelMessage called');
-
   const chimeBearerArn = createMemberArn(member.userId);
 
   const params = {
@@ -72,7 +68,6 @@ async function sendChannelMessage(
   if (options && options.Metadata) {
     params.Metadata = options.Metadata;
   }
-
   const request = (await chimeMessagingClient()).sendChannelMessage(params);
   const response = await request.promise();
   const sentMessage = {
@@ -84,8 +79,6 @@ async function sendChannelMessage(
 }
 
 async function getChannelMessage(channelArn, member, messageId) {
-  console.log('getChannelMessage called');
-
   const chimeBearerArn = createMemberArn(member.userId);
 
   const params = {
@@ -130,7 +123,6 @@ async function listChannelMessages(channelArn, userId, nextToken = null) {
 }
 
 async function listAppInstanceUsers(appInstanceArn, userId, nextToken = null) {
-  console.log('listAppInstanceUsers called');
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     AppInstanceArn: appInstanceArn,
@@ -149,7 +141,6 @@ async function listAppInstanceUsers(appInstanceArn, userId, nextToken = null) {
 }
 
 async function createChannelMembership(channelArn, memberArn, userId) {
-  console.log('createChannelMembership called');
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -164,7 +155,6 @@ async function createChannelMembership(channelArn, memberArn, userId) {
 }
 
 async function deleteChannelMembership(channelArn, memberArn, userId) {
-  console.log('deleteChannelMembership called');
   const chimeBearerArn = createMemberArn(userId);
 
   const params = {
@@ -179,7 +169,6 @@ async function deleteChannelMembership(channelArn, memberArn, userId) {
 }
 
 async function createChannelBan(channelArn, memberArn, userId) {
-  console.log('createChannelBan called');
   const chimeBearerArn = createMemberArn(userId);
 
   const params = {
@@ -194,8 +183,6 @@ async function createChannelBan(channelArn, memberArn, userId) {
 }
 
 async function deleteChannelBan(channelArn, memberArn, userId) {
-  console.log('deleteChannelBan called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -209,8 +196,6 @@ async function deleteChannelBan(channelArn, memberArn, userId) {
 }
 
 async function listChannelBans(channelArn, maxResults, nextToken, userId) {
-  console.log('listChannelBans called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -221,12 +206,10 @@ async function listChannelBans(channelArn, maxResults, nextToken, userId) {
 
   const request = (await chimeMessagingClient()).listChannelBans(params);
   const response = await request.promise();
-  console.log('listChannelBans response', response);
   return response;
 }
 
 async function listChannelMemberships(channelArn, userId) {
-  console.log('listChannelMemberships called');
   const chimeBearerArn = createMemberArn(userId);
 
   const params = {
@@ -240,7 +223,6 @@ async function listChannelMemberships(channelArn, userId) {
 }
 
 async function associateChannelFlow(channelArn, channelFlowArn, userId) {
-  console.log('associateChannelFlow called');
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -251,13 +233,10 @@ async function associateChannelFlow(channelArn, channelFlowArn, userId) {
   const request = (await chimeMessagingClient()).associateChannelFlow(params);
 
   const response = await request.promise();
-  console.log('associateChannelFlow response');
-  console.log(response);
   return response;
 }
 
 async function disassociateChannelFlow(channelArn, channelFlowArn, userId) {
-  console.log('disassociateChannelFlow called');
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -272,7 +251,6 @@ async function disassociateChannelFlow(channelArn, channelFlowArn, userId) {
 }
 
 async function describeChannelFlow(channelFlowArn) {
-  console.log('describeChannelFlow called');
   const params = {
     ChannelFlowArn: channelFlowArn
   };
@@ -283,8 +261,6 @@ async function describeChannelFlow(channelFlowArn) {
 }
 
 async function listChannelFlows(appInstanceArn, maxResults, nextToken) {
-  console.log('listChannelFlows called');
-
   const params = {
     AppInstanceArn: appInstanceArn,
     MaxResults: maxResults,
@@ -293,13 +269,10 @@ async function listChannelFlows(appInstanceArn, maxResults, nextToken) {
 
   const request = (await chimeMessagingClient()).listChannelFlows(params);
   const response = await request.promise();
-  console.log('listChannelFlows response', response);
   return response.ChannelFlows;
 }
 
 async function createChannel(appInstanceArn, metadata, name, mode, privacy, userId) {
-  console.log('createChannel called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     AppInstanceArn: appInstanceArn,
@@ -334,10 +307,8 @@ async function describeChannel(channelArn, userId) {
 }
 
 async function updateChannel(channelArn, name, mode, metadata, userId) {
-  console.log('updateChannel called');
-
   const chimeBearerArn = createMemberArn(userId);
-  console.log(chimeBearerArn);
+
   const params = {
     ChannelArn: channelArn,
     Name: name,
@@ -352,7 +323,6 @@ async function updateChannel(channelArn, name, mode, metadata, userId) {
 }
 
 async function listChannelMembershipsForAppInstanceUser(userId) {
-  console.log('listChannelMembershipsForAppInstanceUser called');
   const chimeBearerArn = createMemberArn(userId);
 
   const params = {
@@ -367,24 +337,20 @@ async function listChannelMembershipsForAppInstanceUser(userId) {
   return channels;
 }
 
-async function listChannels(appInstanceArn, userId) {
-  console.log('listChannels called');
-
+async function listChannels(appInstanceArn, userId, nextToken) {
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     AppInstanceArn: appInstanceArn,
-    ChimeBearer: chimeBearerArn
+    ChimeBearer: chimeBearerArn,
+    NextToken: nextToken
   };
 
   const request = (await chimeMessagingClient()).listChannels(params);
   const response = await request.promise();
-  const channels = response.Channels;
-  return channels;
+  return response;
 }
 
 async function listChannelsForAppInstanceUser(userId) {
-  console.log('listChannelsForAppInstanceUser called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChimeBearer: chimeBearerArn
@@ -392,13 +358,10 @@ async function listChannelsForAppInstanceUser(userId) {
   const request = (await chimeMessagingClient()).listChannelsForAppInstanceUser(params);
   const response = await request.promise();
   const channels = response.Channels;
-  console.log('channels', channels);
   return channels;
 }
 
 async function deleteChannel(channelArn, userId) {
-  console.log('deleteChannel called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -410,7 +373,6 @@ async function deleteChannel(channelArn, userId) {
 }
 
 async function listChannelModerators(channelArn, userId) {
-  console.log('listChannelModerators called');
   const chimeBearerArn = createMemberArn(userId);
 
   const params = {
@@ -430,7 +392,6 @@ async function updateChannelMessage(
   metadata,
   userId
 ) {
-  console.log('updateChannelMessage called');
   const chimeBearer = createMemberArn(
     userId
   );
@@ -449,8 +410,6 @@ async function updateChannelMessage(
 }
 
 async function redactChannelMessage(channelArn, messageId, userId) {
-  console.log('redactChannelMessage called');
-
   const chimeBearerArn = createMemberArn(userId);
   const params = {
     ChannelArn: channelArn,
@@ -461,7 +420,6 @@ async function redactChannelMessage(channelArn, messageId, userId) {
   const request = (await chimeMessagingClient()).redactChannelMessage(params);
 
   const response = await request.promise();
-  console.log('response', response);
   return response;
 }
 

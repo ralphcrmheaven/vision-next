@@ -18,6 +18,7 @@ export const meetingCreate: any = createAsyncThunk(
     'meeting/create',
     async (data:any) => {
       const res = await meetingAPI().create(data);
+      console.log('res meeting api: ', res);
       return res;
     }
 );
@@ -43,14 +44,18 @@ const meetingSlice = createSlice({
             state.currentMeetingId = initialState.currentMeetingId;
         },
         setActiveMeeting: (state, action) => {
-            const { id, type } = action.payload;
+            const { id, password, url, type } = action.payload;
 
+            console.log(action.payload)
             state.activeMeeting = {
                 id: id,
+                password: password,
+                url: url,
                 type: type,
             };
         },
         resetActiveMeeting: (state) => {
+            console.log('resetActiveMeeting')
             state.activeMeeting = initialState.activeMeeting;
         },
         resetMeetings: (state, action) => {
@@ -64,7 +69,8 @@ const meetingSlice = createSlice({
             })
             .addCase(meetingRead.fulfilled, (state, action) => {
                 let meetings = action.payload;
-                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== ''}).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
+                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' && Date.parse(m.StartDateTimeUTC) > (new Date()).getTime() }).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
+
                 state.meetings = meetings;
             })
             .addCase(meetingRead.rejected, (state, action) => {
@@ -74,7 +80,7 @@ const meetingSlice = createSlice({
             .addCase(meetingCreate.fulfilled, (state, action) => {
                 const { data } = action.payload;
                 let meetings = [data, ...state.meetings];
-                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== ''}).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
+                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' && Date.parse(m.StartDateTimeUTC) > (new Date()).getTime() }).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
                 state.meetings = meetings;
             })
             .addCase(meetingCreate.rejected, (state, action) => {

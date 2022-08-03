@@ -1,5 +1,6 @@
 export { default as VTab } from './VTab';
 export { default as VModal } from './VModal';
+export { default as VNotification } from './VNotification';
 export { default as VLabel } from './VLabel';
 export { default as VInput } from './VInput';
 export { default as VSelect } from './VSelect';

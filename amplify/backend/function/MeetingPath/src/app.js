@@ -28,7 +28,7 @@ const partitionKeyType = "S";
 const sortKeyName = "MeetingId";
 const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
-const path = "/meeting";
+const path = "/meetings";
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
@@ -53,6 +53,47 @@ const convertUrlType = (param, type) => {
     default:
       return param;
   }
+}
+
+// additional functions
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+const secretKey =  `${process.env.REACT_APP_SK}`;
+
+const getRandomString = (instanceCount, charCount, separator) => {
+  let rs = '';
+  const finalCharCount = charCount + 2; // Compensate for the missing char since substring starts at 2
+
+  for (let i = 1; i <= instanceCount; i++) {
+      rs += Math.random().toString(16).substring(2, finalCharCount);
+      if(i < instanceCount){
+          rs += separator;
+      }
+  }
+
+  return rs;
+}
+
+const encrypt = (text) => {
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv)
+  let encrypted = cipher.update(text)
+  encrypted = Buffer.concat([encrypted, cipher.final()])
+  return [
+    encrypted.toString('hex'),
+    iv.toString('hex'),
+  ].join('|');
+}
+
+const decrypt = (encryptedText) => {
+  const [encrypted, iv] = encryptedText.split('|');
+  if (!iv) throw new Error('IV not found');
+  const decipher = crypto.createDecipheriv(
+    algorithm,
+    secretKey,
+    Buffer.from(iv, 'hex')
+  );
+  return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
 }
 
 /********************************
@@ -86,7 +127,32 @@ app.get(path + hashKeyPath, function(req, res) {
       res.statusCode = 500;
       res.json({error: 'Could not load items: ' + err});
     } else {
-      res.json(data.Items);
+      const finalItems = data.Items.map(item => {
+
+        const password = () => {
+          try{
+            return (item.Password)? item.Password.split('|')[0] : '';
+          }catch(err){
+            return '';
+          }
+        };
+
+        const url = () => {
+          try{
+            return `/${item.MeetingId}/${(item.Password)? item.Password.split('|')[0] : ''}`;
+          }catch(err){
+            return '';
+          }
+        };
+
+        return {
+          ...item,
+          Password: password(),
+          Url: url(),
+        }
+      });
+      //res.json(data.Items);
+      res.json(finalItems);
     }
   });
 });
@@ -136,7 +202,6 @@ app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
   });
 });
 
-
 /************************************
 * HTTP put method for insert object *
 *************************************/
@@ -180,11 +245,19 @@ app.post(path, function(req, res) {
 
   const timeStamp = new Date().toISOString();
 
+  const plainPassword = getRandomString(1, 6, '');
+  console.log('plainPassword', plainPassword);
+  const encPassword = encrypt(plainPassword);
+
   const item = {
     ...req.body,
+    Password: encPassword,
     CreatedAt: timeStamp,
     UpdatedAt: timeStamp
   };
+
+  const password = item.Password.split('|')[0];
+  const url = `/${item.MeetingId}/${password}`;
 
   let putItemParams = {
     TableName: tableName,
@@ -195,7 +268,7 @@ app.post(path, function(req, res) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: item})
+      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: plainPassword, Url: url}});
     }
   });
 });
@@ -236,6 +309,61 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
       res.json({error: err, url: req.url});
     } else {
       res.json({url: req.url, data: { [partitionKeyName]: req.params[partitionKeyName]}});
+    }
+  });
+});
+
+/*******************************************
+ * HTTP post method for meeting validation *
+ *******************************************/
+ 
+app.post(path + '/:meeting_id/validate', function(req, res) {
+  const reqPassword = req.body.password;
+  const isEncrypted = req.body.ie;
+
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'MeetingId-index',
+    KeyConditionExpression: '#MeetingId = :meeting_id',
+    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
+  }
+
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: err});
+    } else {
+      if (!data.Items.length) {
+        res.statusCode = 401;
+        res.json({error: 'Meeting invalid!'});
+        return;
+      }
+
+      const encPassword = data.Items[0].Password;
+      const passwordPart = encPassword.split('|')[0];
+      try{
+        let password = '';
+
+        if(isEncrypted === true){
+          password = decrypt(encPassword);
+        }else{
+          password = passwordPart;
+        }
+
+        if (password === reqPassword) {
+          const url = `/${req.params.meeting_id}/${passwordPart}`;
+          const ivPart = encPassword.split('|')[1];
+          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url, I: ivPart}});
+        }else{
+          res.statusCode = 401;
+          res.json({error: 'Meeting invalid!'});
+        }
+      }catch(e){
+        res.statusCode = 500;
+        res.json({error: 'Something went wrong!'});
+        return;
+      }
     }
   });
 });

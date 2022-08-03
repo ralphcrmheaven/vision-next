@@ -24,15 +24,16 @@ export async function endMeeting(meetingId: string) {
   return endInfoJson;
 }
 
-export async function addMeetingToDB(title: string, meetingId: string, meetingData: string) {
-  await API.graphql(graphqlOperation(createMeetingGraphQL, {input: {title: title, meetingId: meetingId, data: meetingData, }}));
+export async function addMeetingToDB(title: string, meetingId: string, meetingData: string, passcode: string) {
+  const meetingInfo = await API.graphql(graphqlOperation(createMeetingGraphQL, {input: {title: title, meetingId: meetingId, data: meetingData, passcode: passcode }}));
+  return meetingInfo
 }
 
 export async function addAttendeeToDB(attendeeID: string, attendeeName: string) {
   await API.graphql(graphqlOperation(createAttendeeGraphQL, {input: {attendeeId: attendeeID, name: attendeeName }}));
 }
 
-export async function getMeetingFromDB(title: string) {
+export async function getMeetingFromDB(title: string | undefined) {
   const meetingInfo = await API.graphql(graphqlOperation(getMeeting, {title: title}));
   return meetingInfo;
 }

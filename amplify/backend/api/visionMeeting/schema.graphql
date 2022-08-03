@@ -4,6 +4,7 @@ type Meeting @model(mutations: {create: "createMeetingGraphQL", delete: "deleteM
   meetingId: String! 
   title: String! @primaryKey
   data: String!
+  passcode: String
 }
 
 type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "deleteAttendeeGraphQL"}, subscriptions: null) {
@@ -11,10 +12,23 @@ type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "delet
   name: String!
 }
 
+type Contact @model(mutations: {
+    create: "createContactGraphQL",
+    delete: "deleteContactGraphQL",
+    update: "updateContactGraphQL",
+  }) {
+  id: String! @primaryKey
+  userId: String! # get attribute sub of cognito
+  email: String!
+  phoneNumber: String
+  group: String,
+}
+
 type Query {
   createChimeMeeting(title: String, name: String, region: String): Response @function(name: "visionHandleMeeting-${env}")
   joinChimeMeeting(meetingId: String, name: String): Response @function(name: "visionHandleMeeting-${env}")
   endChimeMeeting(meetingId: String): Response  @function(name: "visionHandleMeeting-${env}")
+  sendEmailNotification(email: String, msg: String, subject: String): Response @function(name: "visionEmailNotification-${env}")
 }
 
 type Response {

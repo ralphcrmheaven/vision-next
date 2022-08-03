@@ -1,20 +1,56 @@
 import React, { createContext, useContext, useState, FC, useEffect } from 'react';
-//import 'moment-timezone';
 import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { 
+    useDispatch, 
+    useSelector 
+} from 'react-redux';
+import { 
+    useParams,
+    useNavigate 
+} from 'react-router-dom';
 import {
+    MeetingStatus,
     useMeetingManager,
     useMeetingStatus,
 } from 'amazon-chime-sdk-component-library-react';
 import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
+import {
+    useChatChannelState,
+    useChatMessagingState,
+  } from '../providers/ChatMessagesProvider';
+import { useAuthContext } from '../providers/AuthProvider';
 import { selectUser } from '../redux/features/userSlice';
-import { meetingCreate, meetingRead, selectMeeting, setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, resetActiveMeeting } from '../redux/features/meetingSlice';
-import { addAttendeeToDB, addMeetingToDB, createMeeting, getAttendeeFromDB, getMeetingFromDB, joinMeeting } from '../utils/api';
+import { 
+    meetingCreate, 
+    meetingRead, 
+    selectMeeting, 
+    setCurrentMeetingId, 
+    resetCurrentMeetingId, 
+    setActiveMeeting, 
+    resetActiveMeeting 
+} from '../redux/features/meetingSlice';
 import { IMeetingRecord } from '../interfaces';
-import { getRandomString } from '../utils/utils';
-import { setLocalStorage } from '../utils/localStorage';
+import {
+    createChannelMembership,
+    createChannel,
+    listChannelMessages,
+    listChannels,
+    describeChannel,
+    listChannelMemberships,
+    describeChannelFlow,
+} from '../api/ChimeAPI';
+import { 
+    addAttendeeToDB, 
+    addMeetingToDB, 
+    createMeeting, 
+    getAttendeeFromDB, 
+    getMeetingFromDB, 
+    joinMeeting 
+} from '../utils/api';
+import { getRandomString, randomString } from '../utils/utils';
+import { decrypt } from '../utils/crypt';
 import { REGION } from '../constants';
+import appConfig from '../Config';
 
 interface IMeetingsContext {
     currentMeetingId?: string,
@@ -28,12 +64,13 @@ interface IMeetingsContext {
     setShowJoinMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
     setTheMeeting?: React.Dispatch<React.SetStateAction<any>>;
     setTheMeetingId?: React.Dispatch<React.SetStateAction<string>>;
-    createOrJoinTheMeeting?: (mId:any, type:any) => void;
+    createOrJoinTheMeeting?: () => void;
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
+    setTheActiveMeeting?: (iv:any) => void;
     readTheMeetings?: () => void;
-    saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => void;
+    saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
 
 const defaultState = {
@@ -41,6 +78,8 @@ const defaultState = {
     showJoinMeetingModal: false,
     meeting: {
         id: null,
+        password: null,
+        url: null,
         type: '',
     },
     meetingId: '',
@@ -57,11 +96,32 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const dispatch = useDispatch();
 
+    const { mId, ePass } = useParams();
+
     const { username, given_name } = useSelector(selectUser);
     const { currentMeetingId, activeMeeting, meetings } = useSelector(selectMeeting);
 
     const meetingManager = useMeetingManager();
     const meetingStatus = useMeetingStatus();
+
+    const {
+        setActiveChannel,
+        activeChannel,
+        activeChannelMemberships,
+        setActiveChannelMemberships,
+        setChannelMessageToken,
+        unreadChannels,
+        setUnreadChannels,
+        setActiveChannelFlow,
+    } = useChatChannelState();
+    
+    const {
+    setMessages,
+    } = useChatMessagingState();
+
+    const { member } = useAuthContext();
+
+    const { userId } = member;
 
     const [showNewMeetingModal, setShowNewMeetingModal] = useState(defaultState.showNewMeetingModal);
     const [showJoinMeetingModal, setShowJoinMeetingModal] = useState(defaultState.showJoinMeetingModal);
@@ -69,73 +129,119 @@ export const MeetingsProvider: FC = ({ children }) => {
     const [meetingId, setTheMeetingId] = useState(defaultState.meetingId);
 
     // Internal functions
+    const loadChannelFlow = async (channel: any) => {
+        if (channel.ChannelFlowArn == null) {
+          setActiveChannelFlow({});
+        } else {
+          let flow;
+          try {
+            flow = await describeChannelFlow(channel.ChannelFlowArn);
+            setActiveChannelFlow(flow);
+          } catch (err) {
+            console.error('ERROR', err);
+          }
+        }
+    };
+
+    const fetchMemberships = async () => {
+        const memberships = await listChannelMemberships(
+            activeChannel.ChannelArn,
+            userId
+        );
+        setActiveChannelMemberships(memberships);
+    };
+
+    const addMember = async () => {
+        const membership = await createChannelMembership(
+            activeChannel.ChannelArn,
+            `${appConfig.appInstanceArn}/user/${userId}`,
+            userId
+        );
+    };
+
+    const createOrJoinMeetingChannel = async () => {
+        const availableChannels = await getAvailableChannels();
+        let channelArn = availableChannels.find((c:any) => c.Name === mId)?.ChannelArn;
+        if(typeof channelArn === 'undefined'){
+            channelArn = await createChannel(
+                appConfig.appInstanceArn,
+                null,
+                mId,
+                'UNRESTRICTED',
+                'PUBLIC',
+                userId
+            );
+        }
+        const newMessages = await listChannelMessages(channelArn, userId);
+        setMessages(newMessages.Messages);
+        setChannelMessageToken(newMessages.NextToken);
+
+        const channel = await describeChannel(channelArn, userId);
+        setActiveChannel(channel);
+        await loadChannelFlow(channel);
+        setUnreadChannels(unreadChannels.filter((c:any) => c !== channelArn));
+    };
+
     const getAttendeeCallback = () => {
         return async (chimeAttendeeId: string, externalUserId?: string) => {
             const attendeeInfo: any = await getAttendeeFromDB(chimeAttendeeId);
             const attendeeData = attendeeInfo.data.getAttendee;
             return {
-            name: attendeeData.name
+                name: attendeeData.name
             };
         }
     };
 
-    // Public functions
-    const createOrJoinTheMeeting = async(mId:any, type:any) => {
-        let meetingId = mId;
-        console.log('createOrJoinTheMeeting', mId, type)
-        if (!mId) {
-            meetingId = window.location.href.split('/').pop();
+    const getAvailableChannels = async() => {
+        let availableChannels: any[] = [];
+        let nextToken: string | null = null;
+
+        // listChannels returns only 50 channels at once, so we need to loop to get all channels
+        do {
+            const channelsList: any = await listChannels(appConfig.appInstanceArn, userId, nextToken);
+            availableChannels = [...availableChannels, ...channelsList.Channels];
+            nextToken = channelsList.NextToken;
         }
-        console.log('createOrJoinTheMeeting > meetingId', meetingId, type)
-        const meetingResponse: any = await getMeetingFromDB(meetingId);
-        console.log('meetingResponse', meetingResponse.data)
-        if (!meetingResponse.data?.getMeeting) {
-            return createTheMeeting(meetingId);
-            console.log('creating meeting', meetingResponse)
-            return joinTheMeeting(meetingId);
-        }
-        console.log('Joining meeting', meetingResponse)
-        return joinTheMeeting(meetingId);
-        // switch (type) {
-        //     case 'C':
-        //         await createTheMeeting(mId);
-        //         break;
-        //     case 'J':
-        //         await joinTheMeeting(mId);
-        //         break;
-        //     default:
-        //         break;
-        // }
+        while (nextToken !== null);
+
+        return availableChannels;
     };
-    
-    const createTheMeeting = async(mId:any) => {
+
+    // Public functions    
+    const createOrJoinTheMeeting = async() => {
+        console.log('createOrJoinTheMeeting');
+        let meetingId = mId;
+
+        let dbMeeting: any = await getMeetingFromDB(meetingId);
+        if (!dbMeeting.data?.getMeeting) {
+            await createTheMeeting(meetingId);
+        }else{
+            await joinTheMeeting(meetingId);
+        }
+    };
+
+    const createTheMeeting = async(mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
-    
-        const meetingResponse: any = await getMeetingFromDB(mId);
-        
-        const meetingJson = meetingResponse.data.getMeeting;
         try {
-          if (!meetingJson) {
-            const joinInfo = await createMeeting(mId, given_name, REGION); // TODO
-            await addMeetingToDB(mId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting));       
+            const joinInfo = await createMeeting(mtId, given_name, REGION); // TODO
+            const dbMeeting = await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString());    
             await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               joinInfo.Meeting, joinInfo.Attendee
             );
             await meetingManager.join(meetingSessionConfiguration);
-          }
+            await meetingManager.start()
+            return dbMeeting;
         } catch (error) {
-            alert(error)
-            console.log(error);
+            console.error(error);
         }
-        
-        await meetingManager.start();
+
     };
 
-    const joinTheMeeting = async (mId:any) => {
+    const joinTheMeeting = async (mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
     
-        const meetingResponse: any = await getMeetingFromDB(mId);
+        const meetingResponse: any = await getMeetingFromDB(mtId);
         
         const meetingJson = meetingResponse.data.getMeeting;
         try {
@@ -152,8 +258,7 @@ export const MeetingsProvider: FC = ({ children }) => {
             await meetingManager.join(meetingSessionConfiguration);
           }
         } catch (error) {
-            alert(error)
-            console.log(error);
+            console.error(error);
         }
         
         await meetingManager.start();
@@ -163,14 +268,22 @@ export const MeetingsProvider: FC = ({ children }) => {
         dispatch(setCurrentMeetingId(currentMeetingId));
     };
     
+    const setTheActiveMeeting = async (iv:any) => {
+        const password = decrypt([ePass, iv].join('|'));
+        dispatch(setActiveMeeting({
+            id: mId,
+            password: password,
+            url: `/${mId}/${ePass}`,
+        }));
+    }
+
     const readTheMeetings = async () => {
         const data = {};
         await dispatch(meetingRead(username, data));
     };
 
-    const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any) => {
+    const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any='0', durationTimeInMinutes:any='0', isScheduled:any) => {
         // Save to a cloud db
-        //const startDateTimeUTC = moment.utc(`${startDate} ${startTime}`);
         const startDateTimeUTC = moment(`${startDate} ${startTime}`);
         const id = getRandomString(3, 3, '-');
         const data = {
@@ -183,19 +296,41 @@ export const MeetingsProvider: FC = ({ children }) => {
             DurationMins: Number(durationTimeInMinutes),
             StartDateTimeUTC: startDateTimeUTC.format(),
             User: username,
+            IsScheduled: isScheduled,
         };
-        //console.log(startDateTimeUTC.format('hh:mm A'))
-        //console.log(moment.utc(startDateTimeUTC.format()).tz('America/Los_Angeles').format('hh:mm A'))
-        await dispatch(meetingCreate(data));
+        const { payload } = await dispatch(meetingCreate(data));
+        console.log('payload:', payload);
+        if(isScheduled === false){
+            const data = payload.data;
+            setTheMeeting({
+                id: data.MeetingId,
+                password: data.Password,
+                url: data.Url,
+                type: ''
+            });
+        }
     };
+
+    // Lifecycle hooks    
+    useEffect(() => {
+        const doActions = async () => {
+            if(activeChannel && Object.keys(activeChannel).length !== 0){
+                await addMember();
+                await fetchMemberships();
+            }
+        }
+        doActions();
+    }, [activeChannel]);
+
+    useEffect(() => {
+        if(meetingStatus === MeetingStatus.Succeeded){
+            createOrJoinMeetingChannel();
+        }
+    }, [meetingStatus]);
 
     useEffect(() => {
         if(meeting?.id){
-            dispatch(setActiveMeeting({
-                id: meeting?.id,
-                type: meeting?.type,
-            }));
-            navigate('/meeting/' + meeting?.id);
+            navigate('/meeting' + meeting?.url);
         }else{
             dispatch(resetActiveMeeting());
         }
@@ -215,6 +350,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     setShowJoinMeetingModal,
                     setTheMeeting,
                     setTheMeetingId,
+                    setTheActiveMeeting,
                     createOrJoinTheMeeting,
                     createTheMeeting,
                     joinTheMeeting,
