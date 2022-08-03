@@ -605,7 +605,10 @@
                       "Resource": [
                           "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings/*",
                           "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*"
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*",
+                          "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*/*/meetings/*",
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8p432d6n7b6izvwsi/*/*/meetings",
+                          "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*"
                       ],
                       "Effect": "Allow"
                   }
