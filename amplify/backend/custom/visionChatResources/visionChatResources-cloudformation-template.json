@@ -302,6 +302,25 @@
           "website",
           "zoneinfo",
           "email"
+        ],
+        "ReadAttributes": [
+          "address",
+          "birthdate",
+          "family_name",
+          "middle_name",
+          "gender",
+          "locale",
+          "given_name",
+          "name",
+          "nickname",
+          "phone_number",
+          "preferred_username",
+          "picture",
+          "profile",
+          "updated_at",
+          "website",
+          "zoneinfo",
+          "email"
         ]
       }
     },
@@ -584,8 +603,8 @@
                           "execute-api:Invoke"
                       ],
                       "Resource": [
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/dev/*/meetings/*",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/dev/*/meetings"
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/${env}/*/meetings/*",
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/${env}/*/meetings"
                       ],
                       "Effect": "Allow"
                   }
