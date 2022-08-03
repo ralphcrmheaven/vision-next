@@ -299,7 +299,7 @@ export const MeetingsProvider: FC = ({ children }) => {
             IsScheduled: isScheduled,
         };
         const { payload } = await dispatch(meetingCreate(data));
-
+        console.log('payload:', payload);
         if(isScheduled === false){
             const data = payload.data;
             setTheMeeting({

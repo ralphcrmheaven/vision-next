@@ -603,8 +603,9 @@
                           "execute-api:Invoke"
                       ],
                       "Resource": [
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/${env}/*/meetings/*",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/${env}/*/meetings"
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings/*",
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings",
+                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*"
                       ],
                       "Effect": "Allow"
                   }

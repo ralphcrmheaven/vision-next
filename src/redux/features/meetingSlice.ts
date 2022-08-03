@@ -18,6 +18,7 @@ export const meetingCreate: any = createAsyncThunk(
     'meeting/create',
     async (data:any) => {
       const res = await meetingAPI().create(data);
+      console.log('res meeting api: ', res);
       return res;
     }
 );

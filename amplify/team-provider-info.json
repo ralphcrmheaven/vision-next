@@ -20,7 +20,7 @@
         },
         "MeetingPath": {
           "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
-          "s3Key": "amplify-builds/MeetingPath-562f6944546957686c79-build.zip"
+          "s3Key": "amplify-builds/MeetingPath-72776468326c77444f64-build.zip"
         },
         "visionEmailNotification": {
           "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",

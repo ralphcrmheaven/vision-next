@@ -58,7 +58,7 @@ const convertUrlType = (param, type) => {
 // additional functions
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
-const secretKey =  process.REACT_APP_SK;
+const secretKey =  process.env.REACT_APP_SK;
 
 const getRandomString = (instanceCount, charCount, separator) => {
   let rs = '';
