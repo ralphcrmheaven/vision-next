@@ -5,9 +5,9 @@
 export const onCreateContact = /* GraphQL */ `
   subscription OnCreateContact {
     onCreateContact {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt
@@ -18,9 +18,9 @@ export const onCreateContact = /* GraphQL */ `
 export const onUpdateContact = /* GraphQL */ `
   subscription OnUpdateContact {
     onUpdateContact {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt
@@ -31,9 +31,9 @@ export const onUpdateContact = /* GraphQL */ `
 export const onDeleteContact = /* GraphQL */ `
   subscription OnDeleteContact {
     onDeleteContact {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt

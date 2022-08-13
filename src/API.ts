@@ -97,16 +97,16 @@ export type DeleteAttendeeInput = {
 };
 
 export type CreateContactInput = {
-  id?: string | null,
-  userId: string,
   email: string,
+  userId: string,
+  name?: string | null,
   phoneNumber?: string | null,
   group?: string | null,
 };
 
 export type ModelContactConditionInput = {
   userId?: ModelStringInput | null,
-  email?: ModelStringInput | null,
+  name?: ModelStringInput | null,
   phoneNumber?: ModelStringInput | null,
   group?: ModelStringInput | null,
   and?: Array< ModelContactConditionInput | null > | null,
@@ -116,9 +116,9 @@ export type ModelContactConditionInput = {
 
 export type Contact = {
   __typename: "Contact",
-  id: string,
-  userId: string,
   email: string,
+  userId: string,
+  name?: string | null,
   phoneNumber?: string | null,
   group?: string | null,
   createdAt: string,
@@ -126,13 +126,13 @@ export type Contact = {
 };
 
 export type DeleteContactInput = {
-  id: string,
+  email: string,
 };
 
 export type UpdateContactInput = {
-  id: string,
+  email: string,
   userId?: string | null,
-  email?: string | null,
+  name?: string | null,
   phoneNumber?: string | null,
   group?: string | null,
 };
@@ -182,9 +182,9 @@ export type ModelAttendeeConnection = {
 };
 
 export type ModelContactFilterInput = {
-  id?: ModelStringInput | null,
-  userId?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
+  name?: ModelStringInput | null,
   phoneNumber?: ModelStringInput | null,
   group?: ModelStringInput | null,
   and?: Array< ModelContactFilterInput | null > | null,
@@ -270,9 +270,9 @@ export type CreateContactGraphQLMutationVariables = {
 export type CreateContactGraphQLMutation = {
   createContactGraphQL?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -288,9 +288,9 @@ export type DeleteContactGraphQLMutationVariables = {
 export type DeleteContactGraphQLMutation = {
   deleteContactGraphQL?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -306,9 +306,9 @@ export type UpdateContactGraphQLMutationVariables = {
 export type UpdateContactGraphQLMutation = {
   updateContactGraphQL?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -368,13 +368,7 @@ export type SendEmailNotificationQueryVariables = {
 };
 
 export type SendEmailNotificationQuery = {
-  sendEmailNotification?:  {
-    __typename: "Response",
-    statusCode: string,
-    headers?: string | null,
-    body?: string | null,
-    isBase64Encoded?: string | null,
-  } | null,
+  sendEmailNotification?: string | null,
 };
 
 export type GetMeetingQueryVariables = {
@@ -454,15 +448,15 @@ export type ListAttendeesQuery = {
 };
 
 export type GetContactQueryVariables = {
-  id: string,
+  email: string,
 };
 
 export type GetContactQuery = {
   getContact?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -471,7 +465,7 @@ export type GetContactQuery = {
 };
 
 export type ListContactsQueryVariables = {
-  id?: string | null,
+  email?: string | null,
   filter?: ModelContactFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
@@ -483,9 +477,9 @@ export type ListContactsQuery = {
     __typename: "ModelContactConnection",
     items:  Array< {
       __typename: "Contact",
-      id: string,
-      userId: string,
       email: string,
+      userId: string,
+      name?: string | null,
       phoneNumber?: string | null,
       group?: string | null,
       createdAt: string,
@@ -498,9 +492,9 @@ export type ListContactsQuery = {
 export type OnCreateContactSubscription = {
   onCreateContact?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -511,9 +505,9 @@ export type OnCreateContactSubscription = {
 export type OnUpdateContactSubscription = {
   onUpdateContact?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,
@@ -524,9 +518,9 @@ export type OnUpdateContactSubscription = {
 export type OnDeleteContactSubscription = {
   onDeleteContact?:  {
     __typename: "Contact",
-    id: string,
-    userId: string,
     email: string,
+    userId: string,
+    name?: string | null,
     phoneNumber?: string | null,
     group?: string | null,
     createdAt: string,

@@ -64,9 +64,9 @@ export const createContactGraphQL = /* GraphQL */ `
     $condition: ModelContactConditionInput
   ) {
     createContactGraphQL(input: $input, condition: $condition) {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt
@@ -80,9 +80,9 @@ export const deleteContactGraphQL = /* GraphQL */ `
     $condition: ModelContactConditionInput
   ) {
     deleteContactGraphQL(input: $input, condition: $condition) {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt
@@ -96,9 +96,9 @@ export const updateContactGraphQL = /* GraphQL */ `
     $condition: ModelContactConditionInput
   ) {
     updateContactGraphQL(input: $input, condition: $condition) {
-      id
-      userId
       email
+      userId
+      name
       phoneNumber
       group
       createdAt

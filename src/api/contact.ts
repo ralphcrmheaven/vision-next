@@ -5,6 +5,7 @@ import * as queries from '../graphql/queries';
 
 type ContactType = {
     email: string
+    name: string
     userId: string
     phoneNumber?: string
     group?: string

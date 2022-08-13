@@ -62,8 +62,7 @@ The Vision2020 Team
 
   const handleContacts = async (userId: string) => {
     return await getContacts(userId)
-  }  
-
+  }
   
   useEffect(() => {
     const result = handleContacts(user.id)

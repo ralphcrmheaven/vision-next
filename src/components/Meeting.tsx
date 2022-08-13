@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
+import { getContacts, ContactType, ContactNotificationType } from '../api/contact';
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -15,6 +16,12 @@ import {
   useVideoInputs,
   useLogger,
   PopOverItem,
+  Modal,
+  ModalBody,
+  PrimaryButton,
+  ModalHeader,
+  Notification,
+  Severity
 } from 'amazon-chime-sdk-component-library-react';
 import {
   BackgroundBlurVideoFrameProcessor,
@@ -23,6 +30,7 @@ import {
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
 import { useMeetings } from '../providers/MeetingsProvider';
+import { useSelector } from 'react-redux'
 import meetingAPI from '../api/meeting';
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import Roaster from '../components/Roaster'
@@ -31,10 +39,14 @@ import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading.gif'
 import { endMeeting } from '../utils/api'
+import { IUser, selectUser } from '../redux/features/userSlice'
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../graphql/queries';
 
 const Meeting: FC = () => {
   let navigate = useNavigate()
-
+  const user: IUser = useSelector(selectUser);
+  const [contacts, setContacts] = useState<ContactType[]>([]);
   const meetingManager = useMeetingManager();
   console.log('meetignManger:', meetingManager)
   const meetingStatus = useMeetingStatus();
@@ -48,12 +60,13 @@ const Meeting: FC = () => {
   const { mId, ePass } = useParams();
 
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
-  const [meetingPassword, setMeetingPassword] = useState<string>('')
+  // const [meetingPassword, setMeetingPassword] = useState<string>('')
 
   // Background Replacement
   const [showModal, setShowModal] = useState<boolean>(false)
   const [background, setBackground] = useState<string>('')
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   
   const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
 
@@ -131,6 +144,22 @@ const Meeting: FC = () => {
     }
   }
 
+  useEffect(() => {
+    const result = handleContacts(user.id)
+    if(result instanceof Promise) {
+      result.then(({data}) => { 
+          setContacts(data.listContacts?.items as ContactType[])
+        }
+      );
+    }
+  }, [user.id])
+
+  const sendEmailNotification = async (params: ContactNotificationType) => {
+    console.log('params: ', params);
+    await API.graphql(graphqlOperation(queries.sendEmailNotification,  params ))
+    setIsOpen(false)
+  }
+
   // Lifecycle hooks
   useEffect(() => {
     toggleBackgroundReplacement()
@@ -138,9 +167,9 @@ const Meeting: FC = () => {
 
   useEffect(() => {
     doActionsOnLoad();
-  }, [])
+  }, []);
 
-  if(isValidMeeting === false){
+  if(isValidMeeting === false) {
     return <ErrorModal
             message="Invalid meeting id or password"
             showButton={true}
@@ -150,6 +179,25 @@ const Meeting: FC = () => {
           />
   }
 
+  const handleContacts = async (userId: string) => {
+    return await getContacts(userId)
+  }
+  
+  const msg = `
+  Hi there,
+  
+  Ashley Solomon would like to invite you to chat and meet over Vision2020.
+  
+  Please sign up a Vision2020 account and then click the link below to accept the invitation within 30 days:
+  https://www.poc.visionvideoconferencing.com/signup
+  
+  If you don't want to accept the invitation, just ignore this message.
+  
+  Thank you.
+  
+  The Vision2020 Team
+  `;
+  
   return (
     <>
       <div className="flex content-center w-full h-full">
@@ -228,8 +276,9 @@ const Meeting: FC = () => {
                     </ul>
                   </div>
                   <div>
-                    <h3>Join by Vision Sending Email Function</h3>
+                    <h3>Join by using Contacts</h3>
                   </div>
+                  <PrimaryButton label="Invite" onClick={() => setIsOpen(true)} />
                 </div>
               </div>
             </div>
@@ -249,14 +298,38 @@ const Meeting: FC = () => {
             />
             <ContentShareControl />
           </ControlBar>
-
+          
           <SelectBackgroundImagesModal
             setShowModal={setShowModal}
             setBackground={setBackground}
             showModal={showModal}
           />
+          <></>
         </>
       )}
+      { isOpen && (
+          <Modal onClose={() => setIsOpen(false)} rootId="modal-root">
+            <ModalHeader title="Send Invite" />
+            <ModalBody>
+              <ul className="flex flex-row items-center w-full pb-10">
+                {contacts.map((d, i) => (
+                  <li key={i} className="flex flex-row justify-between w-full">
+                    <span>{d.email}</span>
+                    <span>{d.name}</span>
+                    <span>
+                      <PrimaryButton label="Send" 
+                        onClick={e => { sendEmailNotification({ msg, email: d.email, 
+                          subject: `Vision2020 Invitation from ${user.given_name} ${user.family_name}`
+                        } as ContactNotificationType) }} 
+                      />
+                    </span>
+                  </li>)
+                )}
+              </ul>
+            </ModalBody>
+          </Modal>
+        )
+      }
     </>
   )
 }

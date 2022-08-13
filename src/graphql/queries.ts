@@ -34,12 +34,7 @@ export const endChimeMeeting = /* GraphQL */ `
 `;
 export const sendEmailNotification = /* GraphQL */ `
   query SendEmailNotification($email: String, $msg: String, $subject: String) {
-    sendEmailNotification(email: $email, msg: $msg, subject: $subject) {
-      statusCode
-      headers
-      body
-      isBase64Encoded
-    }
+    sendEmailNotification(email: $email, msg: $msg, subject: $subject)
   }
 `;
 export const getMeeting = /* GraphQL */ `
@@ -117,11 +112,11 @@ export const listAttendees = /* GraphQL */ `
   }
 `;
 export const getContact = /* GraphQL */ `
-  query GetContact($id: String!) {
-    getContact(id: $id) {
-      id
-      userId
+  query GetContact($email: String!) {
+    getContact(email: $email) {
       email
+      userId
+      name
       phoneNumber
       group
       createdAt
@@ -131,23 +126,23 @@ export const getContact = /* GraphQL */ `
 `;
 export const listContacts = /* GraphQL */ `
   query ListContacts(
-    $id: String
+    $email: String
     $filter: ModelContactFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listContacts(
-      id: $id
+      email: $email
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        id
-        userId
         email
+        userId
+        name
         phoneNumber
         group
         createdAt
