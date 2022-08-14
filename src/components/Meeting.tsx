@@ -311,7 +311,7 @@ const Meeting: FC = () => {
           <Modal onClose={() => setIsOpen(false)} rootId="modal-root">
             <ModalHeader title="Send Invite" />
             <ModalBody>
-              <ul className="flex flex-row items-center w-full pb-10">
+              <ul className="flex flex-col items-center w-full pb-10 space-y-1">
                 {contacts.map((d, i) => (
                   <li key={i} className="flex flex-row justify-between w-full">
                     <span>{d.email}</span>
