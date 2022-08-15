@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { getContacts, ContactType, ContactNotificationType } from '../api/contact';
 import {
@@ -33,6 +33,7 @@ import { useMeetings } from '../providers/MeetingsProvider';
 import { useSelector } from 'react-redux'
 import meetingAPI from '../api/meeting';
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
+import FormInput, { InputTypes } from '../components/form/FormInput'
 import Roaster from '../components/Roaster'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import ErrorModal from './modals/ErrorModal';
@@ -44,6 +45,8 @@ import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 
 const Meeting: FC = () => {
+  const inviteButtonRef = useRef(null);
+
   let navigate = useNavigate()
   const user: IUser = useSelector(selectUser);
   const [contacts, setContacts] = useState<ContactType[]>([]);
@@ -107,6 +110,25 @@ const Meeting: FC = () => {
     }
   }
 
+  const sendEmailNotification = async (params: ContactNotificationType) => {
+    //console.log('params: ', params);
+    await API.graphql(graphqlOperation(queries.sendEmailNotification,  params ))
+    //setIsOpen(false)
+  }
+
+  const setInviteeButtonProps = (selector:any, props:any) => {
+    const { label, innerHTML, disabled } = props;
+    document
+            .querySelectorAll(selector)
+              .forEach(
+                (el:any) => {
+                  console.log(el);
+                              el.label = label;
+                              el.innerHTML = innerHTML;
+                              el.disabled = disabled;
+                });
+  };
+
   const getGooglePresetEmail = () => {
     const params:any = {
       fs: 1,
@@ -118,6 +140,37 @@ const Meeting: FC = () => {
     const query = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     return `https://mail.google.com/mail/u/0/?${query}`
   }
+
+  const msg = `
+    Hi there,
+    
+    ${user.given_name} ${user.family_name} is inviting you to chat and meet over Vision2020.
+    
+    Click this link to join the meeting: ${window.location.origin}/meeting${activeMeeting.url}
+    
+    Thank you.
+    
+    The Vision2020 Team
+  `;
+
+  const subject = `Vision2020 Invitation from ${user.given_name} ${user.family_name}`;
+
+    // const msg = `
+  //   Hi there,
+    
+  //   Ashley Solomon would like to invite you to chat and meet over Vision2020.
+    
+  //   Please sign up a Vision2020 account and then click the link below to accept the invitation within 30 days:
+  //   https://www.poc.visionvideoconferencing.com/signup
+    
+  //   If you don't want to accept the invitation, just ignore this message.
+    
+  //   Thank you.
+    
+  //   The Vision2020 Team
+  // `;
+  
+
 
   // Events
   const doActionsOnLoad = async () => {
@@ -144,6 +197,10 @@ const Meeting: FC = () => {
     }
   }
 
+  const clickedInviteToMeeting = async () => {
+  }
+
+  // Lifecycle hooks
   useEffect(() => {
     const result = handleContacts(user.id)
     if(result instanceof Promise) {
@@ -154,13 +211,6 @@ const Meeting: FC = () => {
     }
   }, [user.id])
 
-  const sendEmailNotification = async (params: ContactNotificationType) => {
-    console.log('params: ', params);
-    await API.graphql(graphqlOperation(queries.sendEmailNotification,  params ))
-    setIsOpen(false)
-  }
-
-  // Lifecycle hooks
   useEffect(() => {
     toggleBackgroundReplacement()
   }, [background])
@@ -182,22 +232,7 @@ const Meeting: FC = () => {
   const handleContacts = async (userId: string) => {
     return await getContacts(userId)
   }
-  
-  const msg = `
-  Hi there,
-  
-  Ashley Solomon would like to invite you to chat and meet over Vision2020.
-  
-  Please sign up a Vision2020 account and then click the link below to accept the invitation within 30 days:
-  https://www.poc.visionvideoconferencing.com/signup
-  
-  If you don't want to accept the invitation, just ignore this message.
-  
-  Thank you.
-  
-  The Vision2020 Team
-  `;
-  
+
   return (
     <>
       <div className="flex content-center w-full h-full">
@@ -312,15 +347,56 @@ const Meeting: FC = () => {
             <ModalHeader title="Send Invite" />
             <ModalBody>
               <ul className="flex flex-col items-center w-full pb-10 space-y-1">
+                <li key={0} id={`invitee-${0}`} className="flex flex-row justify-between w-full">
+                    <span>
+                      <FormInput
+                        type={InputTypes.Text}
+                        name="email"
+                        className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+                        placeholder="Email"
+                        onChange={e => { }} 
+                        required
+                      />
+                    </span>
+                    <span>
+                      <PrimaryButton
+                        label="Send" 
+                        onClick={async (e:any) => { 
+                          setInviteeButtonProps(`#invitee-${0} button`, { label: 'Sending...', innerHTML: 'Sending...', disabled: true });
+
+                          // await sendEmailNotification({ 
+                          //   msg, 
+                          //   email: d.email, 
+                          //   subject
+                          // } as ContactNotificationType);
+                          
+                          setInviteeButtonProps(`#invitee-${0} button`, { label: 'Sent', innerHTML: 'Sent', disabled: true });
+
+                          }
+                        } 
+                      />
+                    </span>
+                </li>
                 {contacts.map((d, i) => (
-                  <li key={i} className="flex flex-row justify-between w-full">
+                  <li key={i+1} id={`invitee-${i+1}`} className="flex flex-row justify-between w-full">
                     <span>{d.email}</span>
                     <span>{d.name}</span>
                     <span>
-                      <PrimaryButton label="Send" 
-                        onClick={e => { sendEmailNotification({ msg, email: d.email, 
-                          subject: `Vision2020 Invitation from ${user.given_name} ${user.family_name}`
-                        } as ContactNotificationType) }} 
+                      <PrimaryButton
+                        label="Send" 
+                        onClick={async (e:any) => { 
+                          setInviteeButtonProps(`#invitee-${i+1} button`, { label: 'Sending...', innerHTML: 'Sending...', disabled: true });
+
+                          await sendEmailNotification({ 
+                            msg, 
+                            email: d.email, 
+                            subject
+                          } as ContactNotificationType);
+                          
+                          setInviteeButtonProps(`#invitee-${i+1} button`, { label: 'Sent', innerHTML: 'Sent', disabled: true });
+
+                          }
+                        } 
                       />
                     </span>
                   </li>)
