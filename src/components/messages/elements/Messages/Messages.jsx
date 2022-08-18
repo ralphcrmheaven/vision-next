@@ -27,6 +27,7 @@ import {
 import insertDateHeaders from '../../../../utils/insertDateHeaders';
 
 import './Messages.css';
+import { useMeetings } from '../../../../providers/MeetingsProvider';
 import { useChatChannelState } from '../../../../providers/ChatMessagesProvider';
 
 const Messages = ({
@@ -40,6 +41,11 @@ const Messages = ({
   activeChannelRef,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { 
+    activeMeeting
+  } = useMeetings();
+
   const { channelMessageTokenRef } = useChatChannelState();
 
   const handleScrollTop = async () => {
@@ -268,6 +274,16 @@ const Messages = ({
       return email.substring(0, email.lastIndexOf("@"));
     }
 
+    const getDisplayName = (attendeeId) => {
+      
+      if(activeMeeting.attendees.length > 0) {
+        return activeMeeting.attendees.find((a) => a.UserName === attendeeId)?.Name;
+      }
+      // return activeMeeting.Attendees.find((a) => a.AttendeeId === attendeeId)?.DisplayName;
+
+      return attendeeId;
+    };
+
     return (
       <div className="message">
         <ChatBubbleContainer
@@ -279,7 +295,7 @@ const Messages = ({
           {editingMessageId === m.messageId && !m.redacted ? (
             <EditableChatBubble
               variant={variant}
-              senderName={m.senderName}
+              senderName={getDisplayName(m.senderName)}
               content={m.content}
               save={(event, value) => saveEdit(event, value, m.metadata)}
               cancel={cancelEdit}
@@ -292,7 +308,8 @@ const Messages = ({
                 <img src={ `https://ui-avatars.com/api/?name=${getInitials(m.senderName)}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
                 <ChatBubble
                     variant={variant}
-                    senderName={getOnlyTextFromEmail(m.senderName)}
+                    //senderName={getOnlyTextFromEmail(m.senderName)}
+                    senderName={getDisplayName(m.senderName)}
                     redacted={m.redacted}
                     showName={showName}
                     showTail={showTail}

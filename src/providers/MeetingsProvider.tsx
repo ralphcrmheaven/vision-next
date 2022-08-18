@@ -12,6 +12,7 @@ import {
     MeetingStatus,
     useMeetingManager,
     useMeetingStatus,
+    useRosterState,
 } from 'amazon-chime-sdk-component-library-react';
 import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
 import {
@@ -23,10 +24,12 @@ import { selectUser } from '../redux/features/userSlice';
 import { 
     meetingCreate, 
     meetingRead, 
+    meetingUpdate,
     selectMeeting, 
     setCurrentMeetingId, 
     resetCurrentMeetingId, 
     setActiveMeeting, 
+    setActiveMeetingAttendees,
     resetActiveMeeting 
 } from '../redux/features/meetingSlice';
 import { IMeetingRecord } from '../interfaces';
@@ -45,7 +48,7 @@ import {
     createMeeting, 
     getAttendeeFromDB, 
     getMeetingFromDB, 
-    joinMeeting 
+    joinMeeting,
 } from '../utils/api';
 import { getRandomString, randomString } from '../utils/utils';
 import { decrypt } from '../utils/crypt';
@@ -68,7 +71,8 @@ interface IMeetingsContext {
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
-    setTheActiveMeeting?: (iv:any) => void;
+    setTheActiveMeeting?: (iv:any, attendees:any) => void;
+    setTheActiveMeetingAttendees?: (attendees:any) => void;
     readTheMeetings?: () => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -103,6 +107,7 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const meetingManager = useMeetingManager();
     const meetingStatus = useMeetingStatus();
+    const { roster } = useRosterState();
 
     const {
         setActiveChannel,
@@ -129,6 +134,44 @@ export const MeetingsProvider: FC = ({ children }) => {
     const [meetingId, setTheMeetingId] = useState(defaultState.meetingId);
 
     // Internal functions
+    const addAttendeeToMeeting = async () => {
+        // Update to a cloud db
+        const attendees = activeMeeting.attendees;
+        if(typeof attendees === 'undefined') {
+            return;
+        }
+
+        const attendee = attendees.find((a:any) => a.UserName === username);
+        
+        console.log('attendees', attendees);
+        console.log('attendee', attendee);
+
+        if(typeof attendee === 'undefined') {
+            const data = {
+                MeetingId: mId,
+                User: username,
+                Attendees: [{
+                    UserName: username,
+                    Name: given_name,
+                }]
+            };
+            const { payload } = await dispatch(meetingUpdate(data));
+
+            await setTheActiveMeetingAttendees?.(payload.data.Attendees);
+        }
+    };
+
+    const fetchAttendeesFromMeeting = async () => {
+
+        await setTheActiveMeetingAttendees?.([]);
+    };
+
+    const setTheActiveMeetingAttendees = async (attendees:any) => {
+        dispatch(setActiveMeetingAttendees({
+            attendees: attendees,
+        }));
+    };
+
     const loadChannelFlow = async (channel: any) => {
         if (channel.ChannelFlowArn == null) {
           setActiveChannelFlow({});
@@ -143,6 +186,15 @@ export const MeetingsProvider: FC = ({ children }) => {
         }
     };
 
+    const addMember = async () => {
+        const membership = await createChannelMembership(
+            activeChannel.ChannelArn,
+            `${appConfig.appInstanceArn}/user/${userId}`,
+            userId
+        );
+        console.log('membership', membership);
+    };
+
     const fetchMemberships = async () => {
         const memberships = await listChannelMemberships(
             activeChannel.ChannelArn,
@@ -151,15 +203,17 @@ export const MeetingsProvider: FC = ({ children }) => {
         setActiveChannelMemberships(memberships);
     };
 
-    const addMember = async () => {
-        const membership = await createChannelMembership(
-            activeChannel.ChannelArn,
-            `${appConfig.appInstanceArn}/user/${userId}`,
-            userId
-        );
-    };
-
     const createOrJoinMeetingChannel = async () => {
+        // const meetingResponse:any = await getMeetingFromDB(mId);
+        // const meetingJson = meetingResponse.data.getMeeting;
+        // const meetingData = JSON.parse(meetingJson.data);
+
+        // const { MeetingId } = meetingData;
+        // //console.log(meetingData)
+        // const attendeesList = await listAttendees(MeetingId ?? '', 10, null);
+        // console.log('attendeesList', attendeesList);
+        //console.log(roster)
+
         const availableChannels = await getAvailableChannels();
         let channelArn = availableChannels.find((c:any) => c.Name === mId)?.ChannelArn;
         if(typeof channelArn === 'undefined'){
@@ -209,7 +263,6 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     // Public functions    
     const createOrJoinTheMeeting = async() => {
-        console.log('createOrJoinTheMeeting');
         let meetingId = mId;
 
         let dbMeeting: any = await getMeetingFromDB(meetingId);
@@ -268,12 +321,13 @@ export const MeetingsProvider: FC = ({ children }) => {
         dispatch(setCurrentMeetingId(currentMeetingId));
     };
     
-    const setTheActiveMeeting = async (iv:any) => {
+    const setTheActiveMeeting = async (iv:any, attendees:any) => {
         const password = decrypt([ePass, iv].join('|'));
         dispatch(setActiveMeeting({
             id: mId,
             password: password,
             url: `/${mId}/${ePass}`,
+            attendees: attendees,
         }));
     }
 
@@ -297,9 +351,15 @@ export const MeetingsProvider: FC = ({ children }) => {
             StartDateTimeUTC: startDateTimeUTC.format(),
             User: username,
             IsScheduled: isScheduled,
+            Attendees: [
+                {
+                    UserName: username,
+                    Name: given_name,
+                }
+            ],
         };
         const { payload } = await dispatch(meetingCreate(data));
-        console.log('payload:', payload);
+
         if(isScheduled === false){
             const data = payload.data;
             setTheMeeting({
@@ -311,7 +371,22 @@ export const MeetingsProvider: FC = ({ children }) => {
         }
     };
 
-    // Lifecycle hooks    
+    // Lifecycle hooks  
+    useEffect(() => {
+        const doActions = async () => {
+            console.log(roster)
+            await fetchAttendeesFromMeeting();
+        }
+        doActions();
+    }, [roster]);
+
+    useEffect(() => {
+        const doActions = async () => {
+            await addAttendeeToMeeting();
+        }
+        doActions();
+    }, [activeMeeting]);
+
     useEffect(() => {
         const doActions = async () => {
             if(activeChannel && Object.keys(activeChannel).length !== 0){

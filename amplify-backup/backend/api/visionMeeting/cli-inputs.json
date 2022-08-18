@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "visionMeeting",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/ashcslmn/crmheaven/vision-next/amplify/backend/api/visionMeeting/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-06-08T14:48:28.518Z",
+      "keyDescription": ""
+    }
+  }
+}
