@@ -284,6 +284,9 @@ const Messages = ({
       return attendeeId;
     };
 
+    const displayName = getDisplayName(m.senderName);
+    const initials = getInitials(displayName);
+
     return (
       <div className="message">
         <ChatBubbleContainer
@@ -305,11 +308,11 @@ const Messages = ({
           ) : (
             <>
               <div>
-                <img src={ `https://ui-avatars.com/api/?name=${getInitials(m.senderName)}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
+                <img src={ `https://ui-avatars.com/api/?name=${initials}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
                 <ChatBubble
                     variant={variant}
                     //senderName={getOnlyTextFromEmail(m.senderName)}
-                    senderName={getDisplayName(m.senderName)}
+                    senderName={displayName}
                     redacted={m.redacted}
                     showName={showName}
                     showTail={showTail}

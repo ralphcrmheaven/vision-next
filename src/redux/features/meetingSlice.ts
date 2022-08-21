@@ -40,6 +40,14 @@ export const meetingUpdate: any = createAsyncThunk(
     }
 );
 
+export const meetingAttendeesRead: any = createAsyncThunk(
+    'meeting/readattendees',
+    async (meetingId:any, data:any) => {
+      const res = await meetingAPI().readMeetingAttendees(meetingId, data);
+      return res;
+    }
+);
+
 const meetingSlice = createSlice({
     name: 'meeting',
     initialState,
@@ -109,6 +117,12 @@ const meetingSlice = createSlice({
             .addCase(meetingUpdate.fulfilled, (state, action) => {
             })
             .addCase(meetingUpdate.rejected, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.pending, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.fulfilled, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.rejected, (state, action) => {
             })
     }
 });

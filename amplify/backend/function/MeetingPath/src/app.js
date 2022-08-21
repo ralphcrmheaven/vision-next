@@ -100,7 +100,7 @@ const decrypt = (encryptedText) => {
  * HTTP Get method for list objects *
  ********************************/
 
- app.get(path + hashKeyPath, function(req, res) {
+app.get(path + hashKeyPath, function(req, res) {
   const condition = {}
   condition[partitionKeyName] = {
     ComparisonOperator: 'EQ'
@@ -344,6 +344,44 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
 });
 
 /*******************************************
+ * HTTP get method to retrieve attendees *
+ *******************************************/
+
+app.get(path + '/:meeting_id/attendees', function(req, res) {
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'MeetingId-index',
+    KeyConditionExpression: '#MeetingId = :meeting_id',
+    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
+  }
+
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: err});
+    } else {
+      if (!data.Items.length) {
+        res.statusCode = 401;
+        res.json({error: 'Meeting invalid!'});
+        return;
+      }
+
+      try{
+        const attendees = data.Items[0].Attendees;
+        const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+        res.json({success: 'Attendees retrieved!', url: req.url, data: {Attendees: uniqueAttendees}});
+      }catch(e){
+        res.statusCode = 500;
+        res.json({error: 'Something went wrong!'});
+        return;
+      }
+    }
+  });
+});
+
+/*******************************************
  * HTTP post method for meeting validation *
  *******************************************/
  
@@ -394,7 +432,7 @@ app.post(path + '/:meeting_id/validate', function(req, res) {
         }
       }catch(e){
         res.statusCode = 500;
-        res.json({error: e});
+        res.json({error: 'Something went wrong!'});
         return;
       }
     }

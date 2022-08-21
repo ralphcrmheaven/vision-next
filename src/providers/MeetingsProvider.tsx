@@ -24,6 +24,7 @@ import { selectUser } from '../redux/features/userSlice';
 import { 
     meetingCreate, 
     meetingRead, 
+    meetingAttendeesRead,
     meetingUpdate,
     selectMeeting, 
     setCurrentMeetingId, 
@@ -162,11 +163,17 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
 
     const fetchAttendeesFromMeeting = async () => {
+        const data = {
+        };
+        const { payload } = await dispatch(meetingAttendeesRead(mId, data));
+        console.log(payload);
 
-        await setTheActiveMeetingAttendees?.([]);
+        await setTheActiveMeetingAttendees?.(payload.data.Attendees);
+        //await setTheActiveMeetingAttendees?.([]);
     };
 
     const setTheActiveMeetingAttendees = async (attendees:any) => {
+        console.log('setTheActiveMeetingAttendees', attendees);
         dispatch(setActiveMeetingAttendees({
             attendees: attendees,
         }));
