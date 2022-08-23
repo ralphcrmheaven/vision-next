@@ -1,12 +1,11 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Thanks to Amazon.com, Inc. :)
 // SPDX-License-Identifier: MIT-0
 
 import React, { useEffect, useState } from 'react';
 import { MessageAttachment } from 'amazon-chime-sdk-component-library-react';
-import AttachmentService from '../../../../services/AttachmentService';
-import arnParser from '../../../../utils/arnParser';
-import formatBytes from '../../../../utils/formatBytes';
-import appConfig from '../../../../Config';
+import AttachmentService from '../../../services/AttachmentService';
+import { formatBytes, arnParser } from '../../../utils/aws';
+import appConfig from '../../../Config';
 
 /**
  * Attachment Processor which provides MessageAttachment component with downloadUrl
@@ -16,7 +15,7 @@ import appConfig from '../../../../Config';
  * @param {string} senderId AWS Cognito userId of the provided fileKey
  * @returns {MessageAttachment} MessageAttachment
  */
-export const AttachmentProcessor = ({ fileKey, name, size = 0, senderId }) => {
+export const AttachmentProcessor = ({ fileKey, name, size = 0, senderId }:any) => {
   const [url, setUrl] = useState('');
 
   useEffect(() => {

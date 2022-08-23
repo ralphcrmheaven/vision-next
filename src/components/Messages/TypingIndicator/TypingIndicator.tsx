@@ -3,8 +3,8 @@
 
 import { useEffect } from 'react';
 import { ChatBubble, } from 'amazon-chime-sdk-component-library-react';
-import { useChatChannelState } from '../../../../providers/ChatMessagesProvider';
-import './index.css';
+import { useChatChannelState } from '../../../providers/ChatMessagesProvider';
+import './TypingIndicator.css';
 
 const TypingIndicator = () => {
   const {

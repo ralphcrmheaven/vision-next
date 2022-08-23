@@ -11,20 +11,17 @@ import {
   Label,
 } from 'amazon-chime-sdk-component-library-react';
 import debounce from 'lodash/debounce';
-
 import {
   Persistence,
   MessageType,
   sendChannelMessage,
   getChannelMessage,
-} from '../../../../api/ChimeAPI';
-import formatBytes from '../../../../utils/formatBytes';
-import AttachmentService from '../../../../services/AttachmentService';
-import { useChatMessagingState, useChatChannelState, } from '../../../../providers/ChatMessagesProvider';
-import { useAuthContext, } from '../../../../providers/AuthProvider';
-
-import { SendMessageIcon } from '../../../icons';
-
+} from '../../../api/ChimeAPI';
+import AttachmentService from '../../../services/AttachmentService';
+import { useChatMessagingState, useChatChannelState, } from '../../../providers/ChatMessagesProvider';
+import { useAuthContext, } from '../../../providers/AuthProvider';
+import { formatBytes } from '../../../utils/aws';
+import { SendMessageIcon } from '../../icons';
 import './Input.css';
 
 const uploadObjDefaults = {
@@ -35,17 +32,20 @@ const uploadObjDefaults = {
   key: '',
 };
 
-const Input = ({ activeChannelArn, member, hasMembership }) => {
-  const [text, setText] = useState('');
-  const inputRef = useRef();
-  const uploadRef = useRef();
-  const [uploadObj, setUploadObj] = useState(uploadObjDefaults);
+const Input = ({ activeChannelArn, member, hasMembership }:any) => {
+  // Hooks
+  const inputRef = useRef<any>();
+  const uploadRef = useRef<any>();
+
   const notificationDispatch = useNotificationDispatch();
   const { messages, setMessages } = useChatMessagingState();
+  const { isAnonymous } = useAuthContext();
   const { activeChannel } = useChatChannelState();
 
-  const { isAnonymous } = useAuthContext();
-
+  const [text, setText] = useState('');
+  const [uploadObj, setUploadObj] = useState<any>(uploadObjDefaults);
+  
+  // Functions
   const deleteImage = () => {
     AttachmentService.delete(uploadObj.key)
       .then((result) => {
@@ -74,24 +74,25 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     );
   };
 
+  // Events
   const eventHandlerWithDebounce = React.useCallback(debounce(eventHandler, 500), [activeChannelArn]);
 
-  const onChange = (e) => {
+  const onChange = (e:any) => {
     setText(e.target.value);
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e:any) => {
     e.preventDefault();
 
     let sendMessageResponse;
 
-    if (uploadRef.current.files[0]) {
+    if (uploadRef.current?.files[0]) {
       try {
         // We have file to upload
         const response = await AttachmentService.upload(
           uploadRef.current.files[0]
         );
-        const options = {};
+        const options:any = {};
 
         setUploadObj({
           key: response.key,
@@ -137,12 +138,13 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     }
   };
 
-  const onRemoveAttachmentHandler = (event) => {
+  const onRemoveAttachmentHandler = (event:any) => {
     event.preventDefault();
 
     setUploadObj(uploadObjDefaults);
   };
 
+  // Lifecycle hooks
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -155,21 +157,20 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
     }
   }, [text]);
 
+  // Components
   const uploadButton = <IconButton
-      className="write-link attach"
-      onClick={(_event) => {
-        uploadRef.current.value = null;
-        uploadRef.current.click();
-      }}
-      icon={<Attachment width="1.5rem" height="1.5rem" />}
-  />;
+    className="write-link attach"
+    onClick={(_event) => {
+      uploadRef.current.value = null;
+      uploadRef.current.click();
+    } }
+    icon={<Attachment width="1.5rem" height="1.5rem" />} label={''}  />;
 
   const sendButton = <IconButton
     className="sendmessage"
     onClick={onSubmit}
-    icon={<SendMessageIcon width="1rem" height="1rem" />}
-  />;
-  console.log(hasMembership)
+    icon={<SendMessageIcon width="1rem" height="1rem" />} label={''}  />;
+
   if (hasMembership) {
     return (
       <div className="message-input-container">
@@ -191,7 +192,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
                 height="1.5rem"
               />
               <Label style={{ margin: 'auto 0' }}>{uploadObj?.name}</Label>
-              <IconButton icon={<Remove width="1.5rem" height="1.5rem" />} />
+              <IconButton icon={<Remove width="1.5rem" height="1.5rem" />} label={''} />
             </div>
           ) : null}
         </form>
@@ -202,7 +203,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
           accept="file_extension|audio/*|video/*|image/*|media_type"
           style={{ display: 'none' }}
           ref={uploadRef}
-          onChange={(event) => {
+          onChange={(event:any) => {
             const file = event.currentTarget.files[0];
             if (!file) return;
 
@@ -227,6 +228,7 @@ const Input = ({ activeChannelArn, member, hasMembership }) => {
       </div>
     );
   }
+
   return (
     <div className="message-input-container join-channel-message">
       Joining...

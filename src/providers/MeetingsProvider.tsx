@@ -143,9 +143,6 @@ export const MeetingsProvider: FC = ({ children }) => {
         }
 
         const attendee = attendees.find((a:any) => a.UserName === username);
-        
-        console.log('attendees', attendees);
-        console.log('attendee', attendee);
 
         if(typeof attendee === 'undefined') {
             const data = {
@@ -163,17 +160,13 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
 
     const fetchAttendeesFromMeeting = async () => {
-        const data = {
-        };
+        const data = {};
         const { payload } = await dispatch(meetingAttendeesRead(mId, data));
-        console.log(payload);
 
         await setTheActiveMeetingAttendees?.(payload.data.Attendees);
-        //await setTheActiveMeetingAttendees?.([]);
     };
 
     const setTheActiveMeetingAttendees = async (attendees:any) => {
-        console.log('setTheActiveMeetingAttendees', attendees);
         dispatch(setActiveMeetingAttendees({
             attendees: attendees,
         }));
@@ -211,16 +204,6 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
 
     const createOrJoinMeetingChannel = async () => {
-        // const meetingResponse:any = await getMeetingFromDB(mId);
-        // const meetingJson = meetingResponse.data.getMeeting;
-        // const meetingData = JSON.parse(meetingJson.data);
-
-        // const { MeetingId } = meetingData;
-        // //console.log(meetingData)
-        // const attendeesList = await listAttendees(MeetingId ?? '', 10, null);
-        // console.log('attendeesList', attendeesList);
-        //console.log(roster)
-
         const availableChannels = await getAvailableChannels();
         let channelArn = availableChannels.find((c:any) => c.Name === mId)?.ChannelArn;
         if(typeof channelArn === 'undefined'){
@@ -381,8 +364,9 @@ export const MeetingsProvider: FC = ({ children }) => {
     // Lifecycle hooks  
     useEffect(() => {
         const doActions = async () => {
-            console.log(roster)
-            await fetchAttendeesFromMeeting();
+            if(mId){
+                await fetchAttendeesFromMeeting();
+            }
         }
         doActions();
     }, [roster]);
