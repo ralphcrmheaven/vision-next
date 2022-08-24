@@ -17,6 +17,12 @@ type ContactNotificationType = {
     subject: string
 };
 
+export type  { 
+    ContactType,
+    ListContactsQuery,
+    ContactNotificationType
+}
+
 /* create a contact */
 const createContact = async (contact: ContactType) => {
     return await API.graphql(graphqlOperation(createContactGraphQL, {input: contact}));
@@ -37,15 +43,6 @@ const getContacts = async (userId: String) => {
         }
     }) as { data: ListContactsQuery; errors: any[] };
 }
-
-export type  { 
-    ContactType,
-    ListContactsQuery,
-    ContactNotificationType
-}
-
-
-
 
 export {
     getContacts,

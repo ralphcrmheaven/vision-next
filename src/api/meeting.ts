@@ -18,6 +18,9 @@ const meeting = () => {
         validateMeeting: (meetingId:any, data:any) => {
             return API.post(APINAME, `${MEETINGENDPOINT}/${meetingId}/validate`, { body: data });
         },
+        readMeetingAttendees: (meetingId:any, data:any) => {
+            return API.get(APINAME, `${MEETINGENDPOINT}/${meetingId}/attendees`, { params: data });
+        },
     };
 };
 

@@ -31,6 +31,23 @@ export const meetingRead: any = createAsyncThunk(
     }
 );
 
+export const meetingUpdate: any = createAsyncThunk(
+    'meeting/update',
+    async (data:any) => {
+      const res = await meetingAPI().update(data);
+      console.log('res meeting api: ', res);
+      return res;
+    }
+);
+
+export const meetingAttendeesRead: any = createAsyncThunk(
+    'meeting/readattendees',
+    async (meetingId:any, data:any) => {
+      const res = await meetingAPI().readMeetingAttendees(meetingId, data);
+      return res;
+    }
+);
+
 const meetingSlice = createSlice({
     name: 'meeting',
     initialState,
@@ -44,14 +61,24 @@ const meetingSlice = createSlice({
             state.currentMeetingId = initialState.currentMeetingId;
         },
         setActiveMeeting: (state, action) => {
-            const { id, password, url, type } = action.payload;
+            const { id, password, url, type, attendees } = action.payload;
 
-            console.log(action.payload)
             state.activeMeeting = {
                 id: id,
                 password: password,
                 url: url,
                 type: type,
+                attendees: attendees,
+            };
+        },
+        setActiveMeetingAttendees: (state, action) => {
+            const { attendees } = action.payload;
+
+            //state.activeMeeting.attendees = attendees;
+            console.log(attendees)
+            state.activeMeeting = {
+                ...state.activeMeeting,
+                attendees: attendees,
             };
         },
         resetActiveMeeting: (state) => {
@@ -85,10 +112,22 @@ const meetingSlice = createSlice({
             })
             .addCase(meetingCreate.rejected, (state, action) => {
             })
+            .addCase(meetingUpdate.pending, (state, action) => {
+            })
+            .addCase(meetingUpdate.fulfilled, (state, action) => {
+            })
+            .addCase(meetingUpdate.rejected, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.pending, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.fulfilled, (state, action) => {
+            })
+            .addCase(meetingAttendeesRead.rejected, (state, action) => {
+            })
     }
 });
 
-export const { setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, resetActiveMeeting } = meetingSlice.actions;
+export const { setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, setActiveMeetingAttendees, resetActiveMeeting } = meetingSlice.actions;
 
 export const selectMeeting = (state:any) => state.meeting;
 

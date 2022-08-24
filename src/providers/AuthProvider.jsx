@@ -16,6 +16,7 @@ const AuthProvider = ({ children }) => {
   const [member, setMember] = useState({
     username: '',
     userId: '',
+    givenName: '',
   });
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -91,7 +92,12 @@ const AuthProvider = ({ children }) => {
     Auth.currentUserInfo()
         .then(curUser => {
           console.log("curUser: ", curUser);
-          setMember({ username: curUser.username, userId: curUser.attributes.sub });
+          // setMember({ username: curUser.username, userId: curUser.attributes.sub });
+          setMember({ 
+            username: curUser.username, 
+            userId: curUser.attributes.sub,
+            givenName: curUser.attributes.given_name, 
+          });
           if (curUser.attributes?.profile === 'none') {
             updateUserAttributes(curUser.id);
             // Once we set attribute let's have user relogin to refresh SigninHookFn trigger.
