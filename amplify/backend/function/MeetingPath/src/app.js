@@ -212,23 +212,53 @@ app.put(path, function(req, res) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
-  const timeStamp = new Date().toISOString();
-
-  const item = {
-    ...req.body,
-    UpdatedAt: timeStamp
-  };
-
-  let putItemParams = {
+  let queryParams = {
     TableName: tableName,
-    Item: item
+    IndexName: 'MeetingId-index',
+    KeyConditionExpression: '#MeetingId = :meeting_id',
+    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+    ExpressionAttributeValues: { ':meeting_id': req.body.MeetingId }
   }
-  dynamodb.put(putItemParams, (err, data) => {
+
+  dynamodb.query(queryParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body });
-    } else{
-      res.json({ success: 'put call succeed!', url: req.url, data: item })
+      res.json({error: err});
+    } else {
+      if (!data.Items.length) {
+        res.statusCode = 401;
+        res.json({error: 'Meeting invalid!'});
+        return;
+      }
+
+      try{
+        const timeStamp = new Date().toISOString();
+        const attendees = [...data.Items[0].Attendees, ...req.body.Attendees];
+        const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+        const item = {
+          ...data.Items[0],
+          Attendees: uniqueAttendees,
+          UpdatedAt: timeStamp
+        };
+
+        let putItemParams = {
+          TableName: tableName,
+          Item: item
+        }
+        dynamodb.put(putItemParams, (err, dataPut) => {
+          if (err) {
+            res.statusCode = 500;
+            res.json({ error: err, url: req.url, body: req.body });
+          } else{
+            res.json({success: 'put call succeed!', url: req.url, data: {...item, Password: ''}});
+          }
+        });
+      }catch(e){
+        res.statusCode = 500;
+        res.json({error: 'Something went wrong!'});
+        return;
+      }
     }
   });
 });
@@ -268,7 +298,7 @@ app.post(path, function(req, res) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
     } else {
-      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: plainPassword, Url: url}});
+      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: '', Url: url}});
     }
   });
 });
@@ -314,6 +344,44 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
 });
 
 /*******************************************
+ * HTTP get method to retrieve attendees *
+ *******************************************/
+
+app.get(path + '/:meeting_id/attendees', function(req, res) {
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'MeetingId-index',
+    KeyConditionExpression: '#MeetingId = :meeting_id',
+    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
+  }
+
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: err});
+    } else {
+      if (!data.Items.length) {
+        res.statusCode = 401;
+        res.json({error: 'Meeting invalid!'});
+        return;
+      }
+
+      try{
+        const attendees = data.Items[0].Attendees;
+        const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+        res.json({success: 'Attendees retrieved!', url: req.url, data: {Attendees: uniqueAttendees}});
+      }catch(e){
+        res.statusCode = 500;
+        res.json({error: 'Something went wrong!'});
+        return;
+      }
+    }
+  });
+});
+
+/*******************************************
  * HTTP post method for meeting validation *
  *******************************************/
  
@@ -354,7 +422,10 @@ app.post(path + '/:meeting_id/validate', function(req, res) {
         if (password === reqPassword) {
           const url = `/${req.params.meeting_id}/${passwordPart}`;
           const ivPart = encPassword.split('|')[1];
-          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url, I: ivPart}});
+          const attendees = data.Items[0].Attendees;
+          const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+          
+          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url, I: ivPart, Attendees: uniqueAttendees}});
         }else{
           res.statusCode = 401;
           res.json({error: 'Meeting invalid!'});

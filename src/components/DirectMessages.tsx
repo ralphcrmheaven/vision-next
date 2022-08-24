@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import Messages from './messages/elements/Messages/Messages';
-import TypingIndicator from './messages/elements/TypingIndicator';
-import Input from './messages/elements/Input/Input';
+import Messages from './Messages/Messages/Messages';
+import TypingIndicator from './Messages/TypingIndicator/TypingIndicator';
+import Input from './Messages/Input/Input';
 import { useAuthContext } from '../providers/AuthProvider';
 import {
   useChatChannelState,

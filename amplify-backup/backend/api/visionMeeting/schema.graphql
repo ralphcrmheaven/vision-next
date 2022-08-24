@@ -1,0 +1,39 @@
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Meeting @model(mutations: {create: "createMeetingGraphQL", delete: "deleteMeetingGraphQL"}, subscriptions: null) {
+  meetingId: String! 
+  title: String! @primaryKey
+  data: String!
+  passcode: String
+}
+
+type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "deleteAttendeeGraphQL"}, subscriptions: null) {
+  attendeeId: String! @primaryKey
+  name: String!
+}
+
+type Contact @model(mutations: {
+    create: "createContactGraphQL",
+    delete: "deleteContactGraphQL",
+    update: "updateContactGraphQL",
+  }) {
+  email: String! @primaryKey
+  userId: String! # get attribute sub of cognito
+  name: String
+  phoneNumber: String
+  group: String,
+}
+
+type Query {
+  createChimeMeeting(title: String, name: String, region: String): Response @function(name: "visionHandleMeeting-${env}")
+  joinChimeMeeting(meetingId: String, name: String): Response @function(name: "visionHandleMeeting-${env}")
+  endChimeMeeting(meetingId: String): Response  @function(name: "visionHandleMeeting-${env}")
+  sendEmailNotification(email: String, msg: String, subject: String): String @function(name: "visionEmailNotification-${env}")
+}
+
+type Response {
+  statusCode: String!
+  headers: String
+  body: String
+  isBase64Encoded: String
+}

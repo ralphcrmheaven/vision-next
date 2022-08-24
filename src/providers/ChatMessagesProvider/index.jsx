@@ -20,7 +20,6 @@ import {
   updateChannel,
 } from '../../api/ChimeAPI';
 import MessagingService from '../../services/MessagingService';
-import mergeArrayOfObjects from '../../utils/mergeArrays';
 import {
   PresenceMode,
   PresenceAutoStatus,
@@ -32,7 +31,8 @@ import {
   isAutomaticStatusExpired,
   toPresenceMessage,
   toPresenceMap,
-} from "../../utils/presence";
+  mergeArrayOfObjects
+} from "../../utils/aws";
 
 const ChatMessagingServiceContext = createContext(MessagingService);
 const ChatMessagingState = createContext();
