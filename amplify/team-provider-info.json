@@ -1,49 +1,4 @@
 {
-  "live": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-visionnext-live-111151-authRole",
-      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-111151-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-111151-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-visionnext-live-111151-deployment",
-      "UnauthRoleName": "amplify-visionnext-live-111151-unauthRole",
-      "StackName": "amplify-visionnext-live-111151",
-      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-live-111151/195812b0-0041-11ed-abef-0ee32f6407e1",
-      "AmplifyAppId": "d34rgk8hhv6zt9",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-visionnext-live-111151-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
-    },
-    "categories": {
-      "auth": {
-        "visionnext34956236": {
-          "userPoolId": "us-east-1_74LA0tWgg",
-          "userPoolName": "visionnext783447e5_userpool_783447e5-live",
-          "webClientId": "6inm8k4b3253kici2o5vos009v",
-          "nativeClientId": "6inm8k4b3253kici2o5vos009v",
-          "identityPoolId": "us-east-1:95f69c22-f5de-44bd-8808-e7658107ff69",
-          "identityPoolName": "visionnext72132b6_identitypool_72132b6_live",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-1111-CognitoAuthorizedRole-BTQCV6VGPZIA",
-          "authRoleName": "amplify-visionnext-live-1111-CognitoAuthorizedRole-BTQCV6VGPZIA",
-          "unauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-11-CognitoUnAuthorizedRole-1TI39XWW4W30B",
-          "unauthRoleName": "amplify-visionnext-live-11-CognitoUnAuthorizedRole-1TI39XWW4W30B"
-        }
-      },
-      "function": {
-        "visionHandleMeeting": {
-          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionHandleMeeting-6f4c41514334506b435a-build.zip"
-        },
-        "MeetingPath": {
-          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/MeetingPath-414c57746c534a70356e-build.zip"
-        },
-        "visionEmailNotification": {
-          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionEmailNotification-55463645634e6b356d49-build.zip"
-        }
-      }
-    }
-  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-visionnext-dev-224155-authRole",
@@ -86,6 +41,51 @@
           "authRoleName": "amplify-visionnext-dev-22415-CognitoAuthorizedRole-W4WP5C2Z9OZO",
           "unauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-dev-224-CognitoUnAuthorizedRole-1IRJUB8MZK0DL",
           "unauthRoleName": "amplify-visionnext-dev-224-CognitoUnAuthorizedRole-1IRJUB8MZK0DL"
+        }
+      }
+    }
+  },
+  "live": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-visionnext-live-111151-authRole",
+      "UnauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-111151-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-111151-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-visionnext-live-111151-deployment",
+      "UnauthRoleName": "amplify-visionnext-live-111151-unauthRole",
+      "StackName": "amplify-visionnext-live-111151",
+      "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-live-111151/195812b0-0041-11ed-abef-0ee32f6407e1",
+      "AmplifyAppId": "d34rgk8hhv6zt9",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-visionnext-live-111151-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "visionnext34956236": {
+          "userPoolId": "us-east-1_74LA0tWgg",
+          "userPoolName": "visionnext783447e5_userpool_783447e5-live",
+          "webClientId": "6inm8k4b3253kici2o5vos009v",
+          "nativeClientId": "6inm8k4b3253kici2o5vos009v",
+          "identityPoolId": "us-east-1:95f69c22-f5de-44bd-8808-e7658107ff69",
+          "identityPoolName": "visionnext72132b6_identitypool_72132b6_live",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-1111-CognitoAuthorizedRole-BTQCV6VGPZIA",
+          "authRoleName": "amplify-visionnext-live-1111-CognitoAuthorizedRole-BTQCV6VGPZIA",
+          "unauthRoleArn": "arn:aws:iam::205131113421:role/amplify-visionnext-live-11-CognitoUnAuthorizedRole-1TI39XWW4W30B",
+          "unauthRoleName": "amplify-visionnext-live-11-CognitoUnAuthorizedRole-1TI39XWW4W30B"
+        }
+      },
+      "function": {
+        "visionHandleMeeting": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/visionHandleMeeting-6f4c41514334506b435a-build.zip"
+        },
+        "MeetingPath": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/MeetingPath-414c57746c534a70356e-build.zip"
+        },
+        "visionEmailNotification": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/visionEmailNotification-55463645634e6b356d49-build.zip"
         }
       }
     }

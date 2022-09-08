@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo'
-import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon } from './icons'
+import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon, CameraColoredIcon } from './icons'
 import { LogoutIcon } from '@heroicons/react/outline'
 import { PhoneIcon } from '@heroicons/react/solid'
 import { useDispatch } from 'react-redux'
@@ -46,8 +46,7 @@ export default function Sidebar() {
                 ].join(' ')
               }}
             >
-              <PhoneIcon className="h-6 text-vision-light-blue" />
-              <span className="text-sm">Contacts</span>
+              <CameraColoredIcon />
             </NavLink>
           </li>
 
@@ -64,7 +63,6 @@ export default function Sidebar() {
               }}
             >
               <UsersIcon />
-              <span className="text-sm">Meetings</span>
             </NavLink>
           </li>
 
@@ -81,7 +79,6 @@ export default function Sidebar() {
               }}
             >
               <SettingsIcon />
-              <span className="text-sm">Settings</span>
             </NavLink>
           </li>
 

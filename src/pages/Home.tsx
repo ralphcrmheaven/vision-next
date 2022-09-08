@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import moment from 'moment';
-
+import '../assets/styles/styles.css'
 import { useMeetings } from '../providers/MeetingsProvider';
 
 import HomeFooter from '../components/HomeFooter'
@@ -84,17 +84,17 @@ export default function Home() {
           )}
         </div>
         <div className="flex flex-row gap-10 pt-10">
-          <div className="w-1/2 h-auto">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="grid">
+            <div className="grid grid-cols-2 gap-6">
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-blue h-40 text-white hover:bg-vision-lighter-blue hover:text-gray-900' }}
+                {...{ className: 'relative vision-card  bg-vision-blue h-40 text-white hover:bg-vision-lighter-blue hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
                                                                                 //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
                                                                                 onNewMeetingCardClick()
                                                                               }}
                 >
-                  <div className="absolute border border-vision-lighter-blue top-4 left-4 bg-vision-light-blue rounded-3xl">
+                  <div className="absolute border  vision-card-sm border-vision-lighter-blue top-4 left-4 bg-vision-light-blue rounded-3xl">
                     <img
                       src="./images/camera-white.png"
                       alt="Camera"
@@ -111,7 +111,7 @@ export default function Home() {
               </VCard>
 
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-yellow h-40 cursor text-white hover:bg-vision-lighter-yellow hover:text-gray-900' }}
+                {...{ className: 'relative vision-card  bg-vision-yellow h-40 cursor text-white hover:bg-vision-lighter-yellow hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
                       setTheCurrentMeetingId?.('');
@@ -135,7 +135,7 @@ export default function Home() {
               </VCard>
 
               <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
+                {...{ className: 'relative vision-card  bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer " onClick={() => setShowNewMeetingModal?.(true) }>
                   <div className="absolute border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-3xl">
@@ -154,8 +154,8 @@ export default function Home() {
                   </div>
                 </div>
               </VCard>
-              {/* <VCard
-                {...{ className: 'relative rounded-3xl bg-vision-green h-40' }}
+              <VCard
+                {...{ className: 'relative vision-card rounded-3xl bg-vision-green h-40' }}
               >
                 <div className="absolute border border-vision-lighter-green top-4 left-4 bg-vision-light-green rounded-3xl">
                   <img
@@ -170,11 +170,11 @@ export default function Home() {
                     <span className="text-sm">show your work</span>
                   </p>
                 </div>
-              </VCard> */}
+              </VCard>
             </div>
           </div>
           <div className="flex flex-col w-1/2 gap-3">
-            <VCard {...{ className: 'rounded-3xl border h-40 bg-vision-cyan' }}>
+            <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan' }}>
               <div className="flex flex-row h-full pl-10">
                 <p className="flex flex-col w-1/2 my-auto text-white">
                   <span className="text-4xl font-bold tracking-wide">
@@ -184,7 +184,7 @@ export default function Home() {
                     Monday, February 6 2022
                   </span>
                 </p>
-                <div className="relative w-1/2">
+                <div className="relative w-1/2" >
                   <img
                     src="/images/cloud.png"
                     alt="cloud"

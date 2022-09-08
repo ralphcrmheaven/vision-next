@@ -1,0 +1,141 @@
+@font-face {
+    font-family: FF Mark Pro;
+    src: url('../fonts/ff-pro-m.woff') format('woff');
+}
+
+html {
+    font-family: FF Mark Pro !important;
+}
+
+.vision-card {
+    width: 220px;
+    height: 215px !important;
+    border-radius: 30px;
+}
+
+.vision-card-sm {
+    border-radius: 25px;
+}
+
+.rounded-left-corner {
+    border-radius: 40px 0px 0px 40px;
+}
+
+.time-card {
+    height: 215px !important;
+}
+
+.end-meeting {
+    background-color: red;
+}
+
+.meeting-page {
+    background-color: #F6F6F6;
+}
+
+.device-input-icon-wrapper .ch-control-bar-item-iconButton {
+    border-radius: 40px;
+    background-color: #fff;
+    height: 35px;
+    width: 35px;
+    overflow: hidden;
+}
+
+.meeting-topbar {
+    height: 80px;
+    position: absolute;
+    width: 100%;
+}
+
+.online-icon img {
+    position: absolute;
+    right: 146.1px;
+    top: 59.099999999999994px;
+}
+
+.back-icon {
+    width: 11px;
+    position: absolute;
+    top: 16px;
+    left: 10px;
+}
+
+.topbar-initials {
+    position: absolute;
+    width: 163px;
+    height: 20px;
+    font-family: 'FF Mark Pro';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: #053F64;
+    right: 47px;
+    top: 16px;
+}
+
+.back-to-home {
+    position: absolute;
+    width: 205px;
+    height: 43px;
+    left: 28px;
+    top: 34px;
+    background: #fff;
+    border-radius: 14px;
+}
+
+.device-icon-wrapper {
+    background-color: #fff !important;
+    border: #fff !important;
+    height: 100% !important;
+    padding: 9px;
+    position: relative !important;
+}
+
+.running-cham {
+    height: 140px !important;
+    margin-top: 3px;
+    margin-left: 30px;
+}
+
+.end-input-icon-wrapper .ch-control-bar-item-iconButton {
+    border-radius: 40px;
+    width: 64px;
+    height: 64px;
+    background: #EB311B;
+    border-radius: 15px;
+}
+
+.profile-topbar {
+    margin-top: 30px;
+    margin-right: 19px;
+}
+
+.topbar-logo {
+    margin-top: 17px !important;
+}
+
+.topbar-logo img {
+    height: 69px;
+    width: auto
+}
+
+.khfuPf {
+    margin: 0px !important;
+    display: contents !important;
+}
+
+.khfuPf> :first-child {
+    margin: 2px !important;
+}
+
+.video-grid-vision {
+    border-radius: 15px;
+    width: auto !important;
+    height: 100% !important;
+    margin: -15px 17px 17px 17px;
+}
+
+.video-grid-vision div:first-child {
+    border-radius: 10px !important;
+}

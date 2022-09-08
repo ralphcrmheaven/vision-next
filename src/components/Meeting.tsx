@@ -2,6 +2,8 @@ import React, { FC, useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { Observable } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux'
+import Logo from './Logo'
+import { NavLink } from 'react-router-dom'
 import { API, graphqlOperation } from 'aws-amplify';
 import {
   AudioInputControl,
@@ -31,6 +33,7 @@ import {
   DefaultVideoTransformDevice,
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
+import { HomeIcon, CameraIcon, SettingsIcon, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import { ReactMultiEmail } from 'react-multi-email';
 import * as queries from '../graphql/queries';
@@ -61,6 +64,9 @@ const Meeting: FC = () => {
   const [background, setBackground] = useState<string>('')
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const initials =
+    user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
+  const fullname = user.given_name + ' ' + user.family_name
 
   const { mId, ePass } = useParams();
   const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
@@ -359,27 +365,85 @@ const Meeting: FC = () => {
 
   return (
     <>
-      <div className="flex content-center w-full h-full">
-        {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading ) &&
-           <div className="m-auto">
-            <h1 className="text-lg text-center">Loading . . . </h1>
-            <img src={loading} alt="loading" className="h-96"/>
-          </div>
-        }
+
+
+      {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading ) &&
+        <div className="grid h-screen place-items-center">
+          <label><img src={loading} alt="loading" className="running-cham "/>Cham is preparing your meeting ...</label>
+          
+        </div>
+  }
+      <div className="grid grid-rows-6 grid-flow-col gap-1 content-center w-full h-full meeting-page">
         
-        {meetingStatus === MeetingStatus.Succeeded ? (
-          <>
-            <div className="flex-1 pb-20 pr-72.5">
-              <VideoTileGrid layout="standard" />
+
+        
+        <div className="w-full relative">
+          {meetingStatus === MeetingStatus.Succeeded && (
+            <div className="grid grid-cols-3 gap-4 h-24 w-full">
+                <div className="h-24 ">
+                    <NavLink
+                    to="/">
+                      <button className="back-to-home"><BackIcon/> Back to Dashboard</button>
+                    </NavLink>
+                </div>
+                <div className="h-24 m-auto topbar-logo"><Logo/></div>
+                <div className=" h-24 ml-auto">
+                  <div className="w-full ">
+                      {initials && fullname && (
+                      <div className="profile-topbar flex flex-row items-center space-x-4">
+                          <span className="p-2 text-white bg-gray-900 rounded-lg">
+                          {initials}
+                          </span>
+                          <span>{fullname}</span>
+                          <span className="online-icon"><OnlineIcon/></span>
+                      </div>
+                      )}
+                  </div>
+                </div>
             </div>
-          </>
-        ) : (
-          <div />
-        )}
+          )}
+        </div>
+
+        <div className="w-full row-span-4  relative">
+          {meetingStatus === MeetingStatus.Succeeded ? (
+            <>
+              <div className="h-full w-full">
+                <VideoTileGrid className="video-grid-vision" layout="standard" />
+              </div>
+            </>
+          ) : (
+            <div />
+          )}
+        </div>
+
+        <div className="w-full relative">
+          <ControlBar layout="bottom" showLabels className="device-icon-wrapper flex flex-row h-2">
+              <AudioInputControl  className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""}/>
+              <ContentShareControl className="device-input-icon-wrapper" label={""} />
+                <VideoInputControl className="device-input-icon-wrapper" label={""} >
+                  <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
+                    <span>Change Background</span>
+                  </PopOverItem>
+                </VideoInputControl>
+              
+              <ControlBarButton
+                icon={<Phone />}
+                onClick={clickedEndMeeting}
+                label={""}
+                className="end-meeting end-input-icon-wrapper"
+              />
+              <AudioOutputControl label={""} className="device-input-icon-wrapper" />
+              
+              
+            </ControlBar>
+        </div>
+
       </div>
+        
+        
       {meetingStatus === MeetingStatus.Succeeded && (
         <>
-          <div className="absolute inset-y-0 right-0">
+          {/* <div className="absolute inset-y-0 right-0">
             <div className="w-full h-[calc(100%_-_5rem)] bg-gray-100 pb-4 pt-2 px-0">
               <ul className="flex flex-row items-center">
                 <li className="flex items-center w-1/3">
@@ -440,22 +504,8 @@ const Meeting: FC = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <ControlBar layout="bottom" showLabels className="flex flex-row h-2">
-            <AudioInputControl />
-            <VideoInputControl>
-              <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
-                <span>Change Background</span>
-              </PopOverItem>
-            </VideoInputControl>
-            <AudioOutputControl />
-            <ControlBarButton
-              icon={<Phone />}
-              onClick={clickedEndMeeting}
-              label="End"
-            />
-            <ContentShareControl />
-          </ControlBar>
+          </div> */}
+          
           
           <SelectBackgroundImagesModal
             setShowModal={setShowModal}
@@ -465,6 +515,7 @@ const Meeting: FC = () => {
           <></>
         </>
       )}
+      
       { isOpen && (
           <Modal onClose={() => setIsOpen(false)} rootId="modal-root">
             <ModalHeader title="Send Invite" />
