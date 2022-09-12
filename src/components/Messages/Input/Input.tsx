@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT-0
 
 import React, { useState, useRef, useEffect } from 'react';
+import Picker from 'emoji-picker-react';
+import { EmojiPicker } from 'amazon-chime-sdk-component-library-react';
 import {
   Input as InputComponent,
   Attachment,
@@ -21,7 +23,7 @@ import AttachmentService from '../../../services/AttachmentService';
 import { useChatMessagingState, useChatChannelState, } from '../../../providers/ChatMessagesProvider';
 import { useAuthContext, } from '../../../providers/AuthProvider';
 import { formatBytes } from '../../../utils/aws';
-import { SendMessageIcon } from '../../icons';
+import { SendMessageIcon, ChamXsIcon } from '../../icons';
 import './Input.css';
 
 const uploadObjDefaults = {
@@ -32,7 +34,19 @@ const uploadObjDefaults = {
   key: '',
 };
 
+
 const Input = ({ activeChannelArn, member, hasMembership }:any) => {
+
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+
+  const onEmojiClick = (event:any, emojiObject:any) => {
+    console.log(emojiObject)
+    setText(text+emojiObject.emoji);
+    setChosenEmoji(emojiObject);
+  };
+
+
+  
   // Hooks
   const inputRef = useRef<any>();
   const uploadRef = useRef<any>();
@@ -43,6 +57,10 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
   const { activeChannel } = useChatChannelState();
 
   const [text, setText] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+
+  
   const [uploadObj, setUploadObj] = useState<any>(uploadObjDefaults);
   
   // Functions
@@ -83,6 +101,8 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
 
   const onSubmit = async (e:any) => {
     e.preventDefault();
+
+    setShowEmojiPicker(false)
 
     let sendMessageResponse;
 
@@ -175,15 +195,31 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
     return (
       <div className="message-input-container">
         <form onSubmit={onSubmit} className="message-input-form">
-          <InputComponent
-            onChange={onChange}
-            value={text}
-            type="text"
-            placeholder="Send message"
-            autoFocus
-            className="text-input"
-            ref={inputRef}
-          />
+        { showEmojiPicker ? <Picker onEmojiClick={onEmojiClick} /> : null }
+          <div>
+            
+            
+
+            <label  className="relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
+
+                  <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
+                    setShowEmojiPicker(!showEmojiPicker)
+                  } } />
+                  {/* <button  onClick={(_event) => { setShowEmojiPicker(!showEmojiPicker)} } ><ChamXsIcon   /></button> */}
+
+
+                  <InputComponent
+                  onChange={onChange}
+                  value={text}
+                  type="text"
+                  placeholder="Send message"
+                  autoFocus
+                  className="text-input"
+                  ref={inputRef}
+                />            
+              </label>
+
+          </div>
           {uploadObj.file ? (
             <div className="attachment-preview">
               <Attachment

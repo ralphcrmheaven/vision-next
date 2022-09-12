@@ -7,5 +7,6 @@ import SendMessageIcon from "./SendMessage";
 import ClockIcon from "./Clock";
 import BackIcon from "./Back";
 import OnlineIcon from "./OnlineIcon";
+import ChamXsIcon from "./ChamXs";
 
-export { CameraIcon, SettingsIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, BackIcon, CameraColoredIcon }
+export { CameraIcon, SettingsIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, BackIcon, CameraColoredIcon, ChamXsIcon }

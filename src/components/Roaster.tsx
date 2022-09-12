@@ -14,7 +14,7 @@ const Roaster = () => {
   const attendeeItems = attendees.map(attendee => {
     const { chimeAttendeeId } = attendee;
     return (
-      <RosterAttendee key={chimeAttendeeId} attendeeId={chimeAttendeeId} />
+      <RosterAttendee  key={chimeAttendeeId} attendeeId={chimeAttendeeId} />
     );
   });
 

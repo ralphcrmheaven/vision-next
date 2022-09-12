@@ -1,59 +1,66 @@
-.messaging-container{
-  height: 100%;
-  min-width: 15rem;
+.messaging-container {
+    height: 100%;
+    min-width: 15rem;
 }
 
 .message-list-container {
-  position: relative;
-  height: 88%;
+    position: relative;
+    height: 85%;
 }
 
 .message-list-header {
-  background-color: inherit;
-  text-align: center;
-  padding: 0.76rem;
-  margin-bottom: 1rem;
-  border-bottom: 0.5px solid #d4d5d8;
-  position: sticky;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  left: 0;
+    background-color: inherit;
+    text-align: center;
+    padding: 0.76rem;
+    margin-bottom: 1rem;
+    border-bottom: 0.5px solid #d4d5d8;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    left: 0;
 }
 
-.message-list-container > ul{
-  background: transparent !important;
-  overflow-y: auto !important;
-  height: 100%;
+.message-list-container>ul {
+    background: transparent !important;
+    overflow-y: auto !important;
+    height: 100%;
 }
 
-.message-list-container .date-header{
-  display: none;
+.message-list-container .date-header {
+    display: none;
 }
 
-.message-list-container .message > div{
-  background: transparent !important;
-  margin: 0 !important;
-  display: block !important;
+.message-list-container .message>div {
+    background: transparent !important;
+    margin: 0 !important;
+    display: block !important;
 }
 
-.message-list-container .message > div > div:nth-child(1) > img{
-  bottom: -25px;
-  position: relative;
-  z-index: 1;
-  width: 30px;
-  height: 30px;
+.message-list-container .message>div>div:nth-child(1)>img {
+    bottom: -25px;
+    position: relative;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
 }
 
-.message-list-container .message > div > div:nth-child(1) > div{
-  max-width: 100% !important;
-  width: 95% !important;
-  border-radius: 20px !important;
-  padding: 20px 10px 20px 30px !important;
-  margin-left: 10px;
-  box-shadow: 0px 15px 10px -15px #666;
+.message-list-container .message>div>div:nth-child(1)>div {
+    max-width: 100% !important;
+    width: 95% !important;
+    border-radius: 20px !important;
+    padding: 20px 10px 20px 30px !important;
+    margin-left: 10px;
+    box-shadow: 0px 15px 15px rgb(0 0 0 / 5%);
 }
 
-.message-list-container .message .ch-header{
-  color: navy;
+.message-list-container .message .ch-header {
+    color: navy;
+}
+
+.ch-header~div {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
 }

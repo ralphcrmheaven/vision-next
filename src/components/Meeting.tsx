@@ -25,7 +25,9 @@ import {
   PrimaryButton,
   ModalHeader,
   Notification,
-  Severity
+  Severity,
+  Attendees,
+  Chat
 } from 'amazon-chime-sdk-component-library-react';
 import {
   BackgroundBlurVideoFrameProcessor,
@@ -50,6 +52,7 @@ import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading.gif'
 import 'react-multi-email/style.css';
+
 
 const Meeting: FC = () => {
   // Hooks
@@ -334,7 +337,7 @@ const Meeting: FC = () => {
         }
       }
     };
-    
+
     doActions();
   }, [activeMeeting])
 
@@ -370,13 +373,9 @@ const Meeting: FC = () => {
       {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading ) &&
         <div className="grid h-screen place-items-center">
           <label><img src={loading} alt="loading" className="running-cham "/>Cham is preparing your meeting ...</label>
-          
         </div>
   }
       <div className="grid grid-rows-6 grid-flow-col gap-1 content-center w-full h-full meeting-page">
-        
-
-        
         <div className="w-full relative">
           {meetingStatus === MeetingStatus.Succeeded && (
             <div className="grid grid-cols-3 gap-4 h-24 w-full">
@@ -407,9 +406,31 @@ const Meeting: FC = () => {
         <div className="w-full row-span-4  relative">
           {meetingStatus === MeetingStatus.Succeeded ? (
             <>
-              <div className="h-full w-full">
+
+            <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
+              <div className={ `h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}` }>
                 <VideoTileGrid className="video-grid-vision" layout="standard" />
               </div>
+
+
+              <div className="h-full w-full">
+
+                <div className={ `vision-tab ${currentPanel !== 'chat' ? 'hidden' : ''}` } >
+                  <span className="tab-header">Messages</span>
+                  <div className="chatbox-wrapper ">
+                    <GroupChatMessages />
+                  </div>
+                </div>
+
+                <div className={ `vision-tab ${currentPanel !== 'roaster' ? 'hidden' : ''}` }>
+                  <span className="tab-header">Attendees</span>
+                  <div className="chatbox-wrapper chatbox-wrapper-no-border">
+                    <Roaster/>
+                  </div>
+                </div>
+
+              </div>
+            </div>
             </>
           ) : (
             <div />
@@ -425,16 +446,15 @@ const Meeting: FC = () => {
                     <span>Change Background</span>
                   </PopOverItem>
                 </VideoInputControl>
-              
               <ControlBarButton
                 icon={<Phone />}
                 onClick={clickedEndMeeting}
                 label={""}
                 className="end-meeting end-input-icon-wrapper"
               />
-              <AudioOutputControl label={""} className="device-input-icon-wrapper" />
-              
-              
+              <AudioOutputControl   label={""} className="device-input-icon-wrapper" />
+              <Chat width="26px" css="icon-control" onClick={() => setCurrentPanel('chat')}  />
+              <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" onClick={() => setCurrentPanel('roaster')}  />
             </ControlBar>
         </div>
 

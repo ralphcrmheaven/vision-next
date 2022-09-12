@@ -1,6 +1,6 @@
 @font-face {
     font-family: FF Mark Pro;
-    src: url('../fonts/ff-pro-m.woff') format('woff');
+    src: url('../fonts/ff-regular.woff') format('woff');
 }
 
 html {
@@ -36,9 +36,11 @@ html {
 .device-input-icon-wrapper .ch-control-bar-item-iconButton {
     border-radius: 40px;
     background-color: #fff;
-    height: 35px;
-    width: 35px;
+    height: 2rem;
+    width: 2rem;
     overflow: hidden;
+    margin-left: 13px;
+    color: #053F64;
 }
 
 .meeting-topbar {
@@ -95,15 +97,27 @@ html {
 .running-cham {
     height: 140px !important;
     margin-top: 3px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 .end-input-icon-wrapper .ch-control-bar-item-iconButton {
-    border-radius: 40px;
     width: 64px;
     height: 64px;
     background: #EB311B;
     border-radius: 15px;
+    color: #fff;
+    margin: 17px;
+    cursor: pointer;
+}
+
+.icon-control {
+    width: 26px;
+    color: #053F64;
+    cursor: pointer;
+}
+
+.ch-control-bar-item-iconButton:hover {
+    background: #2AA8F2 !important;
 }
 
 .profile-topbar {
@@ -138,4 +152,71 @@ html {
 
 .video-grid-vision div:first-child {
     border-radius: 10px !important;
+}
+
+.chatbox-wrapper {
+    overflow: scroll;
+    background: #fff;
+    border-radius: 15px;
+    margin-top: -15px;
+    padding-top: 54px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    height: 487px;
+    max-height: 487px;
+}
+
+.chatbox-wrapper aside {
+    background: #fff !important;
+    /* border-left: none !important;
+    border-right: none !important; */
+    box-shadow: none !important;
+}
+
+.chatbox-wrapper-no-border aside {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.message-input-container {
+    position: absolute;
+    margin-top: -29.3px;
+    width: -webkit-fill-available;
+}
+
+.vision-tab {
+    height: 100%;
+    margin-top: -24px;
+    position: relative;
+}
+
+.tab-header {
+    position: relative;
+    left: 18px;
+    top: 19px;
+    z-index: 999;
+}
+
+
+/* emoji */
+
+.input-wrapper-emoji {
+    background: #fff;
+}
+
+aside.emoji-picker-react {
+    z-index: 999;
+    position: absolute !important;
+    top: -318px;
+    z-index: 9999;
+    border: 1px solid #ccc;
+    border-radius: 36px;
+}
+
+.messaging-container {
+    min-height: 407px;
+}
+
+.message-input-form {
+    flex: auto;
 }
