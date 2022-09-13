@@ -452,8 +452,8 @@ const Meeting: FC = () => {
                 label={""}
                 className="end-meeting end-input-icon-wrapper"
               />
-              <AudioOutputControl   label={""} className="input-icon-wrapper" />
-              <div className="input-icon-wrapper relative">
+              <AudioOutputControl   label={""} className="input-icon-wrapper device-input-icon-wrapper" />
+              <div className="input-icon-wrapper relative device-input-icon-wrapper">
                 <Chat width="26px" css="icon-control extra-icons"
                   onClick={async (e:any) => { 
                       if(currentPanel == 'chat') {
@@ -465,7 +465,7 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
-              <div className="input-icon-wrapper extra-icons relative">
+              <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                 <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
                   onClick={async (e:any) => { 
                       if(currentPanel == 'roaster') {
