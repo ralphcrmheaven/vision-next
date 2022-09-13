@@ -438,7 +438,7 @@ const Meeting: FC = () => {
         </div>
 
         <div className="w-full relative">
-          <ControlBar layout="bottom" showLabels className="device-icon-wrapper flex flex-row h-2">
+          <ControlBar layout="bottom" showLabels className="device-icon-wrapper grid grid-cols-7 gap-2">
               <AudioInputControl  className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""}/>
               <ContentShareControl className="device-input-icon-wrapper" label={""} />
                 <VideoInputControl className="device-input-icon-wrapper" label={""} >
@@ -453,8 +453,8 @@ const Meeting: FC = () => {
                 className="end-meeting end-input-icon-wrapper"
               />
               <AudioOutputControl   label={""} className="input-icon-wrapper" />
-              <div className="input-icon-wrapper">
-                <Chat width="26px" css="icon-control"
+              <div className="input-icon-wrapper relative">
+                <Chat width="26px" css="icon-control extra-icons"
                   onClick={async (e:any) => { 
                       if(currentPanel == 'chat') {
                         setCurrentPanel('')
@@ -465,7 +465,7 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
-              <div className="input-icon-wrapper">
+              <div className="input-icon-wrapper extra-icons relative">
                 <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
                   onClick={async (e:any) => { 
                       if(currentPanel == 'roaster') {

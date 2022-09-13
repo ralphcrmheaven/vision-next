@@ -180,9 +180,9 @@ html {
 
 .message-input-container {
     position: absolute;
-    margin-top: 427.7px;
     width: 83%;
     z-index: 999;
+    bottom: -26px;
 }
 
 .vision-tab {
