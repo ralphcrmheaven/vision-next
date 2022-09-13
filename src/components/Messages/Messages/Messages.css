@@ -4,8 +4,15 @@
 }
 
 .message-list-container {
-    position: relative;
-    height: 85%;
+    position: absolute !important;
+    height: 74%;
+    width: 83%;
+    padding-bottom: 36px;
+}
+
+.input-icon-wrapper {
+    color: #053F64;
+    cursor: pointer;
 }
 
 .message-list-header {

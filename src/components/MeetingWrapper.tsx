@@ -5,7 +5,7 @@ import {
     useMeetingManager
   } from 'amazon-chime-sdk-component-library-react';
 
-import loading from '../assets/images/loading.gif'
+import loading from '../assets/images/loading5.gif'
  
 
 interface IProps {

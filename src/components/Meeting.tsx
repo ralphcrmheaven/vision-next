@@ -50,7 +50,7 @@ import Roaster from '../components/Roaster'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
-import loading from '../assets/images/loading.gif'
+import loading from '../assets/images/loading5.gif'
 import 'react-multi-email/style.css';
 
 
@@ -452,9 +452,31 @@ const Meeting: FC = () => {
                 label={""}
                 className="end-meeting end-input-icon-wrapper"
               />
-              <AudioOutputControl   label={""} className="device-input-icon-wrapper" />
-              <Chat width="26px" css="icon-control" onClick={() => setCurrentPanel('chat')}  />
-              <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" onClick={() => setCurrentPanel('roaster')}  />
+              <AudioOutputControl   label={""} className="input-icon-wrapper" />
+              <div className="input-icon-wrapper">
+                <Chat width="26px" css="icon-control"
+                  onClick={async (e:any) => { 
+                      if(currentPanel == 'chat') {
+                        setCurrentPanel('')
+                      }else{
+                        setCurrentPanel('chat')
+                      }
+                    }
+                  }
+                />
+              </div>
+              <div className="input-icon-wrapper">
+                <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
+                  onClick={async (e:any) => { 
+                      if(currentPanel == 'roaster') {
+                        setCurrentPanel('')
+                      }else{
+                        setCurrentPanel('roaster')
+                      }
+                    }
+                  }
+                />
+              </div>
             </ControlBar>
         </div>
 

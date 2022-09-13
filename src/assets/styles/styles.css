@@ -162,8 +162,8 @@ html {
     padding-top: 54px;
     padding-left: 15px;
     padding-bottom: 15px;
-    height: 487px;
-    max-height: 487px;
+    height: 100%;
+    margin-right: 15px;
 }
 
 .chatbox-wrapper aside {
@@ -180,14 +180,16 @@ html {
 
 .message-input-container {
     position: absolute;
-    margin-top: -29.3px;
-    width: -webkit-fill-available;
+    margin-top: 427.7px;
+    width: 83%;
+    z-index: 999;
 }
 
 .vision-tab {
     height: 100%;
     margin-top: -24px;
     position: relative;
+    width: 100%;
 }
 
 .tab-header {
