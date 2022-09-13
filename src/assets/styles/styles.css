@@ -43,6 +43,10 @@ html {
     color: #053F64;
 }
 
+.device-input-icon-wrapper {
+    display: contents !important;
+}
+
 .meeting-topbar {
     height: 80px;
     position: absolute;
