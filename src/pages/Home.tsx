@@ -87,7 +87,7 @@ export default function Home() {
           <div className="grid">
             <div className="grid grid-cols-2 gap-6">
               <VCard
-                {...{ className: 'relative vision-card  bg-vision-blue h-40 text-white hover:bg-vision-lighter-blue hover:text-gray-900' }}
+                {...{ className: 'relative vision-card text-white  bg-vision-blue h-40 hover:bg-vision-lighter-blue hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
                                                                                 //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
@@ -111,7 +111,7 @@ export default function Home() {
               </VCard>
 
               <VCard
-                {...{ className: 'relative vision-card  bg-vision-yellow h-40 cursor text-white hover:bg-vision-lighter-yellow hover:text-gray-900' }}
+                {...{ className: 'relative vision-card  bg-vision-yellow h-40 cursor  hover:bg-vision-lighter-yellow ' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
                       setTheCurrentMeetingId?.('');
@@ -126,9 +126,9 @@ export default function Home() {
                     />
                   </div>
                   <div className="absolute left-4 bottom-4">
-                    <p className="flex flex-col">
+                    <p className="flex flex-col text-dark">
                       <span>Join Meeting</span>
-                      <span className="text-sm">via invitation link</span>
+                      <span className="text-sm text-dark">via invitation link</span>
                     </p>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Home() {
                   </div>
                 </div>
               </VCard>
-              <VCard
+              {/* <VCard
                 {...{ className: 'relative vision-card rounded-3xl bg-vision-green h-40' }}
               >
                 <div className="absolute border border-vision-lighter-green top-4 left-4 bg-vision-light-green rounded-3xl">
@@ -170,37 +170,20 @@ export default function Home() {
                     <span className="text-sm">show your work</span>
                   </p>
                 </div>
-              </VCard>
+              </VCard> */}
             </div>
           </div>
           <div className="flex flex-col w-1/2 gap-3">
-            <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan' }}>
+            <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
               <div className="flex flex-row h-full pl-10">
-                <p className="flex flex-col w-1/2 my-auto text-white">
+                <p className="flex flex-col w-1/2 my-auto text-dark">
                   <span className="text-4xl font-bold tracking-wide">
                     10:45 PM
                   </span>
-                  <span className="text-slate-300">
+                  <span className="text-dark">
                     Monday, February 6 2022
                   </span>
                 </p>
-                <div className="relative w-1/2" >
-                  <img
-                    src="/images/cloud.png"
-                    alt="cloud"
-                    className="absolute top-0 h-20 right-4 blur-sm"
-                  />
-                  <img
-                    src="/images/cloud.png"
-                    alt="cloud"
-                    className="absolute bottom-0 left-0 h-14 blur-md"
-                  />
-                  <img
-                    src={cham1}
-                    alt="cham"
-                    className="absolute scale-75 -top-20"
-                  />
-                </div>
               </div>
             </VCard>
             <MeetingList />

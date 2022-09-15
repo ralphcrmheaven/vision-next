@@ -35,7 +35,7 @@ import {
   DefaultVideoTransformDevice,
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
-import { HomeIcon, CameraIcon, SettingsIcon, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
+import { HomeIcon, CameraIcon, SettingsIcon,AddPeople, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import { ReactMultiEmail } from 'react-multi-email';
 import * as queries from '../graphql/queries';
@@ -64,6 +64,7 @@ const Meeting: FC = () => {
   const [contacts, setContacts] = useState<ContactType[]>([]);
   const [emails, setEmails] = useState<string[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [selectedInvitationType, setSelectedInvitationType] = useState<string>('send_mail')
   const [background, setBackground] = useState<string>('')
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -213,11 +214,13 @@ const Meeting: FC = () => {
     const query = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     return `https://mail.google.com/mail/u/0/?${query}`
   }
-  
+
   // Events
   const doActionsOnLoad = async () => {
     try{
       const res = await meetingAPI().validateMeeting(mId, {password: ePass, ie: false});
+      console.log("doActionsOnLoad")
+      console.log(res)
       if(res.success){
         setIsValidMeeting(true);
         await createOrJoinTheMeeting?.();
@@ -266,7 +269,7 @@ const Meeting: FC = () => {
                 <div className="divide-y pb-10">
                   <div id={`invitee-${0}`} className="flex flex-row justify-between w-full h-20 mb-2">
                     <ReactMultiEmail
-                      className="basis-5/6 max-h-full"
+                      className=""
                       placeholder="Enter email addresses"
                       emails={emails}
                       onChange={(_emails: string[]) => {
@@ -299,11 +302,14 @@ const Meeting: FC = () => {
                   </div>
                   <div className="mt-2 overflow-y-auto h-64 p-2">
                     <ul className="flex flex-col items-center w-full space-y-1">
+
+                      aaaa
                       {contacts.map((d, i) => (
                         <li key={i+1} id={`invitee-${i+1}`} className="flex flex-row justify-between w-full">
                           <div className="basis-5/6 flex flex-row justify-between w-full">
                             <span className="basis-1/4">{d.email}</span>
-                            <span className="basis-3/4">{d.name}</span>
+                            {d}dddd
+                            <span className="basis-3/4">{d}</span>
                           </div>
                           <PrimaryButton
                             className="basis-1/6 ml-2"
@@ -425,6 +431,14 @@ const Meeting: FC = () => {
                 <div className={ `vision-tab ${currentPanel !== 'roaster' ? 'hidden' : ''}` }>
                   <span className="tab-header">Attendees</span>
                   <div className="chatbox-wrapper chatbox-wrapper-no-border">
+                    <div className="text-left add-people">
+                      <span>
+                        <button  onClick={() => setIsOpen(true)} className="flex">
+                        <span><AddPeople/></span>
+                        <span>Add People</span>
+                        </button>
+                      </span>
+                    </div>
                     <Roaster/>
                   </div>
                 </div>
@@ -559,65 +573,98 @@ const Meeting: FC = () => {
       )}
       
       { isOpen && (
-          <Modal onClose={() => setIsOpen(false)} rootId="modal-root">
-            <ModalHeader title="Send Invite" />
-            <ModalBody>
-              <div className="divide-y pb-10">
-                <div id={`invitee-${0}`} className="flex flex-row justify-between w-full h-20 mb-2">
-                  <ReactMultiEmail
-                    className="basis-5/6 max-h-full"
-                    placeholder="Enter email addresses"
-                    emails={emails}
-                    onChange={(_emails: string[]) => {
-                      setEmails(_emails);
-                    }}
-                    getLabel={(
-                      email: string,
-                      index: number,
-                      removeEmail: (index: number) => void
-                    ) => {
-                      return (
-                        <div data-tag key={index}>
-                          {email}
-                          <span data-tag-handle onClick={() => removeEmail(index)}>
-                            ×
-                          </span>
-                        </div>
-                      );
-                    }}
-                  />
-                  <PrimaryButton
-                    className="basis-1/6 h-10 ml-2"
-                    label="Send" 
-                    disabled={emails.length === 0}
-                    onClick={async (e:any) => { 
-                        await clickedNewContactsSendInvite();
-                      }
-                    } 
-                  />
-                </div>
-                <div className="mt-2 overflow-y-auto h-64 p-2">
-                  <ul className="flex flex-col items-center w-full space-y-1">
-                    {contacts.map((d, i) => (
-                      <li key={i+1} id={`invitee-${i+1}`} className="flex flex-row justify-between w-full">
-                        <div className="basis-5/6 flex flex-row justify-between w-full">
-                          <span className="basis-1/4">{d.email}</span>
-                          <span className="basis-3/4">{d.name}</span>
-                        </div>
-                        <PrimaryButton
-                          className="basis-1/6 ml-2"
-                          label="Send" 
-                          onClick={async (e:any) => { 
-                            await clickedExistingContactsSendInvite(d, i);
-                            }
-                          } 
-                        />
-                      </li>)
-                    )}
-                  </ul>
-                </div>
+          <Modal  className="invite-modal" onClose={() => setIsOpen(false)} rootId="modal-root">
+              <div  className="flex justify-center items-center mb-2  no-border tab-contact">
+                    <span><span className={ `tab-select  ${selectedInvitationType == 'send_mail' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('send_mail')}>Send Email </span> | <span className={ `tab-select  ${selectedInvitationType == 'search_contacts' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('search_contacts')} >Search Contacts</span></span>
               </div>
-            </ModalBody>
+
+              <ModalHeader title={ selectedInvitationType == 'send_mail' ? 'Invite via Email' : 'Invite a VISION contact'} />
+              <ModalBody>
+
+                <div className="divide-y pb-10">
+
+                { selectedInvitationType === 'send_mail' && (
+                  <div>
+                    <div id={`invitee-${0}`} className="flex justify-center items-center mb-2">
+                      <ReactMultiEmail
+                        className=""
+                        placeholder="Enter email addresses"
+                        emails={emails}
+                        onChange={(_emails: string[]) => {
+                          setEmails(_emails);
+                        }}
+                        getLabel={(
+                          email: string,
+                          index: number,
+                          removeEmail: (index: number) => void
+                        ) => {
+                          return (
+                            <div data-tag key={index}>
+                              {email}
+                              <span data-tag-handle onClick={() => removeEmail(index)}>
+                                ×
+                              </span>
+                            </div>
+                          );
+                        }}
+                      />
+                    </div>
+                    <div  className="flex justify-center items-center mb-2  no-border">
+                        <span className="invite-sm-message">
+                          If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
+                        </span>
+                    </div>
+
+                    <div  className="flex justify-center items-center mb-2 no-border">
+                        <div className="invite-btn-wrapper">
+                          <PrimaryButton
+                              className="basis-1/6 h-10 ml-2 modal-top send-invite-btn"
+                              label="Send" 
+                              disabled={emails.length === 0}
+                              onClick={async (e:any) => { 
+                                  await clickedNewContactsSendInvite();
+                                }
+                              } 
+                          />
+                        </div>
+                    </div>
+                  </div>
+                  )
+                }
+                { selectedInvitationType === 'search_contacts' && (
+                  <div className="mt-2 overflow-y-auto h-64 p-2 ">
+                    <table className="table-fixed">
+                      <thead>
+                        <tr>
+                          <th>Email</th>
+                          <th>Name</th>
+                          <th>Send Invite</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {contacts.map((d, i) => (
+                        <tr>
+                          <td>{d.email}</td>
+                          <td>{d.name ? d.name : 'n/a'}</td>
+                          <td>
+                            <PrimaryButton
+                                className="basis-1/6 ml-2 vision-btn"
+                                label="Send" 
+                                onClick={async (e:any) => { 
+                                  await clickedExistingContactsSendInvite(d, i);
+                                  }
+                                } 
+                            />
+                          </td>
+                        </tr>)
+                        )}
+                      </tbody>
+                    </table>
+                   
+                  </div>
+                )}
+                </div>
+              </ModalBody>
           </Modal>
         )
       }

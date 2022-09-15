@@ -8,5 +8,8 @@ import ClockIcon from "./Clock";
 import BackIcon from "./Back";
 import OnlineIcon from "./OnlineIcon";
 import ChamXsIcon from "./ChamXs";
+import AddPeople from "./AddPeople";
 
-export { CameraIcon, SettingsIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, BackIcon, CameraColoredIcon, ChamXsIcon }
+
+
+export { CameraIcon, SettingsIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople}

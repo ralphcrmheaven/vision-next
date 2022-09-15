@@ -5,6 +5,7 @@
 
 html {
     font-family: FF Mark Pro !important;
+    cursor: url('../images/cursor.png'), auto;
 }
 
 .vision-card {
@@ -196,6 +197,12 @@ html {
     width: 100%;
 }
 
+.tab-select.active {
+    color: #063f64;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .tab-header {
     position: relative;
     left: 18px;
@@ -225,4 +232,150 @@ aside.emoji-picker-react {
 
 .message-input-form {
     flex: auto;
+}
+
+
+/* Modal css */
+
+.invite-modal {
+    z-index: 999 !important;
+}
+
+.tab-contact {
+    position: relative;
+    top: 94.3px;
+}
+
+.react-multi-email {
+    flex: none !important;
+    width: 403px;
+    height: auto;
+    background: #ECECEC !important;
+    border: 1px solid #E0E0E0 !important;
+    border-radius: 15px !important;
+}
+
+.invite-modal section {
+    width: 691px !important;
+    height: 473px !important;
+    background: #FFFFFF !important;
+    border-radius: 30px !important;
+}
+
+.invite-modal .ch-title {
+    margin-top: 103px !important;
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    color: #053F64;
+}
+
+.modal-top {
+    z-index: 9999;
+}
+
+.react-multi-email>input:active {
+    background: #ECECEC;
+    border: 1px solid #E0E0E0;
+}
+
+.react-multi-email>input {
+    background: #ececec !important;
+    padding-top: 13px !important;
+    padding-left: 10px !important;
+}
+
+.no-border {
+    border-top-width: 0px !important;
+}
+
+.send-invite-btn {
+    width: 135px;
+    height: 50px !important;
+    background-color: #053F64 !important;
+    border-radius: 12px !important;
+}
+
+.invite-btn-wrapper button {
+    color: #fff !important;
+}
+
+.invite-btn-wrapper {
+    width: 380px;
+    height: 67px;
+    padding-left: 251px;
+}
+
+.invite-modal .contact-list {
+    padding-left: 55px;
+    padding-right: 55px;
+}
+
+.invite-sm-message {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.5);
+    width: 380px;
+    height: 67px;
+}
+
+.react-multi-email [data-tag] {
+    background-color: #fff !important;
+}
+
+.react-multi-email.focused {
+    background: #ececec !important;
+}
+
+.react-multi-email.empty>span[data-placeholder] {
+    display: inline;
+    color: black;
+    background: #ececec;
+    border: none !important;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    position: absolute;
+    top: 9px;
+    left: 24px;
+}
+
+.table-fixed {
+    width: 100%;
+    text-align: left;
+    text-align: center;
+}
+
+.table-fixed tr {
+    height: 50px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.vision-btn {
+    background-color: #063f64 !important;
+    width: 135px;
+    height: 50px;
+}
+
+.bg-time {
+    background-image: url('../images/bg-time.png');
+    background-repeat: no-repeat;
+    background-size: 102% 100%;
+    background-position: 62%;
+    color: black;
+}
+
+.add-people span {
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.add-people img {
+    width: 15px;
+    margin: 4px;
+    height: 15px;
 }

@@ -19,16 +19,18 @@ const Roaster = () => {
   });
 
   return (
-    <Roster>
-      <RosterHeader
-        title="Present"
-        badge={attendeeItems.length}
-        onClose={() => {}}
-        searchValue=""
-        onSearch={() => {}}
-      />
-      <RosterGroup>{attendeeItems}</RosterGroup>
-    </Roster>
+    <div className="">
+      <Roster>
+        <RosterHeader
+          title="Present"
+          badge={attendeeItems.length}
+          onClose={() => {}}
+          searchValue=""
+          onSearch={() => {}}
+        />
+        <RosterGroup>{attendeeItems}</RosterGroup>
+      </Roster>
+    </div>
   );
 };
 
