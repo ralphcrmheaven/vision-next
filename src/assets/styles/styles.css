@@ -364,7 +364,7 @@ aside.emoji-picker-react {
 .bg-time {
     background-image: url('../images/bg-time.png');
     background-repeat: no-repeat;
-    background-size: 102% 100%;
+    background-size: cover;
     background-position: 62%;
     color: black;
 }
