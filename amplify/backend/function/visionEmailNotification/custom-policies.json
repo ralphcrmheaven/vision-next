@@ -1,9 +1,8 @@
-[
-  {
+[{
     "Action": [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
+        "ses:SendTemplatedEmail",
+        "ses:SendEmail",
+        "ses:SendRawEmail"
     ],
     "Resource": ["arn:aws:ses:::*"]
-  }
-]
+}]

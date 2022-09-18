@@ -6,7 +6,7 @@ import {
 import MeetingCard from './MeetingCard';
 
 const MeetingList: FC = () => {
-  const itemToShowCount = 2;
+  const itemToShowCount = 10;
 
   const {
       meetings,
@@ -14,19 +14,22 @@ const MeetingList: FC = () => {
   } = useMeetings();
 
   useEffect(() => {
+    console.log(meetings)
     console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
     readTheMeetings?.();
   }, []);
 
   return (
       <>
-        {
-          // eslint-disable-next-line array-callback-return
-          meetings?.slice(0, itemToShowCount).map((meeting, index) => {
-            // eslint-disable-next-line no-lone-blocks
-            return <MeetingCard meeting={meeting} key={index} />
-          })
+        <div className="meeting-list-wrapper">
+          {
+              // eslint-disable-next-line array-callback-return
+              meetings?.slice(0, itemToShowCount).map((meeting, index) => {
+                // eslint-disable-next-line no-lone-blocks
+                return <MeetingCard meeting={meeting} key={index} />
+              })
         }
+        </div>
       </>
   );
 };

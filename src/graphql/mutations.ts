@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
+//tetasasas
 export const createMeetingGraphQL = /* GraphQL */ `
   mutation CreateMeetingGraphQL(
     $input: CreateMeetingInput!

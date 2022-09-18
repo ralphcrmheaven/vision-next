@@ -52,7 +52,7 @@ export default function Sidebar() {
 
           <li>
             <NavLink
-              to="/meetings"
+              to="/schedule-meeting"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
@@ -65,6 +65,8 @@ export default function Sidebar() {
               <UsersIcon />
             </NavLink>
           </li>
+
+
 
           <li>
             <NavLink

@@ -31,22 +31,7 @@ export default function Contacts() {
         next: ({ value: { data: { onCreateContact }} }) => {
           console.log('subscriptions.onCreateContact', onCreateContact);
           
-          sendEmailNotification({ email: onCreateContact.email, msg: 
-`
-Hi there,
-
-Ashley Solomon would like to invite you to chat and meet over Vision2020.
-
-Please sign up a Vision2020 account and then click the link below to accept the invitation within 30 days:
-https://www.poc.visionvideoconferencing.com/signup
-
-If you don't want to accept the invitation, just ignore this message.
-
-Thank you.
-
-The Vision2020 Team
-`,
-        subject: `Vision2020 Invitation from ${user.given_name} ${user.family_name}` })
+          //sendEmailNotification({})
           // queries.sendEmailNotification('hello ash');
           // Do something with the data
         }

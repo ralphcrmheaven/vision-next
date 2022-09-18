@@ -85,7 +85,7 @@ export default function Home() {
         </div>
         <div className="flex flex-row gap-10 pt-10">
           <div className="grid">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6 home-card-wrapper">
               <VCard
                 {...{ className: 'relative vision-card text-white  bg-vision-blue h-40 hover:bg-vision-lighter-blue hover:text-gray-900' }}
               >

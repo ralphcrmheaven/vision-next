@@ -4,6 +4,7 @@ import Base from './layout/Base'
 import FullScreen from './layout/FullScreen'
 import MeetingWrapper from './wrappers/MeetingWrapper'
 import Contacts from './pages/Contacts'
+import ScheduleMeeting from './pages/ScheduleMeeting'
 import SingleMeeting from './pages/SingleMeeting'
 import SingleMeetingPassword from './pages/SingleMeetingPassword'
 import DeleteAllChannels from './pages/DeleteAllChannels'
@@ -49,6 +50,15 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
+        <Route
+          path="/schedule-meeting"
+          element={
+            <MeetingWrapper>
+              <ScheduleMeeting />
+            </MeetingWrapper>
+          }
+        />
+
         <Route path="/settings" element={<Settings />} />
         <Route
           path="/schedule"

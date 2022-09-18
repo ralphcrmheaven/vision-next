@@ -12,9 +12,9 @@ type ContactType = {
 };
 
 type ContactNotificationType = {
-    email: string
-    msg: string
-    subject: string
+    email: string,
+    meetingUrl: string,
+    fromName: string
 };
 
 export type  { 

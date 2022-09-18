@@ -33,8 +33,8 @@ export const endChimeMeeting = /* GraphQL */ `
   }
 `;
 export const sendEmailNotification = /* GraphQL */ `
-  query SendEmailNotification($email: String, $msg: String, $subject: String) {
-    sendEmailNotification(email: $email, msg: $msg, subject: $subject)
+  query SendEmailNotification($email: String, $fromName: String, $meetingUrl: String) {
+    sendEmailNotification(email: $email, fromName: $fromName, meetingUrl: $meetingUrl)
   }
 `;
 export const getMeeting = /* GraphQL */ `

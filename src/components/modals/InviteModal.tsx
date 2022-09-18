@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState, useRef } from 'react'
-
+import { Observable } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import {
     Modal,
     ModalBody,
     PrimaryButton,
     ModalHeader
   } from 'amazon-chime-sdk-component-library-react';
+import * as subscriptions from '../../graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createContact, getContacts, ContactType, ContactNotificationType } from '../../api/contact';
 import * as queries from '../../graphql/queries';
@@ -17,14 +19,13 @@ import { useSelector } from 'react-redux'
 const InviteModal = (props:any) => {
 
     const sendInviteButton = useRef<any>();
-
-    const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(true)
-
+    const [contactsBtnDisabled, setContactsBtnDisabled] = useState<[]>([]);
+    const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(false)
     const [contacts, setContacts] = useState<ContactType[]>([]);
     const {setModalVisibility} = props;
-
     const [selectedInvitationType, setSelectedInvitationType] = useState<string>('send_mail')
     const user: IUser = useSelector(selectUser);
+
     const {
         activeMeeting,
         setTheActiveMeeting,
@@ -35,13 +36,7 @@ const InviteModal = (props:any) => {
         setTheContacts();
     }, [user.id])
 
-    // useEffect(() => {
-    //     if(isOpen === false){
-    //     setTheContacts();
-    //     setEmails([]);
-    //     }
-    // }, [isOpen])
-
+    const msgNewContacts = "Test message";
 
     const [emails, setEmails] = useState<string[]>([]);
     const subject = `Vision2020 Invitation from ${user.given_name} ${user.family_name}`;
@@ -55,20 +50,79 @@ const InviteModal = (props:any) => {
         return await getContacts(userId)
     }
 
+
+    useEffect(() => {
+        const doActions = async () => {
+            console.log("doActions")
+            if(typeof activeMeeting.url !== 'undefined'){
+                const subscription = await handleSubscriptions();
+                return () => {
+                    subscription.unsubscribe();
+                }
+            }
+        };
+
+        doActions();
+    }, [])
+
+
+
+    const handleSubscriptions = async () => {
+        console.log("=======subscribe=======")
+
+        return (API.graphql(
+            graphqlOperation(subscriptions.onCreateContact)
+        ) as unknown as Observable<any>).subscribe({
+            next: async ({ value: { data: { onCreateContact }} }) => {
+                await sendEmailNotification({
+                    email: onCreateContact.email,
+                    fromName: `${user.family_name}` ,
+                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`
+                });
+            }
+        } )
+    }
+
+
     const clickedNewContactsSendInvite = async () => {
-        setInviteeButtonProps(`#invitee-${0} button`, { label: 'Sending...', innerHTML: 'Sending...', disabled: true });
+        setSendButtonDisabled(true)
         await createContactsAsync();
         setSendButtonDisabled(false)
     };
 
+    const checkContactExisting = async (email: any) => {
+        var counter = 0;
+        contacts.forEach(async (m) => {
+            console.log(email +"==="+ m.email)
+            if(email === m.email) {
+                counter++;
+            }
+        });
+
+        return counter > 0;
+    };
+
     const createContactsAsync = async () => {
+        console.log("createContactsAsync")
+        console.log(emails)
         emails.forEach(async (email: string) => {
-          const contact:ContactType = {
-            email: email,
-            userId: user.id,
-            name: ''
-          }
-          await createContact(contact)
+            console.log("ytes")
+            console.log(await checkContactExisting(email))
+            if(!(await checkContactExisting(email))) {
+                console.log("pumasok")
+                const contact:ContactType = {
+                    email: email,
+                    userId: user.id,
+                    name: ''
+                }
+                await createContact(contact)
+            }else {
+                await sendEmailNotification({
+                    email: email,
+                    fromName: `${user.family_name}`,
+                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`
+                })
+            }
         });
       }
 
@@ -82,7 +136,10 @@ const InviteModal = (props:any) => {
 
     const sendEmailNotification = async (params: ContactNotificationType) => {
         //console.log('params: ', params);
+        console.log("inside sendEmailNotification=======")
+        console.log(params)
         await API.graphql(graphqlOperation(queries.sendEmailNotification,  params ))
+        toast.success("Email has been sent!")
         //setIsOpen(false)
     }
 
@@ -91,16 +148,12 @@ const InviteModal = (props:any) => {
     };
 
     const clickedExistingContactsSendInvite = async (d:any, i:any) => {
-        setInviteeButtonProps(`#invitee-${i+1} button`, { label: 'Sending...', innerHTML: 'Sending...', disabled: true });
-
-        await sendEmailNotification({ 
-            msg: msgExistingContacts, 
-            email: d.email, 
-            subject
-        } as ContactNotificationType);
-        
-        setInviteeButtonProps(`#invitee-${i+1} button`, { label: 'Sent', innerHTML: 'Sent', disabled: true });
-        
+        await sendEmailNotification({
+            email: d.email,
+            fromName: `${user.family_name}`,
+            meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`
+        })
+        setSendButtonDisabled(false)
     };
 
     return (
@@ -111,7 +164,7 @@ const InviteModal = (props:any) => {
                 </div>
 
                 <ModalHeader title={ selectedInvitationType == 'send_mail' ? 'Invite via Email' : 'Invite a VISION contact'} />
-                <ModalBody>
+                <ModalBody className="invite-modal-body">
 
                     <div className="divide-y pb-10">
 
@@ -176,24 +229,25 @@ const InviteModal = (props:any) => {
                         </thead>
                         <tbody>
                         {contacts.map((d, i) => (
-                            <tr>
-                            <td>{d.email}</td>
-                            <td>{d.name ? d.name : 'n/a'}</td>
-                            <td>
-                                <PrimaryButton
-                                    className="basis-1/6 ml-2 vision-btn"
-                                    label="Send" 
-                                    onClick={async (e:any) => { 
-                                    await clickedExistingContactsSendInvite(d, i);
-                                    }
-                                    } 
-                                />
-                            </td>
+                            <tr key={"tr-"+i}>
+                                <td>{d.email}</td>
+                                <td>{d.name ? d.name : 'n/a'}</td>
+                                <td>
+                                    <PrimaryButton
+                                        className="basis-1/6 ml-2 vision-btn"
+                                        label="Send" 
+                                        key={"btn-"+i}
+                                        disabled={contactsBtnDisabled[i]}
+                                        onClick={async (e:any) => { 
+                                        await clickedExistingContactsSendInvite(d, i);
+                                        }
+                                        } 
+                                    />
+                                </td>
                             </tr>)
                             )}
                         </tbody>
                         </table>
-                    
                     </div>
                     )}
                     </div>

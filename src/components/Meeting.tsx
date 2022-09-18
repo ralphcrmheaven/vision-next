@@ -6,6 +6,8 @@ import InviteModal from './modals/InviteModal'
 import Logo from './Logo'
 import { NavLink } from 'react-router-dom'
 import { API, graphqlOperation } from 'aws-amplify';
+import { toast } from 'react-toastify';
+import Toaster from './modals/Toast'
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -359,6 +361,7 @@ const Meeting: FC = () => {
         <InviteModal setModalVisibility = {handleInviteModalVisibility}/>
        )
       }
+      <Toaster/>
     </>
   )
 }

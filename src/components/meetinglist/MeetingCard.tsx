@@ -6,7 +6,7 @@ import {
     useMeetings
 } from '../../providers/MeetingsProvider';
 import { VButton } from '../ui';
-import { ClockIcon } from '../icons';
+import { ClockIcon, UnionIcon } from '../icons';
 import { IMeetingRecord } from '../../interfaces';
 import { EyeIcon } from '@heroicons/react/solid'
 import {
@@ -35,6 +35,11 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     let startsIn = '';
     let href = '';
 
+    useEffect(() => {
+      console.log("inside meeting card")
+      console.log(meeting)
+    },)
+
     try{
       //startDateTime = moment(meeting?.StartDate + ' ' + meeting?.StartTime);
       startDateTime = moment.utc(meeting?.StartDateTimeUTC);
@@ -52,23 +57,29 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     }catch(err){}
 
     return (
-        <div className="v-card">
+        <div className="v-card meeting-card">
             <div className="flex mb-2">
-              <h1 className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
+              <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
               <div className="grid w-1/4 justify-items-end">
-                <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg">...</button>
+                <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg home-dropdown-cog"><UnionIcon/></button>
               </div>
             </div>
             <div className="flex">
               <span className="self-center w-4 h-4"><ClockIcon /></span>
-              <span className="px-4 text-gray-600 border-r border-r-gray-500">{startTime} - {endTime}</span>
-              <span className="px-4 text-gray-600">{startsIn}</span>
+              <span className="px-4 text-gray-600 border-r border-r-gray-500 home-time-card">{startTime} - {endTime}</span>
+              <span className="px-4 text-gray-600 home-time-card">{startsIn}</span>
             </div>
-            <div className="flex">
-              <div className="self-center w-1/2"></div>
-              <div className="flex w-1/2 space-x-1">
-                <button className="z-20" onClick={() => setShowMeetingDetail(!showMeetingDetail)}><EyeIcon className="w-5 h-5 text-blue-500"/></button>
-                <input type="text" className="z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" value={meeting?.MeetingId}/>
+            <div className="flex mt-10">
+              <div className="self-center w-3/4">
+                {meeting.Attendees.map((d, i) => (
+                  <span className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
+                    {d.Name.charAt(0)}
+                  </span>
+                )
+                )}
+              </div>
+              <div className="flex space-x-1">
+                <input type="text" value={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
                 {(meeting?.User === username) ?
                     <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: ''}) }>
                       Start

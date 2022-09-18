@@ -1,6 +1,7 @@
 export interface IMeetingRecord {
     User: string
     MeetingId: string
+    Attendees: Attendees[]
     Password: string
     Topic: string
     TopicDetails: string
@@ -12,4 +13,7 @@ export interface IMeetingRecord {
     Url: string
     CreatedAt: string
     UpdatedAt: string
+};
+interface Attendees {
+    Name: string
 };
