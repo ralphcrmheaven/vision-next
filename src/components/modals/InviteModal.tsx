@@ -68,6 +68,7 @@ const InviteModal = (props:any) => {
 
 
     const handleSubscriptions = async () => {
+        alert("handleSubscriptions invitemodal")
         console.log("=======subscribe=======")
 
         return (API.graphql(
@@ -120,7 +121,7 @@ const InviteModal = (props:any) => {
                 await sendEmailNotification({
                     email: email,
                     fromName: `${user.family_name}`,
-                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`
+                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
                 })
             }
         });

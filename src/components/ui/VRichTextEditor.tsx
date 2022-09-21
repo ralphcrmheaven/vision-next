@@ -6,6 +6,7 @@ const VRichTextEditor = (props:any) => {
     const { id, className, editorState, onEditorStateChange } = props;
     return (
         <Editor
+            editorStyle={{ height: '400px' }} 
             {...props}
             editorState={editorState}
             toolbarClassName="v-rte-toolbar"

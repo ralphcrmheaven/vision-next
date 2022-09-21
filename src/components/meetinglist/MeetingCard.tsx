@@ -15,11 +15,11 @@ import {
 } from 'amazon-chime-sdk-component-library-react';
 
 interface  IMeetingCardProps {
-    meeting: IMeetingRecord
+    meeting: IMeetingRecord,
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
-    const { meeting } = props;    
+    const { meeting } = props;
     const { username, given_name } = useSelector(selectUser);
     const [ showMeetingDetail, setShowMeetingDetail ] = useState(false);
     const {
@@ -57,7 +57,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     }catch(err){}
 
     return (
-        <div className="v-card meeting-card">
+        <div className="v-card meeting-card" key={meeting.MeetingId+"-meetingcard"}>
             <div className="flex mb-2">
               <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
               <div className="grid w-1/4 justify-items-end">
@@ -71,15 +71,16 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
             </div>
             <div className="flex mt-10">
               <div className="self-center w-3/4">
-                {meeting.Attendees.map((d, i) => (
-                  <span className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
-                    {d.Name.charAt(0)}
-                  </span>
-                )
-                )}
+                { meeting.Attendees != undefined ? 
+                  meeting.Attendees.map((d, i) => (
+                    <span key={d.Name+"-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
+                      {d.Name.charAt(0)}
+                    </span>
+                  )
+                  ) : <span></span> }
               </div>
               <div className="flex space-x-1">
-                <input type="text" value={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
+                <input type="text" defaultValue={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
                 {(meeting?.User === username) ?
                     <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: ''}) }>
                       Start

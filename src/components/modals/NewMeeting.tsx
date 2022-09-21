@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, convertFromRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import { selectUser } from '../../redux/features/userSlice';
 import {
     useMeetings
@@ -10,10 +11,20 @@ import {
 import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 
 const NewMeetingForm = (props:any) => {
+
+    useEffect(() => {
+        const html = "<p>Hi! <br />You are invited for a VISION Meeting! <br />We&rsquo;ll be discussing CrmHeaven and VISION during our next meeting at July 25, 2022, exactly 9am EST. <br /><br />We&rsquo;ll have 2 hours maximum to cover everything, so come prepared with your reports and updates. <br /><br />These are the following Agenda Developers: <br /><br />&middot; VISION development updates <br />&middot; CrmHeaven development updates <br />&middot; CrmHeaven infra Creatives:<br />&middot; Creative team tasks updates <br />&middot; CrmHeaven marketing website Videos page design update, Blog page design study <br />&middot; VISION marketing landing page design updates</p>";
+        const contentBlock = htmlToDraft(html);
+        if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+            const editorState = EditorState.createWithContent(contentState);
+            onEditorStateChange(editorState)
+        }
+    },[])
     const { setIsOpen } = props;
 
     const { given_name } = useSelector(selectUser);
-    
+
     const currentDate = moment();
 
     const hourOptions = [
@@ -143,6 +154,10 @@ const NewMeetingForm = (props:any) => {
         saveTheMeeting,
     } = useMeetings();
 
+    
+
+    const defaultEditorText = "These are the following Agenda: · VISION development updates · CrmHeaven development updates · CrmHeaven infra Creatives: · Creative team tasks updates · CrmHeaven marketing website Videos page design update, Blog page design study · VISION marketing landing page design updates"
+
     const [isLoading, setIsLoading] = useState(false);
     const [loadingText, setLoadingText] = useState('');
     const [topic, setTopic] = useState(`${given_name}'s Meeting`);
@@ -152,7 +167,7 @@ const NewMeetingForm = (props:any) => {
     const [durationTimeHours, setDurationTimeHours] = useState('');
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
     const [timezone, setTimezone] = useState('');
-    
+
     const onTopicChange = (value:any) => {
         setTopic(value);
     };
