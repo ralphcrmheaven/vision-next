@@ -361,10 +361,18 @@ export type EndChimeMeetingQuery = {
   } | null,
 };
 
+export type RecordMeetingQueryVariables = {
+  meetingId?: string | null,
+};
+
+export type RecordMeetingQuery = {
+  recordMeeting?: string | null,
+};
+
 export type SendEmailNotificationQueryVariables = {
   email?: string | null,
-  msg?: string | null,
-  subject?: string | null,
+  fromName?: string | null,
+  meetingUrl?: string | null,
 };
 
 export type SendEmailNotificationQuery = {

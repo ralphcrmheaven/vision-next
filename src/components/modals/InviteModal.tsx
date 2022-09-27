@@ -68,7 +68,6 @@ const InviteModal = (props:any) => {
 
 
     const handleSubscriptions = async () => {
-        alert("handleSubscriptions invitemodal")
         console.log("=======subscribe=======")
 
         return (API.graphql(

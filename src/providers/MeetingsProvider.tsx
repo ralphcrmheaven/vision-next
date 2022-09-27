@@ -50,6 +50,7 @@ import {
     getAttendeeFromDB, 
     getMeetingFromDB, 
     joinMeeting,
+    recordCurrentMeeting
 } from '../utils/api';
 import { getRandomString, randomString } from '../utils/utils';
 import { decrypt } from '../utils/crypt';
@@ -75,6 +76,7 @@ interface IMeetingsContext {
     setTheActiveMeeting?: (iv:any, attendees:any) => void;
     setTheActiveMeetingAttendees?: (attendees:any) => void;
     readTheMeetings?: () => void;
+    recordMeeting?: (mtId:any, type:any, pipelineId:any) => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
 
@@ -263,6 +265,15 @@ export const MeetingsProvider: FC = ({ children }) => {
         }
     };
 
+    const recordMeeting = async(mtId:any, type:any, pipelineId:any) => {
+        try {
+            const recordInfo = await recordCurrentMeeting(mtId, type, pipelineId); // TODO
+            return recordInfo;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const createTheMeeting = async(mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
         try {
@@ -412,6 +423,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     showJoinMeetingModal,
                     meeting,
                     meetingId,
+                    recordMeeting,
                     setShowNewMeetingModal,
                     setShowJoinMeetingModal,
                     setTheMeeting,

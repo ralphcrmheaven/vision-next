@@ -49,6 +49,15 @@ const MeetingCalendar = (props: Props) => {
 
   const [selectedEvent, setSelectedEvent] = useState<IEvent | null>(null)
 
+  const renderEventContent = (eventInfo:any) => {
+    return (
+      <>
+        <p className="calendar-text-title">{eventInfo.event.title}</p>
+        <p className="calendar-text-time">{moment(eventInfo.event.start).format('h:mm a')}</p>
+      </>
+    )
+  }
+
   // Remove empty dates
   const filteredMeetings = meetings?.filter((meeting) => meeting.StartDate)
 
@@ -89,6 +98,8 @@ const MeetingCalendar = (props: Props) => {
     <StyleWrapper>
       <FullCalendar
         plugins={props.plugins}
+        dayHeaders={true}
+        eventContent={renderEventContent}
         initialView={props.initialView}
         viewClassNames={props.viewClassNames}
         headerToolbar={props.headerToolbar}

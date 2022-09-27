@@ -8,6 +8,9 @@ import { NavLink } from 'react-router-dom'
 import { API, graphqlOperation } from 'aws-amplify';
 import { toast } from 'react-toastify';
 import Toaster from './modals/Toast'
+import Messages from './Messages'
+
+
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -38,7 +41,7 @@ import {
   DefaultVideoTransformDevice,
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
-import { HomeIcon, CameraIcon, SettingsIcon,AddPeople, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
+import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon,AddPeople, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import { ReactMultiEmail } from 'react-multi-email';
 import * as queries from '../graphql/queries';
@@ -64,6 +67,7 @@ const Meeting: FC = () => {
   const user: IUser = useSelector(selectUser);
 
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
+  const [isRecording, setIsRecording] = useState<boolean>(false)
   const [contacts, setContacts] = useState<ContactType[]>([]);
   const [emails, setEmails] = useState<string[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -80,11 +84,21 @@ const Meeting: FC = () => {
   const logger = useLogger()
   const meetingManager = useMeetingManager();
   const meetingStatus = useMeetingStatus();
+
+  const useChimeSDKMeetings = 'https://service.chime.aws.amazon.com';
+
+  
+  const AWS = require('aws-sdk');
+
   const { 
     activeMeeting,
     setTheActiveMeeting,
-    createOrJoinTheMeeting
+    recordMeeting,
+    createOrJoinTheMeeting,
   } = useMeetings();
+
+
+
 
   const createBackgroundReplacementDevice = async (device: any) => {
     const processors: Array<any> = []
@@ -190,10 +204,37 @@ const Meeting: FC = () => {
     }
   }
 
+  const createPipelineParams = {
+    ChimeSdkMeetingConfiguration: {
+      ArtifactsConfiguration: {
+        Audio: { MuxType: 'AudioOnly' },
+        CompositedVideo: {
+          GridViewConfiguration: {
+            ContentShareLayout: 'PresenterOnly',
+          },
+          Layout: 'GridView',
+          Resolution: 'FHD',
+        },
+        Content: { State: 'Disabled' },
+        Video: { State: 'Disabled', MuxType: 'VideoOnly' },
+      },
+    },
+    SinkArn: 'arn:aws:s3:::recorded-meetings-dev',
+    SinkType: 'S3Bucket',
+    SourceArn: `arn:aws:chime::205131113421:meeting:${meetingManager.meetingId}`,
+    SourceType: 'ChimeSdkMeeting',
+    Tags: [{ Key: 'transcription-for-comprehend', Value: 'true' }],
+  };
+
   const handleInviteModalVisibility= async (value:boolean) => {
     setIsOpen(value)
   };
 
+  const recordChimeMeeting = async () => {
+    const recordInfo = await recordMeeting?.(meetingManager.meetingId, "record", "")
+    console.log(recordInfo)
+    setIsRecording(true)
+  }
 
   // useEffect(() => {
   //   const doActions = async () => {
@@ -208,12 +249,10 @@ const Meeting: FC = () => {
   //   doActions();
   // }, [activeMeeting])
 
-  // useEffect(() => {
-  //   if(isOpen === false){
-  //     setTheContacts();
-  //     setEmails([]);
-  //   }
-  // }, [isOpen])
+  useEffect(() => {
+    console.log("====meetingManager=====")
+    console.log(meetingManager)
+  },)
 
   useEffect(() => {
     toggleBackgroundReplacement()
@@ -273,7 +312,7 @@ const Meeting: FC = () => {
         <div className="w-full row-span-4  relative">
           {meetingStatus === MeetingStatus.Succeeded ? (
             <>
-
+          
             <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
               <div className={ `h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}` }>
                 <VideoTileGrid className="video-grid-vision" layout="standard" />
@@ -340,6 +379,7 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
+              
               <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                 <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
                   onClick={async (e:any) => { 
@@ -352,6 +392,13 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
+              { !isRecording &&
+              <button onClick={() => recordChimeMeeting()}><RecordIcon/></button>
+              }
+
+              { isRecording &&
+              <div onClick={() => setIsRecording(false)}><button >Stop Recording</button></div>
+              }
             </ControlBar>
         </div>
 

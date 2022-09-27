@@ -25,6 +25,14 @@
         "visionEmailNotification": {
           "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
           "s3Key": "amplify-builds/visionEmailNotification-2b6d6857334768446357-build.zip"
+        },
+        "meetingrecorderdev": {
+          "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
+          "s3Key": "amplify-builds/meetingrecorderdev-61642f53756f584d6530-build.zip"
+        },
+        "visionHandlePipeline": {
+          "deploymentBucketName": "amplify-visionnext-dev-224155-deployment",
+          "s3Key": "amplify-builds/visionHandlePipeline-2b416f4c306674656f5a-build.zip"
         }
       },
       "auth": {

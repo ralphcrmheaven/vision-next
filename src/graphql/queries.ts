@@ -32,9 +32,22 @@ export const endChimeMeeting = /* GraphQL */ `
     }
   }
 `;
+export const recordMeeting = /* GraphQL */ `
+  query RecordMeeting($meetingId: String, $type: String, $pipelineId: String) {
+    recordMeeting(meetingId: $meetingId, type : $type, pipelineId: String)
+  }
+`;
 export const sendEmailNotification = /* GraphQL */ `
-  query SendEmailNotification($email: String, $fromName: String, $meetingUrl: String) {
-    sendEmailNotification(email: $email, fromName: $fromName, meetingUrl: $meetingUrl)
+  query SendEmailNotification(
+    $email: String
+    $fromName: String
+    $meetingUrl: String
+  ) {
+    sendEmailNotification(
+      email: $email
+      fromName: $fromName
+      meetingUrl: $meetingUrl
+    )
   }
 `;
 export const getMeeting = /* GraphQL */ `

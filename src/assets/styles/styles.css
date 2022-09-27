@@ -369,6 +369,28 @@ aside.emoji-picker-react {
     color: black;
 }
 
+.bg-vision-blue {
+    background-color: #053F64 !important;
+}
+
+.bg-vision-lightblue {
+    background-color: #084D79 !important;
+    border: 1px solid #0B5A8C !important;
+}
+
+.bg-vision-yellow {
+    background-color: #053F64 !important;
+}
+
+.bg-vision-green {
+    background-color: #01798A !important;
+}
+
+.bg-vision-lightgreen {
+    background-color: #008C8C !important;
+    border: 1px solid #009999 !important;
+}
+
 .add-people span {
     display: inline-block;
     margin-left: 3px;
@@ -472,9 +494,30 @@ aside.emoji-picker-react {
 /* calendar */
 
 .fc-daygrid-event {
-    background: #0c4a6e;
+    background: rgba(42, 168, 242, 0.15);
     color: #fff;
     border: 1px solid #fff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 13px;
+    color: #053F64;
+    border: 1px solid #2AA8F2;
+    border-radius: 10px;
+}
+
+.fc-v-event {
+    background: rgba(42, 168, 242, 0.15);
+    color: #fff;
+    border: 1px solid #fff;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 13px;
+    color: #053F64;
+    border: 1px solid #2AA8F2;
+    border-radius: 10px;
+    height: 100px;
 }
 
 .fc-daygrid-dot-event:hover,
@@ -484,4 +527,63 @@ aside.emoji-picker-react {
 
 .rdw-editor-main {
     height: 250px;
+}
+
+.fc-daygrid-event-dot {
+    display: none;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    margin-right: 2px;
+    padding-left: 11px;
+    height: 166px;
+}
+
+.calendar-text-title {
+    font-family: 'FF Mark Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 13px;
+    color: #053F64;
+}
+
+.calendar-text-time {
+    position: absolute;
+    bottom: 17px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 13px;
+    color: #053F64;
+}
+
+.fc-daygrid-dot-event {
+    display: block;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    white-space: initial;
+    padding-top: 17px;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: #2AA8F2 !important;
+    box-shadow: 0px 15px 15px rgb(0 0 0 / 5%) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.fc .fc-button-primary:not(:disabled) {
+    background: transparent !important;
+    border: none !important;
+    color: #747474 !important;
+}
+
+.record-icon {
+    width: 20px;
 }

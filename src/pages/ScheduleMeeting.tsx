@@ -1,6 +1,8 @@
 import MeetingCalendar from '../components/meetingcalendar/MeetingCalendar'
 import listPlugin from '@fullcalendar/list'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
 import { Tabs, TabItem } from '@aws-amplify/ui-react';
 import MeetingList from '../components/meetinglist/MeetingList';
 import NewMeeting from '../components/modals/NewMeeting';
@@ -13,13 +15,13 @@ export default function ScheduleMeeting() {
                 <div className="col-span-3">
                     <h1>Meetings</h1>
                     <MeetingCalendar 
-                        plugins={[listPlugin,dayGridPlugin]}
-                        initialView="dayGridMonth"
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        initialView="timeGridWeek"
                         viewClassNames="Calendar"
                         headerToolbar={{
-                        start: 'prev,next today',
-                        center: 'title',
-                        end: '',
+                            left: 'prev,next',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek'
                         }}
                     />
                 </div>
