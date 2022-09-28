@@ -95,6 +95,7 @@ const Meeting: FC = () => {
     setTheActiveMeeting,
     recordMeeting,
     createOrJoinTheMeeting,
+    testUpdate
   } = useMeetings();
 
 
@@ -230,8 +231,10 @@ const Meeting: FC = () => {
     setIsOpen(value)
   };
 
-  const recordChimeMeeting = async () => {
-    const recordInfo = await recordMeeting?.(meetingManager.meetingId, "record", "")
+  const recordChimeMeeting = async (value: string) => {
+    await testUpdate?.()
+    return
+    const recordInfo = await recordMeeting?.(meetingManager.meetingId, value, "record")
     console.log(recordInfo)
     setIsRecording(true)
   }
@@ -393,11 +396,11 @@ const Meeting: FC = () => {
                 />
               </div>
               { !isRecording &&
-              <button onClick={() => recordChimeMeeting()}><RecordIcon/></button>
+              <button onClick={() => recordChimeMeeting("record")}><RecordIcon/></button>
               }
 
               { isRecording &&
-              <div onClick={() => setIsRecording(false)}><button >Stop Recording</button></div>
+              <div onClick={() => recordChimeMeeting("stop")}><button >Stop Recording</button></div>
               }
             </ControlBar>
         </div>

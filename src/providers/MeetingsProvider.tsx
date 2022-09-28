@@ -76,6 +76,7 @@ interface IMeetingsContext {
     setTheActiveMeeting?: (iv:any, attendees:any) => void;
     setTheActiveMeetingAttendees?: (attendees:any) => void;
     readTheMeetings?: () => void;
+    testUpdate?: () => void;
     recordMeeting?: (mtId:any, type:any, pipelineId:any) => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -159,6 +160,15 @@ export const MeetingsProvider: FC = ({ children }) => {
 
             await setTheActiveMeetingAttendees?.(payload.data.Attendees);
         }
+    };
+
+    const testUpdate = async () => {
+        const data = {
+            MeetingId: mId,
+            User: username,
+            Attendees: []
+        };
+        const { payload } = await dispatch(meetingUpdate(data));
     };
 
     const fetchAttendeesFromMeeting = async () => {
@@ -266,6 +276,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     };
 
     const recordMeeting = async(mtId:any, type:any, pipelineId:any) => {
+     
         try {
             const recordInfo = await recordCurrentMeeting(mtId, type, pipelineId); // TODO
             return recordInfo;
@@ -429,6 +440,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     setTheMeeting,
                     setTheMeetingId,
                     setTheActiveMeeting,
+                    testUpdate,
                     createOrJoinTheMeeting,
                     createTheMeeting,
                     joinTheMeeting,

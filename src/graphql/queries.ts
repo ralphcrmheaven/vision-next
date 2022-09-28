@@ -34,7 +34,7 @@ export const endChimeMeeting = /* GraphQL */ `
 `;
 export const recordMeeting = /* GraphQL */ `
   query RecordMeeting($meetingId: String, $type: String, $pipelineId: String) {
-    recordMeeting(meetingId: $meetingId, type : $type, pipelineId: String)
+    recordMeeting(meetingId: $meetingId, type : $type, pipelineId: $pipelineId)
   }
 `;
 export const sendEmailNotification = /* GraphQL */ `

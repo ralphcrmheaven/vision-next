@@ -363,6 +363,8 @@ export type EndChimeMeetingQuery = {
 
 export type RecordMeetingQueryVariables = {
   meetingId?: string | null,
+  type?: string | null,
+  pipelineId?: string | null,
 };
 
 export type RecordMeetingQuery = {

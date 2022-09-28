@@ -10,6 +10,7 @@ export async function createMeeting(title: string, attendeeName: string, region:
   return joinInfoJsonParse;
 }
 
+
 export async function joinMeeting(meetingId: string, name: string) {
   const joinInfo: any = await API.graphql(graphqlOperation(joinChimeMeeting, {meetingId: meetingId, name: name}));
   const joinInfoJson = joinInfo.data.joinChimeMeeting;
@@ -20,7 +21,7 @@ export async function joinMeeting(meetingId: string, name: string) {
 export async function recordCurrentMeeting(meetingId: string,type: string,pipelineId: string) {
   const joinInfo: any = await API.graphql(graphqlOperation(recordMeeting, {meetingId: meetingId,type: type,pipelineId: pipelineId}));
   const joinInfoJson = joinInfo.data;
-  const joinInfoJsonParse = JSON.parse(joinInfoJson.body);
+  const joinInfoJsonParse = joinInfoJson;
   return joinInfoJsonParse;
 }
 
