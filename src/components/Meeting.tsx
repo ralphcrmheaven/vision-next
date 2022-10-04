@@ -53,21 +53,38 @@ import { endMeeting } from '../utils/api'
 import { IUser, selectUser } from '../redux/features/userSlice'
 import FormInput, { InputTypes } from '../components/form/FormInput'
 import Roaster from '../components/Roaster'
+import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading5.gif'
 import 'react-multi-email/style.css';
+import AttachmentService from '../services/AttachmentService';
+
 
 
 const Meeting: FC = () => {
+
+  type RecordUpdate = {
+    isRecording: boolean;
+  };
+
+  let recordUpdate: RecordUpdate | null = null;
+
+  
   // Hooks
   let navigate = useNavigate();
 
   const user: IUser = useSelector(selectUser);
+  
+  const [recordingCountdown, setRecordingCountdown] = useState<number>(0)
+  const intervalId =React.useRef(5);
 
+  const [recordingLoading, setRecordingLoading] = useState<boolean>(false)
+  const [isHost, SetIsHost] = useState<boolean>(false)
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
   const [isRecording, setIsRecording] = useState<boolean>(false)
+  const [dbMeetNew, setDbMeetNew] = useState<any>()
   const [contacts, setContacts] = useState<ContactType[]>([]);
   const [emails, setEmails] = useState<string[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -75,6 +92,12 @@ const Meeting: FC = () => {
   const [background, setBackground] = useState<string>('')
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  var dbMeetingData = {
+      data: { getMeeting : {
+        isRecording: false
+      }
+    }
+  }
   const initials =
     user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
@@ -84,7 +107,7 @@ const Meeting: FC = () => {
   const logger = useLogger()
   const meetingManager = useMeetingManager();
   const meetingStatus = useMeetingStatus();
-
+  var timer: any;
   const useChimeSDKMeetings = 'https://service.chime.aws.amazon.com';
 
   
@@ -95,7 +118,10 @@ const Meeting: FC = () => {
     setTheActiveMeeting,
     recordMeeting,
     createOrJoinTheMeeting,
-    testUpdate
+    updateTheDbMeeting,
+    meetingId,
+    getDbFromDb,
+    meeting
   } = useMeetings();
 
 
@@ -191,6 +217,9 @@ const Meeting: FC = () => {
         await createOrJoinTheMeeting?.();
         await setTheActiveMeeting?.(res.data.I, res.data.Attendees);
       }
+      dbMeetingData = await getDbFromDb?.()
+      setIsRecording(dbMeetingData.data.getMeeting.isRecording)
+ 
     }catch(error){
       setIsValidMeeting(false);
     }
@@ -227,16 +256,70 @@ const Meeting: FC = () => {
     Tags: [{ Key: 'transcription-for-comprehend', Value: 'true' }],
   };
 
+  const clear=()=>{
+    window.clearInterval(intervalId.current)
+  }
+
   const handleInviteModalVisibility= async (value:boolean) => {
     setIsOpen(value)
   };
 
+  const startRecordingCountdown = async (is_recording:boolean) => {
+    setRecordingCountdown(5)
+    intervalId.current=window.setInterval(()=>{
+      setRecordingCountdown((recordingCountdown)=>recordingCountdown-1)
+    },1000)
+    return ()=>clear();
+  }
+
+
+  const downloadRecording = async () => {
+    AttachmentService.listFiles(meetingManager.meetingId)
+    .then((result) => {
+      console.log(result)
+      result.forEach(async (file: any) => {
+          console.log(file)
+          var ext = file.key.substr(file.key.lastIndexOf('.') + 1);
+          if (ext == "mp4") {
+            AttachmentService.downloadRecording(file.key)
+            .then((result) => {
+              console.log(result)
+              return result;
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+          }
+      });
+      console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
+    })
+    .catch((err) => {
+        console.log(err)
+    });
+  }
+
+
+
   const recordChimeMeeting = async (value: string) => {
-    await testUpdate?.()
-    return
+
+    
+    setRecordingLoading(true)
+    const is_recording = value == 'record';
+
+    if(is_recording) {
+      startRecordingCountdown(true)
+    }
+
+    const recordUpdate = await updateTheDbMeeting?.(is_recording)
     const recordInfo = await recordMeeting?.(meetingManager.meetingId, value, "record")
-    console.log(recordInfo)
-    setIsRecording(true)
+    setDbMeetNew(recordUpdate)
+
+    const record = await recordUpdate?.['isRecording']
+
+    if(!is_recording) {
+      setRecordingLoading(false)
+      setIsRecording(false)
+    }
   }
 
   // useEffect(() => {
@@ -254,16 +337,39 @@ const Meeting: FC = () => {
 
   useEffect(() => {
     console.log("====meetingManager=====")
-    console.log(meetingManager)
-  },)
+    console.log(activeMeeting)
+    console.log(activeMeeting.attendees)
+    console.log(user)
+
+    if(activeMeeting.attendees != undefined) {
+      if(activeMeeting.attendees[0].UserName == user.username) {
+        SetIsHost(true); 
+      }
+    }
+
+  },[])
 
   useEffect(() => {
     toggleBackgroundReplacement()
   }, [background])
 
   useEffect(() => {
+    if(recordingCountdown == 0) {
+      console.log("clear interval")
+      console.log(intervalId.current)
+
+      clear()
+
+      setRecordingLoading(false)
+      setIsRecording(true)
+    }
+  }, [recordingCountdown])
+
+  useEffect(() => {
     doActionsOnLoad();
   }, []);
+
+  
 
   if(isValidMeeting === false) {
     return <ErrorModal
@@ -315,10 +421,18 @@ const Meeting: FC = () => {
         <div className="w-full row-span-4  relative">
           {meetingStatus === MeetingStatus.Succeeded ? (
             <>
-          
+
             <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
               <div className={ `h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}` }>
-                <VideoTileGrid className="video-grid-vision" layout="standard" />
+
+                <div className="h-full w-full video-tile-wrap">
+                  {recordingCountdown > 0 &&
+                  <RecordMeetingLoader number={recordingCountdown}/>
+                  }
+                  <VideoTileGrid className={` video-grid-vision ${isRecording ? "vision-recording" : ""}` }  layout="standard" >
+                  </VideoTileGrid>
+                </div>
+
               </div>
 
 
@@ -382,7 +496,7 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
-              
+
               <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                 <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
                   onClick={async (e:any) => { 
@@ -395,18 +509,19 @@ const Meeting: FC = () => {
                   }
                 />
               </div>
-              { !isRecording &&
-              <button onClick={() => recordChimeMeeting("record")}><RecordIcon/></button>
+              { !isRecording && isHost &&
+              <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon/></button>
               }
 
-              { isRecording &&
-              <div onClick={() => recordChimeMeeting("stop")}><button >Stop Recording</button></div>
+              {!recordingLoading && isRecording && isHost &&
+              <div  onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
               }
+
             </ControlBar>
         </div>
 
       </div>
- 
+
       { isOpen && (
         <InviteModal setModalVisibility = {handleInviteModalVisibility}/>
        )

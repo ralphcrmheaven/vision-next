@@ -11,6 +11,7 @@ export type CreateMeetingInput = {
 
 export type ModelMeetingConditionInput = {
   meetingId?: ModelStringInput | null,
+  isRecording?: boolean | null,
   data?: ModelStringInput | null,
   passcode?: ModelStringInput | null,
   and?: Array< ModelMeetingConditionInput | null > | null,
@@ -62,10 +63,16 @@ export type Meeting = {
   __typename: "Meeting",
   meetingId: string,
   title: string,
+  isRecording?: boolean | null,
   data: string,
   passcode?: string | null,
   createdAt: string,
   updatedAt: string,
+};
+
+export type UpdateMeetingInput = {
+  title: string,
+  isRecording?: boolean | null,
 };
 
 export type DeleteMeetingInput = {
@@ -208,6 +215,25 @@ export type CreateMeetingGraphQLMutation = {
     __typename: "Meeting",
     meetingId: string,
     title: string,
+    isRecording?: boolean | null,
+    data: string,
+    passcode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateMeetingGraphQLMutationVariables = {
+  input: UpdateMeetingInput,
+  condition?: ModelMeetingConditionInput | null,
+};
+
+export type UpdateMeetingGraphQLMutation = {
+  updateMeetingGraphQL?:  {
+    __typename: "Meeting",
+    meetingId: string,
+    title: string,
+    isRecording?: boolean | null,
     data: string,
     passcode?: string | null,
     createdAt: string,
@@ -225,6 +251,7 @@ export type DeleteMeetingGraphQLMutation = {
     __typename: "Meeting",
     meetingId: string,
     title: string,
+    isRecording?: boolean | null,
     data: string,
     passcode?: string | null,
     createdAt: string,
@@ -332,6 +359,22 @@ export type CreateChimeMeetingQuery = {
   } | null,
 };
 
+export type CreatePipelineQueryVariables = {
+  title?: string | null,
+  name?: string | null,
+  region?: string | null,
+};
+
+export type CreatePipelineQuery = {
+  createPipeline?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type JoinChimeMeetingQueryVariables = {
   meetingId?: string | null,
   name?: string | null,
@@ -390,6 +433,7 @@ export type GetMeetingQuery = {
     __typename: "Meeting",
     meetingId: string,
     title: string,
+    isRecording?: boolean | null,
     data: string,
     passcode?: string | null,
     createdAt: string,
@@ -412,6 +456,7 @@ export type ListMeetingsQuery = {
       __typename: "Meeting",
       meetingId: string,
       title: string,
+      isRecording?: boolean | null,
       data: string,
       passcode?: string | null,
       createdAt: string,

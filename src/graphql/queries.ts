@@ -12,6 +12,16 @@ export const createChimeMeeting = /* GraphQL */ `
     }
   }
 `;
+export const createPipeline = /* GraphQL */ `
+  query CreatePipeline($title: String, $name: String, $region: String) {
+    createPipeline(title: $title, name: $name, region: $region) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const joinChimeMeeting = /* GraphQL */ `
   query JoinChimeMeeting($meetingId: String, $name: String) {
     joinChimeMeeting(meetingId: $meetingId, name: $name) {
@@ -34,7 +44,7 @@ export const endChimeMeeting = /* GraphQL */ `
 `;
 export const recordMeeting = /* GraphQL */ `
   query RecordMeeting($meetingId: String, $type: String, $pipelineId: String) {
-    recordMeeting(meetingId: $meetingId, type : $type, pipelineId: $pipelineId)
+    recordMeeting(meetingId: $meetingId, type: $type, pipelineId: $pipelineId)
   }
 `;
 export const sendEmailNotification = /* GraphQL */ `
@@ -55,6 +65,7 @@ export const getMeeting = /* GraphQL */ `
     getMeeting(title: $title) {
       meetingId
       title
+      isRecording
       data
       passcode
       createdAt
@@ -80,6 +91,7 @@ export const listMeetings = /* GraphQL */ `
       items {
         meetingId
         title
+        isRecording
         data
         passcode
         createdAt

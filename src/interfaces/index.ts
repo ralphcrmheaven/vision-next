@@ -1,6 +1,7 @@
 export interface IMeetingRecord {
     User: string
-    MeetingId: string
+    MeetingId: string,
+    Title: string,
     Attendees: Attendees[]
     Password: string
     Topic: string

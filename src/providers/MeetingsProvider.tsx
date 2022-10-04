@@ -44,11 +44,12 @@ import {
     describeChannelFlow,
 } from '../api/ChimeAPI';
 import { 
-    addAttendeeToDB, 
-    addMeetingToDB, 
-    createMeeting, 
-    getAttendeeFromDB, 
-    getMeetingFromDB, 
+    addAttendeeToDB,
+    addMeetingToDB,
+    createMeeting,
+    updateDbMeeting,
+    getAttendeeFromDB,
+    getMeetingFromDB,
     joinMeeting,
     recordCurrentMeeting
 } from '../utils/api';
@@ -62,6 +63,7 @@ interface IMeetingsContext {
     activeMeeting?: any,
     meetings?: Array<IMeetingRecord>,
     showNewMeetingModal: boolean,
+    dbMeeting?: any,
     showJoinMeetingModal: boolean,
     meeting: any;
     meetingId: string;
@@ -72,11 +74,13 @@ interface IMeetingsContext {
     createOrJoinTheMeeting?: () => void;
     createTheMeeting?: (mId:any) => void;
     joinTheMeeting?: (mId:any) => void;
+    updateTheDbMeeting?: (isRecording:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
     setTheActiveMeeting?: (iv:any, attendees:any) => void;
     setTheActiveMeetingAttendees?: (attendees:any) => void;
     readTheMeetings?: () => void;
     testUpdate?: () => void;
+    getDbFromDb?: () => any;
     recordMeeting?: (mtId:any, type:any, pipelineId:any) => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -106,7 +110,10 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const { mId, ePass } = useParams();
 
+    let dbMeeting = {}
+
     const { username, given_name } = useSelector(selectUser);
+    const titleId = ""
     const { currentMeetingId, activeMeeting, meetings } = useSelector(selectMeeting);
 
     const meetingManager = useMeetingManager();
@@ -263,6 +270,11 @@ export const MeetingsProvider: FC = ({ children }) => {
         return availableChannels;
     };
 
+    const getDbFromDb = async() => {
+        let meetingId = mId;
+        return await getMeetingFromDB(meetingId);
+    }
+
     // Public functions    
     const createOrJoinTheMeeting = async() => {
         let meetingId = mId;
@@ -284,6 +296,14 @@ export const MeetingsProvider: FC = ({ children }) => {
             console.error(error);
         }
     }
+
+    const updateTheDbMeeting = async(isRecording:any) => {
+        let dbMeeting: any = await getMeetingFromDB(mId);
+        console.log(dbMeeting)
+        console.log("===============================")
+        return await updateDbMeeting(dbMeeting.data.getMeeting.title, isRecording);
+    }
+    
 
     const createTheMeeting = async(mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
@@ -388,6 +408,7 @@ export const MeetingsProvider: FC = ({ children }) => {
         const doActions = async () => {
             if(mId){
                 await fetchAttendeesFromMeeting();
+                dbMeeting = await getMeetingFromDB(mId);
             }
         }
         doActions();
@@ -428,8 +449,10 @@ export const MeetingsProvider: FC = ({ children }) => {
         <MeetingsContext.Provider 
             value={{ 
                     currentMeetingId,
+                    updateTheDbMeeting,
                     activeMeeting,
                     meetings,
+                    dbMeeting,
                     showNewMeetingModal,
                     showJoinMeetingModal,
                     meeting,
@@ -442,6 +465,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     setTheActiveMeeting,
                     testUpdate,
                     createOrJoinTheMeeting,
+                    getDbFromDb,
                     createTheMeeting,
                     joinTheMeeting,
                     setTheCurrentMeetingId,

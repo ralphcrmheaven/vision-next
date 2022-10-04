@@ -10,6 +10,23 @@ export const createMeetingGraphQL = /* GraphQL */ `
     createMeetingGraphQL(input: $input, condition: $condition) {
       meetingId
       title
+      isRecording
+      data
+      passcode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateMeetingGraphQL = /* GraphQL */ `
+  mutation UpdateMeetingGraphQL(
+    $input: UpdateMeetingInput!
+    $condition: ModelMeetingConditionInput
+  ) {
+    updateMeetingGraphQL(input: $input, condition: $condition) {
+      meetingId
+      title
+      isRecording
       data
       passcode
       createdAt
@@ -25,6 +42,7 @@ export const deleteMeetingGraphQL = /* GraphQL */ `
     deleteMeetingGraphQL(input: $input, condition: $condition) {
       meetingId
       title
+      isRecording
       data
       passcode
       createdAt

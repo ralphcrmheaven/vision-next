@@ -2,7 +2,7 @@
 	API_CHIME_GRAPHQLAPIENDPOINTOUTPUT
 	API_CHIME_GRAPHQLAPIIDOUTPUT
 	API_CHIME_GRAPHQLAPIKEYOUTPUT
-	ENV
+	ENV 
 	REGION
 Amplify Params - DO NOT EDIT */
 
@@ -17,7 +17,7 @@ function getRequest(event) {
     if (eventType == "record") {
         host = host + "/capture.php?meetingId=" + event.meetingId
     } else if (eventType == "stop") {
-        host = host + "/delete-pipe.php?pipelineId=" + event.pipelineId
+        host = host + "/delete-pipe.php?meetingId=" + event.meetingId
     } else {
         return "No event type argument";
     }
@@ -57,7 +57,7 @@ exports.handler = async(event) => {
         return {
             statusCode: 200,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(result),
+            body: result,
         };
     } catch (error) {
         console.log('Error is: 👉️', error);

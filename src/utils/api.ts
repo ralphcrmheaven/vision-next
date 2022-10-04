@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { createAttendeeGraphQL, createMeetingGraphQL, deleteMeetingGraphQL } from '../graphql/mutations';
+import { createAttendeeGraphQL, createMeetingGraphQL, deleteMeetingGraphQL, updateMeetingGraphQL } from '../graphql/mutations';
 import { createChimeMeeting, getAttendee, endChimeMeeting, getMeeting, joinChimeMeeting , recordMeeting} from '../graphql/queries';
 
 
@@ -10,6 +10,14 @@ export async function createMeeting(title: string, attendeeName: string, region:
   return joinInfoJsonParse;
 }
 
+export async function updateDbMeeting(title: string, isRecording: string) {
+  const joinInfo: any = await API.graphql(graphqlOperation(updateMeetingGraphQL,{input:  {title: title, isRecording: isRecording }}));
+  const joinInfoJson = joinInfo.data;
+  const joinInfoJsonParse = joinInfoJson.updateMeetingGraphQL;
+  console.log(joinInfoJsonParse)
+  console.log("======updateDbMeeting=======")
+  return joinInfoJsonParse;
+}
 
 export async function joinMeeting(meetingId: string, name: string) {
   const joinInfo: any = await API.graphql(graphqlOperation(joinChimeMeeting, {meetingId: meetingId, name: name}));

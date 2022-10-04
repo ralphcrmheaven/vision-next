@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import AttachmentService from '../../services/AttachmentService';
 import moment from 'moment';
 import { selectUser } from '../../redux/features/userSlice';
 import {
@@ -13,7 +14,9 @@ import {
   Modal,
   ModalBody,
 } from 'amazon-chime-sdk-component-library-react';
-
+import { 
+  getMeetingFromDB,
+} from '../../utils/api';
 interface  IMeetingCardProps {
     meeting: IMeetingRecord,
 };
@@ -25,7 +28,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     const {
         setShowJoinMeetingModal,
         setTheCurrentMeetingId,
-        setTheMeeting,
+        setTheMeeting
     } = useMeetings();
 
     let startDateTime = null;
@@ -39,6 +42,37 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
       console.log("inside meeting card")
       console.log(meeting)
     },)
+
+    
+
+    const downloadMeeting = async (mtid:string) => {
+      let dbMeeting: any = await getMeetingFromDB?.(mtid)
+      AttachmentService.listFiles("merged/"+dbMeeting.data.getMeeting.meetingId)
+      .then((result) => {
+        console.log(result)
+        result.forEach(async (file: any) => {
+            console.log(file)
+            var ext = file.key.substr(file.key.lastIndexOf('.') + 1);
+            if (ext == "mp4") {
+              AttachmentService.downloadRecording(file.key)
+              .then((result) => {
+                console.log(result!)
+
+                if(result !== null) {
+                  window?.open(result, '_blank')?.focus();
+                }
+              })
+              .catch((err) => {
+                  console.log(err)
+              });
+            }
+        });
+        console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
+      })
+      .catch((err) => {
+          console.log(err)
+      });
+    };
 
     try{
       //startDateTime = moment(meeting?.StartDate + ' ' + meeting?.StartTime);
@@ -59,7 +93,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     return (
         <div className="v-card meeting-card" key={meeting.MeetingId+"-meetingcard"}>
             <div className="flex mb-2">
-              <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
+              <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic} |               <span className="self-center home-time-card mt-5" onClick={() => downloadMeeting(meeting.MeetingId)}>Download Video</span></h1>
               <div className="grid w-1/4 justify-items-end">
                 <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg home-dropdown-cog"><UnionIcon/></button>
               </div>
@@ -69,6 +103,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
               <span className="px-4 text-gray-600 border-r border-r-gray-500 home-time-card">{startTime} - {endTime}</span>
               <span className="px-4 text-gray-600 home-time-card">{startsIn}</span>
             </div>
+            
             <div className="flex mt-10">
               <div className="self-center w-3/4">
                 { meeting.Attendees != undefined ? 
