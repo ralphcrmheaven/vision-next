@@ -71,6 +71,12 @@ const InviteModal = (props: any) => {
     const handleSubscriptions = async () => {
         console.log("=======subscribe=======")
 
+        let topic = activeMeeting.topic.trim();
+        topic = topic.replaceAll('"', "'");
+        topic = topic.replaceAll("\n", "");
+        console.log(topic);
+        console.log("here")
+
         return (API.graphql(
             graphqlOperation(subscriptions.onCreateContact)
         ) as unknown as Observable<any>).subscribe({
@@ -79,7 +85,7 @@ const InviteModal = (props: any) => {
                     email: onCreateContact.email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
-                    topic: activeMeeting.topic.trim()
+                    topic: `${topic}`
                 });
             }
         })
@@ -107,6 +113,13 @@ const InviteModal = (props: any) => {
     const createContactsAsync = async () => {
         console.log("createContactsAsync")
         console.log(emails)
+
+        let topic = activeMeeting.topic.trim();
+        topic = topic.replaceAll('"', "'");
+        topic = topic.replaceAll("\n", "");
+        console.log(topic);
+        console.log("here")
+
         emails.forEach(async (email: string) => {
             console.log("ytes")
             console.log(await checkContactExisting(email))
@@ -123,7 +136,7 @@ const InviteModal = (props: any) => {
                     email: email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
-                    topic: activeMeeting.topic.trim()
+                    topic: `${topic}`
                 })
             }
         });
