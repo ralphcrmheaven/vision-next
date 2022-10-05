@@ -79,7 +79,7 @@ const InviteModal = (props: any) => {
                     email: onCreateContact.email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
-                    topic: activeMeeting.topic
+                    topic: activeMeeting.topic.trim()
                 });
             }
         })
@@ -123,7 +123,7 @@ const InviteModal = (props: any) => {
                     email: email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
-                    topic: activeMeeting.topic
+                    topic: activeMeeting.topic.trim()
                 })
             }
         });
@@ -150,14 +150,23 @@ const InviteModal = (props: any) => {
         setSendButtonDisabled(true)
     };
 
+    const htmlDecode = (input:string) => {
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
+
     const clickedExistingContactsSendInvite = async (d: any, i: any) => {
-        console.log(activeMeeting);
+        let topic = activeMeeting.topic.trim();
+        topic = topic.replaceAll('"', "'");
+        topic = topic.replaceAll("\n", "");
+        console.log(topic);
         console.log("here")
+    
         await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
-            topic: activeMeeting.topic
+            topic: `${topic}`
         })
         setSendButtonDisabled(false)
     };
