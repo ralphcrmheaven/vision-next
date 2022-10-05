@@ -215,7 +215,7 @@ const Meeting: FC = () => {
       if(res.success){
         setIsValidMeeting(true);
         await createOrJoinTheMeeting?.();
-        await setTheActiveMeeting?.(res.data.I, res.data.Attendees);
+        await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
       }
       dbMeetingData = await getDbFromDb?.()
       setIsRecording(dbMeetingData.data.getMeeting.isRecording)
@@ -302,7 +302,6 @@ const Meeting: FC = () => {
 
   const recordChimeMeeting = async (value: string) => {
 
-    
     setRecordingLoading(true)
     const is_recording = value == 'record';
 

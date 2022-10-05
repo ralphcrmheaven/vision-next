@@ -76,7 +76,7 @@ interface IMeetingsContext {
     joinTheMeeting?: (mId:any) => void;
     updateTheDbMeeting?: (isRecording:any) => void;
     setTheCurrentMeetingId?: (currentMeetingId:string) => void;
-    setTheActiveMeeting?: (iv:any, attendees:any) => void;
+    setTheActiveMeeting?: (iv:any, attendees:any, topic:any) => void;
     setTheActiveMeetingAttendees?: (attendees:any) => void;
     readTheMeetings?: () => void;
     testUpdate?: () => void;
@@ -353,13 +353,14 @@ export const MeetingsProvider: FC = ({ children }) => {
         dispatch(setCurrentMeetingId(currentMeetingId));
     };
     
-    const setTheActiveMeeting = async (iv:any, attendees:any) => {
+    const setTheActiveMeeting = async (iv:any, attendees:any, topic:any) => {
         const password = decrypt([ePass, iv].join('|'));
         dispatch(setActiveMeeting({
             id: mId,
             password: password,
             url: `/${mId}/${ePass}`,
             attendees: attendees,
+            topic: topic
         }));
     }
 
