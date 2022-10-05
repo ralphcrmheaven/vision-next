@@ -11,7 +11,8 @@ import OnlineIcon from "./OnlineIcon";
 import ChamXsIcon from "./ChamXs";
 import AddPeople from "./AddPeople";
 import RecordIcon from "./Record";
+import CameraRecordIcon from "./CameraRecord";
 
 
 
-export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople}
+export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople, CameraRecordIcon}

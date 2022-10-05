@@ -43,7 +43,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleStartNewMeeting = async () => {
-    
+
   }
 
   const onNewMeetingCardClick = async () => {
@@ -83,18 +83,18 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className="flex flex-row gap-10 pt-10">
+        <div className="flex gap-10 pt-10">
           <div className="grid">
             <div className="grid grid-cols-2 gap-6 home-card-wrapper">
               <VCard
-                {...{ className: 'relative vision-card text-white  bg-vision-blue h-40' }}
+                {...{ className: 'relative vision-card text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
-                                                                                //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
-                                                                                onNewMeetingCardClick()
-                                                                              }}
+                  //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
+                  onNewMeetingCardClick()
+                }}
                 >
-                  <div className="absolute border  vision-card-sm  top-4 left-4 bg-vision-lightblue rounded-3xl">
+                  <div className="absolute border border-vision-lighter-yellow vision-card-sm top-4 left-4 bg-vision-light-yellow rounded-2xl">
                     <img
                       src="./images/camera-white.png"
                       alt="Camera"
@@ -111,14 +111,14 @@ export default function Home() {
               </VCard>
 
               <VCard
-                {...{ className: 'relative vision-card  bg-vision-green h-40 cursor   ' }}
+                {...{ className: 'relative vision-card  bg-vision-green h-40 cursor hover:bg-vision-lighter-green hover:text-gray-900' }}
               >
                 <div className="w-full h-full cursor-pointer" onClick={() => {
-                      setTheCurrentMeetingId?.('');
-                      setShowJoinMeetingModal?.(true)
-                    } 
-                  }>
-                  <div className="absolute border bg-vision-lightgreen top-4 left-4  rounded-3xl">
+                  setTheCurrentMeetingId?.('');
+                  setShowJoinMeetingModal?.(true)
+                }
+                }>
+                  <div className="absolute border border-vision-lighter-green vision-card-sm bg-vision-light-green top-4 left-4 rounded-2xl">
                     <img
                       src="./images/rectangle-white.png"
                       alt="Camera"
@@ -137,8 +137,8 @@ export default function Home() {
               <VCard
                 {...{ className: 'relative vision-card  bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
               >
-                <div className="w-full h-full cursor-pointer " onClick={() => setShowNewMeetingModal?.(true) }>
-                  <div className="absolute border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-3xl">
+                <div className="w-full h-full cursor-pointer " onClick={() => setShowNewMeetingModal?.(true)}>
+                  <div className="absolute border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-2xl">
                     <img
                       src="./images/calendar-white.png"
                       alt="Camera"
@@ -171,23 +171,46 @@ export default function Home() {
                   </p>
                 </div>
               </VCard> */}
+              <VCard
+                {...{ className: 'relative vision-card  bg-vision-red text-white h-40 hover:bg-vision-lighter-red hover:text-gray-900' }}
+              >
+                <div className="w-full h-full cursor-pointer ">
+                  <div className="absolute border border-vision-lighter-red top-4 left-4 bg-vision-light-red rounded-2xl">
+                    <img
+                      src="./images/past.png"
+                      alt="Camera"
+                      className="p-4"
+                    />
+                  </div>
+                  <div className="absolute left-4 bottom-4">
+                    <p className="flex flex-col">
+                      <span>Past Meetings</span>
+                      <span className="text-sm">view previous meetings</span>
+                    </p>
+                  </div>
+                </div>
+              </VCard>
+
             </div>
           </div>
-          <div className="flex flex-col w-1/2 gap-3">
-            <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
-              <div className="flex flex-row h-full pl-10">
-                <p className="flex flex-col w-1/2 my-auto text-dark">
-                  <span className="text-white text-4xl font-bold tracking-wide">
-                    {currentDate.format('h:mm:ss a')}
-                  </span>
-                  <span className="text-white">
-                    {currentDate.format('MMMM Do YYYY, dddd')}
-                  </span>
-                </p>
-              </div>
-            </VCard>
-            <MeetingList />
-            {/* <MeetingListWrapper /> */}
+
+          <div className="flex justify-end w-1/2 gap-3">
+            <div className='flex-col'>
+              <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
+                <div className="flex flex-row h-full pl-10">
+                  <p className="flex flex-col w-1/2 my-auto text-dark">
+                    <span className="text-white text-4xl font-bold tracking-wide">
+                      {currentDate.format('h:mm:ss a')}
+                    </span>
+                    <span className="text-white">
+                      {currentDate.format('MMMM Do YYYY, dddd')}
+                    </span>
+                  </p>
+                </div>
+              </VCard>
+              <MeetingList />
+              {/* <MeetingListWrapper /> */}
+            </div>
           </div>
         </div>
         <HomeFooter />

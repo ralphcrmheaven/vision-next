@@ -15,6 +15,9 @@ html {
 }
 
 .vision-card-sm {
+    box-sizing: border-box;
+    width: 69px;
+    height: 62px;
     border-radius: 25px;
 }
 
@@ -24,6 +27,7 @@ html {
 
 .time-card {
     height: 215px !important;
+    width: 594px;
 }
 
 .end-meeting {
@@ -369,7 +373,7 @@ aside.emoji-picker-react {
     color: black;
 }
 
-.bg-vision-blue {
+/* .bg-vision-blue {
     background-color: #053F64 !important;
 }
 
@@ -391,6 +395,10 @@ aside.emoji-picker-react {
     border: 1px solid #009999 !important;
 }
 
+.bg-vision-orange {
+    background-color: #F7BA49 !important;
+} */
+
 .add-people span {
     display: inline-block;
     margin-left: 3px;
@@ -410,6 +418,7 @@ aside.emoji-picker-react {
     height: 431px;
     overflow-y: scroll;
     margin-top: 13px;
+    width: 594px;
 }
 
 ::-webkit-scrollbar {
