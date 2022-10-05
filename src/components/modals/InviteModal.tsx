@@ -163,7 +163,7 @@ const InviteModal = (props: any) => {
                 {/* <div  className="flex justify-center items-center mb-2  no-'bo'rder tab-contact">
                         <span><span className={ `tab-select  ${selectedInvitationType == 'send_mail' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('send_mail')}>Send Email </span> | <span className={ `tab-select  ${selectedInvitationType == 'search_contacts' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('search_contacts')} >Search Contacts</span></span>
                 </div> */}
-                <div className="flex justify-center">
+                <div className="flex justify-center w-full">
                     <Tabs className='w-full'>
                         <TabItem title="Invite by Email" onClick={() => setSelectedInvitationType('send_mail')}>
 
@@ -174,7 +174,7 @@ const InviteModal = (props: any) => {
                     </Tabs>
                 </div>
 
-                <ModalHeader className='pt-1' title={selectedInvitationType == 'send_mail' ? 'Invite via Email' : 'Invite a VISION contact'} />
+                <ModalHeader className='pt-1' title={selectedInvitationType == 'send_mail' ? 'Invite a VISION contact' : 'Search Contact'} />
 
                 <ModalBody className="invite-modal-body">
 
@@ -230,22 +230,34 @@ const InviteModal = (props: any) => {
                         )
                         }
                         {selectedInvitationType === 'search_contacts' && (
-                            <div className="mt-2 overflow-y-auto h-64 p-2 ">
-                                <table className="table-fixed">
-                                    <thead>
+                            <div>
+                                <div className="mt-2 overflow-y-auto h-64 p-2">
+                                    <table className="table-fixed">
+                                        {/* <thead>
                                         <tr>
                                             <th>Email</th>
                                             <th>Name</th>
                                             <th>Send Invite</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {contacts.map((d, i) => (
-                                            <tr key={"tr-" + i}>
-                                                <td>{d.email}</td>
-                                                <td>{d.name ? d.name : 'n/a'}</td>
-                                                <td>
-                                                    <PrimaryButton
+                                    </thead> */}
+                                        <tbody className=''>
+                                            {contacts.map((d, i) => (
+                                                <tr key={"tr-" + i} className='r'>
+                                                    <td>
+                                                        <span className='flex flex-row items-center gap-5'>
+                                                            <span className="p-3 text-white bg-gray-900 rounded-lg">
+                                                                {d.name ? d.name.substring(0, 1) : 'n/a'}
+                                                            </span>
+                                                            <span>
+                                                                {d.email}
+                                                            </span>
+                                                        </span>
+
+
+                                                    </td>
+                                                    {/* <td>{d.name ? d.name : 'n/a'}</td> */}
+                                                    <td>
+                                                        {/* <PrimaryButton
                                                         className="basis-1/6 ml-2 vision-btn"
                                                         label="Send"
                                                         key={"btn-" + i}
@@ -254,16 +266,41 @@ const InviteModal = (props: any) => {
                                                             await clickedExistingContactsSendInvite(d, i);
                                                         }
                                                         }
-                                                    />
-                                                </td>
-                                            </tr>)
-                                        )}
-                                    </tbody>
-                                </table>
+                                                    /> */}
+                                                        <a href="#" className='underline decoration-vision-blue text-vision-blue decoration-1 underline-offset-2 hover:decoration-2'
+                                                            onClick={async (e: any) => {
+                                                                await clickedExistingContactsSendInvite(d, i);
+                                                            }
+                                                            }
+                                                        >
+                                                            SEND INVITE
+                                                        </a>
+                                                    </td>
+                                                </tr>)
+                                            )}
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
                             </div>
                         )}
                     </div>
                 </ModalBody>
+                {
+                    selectedInvitationType === 'search_contacts' && (
+                        <>
+                            {/* <hr className="invite-sm-message"/> */}
+                            <div className="flex justify-center items-center mb-2 pt-2 ">
+                                <span className="invite-sm-message border-t">
+                                    If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
+                                </span>
+                            </div>
+                        </>
+                    )
+                }
+
             </Modal>
         </div>
     );

@@ -6,7 +6,7 @@ module.exports = {
                 '6xl': '2.5rem',
             },
             colors: {
-                'vision-blue': '#1e3a8a',
+                'vision-blue': '#053F64',
                 'vision-light-blue': '#084D79',
                 'vision-lighter-blue': '#0B5A8C',
                 'vision-dark-blue': '#053F64',

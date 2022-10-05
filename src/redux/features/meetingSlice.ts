@@ -16,34 +16,34 @@ const initialState: IMeeting = {
 
 export const meetingCreate: any = createAsyncThunk(
     'meeting/create',
-    async (data:any) => {
-      const res = await meetingAPI().create(data);
-      console.log('res meeting api: ', res);
-      return res;
+    async (data: any) => {
+        const res = await meetingAPI().create(data);
+        console.log('res meeting api: ', res);
+        return res;
     }
 );
 
 export const meetingRead: any = createAsyncThunk(
     'meeting/read',
-    async (pkValue:any, data:any) => {
+    async (pkValue: any, data: any) => {
         return await meetingAPI().read(pkValue, data);
     }
 );
 
 export const meetingUpdate: any = createAsyncThunk(
     'meeting/update',
-    async (data:any) => {
-      const res = await meetingAPI().update(data);
-      console.log('res meeting api: ', res);
-      return res;
+    async (data: any) => {
+        const res = await meetingAPI().update(data);
+        console.log('res meeting api: ', res);
+        return res;
     }
 );
 
 export const meetingAttendeesRead: any = createAsyncThunk(
     'meeting/readattendees',
-    async (meetingId:any, data:any) => {
-      const res = await meetingAPI().readMeetingAttendees(meetingId, data);
-      return res;
+    async (meetingId: any, data: any) => {
+        const res = await meetingAPI().readMeetingAttendees(meetingId, data);
+        return res;
     }
 );
 
@@ -95,7 +95,7 @@ const meetingSlice = createSlice({
             })
             .addCase(meetingRead.fulfilled, (state, action) => {
                 let meetings = action.payload;
-                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' }).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? -1 : 1);
+                meetings = meetings.filter((m: any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' }).sort((a: any, b: any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? -1 : 1);
                 state.meetings = meetings;
                 console.log(state.meetings)
             })
@@ -104,7 +104,12 @@ const meetingSlice = createSlice({
             .addCase(meetingCreate.fulfilled, (state, action) => {
                 const { data } = action.payload;
                 let meetings = [data, ...state.meetings];
-                meetings = meetings.filter((m:any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' && Date.parse(m.StartDateTimeUTC) > (new Date()).getTime() }).sort((a:any, b:any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
+                
+                // meetings = meetings.filter((m: any) => { 
+                //     console.log(JSON.stringify(m, undefined, 2))
+                //     return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' && Date.parse(m.StartDateTimeUTC) > (new Date()).getTime() 
+                // }).sort((a: any, b: any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? 1 : -1);
+                
                 state.meetings = meetings;
             })
             .addCase(meetingCreate.rejected, (state, action) => {
@@ -126,6 +131,6 @@ const meetingSlice = createSlice({
 
 export const { setCurrentMeetingId, resetCurrentMeetingId, setActiveMeeting, setActiveMeetingAttendees, resetActiveMeeting } = meetingSlice.actions;
 
-export const selectMeeting = (state:any) => state.meeting;
+export const selectMeeting = (state: any) => state.meeting;
 
 export default meetingSlice.reducer;
