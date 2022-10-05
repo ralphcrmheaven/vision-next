@@ -71,11 +71,16 @@ const InviteModal = (props: any) => {
     const handleSubscriptions = async () => {
         console.log("=======subscribe=======")
 
-        let topic = activeMeeting.topic.trim();
-        topic = topic.replaceAll('"', "'");
-        topic = topic.replaceAll("\n", "");
-        console.log(topic);
-        console.log("here")
+        let topic = ""
+        if(activeMeeting.topic == undefined) {
+            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
+        }else{
+            topic = activeMeeting.topic.trim();
+            topic = topic.replaceAll('"', "'");
+            topic = topic.replaceAll("\n", "");
+            console.log(topic);
+            console.log("here")
+        }
 
         return (API.graphql(
             graphqlOperation(subscriptions.onCreateContact)
@@ -114,11 +119,17 @@ const InviteModal = (props: any) => {
         console.log("createContactsAsync")
         console.log(emails)
 
-        let topic = activeMeeting.topic.trim();
-        topic = topic.replaceAll('"', "'");
-        topic = topic.replaceAll("\n", "");
-        console.log(topic);
-        console.log("here")
+        let topic = ""
+        if(activeMeeting.topic == undefined) {
+            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
+        }else{
+            topic = activeMeeting.topic.trim();
+            topic = topic.replaceAll('"', "'");
+            topic = topic.replaceAll("\n", "");
+            console.log(topic);
+            console.log("here")
+        }
+
 
         emails.forEach(async (email: string) => {
             console.log("ytes")
@@ -169,11 +180,16 @@ const InviteModal = (props: any) => {
     }
 
     const clickedExistingContactsSendInvite = async (d: any, i: any) => {
-        let topic = activeMeeting.topic.trim();
-        topic = topic.replaceAll('"', "'");
-        topic = topic.replaceAll("\n", "");
-        console.log(topic);
-        console.log("here")
+        let topic = ""
+        if(activeMeeting.topic == undefined) {
+            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
+        }else{
+            topic = activeMeeting.topic.trim();
+            topic = topic.replaceAll('"', "'");
+            topic = topic.replaceAll("\n", "");
+            console.log(topic);
+            console.log("here")
+        }
     
         await sendEmailNotification({
             email: d.email,
