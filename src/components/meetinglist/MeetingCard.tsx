@@ -22,6 +22,7 @@ interface IMeetingCardProps {
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
+  const AttendeesToDisplay = 4;
   const { meeting } = props;
   const { username, given_name } = useSelector(selectUser);
   const [showMeetingDetail, setShowMeetingDetail] = useState(false);
@@ -41,7 +42,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   useEffect(() => {
     console.log("inside meeting card")
     console.log(meeting)
-  },)
+  }, [])
 
 
 
@@ -91,7 +92,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   } catch (err) { }
 
   return (
-    <div className="v-card meeting-card" key={meeting.MeetingId + "-meetingcard"}>
+    <div className="v-card meeting-card text-sm" key={meeting.MeetingId + "-meetingcard"}>
       <div className="flex mb-2">
         <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic} |               <span className="self-center home-time-card mt-5" onClick={() => downloadMeeting(meeting.MeetingId)}>Download Video</span></h1>
         <div className="grid w-1/4 justify-items-end">
@@ -112,13 +113,24 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
       <div className="flex mt-10">
         <div className="self-center w-3/4">
+
           {meeting.Attendees != undefined ?
-            meeting.Attendees.map((d, i) => (
+            meeting.Attendees.slice(0, AttendeesToDisplay).map((d, i) => (
               <span key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
                 {d.Name.charAt(0)}
               </span>
             )
-            ) : <span></span>}
+            ) : <span></span>
+          }
+          {
+            meeting.Attendees.length > AttendeesToDisplay ? (
+              <span className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-white align-middle bg-sky-900 border rounded-lg border-gray" >
+                <span className="inline-block align-middle">+{meeting.Attendees.length-AttendeesToDisplay}</span>
+              </span>
+            ) : ''
+          }
+
+
         </div>
         <div className="flex space-x-1">
           <input type="text" defaultValue={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
