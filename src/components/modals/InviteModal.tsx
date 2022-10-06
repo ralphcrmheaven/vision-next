@@ -132,7 +132,7 @@ const InviteModal = (props: any) => {
         console.log(emails)
 
         let topic = ""
-        if(meetingTopic == undefined) {
+        if(meetingTopic == undefined || meetingTopic == '') {
             topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
         }else{
             topic = meetingTopic.trim();
