@@ -19,6 +19,8 @@ import {
 } from '../../utils/api';
 interface IMeetingCardProps {
   meeting: IMeetingRecord,
+  openInviteModal: any,
+  handleCurrentMeeting: any
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
@@ -40,11 +42,13 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   let href = '';
 
   useEffect(() => {
-    console.log("inside meeting card")
-    console.log(meeting)
+
   }, [])
 
-
+  const handleAttendeeClick = async (meeting:any) => {
+    props.handleCurrentMeeting(meeting) 
+    props.openInviteModal(true)
+  }
 
   const downloadMeeting = async (mtid: string) => {
     let dbMeeting: any = await getMeetingFromDB?.(mtid)
@@ -116,7 +120,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
           {meeting.Attendees != undefined ?
             meeting.Attendees.slice(0, AttendeesToDisplay).map((d, i) => (
-              <span key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
+              <span onClick={() => handleAttendeeClick(meeting)}  key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
                 {d.Name.charAt(0)}
               </span>
             )

@@ -1,13 +1,28 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import moment from 'moment';
 import {
   useMeetings
 } from '../../providers/MeetingsProvider';
 import MeetingCard from './MeetingCard';
+import InviteModal from '../modals/InviteModal'
+import Toaster from '../modals/Toast'
 
 const MeetingList: FC = () => {
   const itemToShowCount = 80;
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [inviteMeeting, setInviteMeeting] = useState<any>()
 
+  const handleInviteModal= async (value:boolean) => {
+    setIsOpen(value)
+  };
+
+  const handleCurrentMeeting = async(value:any) => {
+    setInviteMeeting(value)
+  }
+
+  const setModalVisibility = async() => {
+    setIsOpen(false)
+  }
   const {
     meetings,
     readTheMeetings,
@@ -23,12 +38,21 @@ const MeetingList: FC = () => {
   return (
     <>
 
+      { isOpen && (
+        <InviteModal meeting={inviteMeeting} setModalVisibility= {setModalVisibility} />
+        )
+      }
+      
+      
+      <Toaster/>
+
+
       <div className="meeting-list-wrapper">
         {
           // eslint-disable-next-line array-callback-return
           meetings?.slice(0, itemToShowCount).map((meeting, index) => {
             // eslint-disable-next-line no-lone-blocks
-            return meeting.Attendees != undefined ? <MeetingCard meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
+            return meeting.Attendees != undefined ? <MeetingCard handleCurrentMeeting={handleCurrentMeeting}  openInviteModal={handleInviteModal} meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
           })
         }
       </div>

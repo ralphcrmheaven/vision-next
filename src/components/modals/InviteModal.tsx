@@ -27,6 +27,11 @@ const InviteModal = (props: any) => {
     const [selectedInvitationType, setSelectedInvitationType] = useState<string>('send_mail')
     const user: IUser = useSelector(selectUser);
 
+    const [meetingUrl, setMeetingUrl] = useState<string>("");
+    const [meetingTopic, setMeetingTopic] = useState<string>("");
+
+
+
     const {
         activeMeeting,
         setTheActiveMeeting,
@@ -54,15 +59,23 @@ const InviteModal = (props: any) => {
 
     useEffect(() => {
         const doActions = async () => {
+            console.log(props.meeting)
+            if(props.meeting != undefined) {
+                setMeetingUrl(props.meeting.Url)
+                setMeetingTopic(props.meeting.TopicDetails)
+            }else{
+                setMeetingUrl(activeMeeting.url)
+                setMeetingTopic(activeMeeting.topic)
+            }
+
             console.log("doActions")
-            if (typeof activeMeeting.url !== 'undefined') {
+            if (typeof meetingUrl !== 'undefined') {
                 const subscription = await handleSubscriptions();
                 return () => {
                     subscription.unsubscribe();
                 }
             }
         };
-
         doActions();
     }, [])
 
@@ -72,16 +85,15 @@ const InviteModal = (props: any) => {
         console.log("=======subscribe=======")
 
         let topic = ""
-        if(activeMeeting.topic == undefined) {
+        if(meetingTopic == undefined) {
             topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
         }else{
-            topic = activeMeeting.topic.trim();
+            topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
             console.log(topic);
             console.log("here")
         }
-
         return (API.graphql(
             graphqlOperation(subscriptions.onCreateContact)
         ) as unknown as Observable<any>).subscribe({
@@ -89,7 +101,7 @@ const InviteModal = (props: any) => {
                 await sendEmailNotification({
                     email: onCreateContact.email,
                     fromName: `${user.family_name}`,
-                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
+                    meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
                     topic: `${topic}`
                 });
             }
@@ -120,10 +132,10 @@ const InviteModal = (props: any) => {
         console.log(emails)
 
         let topic = ""
-        if(activeMeeting.topic == undefined) {
+        if(meetingTopic == undefined) {
             topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
         }else{
-            topic = activeMeeting.topic.trim();
+            topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
             console.log(topic);
@@ -146,7 +158,7 @@ const InviteModal = (props: any) => {
                 await sendEmailNotification({
                     email: email,
                     fromName: `${user.family_name}`,
-                    meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
+                    meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
                     topic: `${topic}`
                 })
             }
@@ -156,7 +168,7 @@ const InviteModal = (props: any) => {
     const msgExistingContacts = `
         Hi there,
         ${user.given_name} ${user.family_name} is inviting you to chat and meet over Vision2020.
-        Click this link to join the meeting: ${window.location.origin}/meeting${activeMeeting.url}
+        Click this link to join the meeting: ${window.location.origin}/meeting${meetingUrl}
         Thank you.
         The Vision2020 Team
     `;
@@ -181,10 +193,10 @@ const InviteModal = (props: any) => {
 
     const clickedExistingContactsSendInvite = async (d: any, i: any) => {
         let topic = ""
-        if(activeMeeting.topic == undefined) {
+        if(meetingTopic == undefined || meetingTopic == '') {
             topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
         }else{
-            topic = activeMeeting.topic.trim();
+            topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
             console.log(topic);
@@ -194,7 +206,7 @@ const InviteModal = (props: any) => {
         await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
-            meetingUrl: `${window.location.origin}/meeting${activeMeeting.url}`,
+            meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
             topic: `${topic}`
         })
         setSendButtonDisabled(false)

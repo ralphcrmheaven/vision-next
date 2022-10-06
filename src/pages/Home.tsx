@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import moment from 'moment';
 import '../assets/styles/styles.css'
 import { useMeetings } from '../providers/MeetingsProvider';
-
 import HomeFooter from '../components/HomeFooter'
 import VCard from '../components/Cards'
 import NewMeetingModalWrapper from '../components/modals/wrappers/NewMeetingModalWrapper';
@@ -25,6 +24,7 @@ export default function Home() {
   const initials = user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
 
+  
   const currentDate = moment();
 
   const {
@@ -46,6 +46,8 @@ export default function Home() {
 
   }
 
+ 
+
   const onNewMeetingCardClick = async () => {
     const topic = `${user.given_name}'s Meeting`;
     const topicDetails = '';
@@ -63,6 +65,9 @@ export default function Home() {
       {(showNewMeetingModal === true) && <NewMeetingModal setIsOpen={() => setShowNewMeetingModal?.(false)} />}
 
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
+
+
+      
 
       <div className="relative h-full px-14 pt-14">
         <Header/>
