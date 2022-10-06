@@ -1,4 +1,5 @@
 import React from 'react'
+import '../assets/styles/styles.css'
 import FormInput, { InputTypes } from '../components/form/FormInput';
 import { IUser, selectUser } from '../redux/features/userSlice'
 import { SearchIcon, OnlineIcon, DownArrowIcon } from '../components/icons';
@@ -31,7 +32,7 @@ const Header: React.FC<Props> = ({
                                     <FormInput
                                         type={InputTypes.Text}
                                         name="email"
-                                        className="w-full px-5 py-3 rounded-xl bg-slate-200  pr-44"
+                                        className="w-80 px-5 py-3 rounded-xl bg-slate-200  pr-14"
                                         placeholder="Search Keywords"
                                         onChange={e => { }}
                                         required
@@ -59,8 +60,6 @@ const Header: React.FC<Props> = ({
                                     <DownArrowIcon />
                                 </span>
                             </div>
-
-
                         </div>
                     </div>
                 )}
