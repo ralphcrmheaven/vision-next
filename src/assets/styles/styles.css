@@ -440,7 +440,7 @@ aside.emoji-picker-react {
 }
 
 .v-ui-button {
-    width: 147px !important;
+    /* width: 147px !important; */
     height: 50px !important;
     background: #053F64;
     border-radius: 12px !important;

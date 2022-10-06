@@ -65,8 +65,8 @@ export default function Home() {
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
 
       <div className="relative h-full px-14 pt-14">
-        <Header />
-        <div className='overflow-auto h-4/5'>
+        <Header showSearchBar={true} showSubHeader={true} header={'Welcome to Vision'}/>
+        <div className='overflow-auto xl:overflow-hidden h-4/5'>
           <div className="flex gap-10 pt-10">
             <div className="grid w-1/4 justify-center last:pb-10 xl:w-1/2">
               <div className="grid grid-cols-1 gap-6 home-card-wrapper xl:grid-cols-2">

@@ -23,6 +23,7 @@ module.exports = {
                 'vision-red':'#FF6355',
                 'vision-light-red':'#FF8479',
                 'vision-lighter-red':'#FFA098',
+                'vision-card-bg':'#FBFBFB'
             },
             scale: {
                 25: '0.25',

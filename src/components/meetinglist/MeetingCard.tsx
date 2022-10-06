@@ -135,11 +135,11 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
         <div className="flex space-x-1">
           <input type="text" defaultValue={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
           {(meeting?.User === username) ?
-            <VButton className="z-20 w/14" onClick={() => setTheMeeting?.({ id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: '' })}>
+            <VButton className="z-20 w/14 w-[147px]" onClick={() => setTheMeeting?.({ id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: '' })}>
               Start
             </VButton>
             :
-            <VButton className="z-20 w/14" onClick={() => {
+            <VButton className="z-20 w/14 w-[147px]" onClick={() => {
               setTheCurrentMeetingId?.(meeting?.MeetingId);
               setShowJoinMeetingModal?.(true);
             }

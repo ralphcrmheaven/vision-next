@@ -14,7 +14,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="w-60">
+    <div className="w-32 xl:w-60">
       <div className="flex flex-col items-center w-24 mx-auto mt-14 gap-y-16">
         <Logo />
         <ul className="flex flex-col w-20 gap-y-10">
