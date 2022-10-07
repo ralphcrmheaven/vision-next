@@ -47,7 +47,7 @@ const MeetingList: FC = () => {
       <Toaster/>
 
 
-      <div className="meeting-list-wrapper">
+      <div className="">
         {
           // eslint-disable-next-line array-callback-return
           meetings?.slice(0, itemToShowCount).map((meeting, index) => {

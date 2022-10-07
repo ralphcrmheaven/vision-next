@@ -27,7 +27,7 @@ html {
 
 .time-card {
     height: 215px !important;
-    width: 594px;
+    width: auto;
 }
 
 .end-meeting {
@@ -337,14 +337,14 @@ aside.emoji-picker-react {
 
 .react-multi-email.empty>span[data-placeholder] {
     display: inline;
-    color: black;
+    color: black !important;
     background: #ececec;
     border: none !important;
     font-weight: 700;
     font-size: 16px;
     line-height: 20px;
     position: absolute;
-    top: 9px;
+    top: 0px !important;
     left: 24px;
 }
 
@@ -373,6 +373,7 @@ aside.emoji-picker-react {
     background-position: 62%;
     color: black;
 }
+
 
 /* .bg-vision-blue {
     background-color: #053F64 !important;
@@ -419,7 +420,7 @@ aside.emoji-picker-react {
     height: 431px;
     overflow-y: scroll;
     margin-top: 13px;
-    width: 594px;
+    width: auto;
 }
 
 ::-webkit-scrollbar {
@@ -594,6 +595,11 @@ aside.emoji-picker-react {
     color: #747474 !important;
 }
 
+.fc-popover-body {
+    overflow-y: scroll;
+    height: 300px;
+}
+
 .record-icon {
     width: 20px;
 }
@@ -639,4 +645,18 @@ aside.emoji-picker-react {
 .video-tile-wrap {
     float: left;
     position: relative;
+}
+
+
+/* .amplify-tabs {
+    color: black;
+} */
+
+.amplify-tabs-item {
+    color: #C4C4C4;
+    ;
+}
+
+.amplify-tabs-item[data-state='active'] {
+    color: #053F64;
 }

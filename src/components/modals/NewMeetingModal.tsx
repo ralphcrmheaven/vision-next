@@ -205,7 +205,13 @@ const NewMeetingForm = (props:any) => {
             
             <div className="mb-5">
                 <VLabel htmlFor="topic-details">Topic Details</VLabel>
-                <VRichTextEditor id="topic-details" editorState={editorState} onEditorStateChange={onEditorStateChange}/>
+                <VRichTextEditor
+                 id="topic-details" 
+                 editorState={editorState} 
+                 onEditorStateChange={onEditorStateChange}
+                 editorStyle={{ height: '400px' }}
+                 wrapperClassName="v-rte-wrapper box-border v-ui-element"
+                 />
             </div>
 
             <div className="flex mb-5">
@@ -245,6 +251,8 @@ const NewMeetingForm = (props:any) => {
 
             <div className="mb-5">
                 <VButton 
+                    className="w-[147px]"
+                    isLoading={isLoading}
                     loadingText={loadingText}
                     onClick={(e:any) => onSetMeetingClick()}
                 >

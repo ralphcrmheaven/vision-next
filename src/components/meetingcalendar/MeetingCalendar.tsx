@@ -106,6 +106,11 @@ const MeetingCalendar = (props: Props) => {
         navLinks
         events={events}
         eventClick={handleEventClick}
+        slotEventOverlap={false}
+        eventMaxStack={2}
+        eventBorderColor="#2AA8F2"
+        eventBackgroundColor="rgba(42, 168, 242, 0.15)"
+        eventTextColor="#053F64"
       />
 
       {selectedEvent && (

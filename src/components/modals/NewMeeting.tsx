@@ -10,7 +10,7 @@ import {
 } from '../../providers/MeetingsProvider';
 import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 
-const NewMeetingForm = (props:any) => {
+const NewMeetingForm = (props: any) => {
 
     useEffect(() => {
         const html = "<p>Hi! <br />You are invited for a VISION Meeting! <br />We&rsquo;ll be discussing CrmHeaven and VISION during our next meeting at July 25, 2022, exactly 9am EST. <br /><br />We&rsquo;ll have 2 hours maximum to cover everything, so come prepared with your reports and updates. <br /><br />These are the following Agenda Developers: <br /><br />&middot; VISION development updates <br />&middot; CrmHeaven development updates <br />&middot; CrmHeaven infra Creatives:<br />&middot; Creative team tasks updates <br />&middot; CrmHeaven marketing website Videos page design update, Blog page design study <br />&middot; VISION marketing landing page design updates</p>";
@@ -20,7 +20,7 @@ const NewMeetingForm = (props:any) => {
             const editorState = EditorState.createWithContent(contentState);
             onEditorStateChange(editorState)
         }
-    },[])
+    }, [])
     const { setIsOpen } = props;
 
     const { given_name } = useSelector(selectUser);
@@ -154,7 +154,7 @@ const NewMeetingForm = (props:any) => {
         saveTheMeeting,
     } = useMeetings();
 
-    
+
 
     const defaultEditorText = "These are the following Agenda: · VISION development updates · CrmHeaven development updates · CrmHeaven infra Creatives: · Creative team tasks updates · CrmHeaven marketing website Videos page design update, Blog page design study · VISION marketing landing page design updates"
 
@@ -168,31 +168,31 @@ const NewMeetingForm = (props:any) => {
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
     const [timezone, setTimezone] = useState('');
 
-    const onTopicChange = (value:any) => {
+    const onTopicChange = (value: any) => {
         setTopic(value);
     };
 
-    const onEditorStateChange = (editorState:any) => {
+    const onEditorStateChange = (editorState: any) => {
         setEditorState(editorState);
     };
 
-    const onStartDateChange = (value:any) => {
+    const onStartDateChange = (value: any) => {
         setStartDate(value);
     };
 
-    const onStartTimeChange = (value:any) => {
+    const onStartTimeChange = (value: any) => {
         setStartTime(value);
     };
 
-    const onDurationTimeHoursChange = (value:any) => {
+    const onDurationTimeHoursChange = (value: any) => {
         setDurationTimeHours(value);
     };
 
-    const onDurationTimeMinutesChange = (value:any) => {
+    const onDurationTimeMinutesChange = (value: any) => {
         setDurationTimeMinutes(value);
     };
 
-    const onTimezoneChange = (value:any) => {
+    const onTimezoneChange = (value: any) => {
         setTimezone(value);
     };
 
@@ -211,46 +211,57 @@ const NewMeetingForm = (props:any) => {
     return (
         <div className="meeting-form">
             <div className="mb-5">
-                <VLabel htmlFor="topic">Topic</VLabel>
-                <VInput id="topic" value={topic} onChange={(e:any) => onTopicChange(e.target.value)} />
+                <VLabel htmlFor="topic" className="text-[#747474] text-sm">Meeting Name</VLabel>
+                <VInput className="border-[#747474] text-[#747474] text-sm" id="topic" value={topic} onChange={(e: any) => onTopicChange(e.target.value)} />
             </div>
-            
+
             <div className="mb-5">
-                <VLabel htmlFor="topic-details">Topic Details</VLabel>
-                <VRichTextEditor id="topic-details" editorState={editorState} onEditorStateChange={onEditorStateChange}/>
+                <VLabel htmlFor="topic-details" className="text-[#747474] text-sm">Topic Details</VLabel>
+                <VRichTextEditor
+                    editorStyle={{
+                        height: '280px',
+                    }}
+                toolbarHidden 
+                id="topic-details"
+                editorState={editorState}
+                onEditorStateChange={onEditorStateChange}
+                wrapperClassName="box-border border-[#747474] border rounded-lg w-full p-2 mb-1 text-[#747474] text-sm"
+                />
             </div>
 
             <div className="flex mb-5">
                 <div className="w-1/2 mr-2">
-                    <VLabel htmlFor="start-date">Start Date</VLabel>
-                    <VInput type="date" id="start-date" value={startDate} onChange={(e:any) => onStartDateChange(e.target.value)} />
+                    <VLabel htmlFor="start-date" className="text-[#747474] text-sm">Start Date</VLabel>
+                    <VInput className="border-[#747474] text-[#747474] text-sm" type="date" id="start-date" value={startDate} onChange={(e: any) => onStartDateChange(e.target.value)} />
                 </div>
 
                 <div className="w-1/2 ml-2">
-                    <VLabel htmlFor="set-time">Set Time</VLabel>
-                    <VInput type="time" id="set-time" value={startTime} onChange={(e:any) => onStartTimeChange(e.target.value)} />
+                    <VLabel htmlFor="set-time" className="text-[#747474] text-sm">Set Time</VLabel>
+                    <VInput className="border-[#747474] text-[#747474] text-sm" type="time" id="set-time" value={startTime} onChange={(e: any) => onStartTimeChange(e.target.value)} />
                 </div>
             </div>
 
             <div className="mb-5">
-                <VLabel>Set Duration Time</VLabel>
+                <VLabel className="text-[#747474] text-sm">Set Duration Time</VLabel>
                 <div className="flex">
                     <div className="w-1/2 mr-2">
-                        <VSelect 
+                        <VSelect
+                            className="border-[#747474] text-[#747474] text-sm"
                             id="duration-time-h"
                             options={hourOptions}
                             value={durationTimeHours}
-                            onChange={(e:any) => onDurationTimeHoursChange(e.target.value)}
+                            onChange={(e: any) => onDurationTimeHoursChange(e.target.value)}
                         />
                     </div>
 
                     <div className="w-1/2 ml-2">
-                    <VSelect 
-                        id="duration-time-m"
-                        options={minuteOptions}
-                        value={durationTimeMinutes}
-                        onChange={(e:any) => onDurationTimeMinutesChange(e.target.value)}
-                    />
+                        <VSelect
+                            className="border-[#747474] text-[#747474] text-sm"
+                            id="duration-time-m"
+                            options={minuteOptions}
+                            value={durationTimeMinutes}
+                            onChange={(e: any) => onDurationTimeMinutesChange(e.target.value)}
+                        />
                     </div>
                 </div>
             </div>
@@ -266,13 +277,13 @@ const NewMeetingForm = (props:any) => {
             </div> */}
 
             <div className="mb-5">
-                <VButton 
-                    className="w-[147px]"
+                <VButton
+                    className="w-full"
                     isLoading={isLoading}
                     loadingText={loadingText}
-                    onClick={(e:any) => onSetMeetingClick()}
+                    onClick={(e: any) => onSetMeetingClick()}
                 >
-                    Set Meeting
+                    Schedule Meeting
                 </VButton>
             </div>
         </div>

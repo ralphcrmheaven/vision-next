@@ -68,7 +68,7 @@ export default function Home() {
         <Header showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'}/>
         <div className='overflow-auto xl:overflow-hidden h-4/5'>
           <div className="flex gap-10 pt-10">
-            <div className="grid w-1/4 justify-center last:pb-10 xl:w-1/2">
+            <div className="grid w-1/4 justify-start last:pb-10 xl:w-1/2">
               <div className="grid grid-cols-1 gap-6 home-card-wrapper xl:grid-cols-2">
                 <VCard
                   {...{ className: 'relative vision-card text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-gray-900' }}
@@ -194,7 +194,7 @@ export default function Home() {
                   </div>
                 </VCard>
               </div>
-              <div className=''>
+              <div className='meeting-list-wrapper'>
                 <MeetingList />
               </div>
               {/* <MeetingListWrapper /> */}
