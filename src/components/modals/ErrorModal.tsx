@@ -10,9 +10,9 @@ const ErrorForm = (props:any) => {
 
             {
                 props.showButton && (
-                    <div className="mt-5">
+                    <div className="mt-5 ">
                         <VButton 
-                            className={`bg-red-500`}
+                            className={`bg-red-500 w-[147px]`}
                             onClick={(e:any) => props.buttonAction()}
                         >
                             {props.buttonText}

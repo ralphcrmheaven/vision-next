@@ -1,13 +1,18 @@
 import React from 'react'
+import '../assets/styles/styles.css'
 import FormInput, { InputTypes } from '../components/form/FormInput';
 import { IUser, selectUser } from '../redux/features/userSlice'
 import { SearchIcon, OnlineIcon, DownArrowIcon } from '../components/icons';
 import { useSelector } from 'react-redux'
 interface Props {
-    showSearchBar?: boolean
+    showSearchBar?: boolean,
+    showSubHeader?: boolean,
+    header?: string,
 }
 const Header: React.FC<Props> = ({
-    showSearchBar
+    showSearchBar,
+    showSubHeader,
+    header
 }) => {
     const user: IUser = useSelector(selectUser)
 
@@ -17,31 +22,41 @@ const Header: React.FC<Props> = ({
         <>
             <div className="flex">
                 <div className="">
-                    <h1 className="text-4xl text-vision-blue">Welcome to Vision</h1>
-                    <span className="text-xl italic text-slate-500">
-                        See the world right in front of you
-                    </span>
+                    <h1 className="text-4xl text-vision-blue">{header}</h1>
+                    {
+                        showSubHeader && (
+                            <span className="text-xl italic text-slate-500">
+                                See the world right in front of you
+                            </span>
+                        )
+                    }
+
                 </div>
 
                 {initials && fullname && (
                     <div className="ml-auto">
                         <div className='flex gap-10'>
-                            <div className="flex-row items-center space-x-4">
-                                <div className="relative w-full">
-                                    <FormInput
-                                        type={InputTypes.Text}
-                                        name="email"
-                                        className="w-full px-5 py-3 rounded-xl bg-slate-200  pr-44"
-                                        placeholder="Search Keywords"
-                                        onChange={e => { }}
-                                        required
-                                    />
-                                    <div className="flex absolute inset-y-0 right-4 items-center pointer-events-none">
-                                        <span><SearchIcon /></span>
-                                    </div>
+                            {
+                                showSearchBar && (
+                                    <div className="flex-row items-center space-x-4">
+                                        <div className="relative w-full">
+                                            <FormInput
+                                                type={InputTypes.Text}
+                                                name="email"
+                                                className="w-80 px-5 py-3 rounded-xl bg-slate-200  pr-14"
+                                                placeholder="Search Keywords"
+                                                onChange={e => { }}
+                                                required
+                                            />
+                                            <div className="flex absolute inset-y-0 right-4 items-center pointer-events-none">
+                                                <span><SearchIcon /></span>
+                                            </div>
 
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+
                             {/* User Profile Info */}
                             <div className="flex space-x-4 pt-3">
                                 <span className="flex-row items-center">
@@ -59,8 +74,6 @@ const Header: React.FC<Props> = ({
                                     <DownArrowIcon />
                                 </span>
                             </div>
-
-
                         </div>
                     </div>
                 )}

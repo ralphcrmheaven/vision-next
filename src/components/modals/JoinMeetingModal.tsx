@@ -71,7 +71,7 @@ const JoinMeetingForm = (props:any) => {
                 <VButton 
                     isLoading={isLoading}
                     loadingText={loadingText}
-                    className={(disabled)? 'bg-slate-500' : ''} disabled={disabled} 
+                    className={(disabled)? 'bg-slate-500 w-[147px]' : ''} disabled={disabled} 
                     onClick={(e:any) => onJoinMeetingClick()}
                 >
                     Join Meeting

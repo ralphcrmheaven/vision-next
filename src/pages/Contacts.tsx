@@ -9,7 +9,7 @@ import * as queries from '../graphql/queries';
 import { Observable } from '@reduxjs/toolkit';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
-
+import Header from '../components/Header';
 export default function Contacts() {
   // Hooks
   const [contact, setContact] = useState<ContactType>();
@@ -80,8 +80,8 @@ export default function Contacts() {
 
   return (
     <>
-      <div className="px-14 pt-14 h-full">
-        <h1 className="text-4xl text-vision-blue">Contacts</h1>
+      <div className="relative px-14 pt-14 h-full">
+      <Header showSearchBar={false} showSubHeader={false} header={'Contacts'} />
         <div className="flex flex-row py-10 h-4/6">
           <div className="w-1/4 border border-gray-300 rounded-3xl p-8 mr-4">
             <h2 className="text-lg text-vision-blue font-semibold mb-5">My Contacts</h2>
@@ -98,7 +98,7 @@ export default function Contacts() {
           </div>
           <div className="flex justify-center items-center w-3/4 border border-gray-300 rounded-3xl p-10">
             <Form className="mx-auto w-455" onSubmit={() => false}>
-                <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a Vision Contact</h2>
+                <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a VISION Contact</h2>
                 <div className="flex flex-col">
                   <FormInput
                     type={InputTypes.Text}
