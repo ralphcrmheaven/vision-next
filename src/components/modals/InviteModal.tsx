@@ -230,8 +230,8 @@ const InviteModal = (props: any) => {
                         )
                         }
                         {selectedInvitationType === 'search_contacts' && (
-                            <div>
-                                <div className="mt-2 overflow-y-auto h-64 p-2">
+                            <div className="flex justify-center items-center">
+                                <div className="mt-2 overflow-y-auto h-64 p-2 w-[400px]">
                                     <table className="table-fixed">
                                         {/* <thead>
                                         <tr>
@@ -248,7 +248,7 @@ const InviteModal = (props: any) => {
                                                             <span className="p-3 text-white bg-gray-900 rounded-lg">
                                                                 {d.name ? d.name.substring(0, 1) : 'n/a'}
                                                             </span>
-                                                            <span>
+                                                            <span >
                                                                 {d.email}
                                                             </span>
                                                         </span>
@@ -256,7 +256,7 @@ const InviteModal = (props: any) => {
 
                                                     </td>
                                                     {/* <td>{d.name ? d.name : 'n/a'}</td> */}
-                                                    <td>
+                                                    <td className='text-right'>
                                                         {/* <PrimaryButton
                                                         className="basis-1/6 ml-2 vision-btn"
                                                         label="Send"
