@@ -118,6 +118,7 @@ export default function Home() {
                   </div>
                 </VCard>
 
+
                 <VCard
                   {...{ className: 'relative vision-card  bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
                 >
