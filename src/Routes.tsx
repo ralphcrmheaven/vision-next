@@ -10,6 +10,9 @@ import SingleMeetingPassword from './pages/SingleMeetingPassword'
 import DeleteAllChannels from './pages/DeleteAllChannels'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Entry from './pages/Entry'
+
+
 import Meetings from './pages/Meetings'
 import Settings from './pages/Settings'
 import Signup from './pages/Signup'
@@ -34,6 +37,14 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       >
+        <Route
+          path="/" 
+          element={
+            <MeetingWrapper>
+              <Entry />
+            </MeetingWrapper>
+          }
+        />
         <Route
           path="/home" 
           element={
