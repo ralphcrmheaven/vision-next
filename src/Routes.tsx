@@ -35,7 +35,7 @@ const AppRoutes: React.FC = () => {
         }
       >
         <Route
-          index
+          path="/home" 
           element={
             <MeetingWrapper>
               <Home />

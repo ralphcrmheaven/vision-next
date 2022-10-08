@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   const [error, setErrror] = useState<string>('')
 
   if (user.username) {
-    return <Navigate to={'/'} replace />
+    return <Navigate to={'/home'} replace />
   }
 
   const handleSubmit = async (e: FormEvent) => {
