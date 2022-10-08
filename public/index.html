@@ -32,6 +32,13 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script>
+        var length = window.location.href.split('/').length
+        var last_path = window.location.href.split('/')[length - 1]
+
+        if (last_path == "") {
+            location.href = '/home';
+        }
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('worker.js').then(function(registration) {
