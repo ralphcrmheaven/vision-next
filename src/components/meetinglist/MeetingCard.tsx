@@ -19,6 +19,8 @@ import {
 } from '../../utils/api';
 interface IMeetingCardProps {
   meeting: IMeetingRecord,
+  openInviteModal: any,
+  handleCurrentMeeting: any
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
@@ -40,11 +42,13 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   let href = '';
 
   useEffect(() => {
-    console.log("inside meeting card")
-    console.log(meeting)
+
   }, [])
 
-
+  const handleAttendeeClick = async (meeting:any) => {
+    props.handleCurrentMeeting(meeting) 
+    props.openInviteModal(true)
+  }
 
   const downloadMeeting = async (mtid: string) => {
     let dbMeeting: any = await getMeetingFromDB?.(mtid)
@@ -94,7 +98,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   return (
     <div className="v-card meeting-card text-sm" key={meeting.MeetingId + "-meetingcard"}>
       <div className="flex mb-2">
-        <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic} |               <span className="self-center home-time-card mt-5" onClick={() => downloadMeeting(meeting.MeetingId)}>Download Video</span></h1>
+        <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
         <div className="grid w-1/4 justify-items-end">
           <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg home-dropdown-cog"><UnionIcon /></button>
         </div>
@@ -105,7 +109,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
         <span className="px-2 text-gray-600 border-r border-r-gray-500 home-time-card">{startsIn}</span>
         <span className="flex pl-2">
           <span className="w-4 h-4 pt-1"><CameraRecordIcon /></span>
-          <span className="px-1 text-gray-600 home-time-card">
+          <span className="px-1 text-gray-600 home-time-card" onClick={() => downloadMeeting(meeting.MeetingId)}>
             Recorded meeting
           </span>
         </span>
@@ -116,7 +120,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
           {meeting.Attendees != undefined ?
             meeting.Attendees.slice(0, AttendeesToDisplay).map((d, i) => (
-              <span key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
+              <span onClick={() => handleAttendeeClick(meeting)}  key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
                 {d.Name.charAt(0)}
               </span>
             )
@@ -155,10 +159,10 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
           <Modal size="md" onClose={() => setShowMeetingDetail(false)} rootId="modal-root">
             <ModalBody>
               <div className="p-10 px-2">
-                <p>{given_name} is inviting you to a scheduled Vision meeting.</p>
+                <p>{given_name} is inviting you to a scheduled VISION meeting.</p>
                 <h3 className="my-1 font-bold">Topic</h3>
                 <p>{meeting?.Topic}</p>
-                <h3 className="my-1 font-bold">Join Vision Meeting</h3>
+                <h3 className="my-1 font-bold">Join VISION Meeting</h3>
                 <a href={href}>{href}</a>
               </div>
             </ModalBody>

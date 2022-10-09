@@ -98,7 +98,7 @@ export default function Contacts() {
           </div>
           <div className="flex justify-center items-center w-3/4 border border-gray-300 rounded-3xl p-10">
             <Form className="mx-auto w-455" onSubmit={() => false}>
-                <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a Vision Contact</h2>
+                <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a VISION Contact</h2>
                 <div className="flex flex-col">
                   <FormInput
                     type={InputTypes.Text}

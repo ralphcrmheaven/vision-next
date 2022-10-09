@@ -199,8 +199,8 @@ const Meeting: FC = () => {
       fs: 1,
       tf: 'cm',
       to: '',
-      su: `Please join Vision meeting in progress`,
-      body: `Join Vision Meeting%0D%0DURL: ${window.location.origin}/meeting${activeMeeting.url}%0D%0DMeeting ID: ${activeMeeting.id}%0DPasscode: ${activeMeeting.password}`
+      su: `Please join VISION meeting in progress`,
+      body: `Join VISION Meeting%0D%0DURL: ${window.location.origin}/meeting${activeMeeting.url}%0D%0DMeeting ID: ${activeMeeting.id}%0DPasscode: ${activeMeeting.password}`
     }
     const query = Object.keys(params).map(key => key + '=' + params[key]).join('&');
     return `https://mail.google.com/mail/u/0/?${query}`
@@ -215,7 +215,7 @@ const Meeting: FC = () => {
       if(res.success){
         setIsValidMeeting(true);
         await createOrJoinTheMeeting?.();
-        await setTheActiveMeeting?.(res.data.I, res.data.Attendees);
+        await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
       }
       dbMeetingData = await getDbFromDb?.()
       setIsRecording(dbMeetingData.data.getMeeting.isRecording)
@@ -302,7 +302,6 @@ const Meeting: FC = () => {
 
   const recordChimeMeeting = async (value: string) => {
 
-    
     setRecordingLoading(true)
     const is_recording = value == 'record';
 

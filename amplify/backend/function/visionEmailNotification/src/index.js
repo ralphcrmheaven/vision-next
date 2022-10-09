@@ -12,7 +12,7 @@ var ses = new aws.SES({ region: process.env.REGION });
 exports.handler = async(event) => {
     console.log('events: ', event);
     console.log("=============events=============")
-    const { email, fromName, meetingUrl } = event
+    const { email, fromName, meetingUrl, topic } = event
     // var params = {
     //     Destination: {
     //         ToAddresses: [email]
@@ -39,7 +39,7 @@ exports.handler = async(event) => {
         /* required */
         Template: 'NewMeetingInvite',
         /* required */
-        TemplateData: '{"fromName": "' + fromName + '", "meetingUrl": "' + meetingUrl + '"}',
+        TemplateData: '{"fromName": "' + fromName + '","topic": "' + topic + '", "meetingUrl": "' + meetingUrl + '"}',
         /* required */
         ConfigurationSetName: '',
         // ReplyToAddresses: [

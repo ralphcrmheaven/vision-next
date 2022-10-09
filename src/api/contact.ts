@@ -14,7 +14,8 @@ type ContactType = {
 type ContactNotificationType = {
     email: string,
     meetingUrl: string,
-    fromName: string
+    fromName: string,
+    topic: string
 };
 
 export type  { 

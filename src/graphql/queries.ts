@@ -51,12 +51,14 @@ export const sendEmailNotification = /* GraphQL */ `
   query SendEmailNotification(
     $email: String
     $fromName: String
-    $meetingUrl: String
+    $meetingUrl: String,
+    $topic: String
   ) {
     sendEmailNotification(
       email: $email
       fromName: $fromName
       meetingUrl: $meetingUrl
+      topic: $topic
     )
   }
 `;

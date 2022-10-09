@@ -60,7 +60,7 @@ const meetingSlice = createSlice({
             state.currentMeetingId = initialState.currentMeetingId;
         },
         setActiveMeeting: (state, action) => {
-            const { id, password, url, type, attendees } = action.payload;
+            const { id, password, url, type, attendees, topic } = action.payload;
 
             state.activeMeeting = {
                 id: id,
@@ -68,6 +68,7 @@ const meetingSlice = createSlice({
                 url: url,
                 type: type,
                 attendees: attendees,
+                topic: topic
             };
         },
         setActiveMeetingAttendees: (state, action) => {

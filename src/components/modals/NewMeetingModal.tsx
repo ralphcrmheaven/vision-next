@@ -4,6 +4,7 @@ import moment from 'moment';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { selectUser } from '../../redux/features/userSlice';
+import { ReactMultiEmail } from 'react-multi-email';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
@@ -152,6 +153,8 @@ const NewMeetingForm = (props:any) => {
     const [durationTimeHours, setDurationTimeHours] = useState('');
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
     const [timezone, setTimezone] = useState('');
+    const [emails, setEmails] = useState<string[]>([]);
+
     
     const onTopicChange = (value:any) => {
         setTopic(value);
@@ -245,16 +248,6 @@ const NewMeetingForm = (props:any) => {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="mb-5">
-                <VLabel htmlFor="timezone">Time Zone</VLabel>
-                <VSelect 
-                    id="timezone"
-                    options={minuteOptions}
-                    value={timezone}
-                    onChange={(e:any) => onTimezoneChange(e.target.value)}
-                />
-            </div> */}
 
             <div className="mb-5">
                 <VButton 
