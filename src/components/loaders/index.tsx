@@ -1,3 +1,3 @@
 import CircularLoader from "./Circular";
-
-export { CircularLoader }
+import MeetingCardLoader from "./MeetingCardLoader";
+export { CircularLoader, MeetingCardLoader}

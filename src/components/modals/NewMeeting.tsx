@@ -279,7 +279,7 @@ const NewMeetingForm = (props: any) => {
             <div className="mb-5">
                 <VButton
                     className="w-full"
-                    isLoading={isLoading}
+                            
                     loadingText={loadingText}
                     onClick={(e: any) => onSetMeetingClick()}
                 >

@@ -6,12 +6,14 @@ interface IMeeting {
     currentMeetingId: string
     activeMeeting: object
     meetings: Array<IMeetingRecord>
+    isFetching:boolean
 }
 
 const initialState: IMeeting = {
     currentMeetingId: '',
     activeMeeting: {},
     meetings: [],
+    isFetching:false
 };
 
 export const meetingCreate: any = createAsyncThunk(
@@ -93,11 +95,13 @@ const meetingSlice = createSlice({
         builder
             .addCase(meetingRead.pending, (state, action) => {
                 state.meetings = initialState.meetings;
+                state.isFetching = true;
             })
             .addCase(meetingRead.fulfilled, (state, action) => {
                 let meetings = action.payload;
                 meetings = meetings.filter((m: any) => { return typeof m.CreatedAt !== 'undefined' && m.StartDate !== '' }).sort((a: any, b: any) => new Date(a.StartDateTimeUTC) > new Date(b.StartDateTimeUTC) ? -1 : 1);
                 state.meetings = meetings;
+                state.isFetching = false;
                 console.log(state.meetings)
             })
             .addCase(meetingCreate.pending, (state, action) => {
