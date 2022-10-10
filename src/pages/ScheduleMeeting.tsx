@@ -16,7 +16,7 @@ export default function ScheduleMeeting() {
                 <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
                 <div className="overflow-hidden h-[90%]">
                     <div className="flex flex-row gap-4 pt-4 h-full">
-                        <div className="w-3/5">
+                        <div className="w-[55%]">
                             <MeetingCalendar
                                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                                 initialView="timeGridWeek"
@@ -28,7 +28,7 @@ export default function ScheduleMeeting() {
                                 }}
                             />
                         </div>
-                        <div className="w-2/5 meeting-schedule bg-vision-card-bg rounded-[30px]">
+                        <div className="w-[45%] meeting-schedule bg-vision-card-bg rounded-[30px]">
                             <Tabs className="mx-10 my-3"
                                 justifyContent="center"
                                 spacing="equal"

@@ -269,6 +269,7 @@ aside.emoji-picker-react {
 .invite-modal .ch-title {
     margin-top: 30px !important;
     margin-bottom: 30px !important;
+    padding-right: 0px !important;
     text-align: center;
     font-style: normal;
     font-weight: 500;
@@ -457,7 +458,7 @@ aside.emoji-picker-react {
 }
 
 .home-id-input {
-    width: auto !important;
+    width: 120px !important;
     height: 50px;
     background: #ECECEC;
     border: 1px solid #C4C4C4;

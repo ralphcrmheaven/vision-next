@@ -200,10 +200,13 @@ const NewMeetingForm = (props: any) => {
         setIsLoading(true);
         setLoadingText('Saving');
 
-        await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
+        const res = await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
 
-        setIsLoading(false);
-        setLoadingText('');
+        if (res !== null) {
+            setIsLoading(false);
+            setLoadingText('');
+            console.log('sample')
+        }
 
         setIsOpen();
     };
@@ -221,11 +224,11 @@ const NewMeetingForm = (props: any) => {
                     editorStyle={{
                         height: '280px',
                     }}
-                toolbarHidden 
-                id="topic-details"
-                editorState={editorState}
-                onEditorStateChange={onEditorStateChange}
-                wrapperClassName="box-border border-[#747474] border rounded-lg w-full p-2 mb-1 text-[#747474] text-sm"
+                    toolbarHidden
+                    id="topic-details"
+                    editorState={editorState}
+                    onEditorStateChange={onEditorStateChange}
+                    wrapperClassName="box-border border-[#747474] border rounded-lg w-full p-2 mb-1 text-[#747474] text-sm"
                 />
             </div>
 
@@ -278,8 +281,9 @@ const NewMeetingForm = (props: any) => {
 
             <div className="mb-5">
                 <VButton
-                    className="w-full"
-                            
+                    className="w-full disabled:cursor-not-allowed"
+                    isLoading={isLoading}
+                    disabled={isLoading}
                     loadingText={loadingText}
                     onClick={(e: any) => onSetMeetingClick()}
                 >

@@ -24,7 +24,7 @@ interface IMeetingCardProps {
 };
 
 const MeetingCard: FC<IMeetingCardProps> = (props) => {
-  const AttendeesToDisplay = 4;
+  const AttendeesToDisplay = 2;
   const { meeting } = props;
   const { username, given_name } = useSelector(selectUser);
   const [showMeetingDetail, setShowMeetingDetail] = useState(false);
@@ -116,11 +116,11 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
       </div>
 
       <div className="flex mt-10">
-        <div className="self-center w-3/4">
+        <div className="self-center w-3/4 flex flex-row gap-1">
 
           {meeting.Attendees != undefined ?
             meeting.Attendees.slice(0, AttendeesToDisplay).map((d, i) => (
-              <span onClick={() => handleAttendeeClick(meeting)}  key={d.Name + "-atteedee"} className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" >
+              <span onClick={() => handleAttendeeClick(meeting)}  key={d.Name + "-atteedee"} className="flex justify-center home-avatar-input z-20 inline-block w-3/4 text-gray-600 bg-gray-300 border rounded-lg border-gray text-ellipsis items-center" >
                 {d.Name.charAt(0)}
               </span>
             )
@@ -128,8 +128,8 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
           }
           {
             meeting.Attendees.length > AttendeesToDisplay ? (
-              <span className="home-avatar-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-white align-middle bg-sky-900 border rounded-lg border-gray" >
-                <span className="inline-block align-middle">+{meeting.Attendees.length-AttendeesToDisplay}</span>
+              <span className="flex justify-center home-avatar-input z-20 inline-block w-3/4 text-white bg-sky-900 border rounded-lg border-gray items-center" >
+                +{meeting.Attendees.length-AttendeesToDisplay}
               </span>
             ) : ''
           }
@@ -139,7 +139,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
         <div className="flex space-x-1">
           <input type="text" defaultValue={meeting?.MeetingId} className="home-id-input z-20 inline-block w-3/4 p-2 mr-2 text-center text-gray-600 align-middle bg-gray-300 border rounded-lg border-gray text-ellipsis" />
           {(meeting?.User === username) ?
-            <VButton className="z-20 w/14 w-[147px]" onClick={() => setTheMeeting?.({ id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: '' })}>
+            <VButton className="z-20 w/14 w-[105px]" onClick={() => setTheMeeting?.({ id: meeting?.MeetingId, password: meeting?.Password ?? '', url: meeting?.Url, type: '' })}>
               Start
             </VButton>
             :

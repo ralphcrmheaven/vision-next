@@ -19,12 +19,13 @@ import cham1 from '../assets/images/cham1.png'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header';
 import FormInput, { InputTypes } from '../components/form/FormInput';
+import { Loader } from '@aws-amplify/ui-react';
 export default function Home() {
   const user: IUser = useSelector(selectUser)
 
   const initials = user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
-
+  const [isLoading, setIsLoading] = useState(false);
   const currentDate = moment();
 
   const {
@@ -47,6 +48,7 @@ export default function Home() {
   }
 
   const onNewMeetingCardClick = async () => {
+    setIsLoading(true)
     const topic = `${user.given_name}'s Meeting`;
     const topicDetails = '';
     const startDate = currentDate.format('yyyy-MM-DD');
@@ -64,7 +66,7 @@ export default function Home() {
 
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
       <div className="relative h-full px-14 pt-14">
-        <Header showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'}/>
+        <Header showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'} />
         <div className='overflow-auto xl:overflow-hidden h-4/5'>
           <div className="flex gap-10 pt-10">
             <div className="grid w-1/4 justify-start last:pb-10 xl:w-1/2">
@@ -72,17 +74,29 @@ export default function Home() {
                 <VCard
                   {...{ className: 'relative vision-card text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-gray-900' }}
                 >
-                  <div className="w-full h-full cursor-pointer" onClick={() => {
+                  <div className={`w-full h-full  ${isLoading?'cursor-not-allowed':'cursor-pointer'}`} onClick={() => {
                     //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
                     onNewMeetingCardClick()
                   }}
                   >
-                    <div className="absolute border border-vision-lighter-yellow vision-card-sm top-4 left-4 bg-vision-light-yellow rounded-2xl">
-                      <img
-                        src="./images/camera-white.png"
-                        alt="Camera"
-                        className="p-4"
-                      />
+                    <div className="flex items-center justify-center absolute border border-vision-lighter-yellow vision-card-sm top-4 left-4 bg-vision-light-yellow rounded-2xl">
+                      {
+                        isLoading ? (
+                          <Loader
+                            className='w-[50px] h-[50px]'
+                            emptyColor="rgb(209 213 219)"
+                            filledColor="white"
+                          />
+                        ) : (
+                          <img
+                            src="./images/camera-white.png"
+                            alt="Camera"
+                            className="p-4"
+                          />
+                        )
+                      }
+
+
                     </div>
                     <div className="absolute left-4 bottom-4">
                       <p className="flex flex-col">

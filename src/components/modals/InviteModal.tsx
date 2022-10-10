@@ -7,7 +7,7 @@ import {
     PrimaryButton,
     ModalHeader
 } from 'amazon-chime-sdk-component-library-react';
-import { Tabs, TabItem } from '@aws-amplify/ui-react';
+import { Tabs, TabItem, Loader } from '@aws-amplify/ui-react';
 import * as subscriptions from '../../graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createContact, getContacts, ContactType, ContactNotificationType } from '../../api/contact';
@@ -17,12 +17,13 @@ import { useMeetings } from '../../providers/MeetingsProvider';
 import { IUser, selectUser } from '../../redux/features/userSlice'
 import { useSelector } from 'react-redux'
 import { VButton } from '../ui';
-
+import { CircularLoader } from '../loaders';
 const InviteModal = (props: any) => {
 
     const sendInviteButton = useRef<any>();
     const [contactsBtnDisabled, setContactsBtnDisabled] = useState<[]>([]);
     const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(false)
+    const [isLoadingSendInvite, setIsLoadingSendInvite] = useState<any>(null)
     const [isSendingInvites, setIsSendingInvites] = useState<boolean>(false)
     const [contacts, setContacts] = useState<ContactType[]>([]);
     const { setModalVisibility } = props;
@@ -115,6 +116,7 @@ const InviteModal = (props: any) => {
         setSendButtonDisabled(true)
         setIsSendingInvites(true)
         const res = await createContactsAsync();
+        console.log('remove loading..' + res)
     };
 
     const checkContactExisting = async (email: any) => {
@@ -167,7 +169,6 @@ const InviteModal = (props: any) => {
                     setIsSendingInvites(false)
                     setSendButtonDisabled(false)
                 }
-                
             }
 
         });
@@ -200,6 +201,7 @@ const InviteModal = (props: any) => {
     }
 
     const clickedExistingContactsSendInvite = async (d: any, i: any) => {
+        setIsLoadingSendInvite(i)
         let topic = ""
         if (meetingTopic == undefined || meetingTopic == '') {
             topic = "Hi you are invited by " + `${user.family_name}` + " to join a VISION meeting where you can see the world right in front of you!"
@@ -211,12 +213,15 @@ const InviteModal = (props: any) => {
             console.log("here")
         }
 
-        await sendEmailNotification({
+        const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
             topic: `${topic}`
         })
+        if(res!==null){
+            setIsLoadingSendInvite(null)
+        }
         setSendButtonDisabled(false)
     };
 
@@ -325,25 +330,22 @@ const InviteModal = (props: any) => {
                                                     </td>
                                                     {/* <td>{d.name ? d.name : 'n/a'}</td> */}
                                                     <td className='text-right'>
-                                                        {/* <PrimaryButton
-                                                        className="basis-1/6 ml-2 vision-btn"
-                                                        label="Send"
-                                                        key={"btn-" + i}
-                                                        disabled={contactsBtnDisabled[i]}
-                                                        onClick={async (e: any) => {
-                                                            await clickedExistingContactsSendInvite(d, i);
-                                                        }
-                                                        }
-                                                    /> */}
-                                                        <a href="#" className='underline decoration-vision-blue text-vision-blue decoration-1 underline-offset-2 hover:decoration-2'
+                                                        <a href="#" style={{pointerEvents:isLoadingSendInvite === i?'none':'auto'}} className={`underline decoration-vision-blue text-vision-blue decoration-1 underline-offset-2 hover:decoration-2 ${isLoadingSendInvite === i?'cursor-not-allowed':'cursor-pointer'}`}
                                                             onClick={async (e: any) => {
                                                                 await clickedExistingContactsSendInvite(d, i);
                                                             }
                                                             }
                                                         >
                                                             SEND INVITE
+                                                            {
+                                                                isLoadingSendInvite === i && (
+                                                                    <Loader />
+                                                                )
+                                                            }
+
                                                         </a>
                                                     </td>
+
                                                 </tr>)
                                             )}
                                         </tbody>

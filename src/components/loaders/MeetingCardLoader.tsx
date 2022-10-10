@@ -20,8 +20,8 @@ const MeetingCardLoader = () => {
                     <Placeholder height="50px" width="50px" />
                 </div>
                 <div className="flex space-x-1">
-                    <Placeholder className='rounded-[12px]' height="50px" width="190px" />
-                    <Placeholder className='rounded-[12px]' height="50px" width="170px" />
+                    <Placeholder className='rounded-[12px]' height="50px" width="120px" />
+                    <Placeholder className='rounded-[12px]' height="50px" width="105px" />
                 </div>
             </div>
         </div>
