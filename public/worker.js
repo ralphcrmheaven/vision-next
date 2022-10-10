@@ -4,7 +4,19 @@ var urlsToCache = [
     '/completed'
 ];
 
-console.log("update on worker.js")
+console.log("update on worker.js 2")
+
+caches.keys().then(cacheNames => {
+    console.log("update on worker.js deleting")
+
+    return Promise.all(
+        cacheNames.map(cacheName => {
+            if ('pwa-task-manager'.indexOf(cacheName) === -1) {
+                return caches.delete(cacheName);
+            }
+        })
+    );
+})
 
 // Install a service worker
 self.addEventListener('install', event => {
@@ -39,7 +51,7 @@ self.addEventListener('activate', event => {
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                    if ('cacheWhitelist'.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
                     }
                 })
