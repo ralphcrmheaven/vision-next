@@ -496,7 +496,7 @@ aside.emoji-picker-react {
 }
 
 .meeting-schedule .meeting-form {
-    height: 80vh;
+    height: 70vh;
     overflow-y: scroll;
     padding: 13px;
 }
@@ -660,3 +660,10 @@ aside.emoji-picker-react {
 .amplify-tabs-item[data-state='active'] {
     color: #053F64;
 }
+
+
+/* Placeholder CSS Designs */
+.placeholder-local-styles {
+    --amplify-components-placeholder-start-color: #053F64;
+    --amplify-components-placeholder-end-color: #C4C4C4;
+  }

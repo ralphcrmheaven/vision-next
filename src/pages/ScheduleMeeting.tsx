@@ -39,7 +39,7 @@ export default function ScheduleMeeting() {
                                     </div>
                                 </TabItem>
                                 <TabItem title="Meetings">
-                                    <div className='mx-8 pt-10 overflow-y-scroll h-[685px]'>
+                                    <div className='mx-8 pt-10 overflow-y-scroll h-[70vh]'>
                                         <MeetingList />
                                     </div>
                                 </TabItem>

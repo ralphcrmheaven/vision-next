@@ -16,12 +16,14 @@ import { ReactMultiEmail } from 'react-multi-email';
 import { useMeetings } from '../../providers/MeetingsProvider';
 import { IUser, selectUser } from '../../redux/features/userSlice'
 import { useSelector } from 'react-redux'
+import { VButton } from '../ui';
 
 const InviteModal = (props: any) => {
 
     const sendInviteButton = useRef<any>();
     const [contactsBtnDisabled, setContactsBtnDisabled] = useState<[]>([]);
     const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(false)
+    const [isSendingInvites, setIsSendingInvites] = useState<boolean>(false)
     const [contacts, setContacts] = useState<ContactType[]>([]);
     const { setModalVisibility } = props;
     const [selectedInvitationType, setSelectedInvitationType] = useState<string>('send_mail')
@@ -60,10 +62,10 @@ const InviteModal = (props: any) => {
     useEffect(() => {
         const doActions = async () => {
             console.log(props.meeting)
-            if(props.meeting != undefined) {
+            if (props.meeting != undefined) {
                 setMeetingUrl(props.meeting.Url)
                 setMeetingTopic(props.meeting.TopicDetails)
-            }else{
+            } else {
                 setMeetingUrl(activeMeeting.url)
                 setMeetingTopic(activeMeeting.topic)
             }
@@ -85,9 +87,9 @@ const InviteModal = (props: any) => {
         console.log("=======subscribe=======")
 
         let topic = ""
-        if(meetingTopic == undefined) {
-            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
-        }else{
+        if (meetingTopic == undefined) {
+            topic = "Hi you are invited by " + `${user.family_name}` + " to join a VISION meeting where you can see the world right in front of you!"
+        } else {
             topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
@@ -111,14 +113,14 @@ const InviteModal = (props: any) => {
 
     const clickedNewContactsSendInvite = async () => {
         setSendButtonDisabled(true)
-        await createContactsAsync();
-        setSendButtonDisabled(false)
+        setIsSendingInvites(true)
+        const res = await createContactsAsync();
     };
 
     const checkContactExisting = async (email: any) => {
         var counter = 0;
         contacts.forEach(async (m) => {
-            console.log(email + "===" + m.email)
+            // console.log(email + "===" + m.email)
             if (email === m.email) {
                 counter++;
             }
@@ -132,9 +134,9 @@ const InviteModal = (props: any) => {
         console.log(emails)
 
         let topic = ""
-        if(meetingTopic == undefined || meetingTopic == '') {
-            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
-        }else{
+        if (meetingTopic == undefined || meetingTopic == '') {
+            topic = "Hi you are invited by " + `${user.family_name}` + " to join a VISION meeting where you can see the world right in front of you!"
+        } else {
             topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
@@ -155,13 +157,19 @@ const InviteModal = (props: any) => {
                 }
                 await createContact(contact)
             } else {
-                await sendEmailNotification({
+                const res = await sendEmailNotification({
                     email: email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
                     topic: `${topic}`
                 })
+                if (res !== null) {
+                    setIsSendingInvites(false)
+                    setSendButtonDisabled(false)
+                }
+                
             }
+
         });
     }
 
@@ -186,23 +194,23 @@ const InviteModal = (props: any) => {
         setSendButtonDisabled(true)
     };
 
-    const htmlDecode = (input:string) => {
+    const htmlDecode = (input: string) => {
         var doc = new DOMParser().parseFromString(input, "text/html");
         return doc.documentElement.textContent;
     }
 
     const clickedExistingContactsSendInvite = async (d: any, i: any) => {
         let topic = ""
-        if(meetingTopic == undefined || meetingTopic == '') {
-            topic = "Hi you are invited by "+`${user.family_name}`+" to join a VISION meeting where you can see the world right in front of you!"
-        }else{
+        if (meetingTopic == undefined || meetingTopic == '') {
+            topic = "Hi you are invited by " + `${user.family_name}` + " to join a VISION meeting where you can see the world right in front of you!"
+        } else {
             topic = meetingTopic.trim();
             topic = topic.replaceAll('"', "'");
             topic = topic.replaceAll("\n", "");
             console.log(topic);
             console.log("here")
         }
-    
+
         await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
@@ -269,16 +277,21 @@ const InviteModal = (props: any) => {
 
                                 <div className="flex justify-center items-center mb-2 no-border">
                                     <div className="invite-btn-wrapper">
-                                        <PrimaryButton
-                                            className="basis-1/6 h-10 ml-2 modal-top send-invite-btn"
+                                        <VButton
+                                            className="basis-1/6 h-10 ml-2 modal-top send-invite-btn disabled:cursor-not-allowed"
                                             label="Send Invite"
                                             ref={sendInviteButton}
                                             disabled={emails.length === 0 || sendButtonDisabled}
+                                            // disabled={true}
                                             onClick={async (e: any) => {
                                                 await clickedNewContactsSendInvite();
                                             }
                                             }
-                                        />
+                                            isLoading={isSendingInvites}
+                                            loadingText={"Sending"}
+                                        >
+                                            Send Invite
+                                        </VButton>
                                     </div>
                                 </div>
                             </div>

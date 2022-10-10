@@ -62,6 +62,7 @@ interface IMeetingsContext {
     currentMeetingId?: string,
     activeMeeting?: any,
     meetings?: Array<IMeetingRecord>,
+    isFetching?:boolean,
     showNewMeetingModal: boolean,
     dbMeeting?: any,
     showJoinMeetingModal: boolean,
@@ -114,7 +115,7 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const { username, given_name } = useSelector(selectUser);
     const titleId = ""
-    const { currentMeetingId, activeMeeting, meetings } = useSelector(selectMeeting);
+    const { currentMeetingId, activeMeeting, meetings, isFetching } = useSelector(selectMeeting);
 
     const meetingManager = useMeetingManager();
     const meetingStatus = useMeetingStatus();
@@ -453,6 +454,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     updateTheDbMeeting,
                     activeMeeting,
                     meetings,
+                    isFetching,
                     dbMeeting,
                     showNewMeetingModal,
                     showJoinMeetingModal,
