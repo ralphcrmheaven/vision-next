@@ -49,47 +49,45 @@ const Signup: React.FC = () => {
   }
 
   return (
-    <div className="mt-14">
-      <div className="flex justify-center mb-10">
+    <div className="mt-[11px] w-full sm:mt-14">
+      <div className="flex justify-center mb-[26px] sm:mb-10 h-[66px] sm:h-auto">
         <Logo />
       </div>
 
-      <div className="relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36">
-        <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
+      <div className="sign-up-mobile-view sm:sign-up-desktop-view">
+        <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue text-[22px] sm:text-[30px]">
           Signup for an Account
         </h1>
 
-        <span>Start your 14 day trial. No credit card account.</span>
-
-        <Form className="mx-auto mt-10 mb-8 w-455" onSubmit={handleSubmit}>
+        <span className="text-[#747474] whitespace-pre sm:whitespace-normal">Start your 14 day trial. {"\n"}
+          No credit card account.</span>
+        <Form className="sign-up-mobile-view-form sm:sign-up-desktop-view-form" onSubmit={handleSubmit}>
           {error && (
             <Alert variation="error" className="mb-3 text-left">
               {error}
             </Alert>
           )}
-          <div className="mb-3 columns-2">
-            <div>
+          <div className="flex flex-row gap-2 w-full">
+            
               <FormInput
                 name="firstname"
-                className="px-5 py-3 rounded-xl bg-slate-200"
+                className="w-1/2 px-5 py-3 rounded-xl bg-slate-200"
                 placeholder="First Name"
                 onChange={(e: any) => setFirstname(e.target.value)}
               />
-            </div>
-
-            <div>
+        
               <FormInput
                 name="lastname"
-                className="px-5 py-3 rounded-xl bg-slate-200"
+                className="w-1/2 px-5 py-3 rounded-xl bg-slate-200"
                 placeholder="Last Name"
                 onChange={(e: any) => setLastname(e.target.value)}
               />
-            </div>
+            
           </div>
           <FormInput
             type={InputTypes.Email}
             name="email"
-            className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+            className="w-full px-5 py-3 rounded-xl bg-slate-200"
             placeholder="Email Address"
             onChange={(e: any) => setEmail(e.target.value)}
             required
@@ -98,18 +96,18 @@ const Signup: React.FC = () => {
           <FormInput
             type={InputTypes.Password}
             name="password"
-            className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+            className="w-full px-5 py-3  rounded-xl bg-slate-200"
             placeholder="Password"
             onChange={(e: any) => setPassword(e.target.value)}
             required
           />
-          <Button type={ButtonTypes.Submit} isLoading={isLoading}>
+          <Button className='w-full' type={ButtonTypes.Submit} isLoading={isLoading}>
             Signup
           </Button>
         </Form>
 
-        <span className="block mx-auto mb-3">
-          Already have an account?{' '}
+        <span className="block mx-auto mb-3 text-[#747474] whitespace-pre sm:whitespace-normal">
+          Already have an{'\n'}account?{' '}
           <Link to={'/login'} className="font-bold text-vision-dark-blue">
             Login
           </Link>
@@ -118,7 +116,7 @@ const Signup: React.FC = () => {
         <img
           src={cham3}
           alt="Camera"
-          className="absolute -left-220px top-100px"
+          className="mobile-view-cham3-img sm:desktop-view-cham3-img"
         />
       </div>
     </div>

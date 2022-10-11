@@ -46,19 +46,19 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <div className="mt-14">
-        <div className="flex justify-center mb-10">
+      <div className="mt-[11px] w-full sm:mt-14">
+        <div className="flex justify-center mb-[26px] sm:mb-10 h-[66px] sm:h-auto">
           <Logo />
         </div>
 
-        <div className="relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36">
-          <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
-            Login to your account test
+        <div className="login-mobile-view sm:login-desktop-view">
+          <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue text-[22px] sm:text-[30px]">
+            Login to your account
           </h1>
 
-          <span>See the world right in front of you</span>
+          <span className="text-[#747474] whitespace-pre sm:whitespace-normal">See the world right in front of you</span>
 
-          <Form className="mt-10 mb-8" onSubmit={handleSubmit}>
+          <Form className="login-mobile-view-form sm:login-desktop-view-form" onSubmit={handleSubmit}>
             {error && (
               <Alert variation="error" className="mx-auto mb-3 text-left w-455">
                 {error}
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
 
             <FormInput
               name="username"
-              className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
+              className="px-5 py-3  rounded-xl bg-slate-200 sm:w-455 w-full"
               placeholder="Username"
               onChange={(e: any) => setUsername(e.target.value)}
               required
@@ -76,25 +76,25 @@ const Login: React.FC = () => {
             <FormInput
               type={InputTypes.Password}
               name="password"
-              className="px-5 py-3 mb-3 rounded-xl bg-slate-200 w-455"
+              className="px-5 py-3 rounded-xl bg-slate-200 sm:w-455 w-full"
               placeholder="Password"
               onChange={(e: any) => setPassword(e.target.value)}
               required
             />
 
-            <Button type={ButtonTypes.Submit} isLoading={isLoading}>
+            <Button className='w-full' type={ButtonTypes.Submit} isLoading={isLoading}>
               Login
             </Button>
           </Form>
 
-          <span className="block mx-auto mb-3">
+          <span className="block mx-auto mb-3 text-[#747474]">
             Don’t have an account yet?{' '}
             <Link to={'/signup'} className="font-bold text-vision-dark-blue">
               Signup
             </Link>
           </span>
 
-          <span>
+          <span className="text-[#747474]">
             Forgot Password?{' '}
             <Link
               to={'/forgot-password'}
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
           <img
             src={cham3}
             alt="Camera"
-            className="absolute -left-220px top-100px"
+            className="mobile-view-cham3-img sm:desktop-view-cham3-img"
           />
         </div>
       </div>
