@@ -4,6 +4,7 @@ import FormInput, { InputTypes } from '../components/form/FormInput';
 import { IUser, selectUser } from '../redux/features/userSlice'
 import { SearchIcon, OnlineIcon, DownArrowIcon } from '../components/icons';
 import { useSelector } from 'react-redux'
+
 interface Props {
     showSearchBar?: boolean,
     showSubHeader?: boolean,

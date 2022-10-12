@@ -14,7 +14,8 @@ import RecordIcon from "./Record";
 import CameraRecordIcon from "./CameraRecord";
 import SearchIcon from "./Search";
 import DownArrowIcon from "./DownArrow"
+import MoreIcon from "./More";
 
 
 
-export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon}
+export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon}

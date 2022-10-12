@@ -1,6 +1,7 @@
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx,woff}', './public/index.html'],
     theme: {
+        
         extend: {
             borderRadius: {
                 '6xl': '2.5rem',
@@ -45,6 +46,9 @@ module.exports = {
             },
             padding: {
                 '20px': '20px',
+            },
+            screens: {
+                'md': '821px',
             },
         },
     },
