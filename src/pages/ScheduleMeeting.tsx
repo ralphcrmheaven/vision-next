@@ -9,11 +9,31 @@ import NewMeeting from '../components/modals/NewMeeting';
 import Header from '../components/Header';
 import HomeFooter from '../components/HomeFooter'
 import '../assets/styles/styles.css'
+import HeaderMobile from '../components/mobileLayout/HeaderMobile';
+import { useMediaQuery } from 'react-responsive'
 export default function ScheduleMeeting() {
+    const isDesktopOrLaptop = useMediaQuery({ minWidth: 821 })
+    const isTabletOrMobile = useMediaQuery({ maxWidth: 821 })
     return (
         <>
             <div className="relative px-14 pt-14 h-full">
-                <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                {
+                    isDesktopOrLaptop ?
+                        (
+                            // Desktop View Components
+                            <>
+                                <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                            </>
+                        )
+                        :
+                        isTabletOrMobile ? (
+                            // Mobile View Component
+                            <>
+                                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+
+                            </>
+                        ) : ''
+                }
                 <div className="overflow-hidden h-[90%]">
                     <div className="flex flex-row gap-4 pt-4 h-full">
                         <div className="w-[55%]">

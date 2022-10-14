@@ -10,12 +10,17 @@ import { Observable } from '@reduxjs/toolkit';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as subscriptions from '../graphql/subscriptions';
 import Header from '../components/Header';
+import HeaderMobile from '../components/mobileLayout/HeaderMobile';
+import { useMediaQuery } from 'react-responsive'
+
 export default function Contacts() {
+  const isDesktopOrLaptop = useMediaQuery({ minWidth: 821 })
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 821 })
   // Hooks
   const [contact, setContact] = useState<ContactType>();
   const [contacts, setContacts] = useState<ContactType[]>([]);
   const [isLoading, setIsloading] = useState(false)
-  
+
   const user: IUser = useSelector(selectUser)
 
   // Fubctions
@@ -26,27 +31,27 @@ export default function Contacts() {
 
   const handleSubscriptions = () => {
     return (API.graphql(
-        graphqlOperation(subscriptions.onCreateContact)
+      graphqlOperation(subscriptions.onCreateContact)
     ) as unknown as Observable<any>).subscribe({
-        next: ({ value: { data: { onCreateContact }} }) => {
-          console.log('subscriptions.onCreateContact', onCreateContact);
-          
-          //sendEmailNotification({})
-          // queries.sendEmailNotification('hello ash');
-          // Do something with the data
-        }
-    } )
+      next: ({ value: { data: { onCreateContact } } }) => {
+        console.log('subscriptions.onCreateContact', onCreateContact);
+
+        //sendEmailNotification({})
+        // queries.sendEmailNotification('hello ash');
+        // Do something with the data
+      }
+    })
   }
 
   const sendEmailNotification = async (params: ContactNotificationType) => {
-    await API.graphql(graphqlOperation(queries.sendEmailNotification,  params ))
+    await API.graphql(graphqlOperation(queries.sendEmailNotification, params))
   }
-  
+
   const clearEmail = () => {
     let email = document.getElementsByName('email')[0] as HTMLInputElement;
     email.value = '';
   };
-  
+
   const getContactsAsync = async (userId: string) => {
     return await getContacts(userId)
   }
@@ -56,9 +61,9 @@ export default function Contacts() {
   }
 
   // Events
-  const clickedNewContactsSendInvite = async (e:any, contact:ContactType) => {
+  const clickedNewContactsSendInvite = async (e: any, contact: ContactType) => {
     setIsloading(true);
-    
+
     await createContact(contact);
 
     setIsloading(false);
@@ -76,12 +81,29 @@ export default function Contacts() {
     return () => {
       subscription.unsubscribe();
     }
-  },[])
+  }, [])
 
   return (
     <>
       <div className="relative px-14 pt-14 h-full">
-      <Header showSearchBar={false} showSubHeader={false} header={'Contacts'} />
+        {
+          isDesktopOrLaptop ?
+            (
+              // Desktop View Components
+              <>
+                <Header showSearchBar={false} showSubHeader={false} header={'Contacts'} />
+              </>
+            )
+            :
+            isTabletOrMobile ? (
+              // Mobile View Component
+              <>
+                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Contacts'} />
+
+              </>
+            ) : ''
+        }
+        {/* <Header showSearchBar={false} showSubHeader={false} header={'Contacts'} /> */}
         <div className="flex flex-row py-10 h-4/6">
           <div className="w-1/4 border border-gray-300 rounded-3xl p-8 mr-4">
             <h2 className="text-lg text-vision-blue font-semibold mb-5">My Contacts</h2>
@@ -89,7 +111,7 @@ export default function Contacts() {
               <ul>
                 {contacts.map((d, i) => (
                   <li key={i} className="flex mb-2">
-                    <img src={ `https://ui-avatars.com/api/?name=${getInitials(d.email)}` } alt="Avatar" className="h-10 border rounded-lg border-gray mr-2" />
+                    <img src={`https://ui-avatars.com/api/?name=${getInitials(d.email)}`} alt="Avatar" className="h-10 border rounded-lg border-gray mr-2" />
                     <span className="flex justify-center items-center">{d.email}</span>
                   </li>)
                 )}
@@ -98,27 +120,27 @@ export default function Contacts() {
           </div>
           <div className="flex justify-center items-center w-3/4 border border-gray-300 rounded-3xl p-10">
             <Form className="mx-auto w-455" onSubmit={() => false}>
-                <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a VISION Contact</h2>
-                <div className="flex flex-col">
-                  <FormInput
-                    type={InputTypes.Text}
-                    name="email"
-                    className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
-                    placeholder="Enter email address"
-                    onChange={e => { setContact({ ...contact, email: e.target.value, userId: user.id } as ContactType) }} 
-                    required
-                  />
-                  <span className="text-sm text-gray-500 mb-5">
-                    If this user accepts the invitation, your profie information (including your status) will be visible to this contact. You can also meet and chat with this contact.
-                  </span>
-                  <Button 
-                    type={ButtonTypes.Button} 
-                    isLoading={isLoading} 
-                    handleClick={ (e) => clickedNewContactsSendInvite(e, contact as ContactType)}
-                  >
-                    Send Invite
-                  </Button>
-                </div>
+              <h2 className="text-xl text-vision-blue text-center font-semibold mb-10">Invite a VISION Contact</h2>
+              <div className="flex flex-col">
+                <FormInput
+                  type={InputTypes.Text}
+                  name="email"
+                  className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+                  placeholder="Enter email address"
+                  onChange={e => { setContact({ ...contact, email: e.target.value, userId: user.id } as ContactType) }}
+                  required
+                />
+                <span className="text-sm text-gray-500 mb-5">
+                  If this user accepts the invitation, your profie information (including your status) will be visible to this contact. You can also meet and chat with this contact.
+                </span>
+                <Button
+                  type={ButtonTypes.Button}
+                  isLoading={isLoading}
+                  handleClick={(e) => clickedNewContactsSendInvite(e, contact as ContactType)}
+                >
+                  Send Invite
+                </Button>
+              </div>
             </Form>
           </div>
         </div>
