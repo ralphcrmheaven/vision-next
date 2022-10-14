@@ -1,10 +1,10 @@
 import React from 'react'
-import '../assets/styles/styles.css'
-import FormInput, { InputTypes } from '../components/form/FormInput';
-import { IUser, selectUser } from '../redux/features/userSlice'
-import { OnlineIcon, HomeIcon, MoreIcon } from '../components/icons';
+import '../../assets/styles/styles.css'
+import FormInput, { InputTypes } from '../form/FormInput';
+import { IUser, selectUser } from '../../redux/features/userSlice'
+import { OnlineIcon, HomeIcon, MoreIcon } from '../icons';
 import { useSelector } from 'react-redux'
-import Logo from './Logo'
+import Logo from '../Logo'
 interface Props {
     showSearchBar?: boolean,
     showSubHeader?: boolean,
