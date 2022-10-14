@@ -86,11 +86,11 @@ html {
 }
 
 .back-to-home {
-    position: absolute;
+    /* position: absolute; */
     width: 205px;
     height: 43px;
-    left: 28px;
-    top: 34px;
+    /* left: 28px;
+    top: 34px; */
     background: #fff;
     border-radius: 14px;
 }
@@ -115,7 +115,7 @@ html {
     background: #EB311B;
     border-radius: 15px;
     color: #fff;
-    margin: 17px;
+    /* margin: 17px; */
     cursor: pointer;
 }
 
@@ -156,7 +156,7 @@ html {
     border-radius: 15px;
     width: auto !important;
     height: 100% !important;
-    margin: -15px 17px 17px 17px;
+    /* margin: -15px 17px 17px 17px; */
 }
 
 .video-grid-vision div:first-child {
@@ -485,7 +485,7 @@ aside.emoji-picker-react {
     height: 215px;
     background: #FFFFFF;
     border: 1px solid #C4C4C4;
-    padding: 30px;
+    padding: 25px;
 }
 
 .meeting-card h1 {
@@ -668,4 +668,13 @@ aside.emoji-picker-react {
 .placeholder-local-styles {
     --amplify-components-placeholder-start-color: #053F64;
     --amplify-components-placeholder-end-color: #C4C4C4;
+}
+
+.full-screen-modal {
+    transition: opacity 0.25s ease;
+}
+
+body.full-screen-modal-active {
+    overflow-x: hidden;
+    overflow-y: visible !important;
 }

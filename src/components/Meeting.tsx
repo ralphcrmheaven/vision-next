@@ -9,8 +9,9 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { toast } from 'react-toastify';
 import Toaster from './modals/Toast'
 import Messages from './Messages'
-
-
+import { useMediaQuery } from 'react-responsive';
+import MeetingBodyMobile from './mobileLayout/MeetingBodyMobile';
+import MeetingBody from './MeetingBody';
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -41,7 +42,7 @@ import {
   DefaultVideoTransformDevice,
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
-import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon,AddPeople, OnlineIcon , UsersIcon, BackIcon, CameraColoredIcon } from './icons'
+import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, BackIcon, CameraColoredIcon } from './icons'
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import { ReactMultiEmail } from 'react-multi-email';
 import * as queries from '../graphql/queries';
@@ -64,21 +65,22 @@ import AttachmentService from '../services/AttachmentService';
 
 
 const Meeting: FC = () => {
-
+  const isDesktopOrLaptop = useMediaQuery({ minWidth: 821 })
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 821 })
   type RecordUpdate = {
     isRecording: boolean;
   };
 
   let recordUpdate: RecordUpdate | null = null;
 
-  
+
   // Hooks
   let navigate = useNavigate();
 
   const user: IUser = useSelector(selectUser);
-  
+
   const [recordingCountdown, setRecordingCountdown] = useState<number>(0)
-  const intervalId =React.useRef(5);
+  const intervalId = React.useRef(5);
 
   const [recordingLoading, setRecordingLoading] = useState<boolean>(false)
   const [isHost, SetIsHost] = useState<boolean>(false)
@@ -93,7 +95,8 @@ const Meeting: FC = () => {
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   var dbMeetingData = {
-      data: { getMeeting : {
+    data: {
+      getMeeting: {
         isRecording: false
       }
     }
@@ -110,10 +113,10 @@ const Meeting: FC = () => {
   var timer: any;
   const useChimeSDKMeetings = 'https://service.chime.aws.amazon.com';
 
-  
+
   const AWS = require('aws-sdk');
 
-  const { 
+  const {
     activeMeeting,
     setTheActiveMeeting,
     recordMeeting,
@@ -181,7 +184,7 @@ const Meeting: FC = () => {
 
   const createContactsAsync = async () => {
     emails.forEach(async (email: string) => {
-      const contact:ContactType = {
+      const contact: ContactType = {
         email: email,
         userId: user.id,
         name: ''
@@ -195,7 +198,7 @@ const Meeting: FC = () => {
   }
 
   const getGooglePresetEmail = () => {
-    const params:any = {
+    const params: any = {
       fs: 1,
       tf: 'cm',
       to: '',
@@ -208,19 +211,19 @@ const Meeting: FC = () => {
 
   // Events
   const doActionsOnLoad = async () => {
-    try{
-      const res = await meetingAPI().validateMeeting(mId, {password: ePass, ie: false});
+    try {
+      const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
       console.log("doActionsOnLoad")
       console.log(res)
-      if(res.success){
+      if (res.success) {
         setIsValidMeeting(true);
         await createOrJoinTheMeeting?.();
         await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
       }
       dbMeetingData = await getDbFromDb?.()
       setIsRecording(dbMeetingData.data.getMeeting.isRecording)
- 
-    }catch(error){
+
+    } catch (error) {
       setIsValidMeeting(false);
     }
   }
@@ -256,46 +259,46 @@ const Meeting: FC = () => {
     Tags: [{ Key: 'transcription-for-comprehend', Value: 'true' }],
   };
 
-  const clear=()=>{
+  const clear = () => {
     window.clearInterval(intervalId.current)
   }
 
-  const handleInviteModalVisibility= async (value:boolean) => {
+  const handleInviteModalVisibility = async (value: boolean) => {
     setIsOpen(value)
   };
 
-  const startRecordingCountdown = async (is_recording:boolean) => {
+  const startRecordingCountdown = async (is_recording: boolean) => {
     setRecordingCountdown(5)
-    intervalId.current=window.setInterval(()=>{
-      setRecordingCountdown((recordingCountdown)=>recordingCountdown-1)
-    },1000)
-    return ()=>clear();
+    intervalId.current = window.setInterval(() => {
+      setRecordingCountdown((recordingCountdown) => recordingCountdown - 1)
+    }, 1000)
+    return () => clear();
   }
 
 
   const downloadRecording = async () => {
     AttachmentService.listFiles(meetingManager.meetingId)
-    .then((result) => {
-      console.log(result)
-      result.forEach(async (file: any) => {
+      .then((result) => {
+        console.log(result)
+        result.forEach(async (file: any) => {
           console.log(file)
           var ext = file.key.substr(file.key.lastIndexOf('.') + 1);
           if (ext == "mp4") {
             AttachmentService.downloadRecording(file.key)
-            .then((result) => {
-              console.log(result)
-              return result;
-            })
-            .catch((err) => {
+              .then((result) => {
+                console.log(result)
+                return result;
+              })
+              .catch((err) => {
                 console.log(err)
-            });
+              });
           }
-      });
-      console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
-    })
-    .catch((err) => {
+        });
+        console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
+      })
+      .catch((err) => {
         console.log(err)
-    });
+      });
   }
 
 
@@ -305,7 +308,7 @@ const Meeting: FC = () => {
     setRecordingLoading(true)
     const is_recording = value == 'record';
 
-    if(is_recording) {
+    if (is_recording) {
       startRecordingCountdown(true)
     }
 
@@ -315,7 +318,7 @@ const Meeting: FC = () => {
 
     const record = await recordUpdate?.['isRecording']
 
-    if(!is_recording) {
+    if (!is_recording) {
       setRecordingLoading(false)
       setIsRecording(false)
     }
@@ -340,20 +343,20 @@ const Meeting: FC = () => {
     console.log(activeMeeting.attendees)
     console.log(user)
 
-    if(activeMeeting.attendees != undefined) {
-      if(activeMeeting.attendees[0].UserName == user.username) {
-        SetIsHost(true); 
+    if (activeMeeting.attendees != undefined) {
+      if (activeMeeting.attendees[0].UserName == user.username) {
+        SetIsHost(true);
       }
     }
 
-  },[])
+  }, [])
 
   useEffect(() => {
     toggleBackgroundReplacement()
   }, [background])
 
   useEffect(() => {
-    if(recordingCountdown == 0) {
+    if (recordingCountdown == 0) {
       console.log("clear interval")
       console.log(intervalId.current)
 
@@ -368,171 +371,70 @@ const Meeting: FC = () => {
     doActionsOnLoad();
   }, []);
 
-  
 
-  if(isValidMeeting === false) {
+
+  if (isValidMeeting === false) {
     return <ErrorModal
-            message="Invalid meeting id or password"
-            showButton={true}
-            buttonText="Leave"
-            buttonAction={() => { navigate('/') }}
-            setIsOpen={() => {}}
-          />
+      message="Invalid meeting id or password"
+      showButton={true}
+      buttonText="Leave"
+      buttonAction={() => { navigate('/') }}
+      setIsOpen={() => { }}
+    />
   }
 
   return (
     <>
-
-      {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading ) &&
-        <div className="grid h-screen place-items-center">
-          <label><img src={loading} alt="loading" className="running-cham "/>Cham is preparing your meeting ...</label>
-        </div>
+      {
+        isDesktopOrLaptop ? (
+          <>
+            <MeetingBody
+              meetingManager={meetingManager}
+              meetingStatus={meetingStatus}
+              loading={loading}
+              clickedEndMeeting={clickedEndMeeting}
+              initials={initials}
+              fullname={fullname}
+              currentPanel={currentPanel}
+              recordingCountdown={recordingCountdown}
+              isRecording={isRecording}
+              setIsOpen={setIsOpen}
+              setShowModal={setShowModal}
+              showModal={showModal}
+              setCurrentPanel={setCurrentPanel}
+              isHost={isHost}
+              recordingLoading={recordingLoading}
+              recordChimeMeeting={recordChimeMeeting}
+              isOpen={isOpen}
+              handleInviteModalVisibility={handleInviteModalVisibility}
+            />
+          </>
+        ) : isTabletOrMobile ? (
+          <>
+            <MeetingBodyMobile
+              meetingManager={meetingManager}
+              meetingStatus={meetingStatus}
+              loading={loading}
+              clickedEndMeeting={clickedEndMeeting}
+              initials={initials}
+              fullname={fullname}
+              currentPanel={currentPanel}
+              recordingCountdown={recordingCountdown}
+              isRecording={isRecording}
+              setIsOpen={setIsOpen}
+              setShowModal={setShowModal}
+              showModal={showModal}
+              setCurrentPanel={setCurrentPanel}
+              isHost={isHost}
+              recordingLoading={recordingLoading}
+              recordChimeMeeting={recordChimeMeeting}
+              isOpen={isOpen}
+              handleInviteModalVisibility={handleInviteModalVisibility}
+            />
+          </>
+        ) : ''
       }
 
-      <div className="grid grid-rows-6 grid-flow-col gap-1 content-center w-full h-full meeting-page">
-        <div className="w-full relative">
-          {meetingStatus === MeetingStatus.Succeeded && (
-            <div className="grid grid-cols-3 gap-4 h-24 w-full">
-                <div className="h-24 ">
-                    <NavLink
-                    to="/">
-                      <button className="back-to-home" onClick={clickedEndMeeting}><BackIcon/> Back to Dashboard</button>
-                    </NavLink>
-                </div>
-                <div className="h-24 m-auto topbar-logo"><Logo/></div>
-                <div className=" h-24 ml-auto">
-                  <div className="w-full ">
-                      {initials && fullname && (
-                      <div className="profile-topbar flex flex-row items-center space-x-4">
-                          <span className="p-2 text-white bg-gray-900 rounded-lg">
-                          {initials}
-                          </span>
-                          <span>{fullname}</span>
-                          <span className="online-icon"><OnlineIcon/></span>
-                      </div>
-                      )}
-                  </div>
-                </div>
-            </div>
-          )}
-        </div>
-
-        <div className="w-full row-span-4  relative">
-          {meetingStatus === MeetingStatus.Succeeded ? (
-            <>
-
-            <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
-              <div className={ `h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}` }>
-
-                <div className="h-full w-full video-tile-wrap">
-                  {recordingCountdown > 0 &&
-                  <RecordMeetingLoader number={recordingCountdown}/>
-                  }
-                  <VideoTileGrid className={` video-grid-vision ${isRecording ? "vision-recording" : ""}` }  layout="standard" >
-                  </VideoTileGrid>
-                </div>
-
-              </div>
-
-
-              <div className="h-full w-full">
-
-                <div className={ `vision-tab ${currentPanel !== 'chat' ? 'hidden' : ''}` } >
-                  <span className="tab-header">Messages</span>
-                  <div className="chatbox-wrapper ">
-                    <GroupChatMessages />
-                  </div>
-                </div>
-
-                <div className={ `vision-tab ${currentPanel !== 'roaster' ? 'hidden' : ''}` }>
-                  <span className="tab-header">Attendees</span>
-                  <div className="chatbox-wrapper chatbox-wrapper-no-border">
-                    <div className="text-left add-people">
-                      <span>
-                        <button  onClick={() => setIsOpen(true)} className="flex">
-                        <span><AddPeople/></span>
-                        <span>Add People</span>
-                        </button>
-                      </span>
-                    </div>
-                    <Roaster/>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            </>
-          ) : (
-            <div />
-          )}
-        </div>
-
-        <div className="w-full relative">
-          <ControlBar layout="bottom" showLabels className="device-icon-wrapper grid grid-cols-7 gap-2">
-              <AudioInputControl  className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""}/>
-              <ContentShareControl className="device-input-icon-wrapper" label={""} />
-                <VideoInputControl className="device-input-icon-wrapper" label={""} >
-                  <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
-                    <span>Change Background</span>
-                  </PopOverItem>
-                </VideoInputControl>
-              <ControlBarButton
-                icon={<Phone />}
-                onClick={clickedEndMeeting}
-                label={""}
-                className="end-meeting end-input-icon-wrapper"
-              />
-              <AudioOutputControl   label={""} className="input-icon-wrapper device-input-icon-wrapper" />
-              <div className="input-icon-wrapper relative device-input-icon-wrapper">
-                <Chat width="26px" css="icon-control extra-icons"
-                  onClick={async (e:any) => { 
-                      if(currentPanel == 'chat') {
-                        setCurrentPanel('')
-                      }else{
-                        setCurrentPanel('chat')
-                      }
-                    }
-                  }
-                />
-              </div>
-
-              <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
-                <Attendees  width="26px" css="width: 26px;color: #053F64;cursor: pointer" 
-                  onClick={async (e:any) => { 
-                      if(currentPanel == 'roaster') {
-                        setCurrentPanel('')
-                      }else{
-                        setCurrentPanel('roaster')
-                      }
-                    }
-                  }
-                />
-              </div>
-              { !isRecording && isHost &&
-              <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon/></button>
-              }
-
-              {!recordingLoading && isRecording && isHost &&
-              <div  onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
-              }
-
-            </ControlBar>
-        </div>
-
-      </div>
-
-      { isOpen && (
-        <InviteModal setModalVisibility = {handleInviteModalVisibility}/>
-       )
-      }
-
-      <SelectBackgroundImagesModal
-          setShowModal={setShowModal}
-          setBackground={setBackground}
-          showModal={showModal}
-        />
-        
-      <Toaster/>
     </>
   )
 }
