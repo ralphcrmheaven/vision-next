@@ -525,6 +525,13 @@ const Meeting: FC = () => {
         <InviteModal setModalVisibility = {handleInviteModalVisibility}/>
        )
       }
+
+      <SelectBackgroundImagesModal
+          setShowModal={setShowModal}
+          setBackground={setBackground}
+          showModal={showModal}
+        />
+        
       <Toaster/>
     </>
   )

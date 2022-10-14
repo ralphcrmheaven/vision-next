@@ -375,6 +375,7 @@ aside.emoji-picker-react {
     color: black;
 }
 
+
 /* .bg-vision-blue {
     background-color: #053F64 !important;
 }
@@ -663,7 +664,8 @@ aside.emoji-picker-react {
 
 
 /* Placeholder CSS Designs */
+
 .placeholder-local-styles {
     --amplify-components-placeholder-start-color: #053F64;
     --amplify-components-placeholder-end-color: #C4C4C4;
-  }
+}
