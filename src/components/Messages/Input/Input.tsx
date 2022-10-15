@@ -35,18 +35,18 @@ const uploadObjDefaults = {
 };
 
 
-const Input = ({ activeChannelArn, member, hasMembership }:any) => {
+const Input = ({ activeChannelArn, member, hasMembership }: any) => {
 
   const [chosenEmoji, setChosenEmoji] = useState(null);
 
-  const onEmojiClick = (event:any, emojiObject:any) => {
+  const onEmojiClick = (event: any, emojiObject: any) => {
     console.log(emojiObject)
-    setText(text+emojiObject.emoji);
+    setText(text + emojiObject.emoji);
     setChosenEmoji(emojiObject);
   };
 
 
-  
+
   // Hooks
   const inputRef = useRef<any>();
   const uploadRef = useRef<any>();
@@ -60,9 +60,9 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
 
-  
+
   const [uploadObj, setUploadObj] = useState<any>(uploadObjDefaults);
-  
+
   // Functions
   const deleteImage = () => {
     AttachmentService.delete(uploadObj.key)
@@ -82,7 +82,7 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
   };
 
   const eventHandler = async () => {
-    const content = JSON.stringify({Typing: 'Indicator'});
+    const content = JSON.stringify({ Typing: 'Indicator' });
     await sendChannelMessage(
       activeChannelArn,
       content,
@@ -95,11 +95,11 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
   // Events
   const eventHandlerWithDebounce = React.useCallback(debounce(eventHandler, 500), [activeChannelArn]);
 
-  const onChange = (e:any) => {
+  const onChange = (e: any) => {
     setText(e.target.value);
   };
 
-  const onSubmit = async (e:any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
     setShowEmojiPicker(false)
@@ -112,7 +112,7 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
         const response = await AttachmentService.upload(
           uploadRef.current.files[0]
         );
-        const options:any = {};
+        const options: any = {};
 
         setUploadObj({
           key: response.key,
@@ -158,7 +158,7 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
     }
   };
 
-  const onRemoveAttachmentHandler = (event:any) => {
+  const onRemoveAttachmentHandler = (event: any) => {
     event.preventDefault();
 
     setUploadObj(uploadObjDefaults);
@@ -183,41 +183,41 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
     onClick={(_event) => {
       uploadRef.current.value = null;
       uploadRef.current.click();
-    } }
-    icon={<Attachment width="1.5rem" height="1.5rem" />} label={''}  />;
+    }}
+    icon={<Attachment width="1.5rem" height="1.5rem" />} label={''} />;
 
   const sendButton = <IconButton
     className="sendmessage"
     onClick={onSubmit}
-    icon={<SendMessageIcon width="1rem" height="1rem" />} label={''}  />;
+    icon={<SendMessageIcon width="1rem" height="1rem" />} label={''} />;
 
   if (hasMembership) {
     return (
       <div className="message-input-container">
         <form onSubmit={onSubmit} className="message-input-form">
-        { showEmojiPicker ? <Picker onEmojiClick={onEmojiClick} /> : null }
+          {showEmojiPicker ? <Picker onEmojiClick={onEmojiClick} /> : null}
           <div>
-            
-            
-
-            <label  className="relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
-
-                  <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
-                    setShowEmojiPicker(!showEmojiPicker)
-                  } } />
-                  {/* <button  onClick={(_event) => { setShowEmojiPicker(!showEmojiPicker)} } ><ChamXsIcon   /></button> */}
 
 
-                  <InputComponent
-                  onChange={onChange}
-                  value={text}
-                  type="text"
-                  placeholder="Send message"
-                  autoFocus
-                  className="text-input"
-                  ref={inputRef}
-                />            
-              </label>
+
+            <label className="relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
+
+              <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
+                setShowEmojiPicker(!showEmojiPicker)
+              }} />
+              {/* <button  onClick={(_event) => { setShowEmojiPicker(!showEmojiPicker)} } ><ChamXsIcon   /></button> */}
+
+
+              <InputComponent
+                onChange={onChange}
+                value={text}
+                type="text"
+                placeholder="Send message"
+                autoFocus
+                className="text-input"
+                ref={inputRef}
+              />
+            </label>
 
           </div>
           {uploadObj.file ? (
@@ -239,7 +239,7 @@ const Input = ({ activeChannelArn, member, hasMembership }:any) => {
           accept="file_extension|audio/*|video/*|image/*|media_type"
           style={{ display: 'none' }}
           ref={uploadRef}
-          onChange={(event:any) => {
+          onChange={(event: any) => {
             const file = event.currentTarget.files[0];
             if (!file) return;
 

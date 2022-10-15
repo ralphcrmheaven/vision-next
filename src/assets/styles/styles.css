@@ -211,7 +211,7 @@ html {
     position: relative;
     left: 18px;
     top: 19px;
-    z-index: 999;
+    z-index: 998;
 }
 
 
@@ -676,4 +676,18 @@ aside.emoji-picker-react {
 body.full-screen-modal-active {
     overflow-x: hidden;
     overflow-y: visible !important;
+}
+
+.reveal {
+    animation: opac .3s;
+}
+
+@keyframes opac {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+
 }

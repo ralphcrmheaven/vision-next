@@ -16,6 +16,15 @@ import SearchIcon from "./Search";
 import DownArrowIcon from "./DownArrow"
 import MoreIcon from "./More";
 import VectorBackIcon from "./VectorBack";
+import ModalCloseIcon from "./ModalClose";
+import ChangeBackgroundIcon from "./ChangeBackground";
+import AttendeesIcon from "./Attendees";
+import RaiseHandIcon from './RaiseHand'
+import RedHeartIcon from "./RedHeart";
+import SurprisedFaceIcon from "./SurprisedFace";
+import LaughSmileyIcon from "./LaughSmiley";
+import ClappingHandIcon from "./ClappingHand";
+import ThumbsUpIcon from "./ThumbsUp";
 
 
-export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon ,AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon}
+export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon }
