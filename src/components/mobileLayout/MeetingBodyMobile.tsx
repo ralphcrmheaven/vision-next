@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { HomeIcon, MoreIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, VectorBackIcon, CameraColoredIcon } from '../icons'
+import { MoreIcon, RecordIcon, AddPeople, VectorBackIcon } from '../icons'
 import Logo from '../Logo'
 import RecordMeetingLoader from '../../components/loaders/RecordMeetingLoader'
 import {
@@ -31,6 +31,8 @@ import GroupChatMessages from '../GroupChatMessages'
 import Roaster from '../../components/Roaster'
 import InviteModal from '../modals/InviteModal'
 import Toaster from '../modals/Toast'
+import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
+import MessageModal from '../mobileLayout/modals/MessagesModal'
 interface Props {
     meetingManager: any,
     meetingStatus: any,
@@ -72,16 +74,29 @@ const MeetingBody: React.FC<Props> = ({
     isOpen,
     handleInviteModalVisibility,
 }) => {
+    const [isModalMore, setIsModalMore] = useState(false)
+    const [isModalMessage, setIsModalMessage] = useState(false)
     return (
         <>
 
-            {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
+            {
+                (!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
                 <div className="grid h-screen w-full place-items-center">
                     <label><img src={loading} alt="loading" className="running-cham " />Cham is preparing your meeting ...</label>
                 </div>
             }
 
             <div className="grid grid-rows-6 grid-flow-col gap-1 content-between w-full h-full meeting-page">
+                {
+                    isModalMore && (
+                        <MoreOptionsModal setIsModalMore={setIsModalMore} />
+                    )
+                }
+                {
+                    isModalMessage && (
+                        <MessageModal setIsModalMessage={setIsModalMessage} />
+                    )
+                }
                 <div className="w-[98%] pl-[20px]">
                     {meetingStatus === MeetingStatus.Succeeded && (
                         <div className="flex items-center justify-between h-24 w-full">
@@ -99,7 +114,7 @@ const MeetingBody: React.FC<Props> = ({
                             </div>
                             <div className='flex flex-row pt-[7px]'>
 
-                                <div className="flex flex-col items-center justify-between h-[43px] pr-[43px]">
+                                <div className="flex flex-col items-center justify-between h-[43px] pr-[43px]" onClick={() => setIsModalMore(true)}>
                                     <MoreIcon />
                                     <span className="text-[12px] text-[#053F64]">More</span>
                                 </div>
@@ -116,13 +131,13 @@ const MeetingBody: React.FC<Props> = ({
 
                     )}
                 </div>
-                
+
                 <div className="w-full row-span-4 pb-[48px]">
                     {meetingStatus === MeetingStatus.Succeeded ? (
                         <>
 
                             <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
-                                <div className={`h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}`}>
+                                <div className={`h-full w-full col-span-4`}>
 
                                     <div className="h-full w-full video-tile-wrap">
                                         {recordingCountdown > 0 &&
@@ -135,7 +150,7 @@ const MeetingBody: React.FC<Props> = ({
                                 </div>
 
 
-                                <div className="h-full w-full">
+                                {/* <div className="h-full w-full">
 
                                     <div className={`vision-tab ${currentPanel !== 'chat' ? 'hidden' : ''}`} >
                                         <span className="tab-header">Messages</span>
@@ -159,7 +174,7 @@ const MeetingBody: React.FC<Props> = ({
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> */}
                             </div>
                         </>
                     ) : (
@@ -181,17 +196,18 @@ const MeetingBody: React.FC<Props> = ({
                         <div className="input-icon-wrapper relative device-input-icon-wrapper">
                             <Chat width="26px" css="icon-control extra-icons"
                                 onClick={async (e: any) => {
-                                    if (currentPanel == 'chat') {
-                                        setCurrentPanel('')
-                                    } else {
-                                        setCurrentPanel('chat')
-                                    }
+                                    // if (currentPanel == 'chat') {
+                                    //     setCurrentPanel('')
+                                    // } else {
+                                    //     setCurrentPanel('chat')
+                                    // }
+                                    setIsModalMessage(true)
                                 }
                                 }
                             />
                         </div>
 
-                        <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
+                        {/* <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                             <Attendees width="26px" css="width: 26px;color: #053F64;cursor: pointer"
                                 onClick={async (e: any) => {
                                     if (currentPanel == 'roaster') {
@@ -202,7 +218,7 @@ const MeetingBody: React.FC<Props> = ({
                                 }
                                 }
                             />
-                        </div>
+                        </div> */}
                         {!isRecording && isHost &&
                             <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon /></button>
                         }

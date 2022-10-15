@@ -89,6 +89,7 @@ const Header: React.FC<Props> = ({
                                     <span className="text-sm">Logout</span>
                                 </div>
                             </MenuItem>
+                            
                         </Menu>
                     </div>
                 </div>
