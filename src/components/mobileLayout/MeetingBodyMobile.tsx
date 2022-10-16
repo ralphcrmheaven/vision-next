@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { MoreIcon, RecordIcon, AddPeople, VectorBackIcon } from '../icons'
+import { MoreIcon, RecordIcon, AddPeople, VectorBackIcon, MicrophoneIcon } from '../icons'
 import Logo from '../Logo'
 import RecordMeetingLoader from '../../components/loaders/RecordMeetingLoader'
 import {
@@ -148,33 +148,6 @@ const MeetingBody: React.FC<Props> = ({
                                     </div>
 
                                 </div>
-
-
-                                {/* <div className="h-full w-full">
-
-                                    <div className={`vision-tab ${currentPanel !== 'chat' ? 'hidden' : ''}`} >
-                                        <span className="tab-header">Messages</span>
-                                        <div className="chatbox-wrapper ">
-                                            <GroupChatMessages />
-                                        </div>
-                                    </div>
-
-                                    <div className={`vision-tab ${currentPanel !== 'roaster' ? 'hidden' : ''}`}>
-                                        <span className="tab-header">Attendees</span>
-                                        <div className="chatbox-wrapper chatbox-wrapper-no-border">
-                                            <div className="text-left add-people">
-                                                <span>
-                                                    <button onClick={() => setIsOpen(true)} className="flex">
-                                                        <span><AddPeople /></span>
-                                                        <span>Add People</span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <Roaster />
-                                        </div>
-                                    </div>
-
-                                </div> */}
                             </div>
                         </>
                     ) : (

@@ -18,8 +18,8 @@ import { IUser, selectUser } from '../../redux/features/userSlice'
 import { useSelector } from 'react-redux'
 import { VButton } from '../ui';
 import { CircularLoader } from '../loaders';
-const InviteModal = (props: any) => {
 
+const AddPeople = (props: any) => {
     const sendInviteButton = useRef<any>();
     const [contactsBtnDisabled, setContactsBtnDisabled] = useState<[]>([]);
     const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(false)
@@ -52,6 +52,7 @@ const InviteModal = (props: any) => {
 
     const setTheContacts = async () => {
         const { data } = await getContactsAsync(user.id)
+        console.log(data)
         setContacts(data.listContacts?.items as ContactType[])
     };
 
@@ -146,6 +147,7 @@ const InviteModal = (props: any) => {
             console.log("here")
         }
 
+        console.log(emails)
         if (emails.length === 0) {
             setIsSendingInvites(false)
             setSendButtonDisabled(false)
@@ -222,161 +224,149 @@ const InviteModal = (props: any) => {
             meetingUrl: `${window.location.origin}/meeting${meetingUrl}`,
             topic: `${topic}`
         })
-        if(res!==null){
+        if (res !== null) {
             setIsLoadingSendInvite(null)
         }
         setSendButtonDisabled(false)
     };
-
     return (
         <div>
-            <Modal className="invite-modal" onClose={() => props.setModalVisibility(false)} rootId="modal-root">
-                {/* <div  className="flex justify-center items-center mb-2  no-'bo'rder tab-contact">
+            {/* <Modal className="invite-modal" onClose={() => props.setModalVisibility(false)} rootId="modal-root"> */}
+            {/* <div  className="flex justify-center items-center mb-2  no-'bo'rder tab-contact">
                         <span><span className={ `tab-select  ${selectedInvitationType == 'send_mail' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('send_mail')}>Send Email </span> | <span className={ `tab-select  ${selectedInvitationType == 'search_contacts' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('search_contacts')} >Search Contacts</span></span>
                 </div> */}
-                <div className="flex justify-center w-full">
-                    <Tabs className='w-full'>
-                        <TabItem title="Invite by Email" onClick={() => setSelectedInvitationType('send_mail')}>
+            <div className="flex justify-center w-full">
+                <Tabs className='w-full'>
+                    <TabItem title="Invite by Email" onClick={() => setSelectedInvitationType('send_mail')}>
 
-                        </TabItem>
-                        <TabItem title="Search Contacts" onClick={() => setSelectedInvitationType('search_contacts')}>
+                    </TabItem>
+                    <TabItem title="Search Contacts" onClick={() => setSelectedInvitationType('search_contacts')}>
 
-                        </TabItem>
-                    </Tabs>
-                </div>
+                    </TabItem>
+                </Tabs>
+            </div>
 
-                <ModalHeader className='pt-1' title={selectedInvitationType == 'send_mail' ? 'Invite via Email' : 'Invite a VISION contact'} />
+            {/* <ModalHeader className='pt-1' title={selectedInvitationType == 'send_mail' ? 'Invite via Email' : 'Invite a VISION contact'} /> */}
 
-                <ModalBody className="invite-modal-body">
 
-                    <div className="divide-y pb-10">
 
-                        {selectedInvitationType === 'send_mail' && (
-                            <div>
-                                <div id={`invitee-${0}`} className="flex justify-center items-center mb-2">
-                                    <ReactMultiEmail
-                                        className=""
-                                        placeholder="Enter email addresses"
-                                        emails={emails}
-                                        onChange={(_emails: string[]) => {
-                                            setEmails(_emails);
-                                        }}
-                                        getLabel={(
-                                            email: string,
-                                            index: number,
-                                            removeEmail: (index: number) => void
-                                        ) => {
-                                            return (
-                                                <div data-tag key={index}>
-                                                    {email}
-                                                    <span data-tag-handle onClick={() => removeEmail(index)}>
-                                                        ×
-                                                    </span>
-                                                </div>
-                                            );
-                                        }}
-                                    />
-                                </div>
-                                <div className="flex justify-center items-center mb-2  no-border">
-                                    <span className="invite-sm-message">
-                                        If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
-                                    </span>
-                                </div>
+            <div className="divide-y pb-10">
 
-                                <div className="flex justify-center items-center mb-2 no-border">
-                                    <div className="invite-btn-wrapper">
-                                        <VButton
-                                            className="basis-1/6 h-10 ml-2 modal-top send-invite-btn disabled:cursor-not-allowed"
-                                            label="Send Invite"
-                                            ref={sendInviteButton}
-                                            disabled={sendButtonDisabled}
-                                            // disabled={true}
-                                            onClick={async (e: any) => {
-                                                await clickedNewContactsSendInvite();
-                                            }
-                                            }
-                                            isLoading={isSendingInvites}
-                                            loadingText={"Sending"}
-                                        >
-                                            Send Invite
-                                        </VButton>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                        }
-                        {selectedInvitationType === 'search_contacts' && (
-                            <div className="flex justify-center items-center">
-                                <div className="mt-2 overflow-y-auto h-64 p-2 w-[400px]">
-                                    <table className="table-fixed">
-                                        {/* <thead>
+                {selectedInvitationType === 'send_mail' && (
+                    <div >
+                        <div className='flex-1 flex justify-center pt-[47px] pb-[30px] text-[18px] text-[#053F64] font-[500]'>
+                            Invite a Vision contact
+                        </div>
+                        <div id={`invitee-${0}`} className="flex justify-center items-center mb-2">
+                            <ReactMultiEmail
+                                className=""
+                                placeholder="Enter email addresses"
+                                emails={emails}
+                                onChange={(_emails: string[]) => {
+                                    setEmails(_emails);
+                                }}
+                                getLabel={(
+                                    email: string,
+                                    index: number,
+                                    removeEmail: (index: number) => void
+                                ) => {
+                                    return (
+                                        <div data-tag key={index}>
+                                            {email}
+                                            <span data-tag-handle onClick={() => removeEmail(index)}>
+                                                ×
+                                            </span>
+                                        </div>
+                                    );
+                                }}
+                            />
+                        </div>
+                        <div className="flex justify-center items-center mb-2  no-border">
+                            <span className="invite-sm-message">
+                                If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
+                            </span>
+                        </div>
+
+                        <div className="flex justify-center w-full flex-1">
+
+                            <VButton
+                                className="basis-1/6 h-10  modal-top send-invite-btn disabled:cursor-not-allowed flex-1 max-w-[403px]"
+                                label="Send Invite"
+                                ref={sendInviteButton}
+                                disabled={sendButtonDisabled}
+                                // disabled={true}
+                                onClick={async (e: any) => {
+                                    await clickedNewContactsSendInvite();
+                                }
+                                }
+                                isLoading={isSendingInvites}
+                                loadingText={"Sending"}
+                            >
+                                Send Invite
+                            </VButton>
+
+                        </div>
+                    </div>
+                )
+                }
+                {selectedInvitationType === 'search_contacts' && (
+                    <div className="flex justify-center items-center pt-[47px]">
+                        <div className="mt-2 overflow-y-auto h-64 p-2 w-[400px]">
+                            <table className="table-fixed">
+                                {/* <thead>
                                         <tr>
                                             <th>Email</th>
                                             <th>Name</th>
                                             <th>Send Invite</th>
                                         </tr>
                                     </thead> */}
-                                        <tbody className=''>
-                                            {contacts.map((d, i) => (
-                                                <tr key={"tr-" + i} className='r'>
-                                                    <td>
-                                                        <span className='flex flex-row items-center gap-5'>
-                                                            <span className="p-3 text-white bg-gray-900 rounded-lg">
-                                                                {d.name ? d.name.substring(0, 1) : 'n/a'}
-                                                            </span>
-                                                            <span >
-                                                                {d.email}
-                                                            </span>
-                                                        </span>
+                                <tbody className=''>
+                                    {contacts.map((d, i) => (
+                                        <tr key={"tr-" + i} className='r'>
+                                            <td>
+                                                <span className='flex flex-row items-center gap-5'>
+                                                    <span className="p-3 text-white bg-gray-900 rounded-lg">
+                                                        {d.name ? d.name.substring(0, 1) : 'n/a'}
+                                                    </span>
+                                                    <span >
+                                                        {d.email}
+                                                    </span>
+                                                </span>
 
 
-                                                    </td>
-                                                    {/* <td>{d.name ? d.name : 'n/a'}</td> */}
-                                                    <td className='text-right'>
-                                                        <a href="#" style={{pointerEvents:isLoadingSendInvite === i?'none':'auto'}} className={`underline decoration-vision-blue text-vision-blue decoration-1 underline-offset-2 hover:decoration-2 ${isLoadingSendInvite === i?'cursor-not-allowed':'cursor-pointer'}`}
-                                                            onClick={async (e: any) => {
-                                                                await clickedExistingContactsSendInvite(d, i);
-                                                            }
-                                                            }
-                                                        >
-                                                            SEND INVITE
-                                                            {
-                                                                isLoadingSendInvite === i && (
-                                                                    <Loader />
-                                                                )
-                                                            }
+                                            </td>
+                                            {/* <td>{d.name ? d.name : 'n/a'}</td> */}
+                                            <td className='text-right'>
+                                                <a href="#" style={{ pointerEvents: isLoadingSendInvite === i ? 'none' : 'auto' }} className={`underline decoration-vision-blue text-vision-blue decoration-1 underline-offset-2 hover:decoration-2 ${isLoadingSendInvite === i ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                                    onClick={async (e: any) => {
+                                                        await clickedExistingContactsSendInvite(d, i);
+                                                    }
+                                                    }
+                                                >
+                                                    SEND INVITE
+                                                    {
+                                                        isLoadingSendInvite === i && (
+                                                            <Loader />
+                                                        )
+                                                    }
 
-                                                        </a>
-                                                    </td>
+                                                </a>
+                                            </td>
 
-                                                </tr>)
-                                            )}
-                                        </tbody>
-                                    </table>
+                                        </tr>)
+                                    )}
+                                </tbody>
+                            </table>
 
 
-                                </div>
+                        </div>
 
-                            </div>
-                        )}
                     </div>
-                </ModalBody>
-                {
-                    selectedInvitationType === 'search_contacts' && (
-                        <>
-                            {/* <hr className="invite-sm-message"/> */}
-                            <div className="flex justify-center items-center mb-2 pt-2 ">
-                                <span className="invite-sm-message border-t">
-                                    If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
-                                </span>
-                            </div>
-                        </>
-                    )
-                }
+                )}
+            </div>
 
-            </Modal>
         </div>
-    );
-};
+    )
+}
 
-export default InviteModal;
+export default AddPeople
