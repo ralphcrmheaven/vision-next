@@ -36,8 +36,12 @@ const Header: React.FC<Props> = ({
                 </div>
                 <div className='flex flex-row gap-[26px]'>
                     <div className="flex flex-col items-center justify-between h-[41px]">
-                        <HomeIcon />
-                        <span className="text-[12px] text-[#053F64]">Home</span>
+                        <NavLink
+                            to="/login"
+                        >
+                            <HomeIcon />
+                            <span className="text-[12px] text-[#053F64]">Home</span>
+                        </NavLink>
                     </div>
                     <div className="">
                         {/* <MoreIcon />
@@ -50,14 +54,6 @@ const Header: React.FC<Props> = ({
                                 </span>
                             }
                         >
-                            <MenuItem>
-                                <NavLink
-                                    to="/login"
-                                >
-                                    <span className="text-sm">Home</span>
-                                </NavLink>
-                            </MenuItem>
-
                             <MenuItem>
                                 <NavLink
                                     to="/contacts"
@@ -89,7 +85,7 @@ const Header: React.FC<Props> = ({
                                     <span className="text-sm">Logout</span>
                                 </div>
                             </MenuItem>
-                            
+
                         </Menu>
                     </div>
                 </div>
