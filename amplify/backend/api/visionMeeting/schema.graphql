@@ -1,7 +1,8 @@
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type Meeting @model(mutations: {create: "createMeetingGraphQL", delete: "deleteMeetingGraphQL"}, subscriptions: null) {
+type Meeting @model(mutations: {update:"updateMeetingGraphQL" , create: "createMeetingGraphQL", delete: "deleteMeetingGraphQL"}, subscriptions: null) {
   meetingId: String! 
+  isRecording: Boolean
   title: String! @primaryKey
   data: String!
   passcode: String
@@ -24,11 +25,30 @@ type Contact @model(mutations: {
   group: String,
 }
 
+type Conversation @model {
+  id: ID!
+  users: [ConversationUser] @hasMany
+}
+
+type ConversationUser @model {
+  id: ID!
+  userId: String! # get attribute sub of cognito
+  conversation: Conversation @belongsTo
+  messages: [ConversationUserMessage] @hasMany
+}
+
+type ConversationUserMessage @model {
+  id: ID!
+  body: String!
+  user: ConversationUser @belongsTo
+}
+
 type Query {
   createChimeMeeting(title: String, name: String, region: String): Response @function(name: "visionHandleMeeting-${env}")
   joinChimeMeeting(meetingId: String, name: String): Response @function(name: "visionHandleMeeting-${env}")
   endChimeMeeting(meetingId: String): Response  @function(name: "visionHandleMeeting-${env}")
-  sendEmailNotification(email: String, msg: String, subject: String): String @function(name: "visionEmailNotification-${env}")
+  visionTranscribe(meetingId: String): String @function(name: "visionTranscribe-${env}")
+  sendEmailNotification(email: String, fromName: String, meetingUrl: String, topic: String): String @function(name: "visionEmailNotification-${env}")
 }
 
 type Response {
@@ -37,3 +57,5 @@ type Response {
   body: String
   isBase64Encoded: String
 }
+
+

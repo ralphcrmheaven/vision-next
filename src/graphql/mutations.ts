@@ -2,22 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createMeetingGraphQL = /* GraphQL */ `
-  mutation CreateMeetingGraphQL(
-    $input: CreateMeetingInput!
-    $condition: ModelMeetingConditionInput
-  ) {
-    createMeetingGraphQL(input: $input, condition: $condition) {
-      meetingId
-      title
-      isRecording
-      data
-      passcode
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const updateMeetingGraphQL = /* GraphQL */ `
   mutation UpdateMeetingGraphQL(
     $input: UpdateMeetingInput!
@@ -25,8 +9,24 @@ export const updateMeetingGraphQL = /* GraphQL */ `
   ) {
     updateMeetingGraphQL(input: $input, condition: $condition) {
       meetingId
-      title
       isRecording
+      title
+      data
+      passcode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createMeetingGraphQL = /* GraphQL */ `
+  mutation CreateMeetingGraphQL(
+    $input: CreateMeetingInput!
+    $condition: ModelMeetingConditionInput
+  ) {
+    createMeetingGraphQL(input: $input, condition: $condition) {
+      meetingId
+      isRecording
+      title
       data
       passcode
       createdAt
@@ -41,8 +41,8 @@ export const deleteMeetingGraphQL = /* GraphQL */ `
   ) {
     deleteMeetingGraphQL(input: $input, condition: $condition) {
       meetingId
-      title
       isRecording
+      title
       data
       passcode
       createdAt
@@ -121,6 +121,255 @@ export const updateContactGraphQL = /* GraphQL */ `
       group
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createConversation = /* GraphQL */ `
+  mutation CreateConversation(
+    $input: CreateConversationInput!
+    $condition: ModelConversationConditionInput
+  ) {
+    createConversation(input: $input, condition: $condition) {
+      id
+      users {
+        items {
+          id
+          userId
+          createdAt
+          updatedAt
+          conversationUsersId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateConversation = /* GraphQL */ `
+  mutation UpdateConversation(
+    $input: UpdateConversationInput!
+    $condition: ModelConversationConditionInput
+  ) {
+    updateConversation(input: $input, condition: $condition) {
+      id
+      users {
+        items {
+          id
+          userId
+          createdAt
+          updatedAt
+          conversationUsersId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteConversation = /* GraphQL */ `
+  mutation DeleteConversation(
+    $input: DeleteConversationInput!
+    $condition: ModelConversationConditionInput
+  ) {
+    deleteConversation(input: $input, condition: $condition) {
+      id
+      users {
+        items {
+          id
+          userId
+          createdAt
+          updatedAt
+          conversationUsersId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createConversationUser = /* GraphQL */ `
+  mutation CreateConversationUser(
+    $input: CreateConversationUserInput!
+    $condition: ModelConversationUserConditionInput
+  ) {
+    createConversationUser(input: $input, condition: $condition) {
+      id
+      userId
+      conversation {
+        id
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          body
+          createdAt
+          updatedAt
+          conversationUserMessagesId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      conversationUsersId
+    }
+  }
+`;
+export const updateConversationUser = /* GraphQL */ `
+  mutation UpdateConversationUser(
+    $input: UpdateConversationUserInput!
+    $condition: ModelConversationUserConditionInput
+  ) {
+    updateConversationUser(input: $input, condition: $condition) {
+      id
+      userId
+      conversation {
+        id
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          body
+          createdAt
+          updatedAt
+          conversationUserMessagesId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      conversationUsersId
+    }
+  }
+`;
+export const deleteConversationUser = /* GraphQL */ `
+  mutation DeleteConversationUser(
+    $input: DeleteConversationUserInput!
+    $condition: ModelConversationUserConditionInput
+  ) {
+    deleteConversationUser(input: $input, condition: $condition) {
+      id
+      userId
+      conversation {
+        id
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          body
+          createdAt
+          updatedAt
+          conversationUserMessagesId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      conversationUsersId
+    }
+  }
+`;
+export const createConversationUserMessage = /* GraphQL */ `
+  mutation CreateConversationUserMessage(
+    $input: CreateConversationUserMessageInput!
+    $condition: ModelConversationUserMessageConditionInput
+  ) {
+    createConversationUserMessage(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        userId
+        conversation {
+          id
+          createdAt
+          updatedAt
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        conversationUsersId
+      }
+      createdAt
+      updatedAt
+      conversationUserMessagesId
+    }
+  }
+`;
+export const updateConversationUserMessage = /* GraphQL */ `
+  mutation UpdateConversationUserMessage(
+    $input: UpdateConversationUserMessageInput!
+    $condition: ModelConversationUserMessageConditionInput
+  ) {
+    updateConversationUserMessage(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        userId
+        conversation {
+          id
+          createdAt
+          updatedAt
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        conversationUsersId
+      }
+      createdAt
+      updatedAt
+      conversationUserMessagesId
+    }
+  }
+`;
+export const deleteConversationUserMessage = /* GraphQL */ `
+  mutation DeleteConversationUserMessage(
+    $input: DeleteConversationUserMessageInput!
+    $condition: ModelConversationUserMessageConditionInput
+  ) {
+    deleteConversationUserMessage(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        userId
+        conversation {
+          id
+          createdAt
+          updatedAt
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        conversationUsersId
+      }
+      createdAt
+      updatedAt
+      conversationUserMessagesId
     }
   }
 `;

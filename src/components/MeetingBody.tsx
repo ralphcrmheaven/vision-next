@@ -32,6 +32,7 @@ import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
 import Toaster from './modals/Toast'
 interface Props {
+    captions:string,
     meetingManager:any,
     meetingStatus:any,
     loading:any,
@@ -54,6 +55,7 @@ interface Props {
 }
 
 const MeetingBody: React.FC<Props> = ({
+    captions,
     meetingManager,
     meetingStatus,
     loading,
@@ -122,6 +124,7 @@ const MeetingBody: React.FC<Props> = ({
                                         {recordingCountdown > 0 &&
                                             <RecordMeetingLoader number={recordingCountdown} />
                                         }
+                                        <span className="caption-style">{captions}</span>
                                         <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${isRecording ? "vision-recording" : ""}`} layout="standard" >
                                         </VideoTileGrid>
                                     </div>

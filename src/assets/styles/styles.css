@@ -690,5 +690,16 @@ body.full-screen-modal-active {
     to {
         opacity: 1;
     }
+}
 
+.caption-style {
+    position: absolute;
+    z-index: 999;
+    bottom: 59.099999999999994px;
+    left: 82.6px;
+    border: 1px solid #fff;
+    padding: 8px;
+    border-radius: 11px;
+    background: #063f64cc;
+    color: #fff;
 }

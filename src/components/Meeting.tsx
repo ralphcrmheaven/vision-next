@@ -94,6 +94,8 @@ const Meeting: FC = () => {
   const [background, setBackground] = useState<string>('')
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [captions, setCaptions] = useState<string>('')
+
   var dbMeetingData = {
     data: {
       getMeeting: {
@@ -132,9 +134,15 @@ const Meeting: FC = () => {
     // `transcriptEvent` could be either a `Transcript` or `TranscriptionStatus`
     // if it is `Transcript`, then it should contain transcription results
     // else you need to handle the logic of `TranscriptionStatus` changes (start/ stop/ ...)
-  
     console.log(transcriptEvent)
+    processCaption(transcriptEvent)
   };
+
+  const processCaption = async (event:any) => {
+    let caption = event['results'][0]['alternatives'][0]['transcript']
+    console.log(caption)
+    setCaptions(caption)
+  }
 
   const createBackgroundReplacementDevice = async (device: any) => {
     const processors: Array<any> = []
@@ -217,6 +225,7 @@ const Meeting: FC = () => {
 
   // Events
   const doActionsOnLoad = async () => {
+    console.log(meetingManager)
 
     try {
       const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
@@ -402,6 +411,7 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             <MeetingBody
+              captions={captions}
               meetingManager={meetingManager}
               meetingStatus={meetingStatus}
               loading={loading}

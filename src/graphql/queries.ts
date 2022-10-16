@@ -12,16 +12,6 @@ export const createChimeMeeting = /* GraphQL */ `
     }
   }
 `;
-export const createPipeline = /* GraphQL */ `
-  query CreatePipeline($title: String, $name: String, $region: String) {
-    createPipeline(title: $title, name: $name, region: $region) {
-      statusCode
-      headers
-      body
-      isBase64Encoded
-    }
-  }
-`;
 export const joinChimeMeeting = /* GraphQL */ `
   query JoinChimeMeeting($meetingId: String, $name: String) {
     joinChimeMeeting(meetingId: $meetingId, name: $name) {
@@ -42,16 +32,11 @@ export const endChimeMeeting = /* GraphQL */ `
     }
   }
 `;
-export const recordMeeting = /* GraphQL */ `
-  query RecordMeeting($meetingId: String, $type: String, $pipelineId: String) {
-    recordMeeting(meetingId: $meetingId, type: $type, pipelineId: $pipelineId)
-  }
-`;
 export const sendEmailNotification = /* GraphQL */ `
   query SendEmailNotification(
     $email: String
     $fromName: String
-    $meetingUrl: String,
+    $meetingUrl: String
     $topic: String
   ) {
     sendEmailNotification(
@@ -66,8 +51,8 @@ export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
       meetingId
-      title
       isRecording
+      title
       data
       passcode
       createdAt
@@ -92,8 +77,8 @@ export const listMeetings = /* GraphQL */ `
     ) {
       items {
         meetingId
-        title
         isRecording
+        title
         data
         passcode
         createdAt
@@ -174,6 +159,158 @@ export const listContacts = /* GraphQL */ `
         group
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getConversation = /* GraphQL */ `
+  query GetConversation($id: ID!) {
+    getConversation(id: $id) {
+      id
+      users {
+        items {
+          id
+          userId
+          createdAt
+          updatedAt
+          conversationUsersId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listConversations = /* GraphQL */ `
+  query ListConversations(
+    $filter: ModelConversationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listConversations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getConversationUser = /* GraphQL */ `
+  query GetConversationUser($id: ID!) {
+    getConversationUser(id: $id) {
+      id
+      userId
+      conversation {
+        id
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          body
+          createdAt
+          updatedAt
+          conversationUserMessagesId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      conversationUsersId
+    }
+  }
+`;
+export const listConversationUsers = /* GraphQL */ `
+  query ListConversationUsers(
+    $filter: ModelConversationUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listConversationUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        conversation {
+          id
+          createdAt
+          updatedAt
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        conversationUsersId
+      }
+      nextToken
+    }
+  }
+`;
+export const getConversationUserMessage = /* GraphQL */ `
+  query GetConversationUserMessage($id: ID!) {
+    getConversationUserMessage(id: $id) {
+      id
+      body
+      user {
+        id
+        userId
+        conversation {
+          id
+          createdAt
+          updatedAt
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        conversationUsersId
+      }
+      createdAt
+      updatedAt
+      conversationUserMessagesId
+    }
+  }
+`;
+export const listConversationUserMessages = /* GraphQL */ `
+  query ListConversationUserMessages(
+    $filter: ModelConversationUserMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listConversationUserMessages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        body
+        user {
+          id
+          userId
+          createdAt
+          updatedAt
+          conversationUsersId
+        }
+        createdAt
+        updatedAt
+        conversationUserMessagesId
       }
       nextToken
     }
