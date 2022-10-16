@@ -119,7 +119,7 @@ const Meeting: FC = () => {
   const {
     activeMeeting,
     setTheActiveMeeting,
-    recordMeeting,
+    // recordMeeting,
     createOrJoinTheMeeting,
     updateTheDbMeeting,
     meetingId,
@@ -128,7 +128,13 @@ const Meeting: FC = () => {
   } = useMeetings();
 
 
-
+  const transcriptEventHandler = async (transcriptEvent: any) => {
+    // `transcriptEvent` could be either a `Transcript` or `TranscriptionStatus`
+    // if it is `Transcript`, then it should contain transcription results
+    // else you need to handle the logic of `TranscriptionStatus` changes (start/ stop/ ...)
+  
+    console.log(transcriptEvent)
+  };
 
   const createBackgroundReplacementDevice = async (device: any) => {
     const processors: Array<any> = []
@@ -211,6 +217,7 @@ const Meeting: FC = () => {
 
   // Events
   const doActionsOnLoad = async () => {
+
     try {
       const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
       console.log("doActionsOnLoad")
@@ -235,6 +242,12 @@ const Meeting: FC = () => {
       await meetingManager.leave()
       navigate('/')
     }
+  }
+
+  const closedCaption = async () => {
+    console.log(meetingManager)
+    console.log("trigger transcript event")
+    meetingManager.audioVideo?.transcriptionController?.subscribeToTranscriptEvent(transcriptEventHandler)
   }
 
   const createPipelineParams = {
@@ -303,26 +316,26 @@ const Meeting: FC = () => {
 
 
 
-  const recordChimeMeeting = async (value: string) => {
+  // const recordChimeMeeting = async (value: string) => {
 
-    setRecordingLoading(true)
-    const is_recording = value == 'record';
+  //   setRecordingLoading(true)
+  //   const is_recording = value == 'record';
 
-    if (is_recording) {
-      startRecordingCountdown(true)
-    }
+  //   if (is_recording) {
+  //     startRecordingCountdown(true)
+  //   }
 
-    const recordUpdate = await updateTheDbMeeting?.(is_recording)
-    const recordInfo = await recordMeeting?.(meetingManager.meetingId, value, "record")
-    setDbMeetNew(recordUpdate)
+  //   const recordUpdate = await updateTheDbMeeting?.(is_recording)
+  //   const recordInfo = await recordMeeting?.(meetingManager.meetingId, value, "record")
+  //   setDbMeetNew(recordUpdate)
 
-    const record = await recordUpdate?.['isRecording']
+  //   const record = await recordUpdate?.['isRecording']
 
-    if (!is_recording) {
-      setRecordingLoading(false)
-      setIsRecording(false)
-    }
-  }
+  //   if (!is_recording) {
+  //     setRecordingLoading(false)
+  //     setIsRecording(false)
+  //   }
+  // }
 
   // useEffect(() => {
   //   const doActions = async () => {
@@ -404,7 +417,8 @@ const Meeting: FC = () => {
               setCurrentPanel={setCurrentPanel}
               isHost={isHost}
               recordingLoading={recordingLoading}
-              recordChimeMeeting={recordChimeMeeting}
+              //recordChimeMeeting={recordChimeMeeting}
+              closedCaption={closedCaption}
               isOpen={isOpen}
               handleInviteModalVisibility={handleInviteModalVisibility}
             />
@@ -427,7 +441,7 @@ const Meeting: FC = () => {
               setCurrentPanel={setCurrentPanel}
               isHost={isHost}
               recordingLoading={recordingLoading}
-              recordChimeMeeting={recordChimeMeeting}
+              //recordChimeMeeting={recordChimeMeeting}
               isOpen={isOpen}
               handleInviteModalVisibility={handleInviteModalVisibility}
             />
