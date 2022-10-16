@@ -47,19 +47,19 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="mt-14">
-      <div className="flex justify-center mb-10">
+    <div className="mt-[11px] w-full sm:mt-14">
+      <div className="flex justify-center mb-[26px] sm:mb-10 h-[66px] sm:h-auto">
         <Logo />
       </div>
 
-      <div className="relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36">
+      <div className="login-mobile-view sm:login-desktop-view">
         {isSuccessReset === false ? (
           <>
-            <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
+            <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue text-[22px] sm:text-[30px]">
               Forgot Password?
             </h1>
 
-            <Form className="mx-auto mt-10 mb-8 w-455" onSubmit={() => false}>
+            <Form className="login-mobile-view-form sm:login-desktop-view-form" onSubmit={() => false}>
               {error && (
                 <Alert variation="error" className="mb-3 text-left">
                   {error}
@@ -138,7 +138,7 @@ function ForgotPassword() {
         <img
           src={cham3}
           alt="Camera"
-          className="absolute -left-220px top-100px"
+          className="mobile-view-cham3-img sm:desktop-view-cham3-img"
         />
       </div>
     </div>
