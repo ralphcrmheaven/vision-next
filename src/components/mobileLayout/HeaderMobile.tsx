@@ -35,14 +35,16 @@ const Header: React.FC<Props> = ({
                     <Logo />
                 </div>
                 <div className='flex flex-row gap-[26px]'>
-                    <div className="flex flex-col items-center justify-between h-[41px]">
-                        <NavLink
-                            to="/login"
-                        >
+                    <NavLink
+                        to="/login"
+                    >
+                        <div className="flex flex-col items-center justify-between h-[41px]">
+
                             <HomeIcon />
                             <span className="text-[12px] text-[#053F64]">Home</span>
-                        </NavLink>
-                    </div>
+
+                        </div>
+                    </NavLink>
                     <div className="">
                         {/* <MoreIcon />
                         <span className="text-[12px] text-[#053F64]">More</span> */}

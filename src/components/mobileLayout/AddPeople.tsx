@@ -147,7 +147,11 @@ const AddPeople = (props: any) => {
             console.log("here")
         }
 
-
+        console.log(emails)
+        if (emails.length === 0) {
+            setIsSendingInvites(false)
+            setSendButtonDisabled(false)
+        }
         emails.forEach(async (email: string) => {
             console.log("ytes")
             console.log(await checkContactExisting(email))
@@ -289,7 +293,7 @@ const AddPeople = (props: any) => {
                                 className="basis-1/6 h-10  modal-top send-invite-btn disabled:cursor-not-allowed flex-1 max-w-[403px]"
                                 label="Send Invite"
                                 ref={sendInviteButton}
-                                disabled={emails.length === 0 || sendButtonDisabled}
+                                disabled={sendButtonDisabled}
                                 // disabled={true}
                                 onClick={async (e: any) => {
                                     await clickedNewContactsSendInvite();
