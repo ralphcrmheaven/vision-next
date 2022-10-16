@@ -49,7 +49,7 @@ interface Props {
     setCurrentPanel: any,
     isHost: any,
     recordingLoading: any,
-    recordChimeMeeting: any,
+    // recordChimeMeeting: any,
     isOpen: any,
     handleInviteModalVisibility: any,
 }
@@ -70,7 +70,7 @@ const MeetingBody: React.FC<Props> = ({
     setCurrentPanel,
     isHost,
     recordingLoading,
-    recordChimeMeeting,
+    // recordChimeMeeting,
     isOpen,
     handleInviteModalVisibility,
 }) => {
@@ -140,9 +140,9 @@ const MeetingBody: React.FC<Props> = ({
                                 <div className={`h-full w-full col-span-4`}>
 
                                     <div className="h-full w-full video-tile-wrap">
-                                        {recordingCountdown > 0 &&
+                                        {/* {recordingCountdown > 0 &&
                                             <RecordMeetingLoader number={recordingCountdown} />
-                                        }
+                                        } */}
                                         <VideoTileGrid className={` video-grid-vision ${isRecording ? "vision-recording" : ""}`} layout="standard" >
                                         </VideoTileGrid>
                                     </div>
@@ -192,13 +192,13 @@ const MeetingBody: React.FC<Props> = ({
                                 }
                             />
                         </div> */}
-                        {!isRecording && isHost &&
+                        {/* {!isRecording && isHost &&
                             <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon /></button>
                         }
 
                         {!recordingLoading && isRecording && isHost &&
                             <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
-                        }
+                        } */}
 
                     </ControlBar>
                 </div>

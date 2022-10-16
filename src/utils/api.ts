@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { createAttendeeGraphQL, createMeetingGraphQL, deleteMeetingGraphQL, updateMeetingGraphQL } from '../graphql/mutations';
-import { createChimeMeeting, getAttendee, endChimeMeeting, getMeeting, joinChimeMeeting , recordMeeting} from '../graphql/queries';
+import { createChimeMeeting, getAttendee, endChimeMeeting, getMeeting, joinChimeMeeting } from '../graphql/queries';
 
 
 export async function createMeeting(title: string, attendeeName: string, region: string) {
@@ -26,12 +26,12 @@ export async function joinMeeting(meetingId: string, name: string) {
   return joinInfoJsonParse;
 }
 
-export async function recordCurrentMeeting(meetingId: string,type: string,pipelineId: string) {
-  const joinInfo: any = await API.graphql(graphqlOperation(recordMeeting, {meetingId: meetingId,type: type,pipelineId: pipelineId}));
-  const joinInfoJson = joinInfo.data;
-  const joinInfoJsonParse = joinInfoJson;
-  return joinInfoJsonParse;
-}
+// export async function recordCurrentMeeting(meetingId: string,type: string,pipelineId: string) {
+//   const joinInfo: any = await API.graphql(graphqlOperation(recordMeeting, {meetingId: meetingId,type: type,pipelineId: pipelineId}));
+//   const joinInfoJson = joinInfo.data;
+//   const joinInfoJsonParse = joinInfoJson;
+//   return joinInfoJsonParse;
+// }
 
 export async function endMeeting(meetingId: string) {
   const endInfo: any = await API.graphql(graphqlOperation(endChimeMeeting, {meetingId: meetingId}));

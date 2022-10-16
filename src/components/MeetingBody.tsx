@@ -32,6 +32,7 @@ import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
 import Toaster from './modals/Toast'
 interface Props {
+    captions:string,
     meetingManager:any,
     meetingStatus:any,
     loading:any,
@@ -47,12 +48,14 @@ interface Props {
     setCurrentPanel:any,
     isHost:any,
     recordingLoading:any,
-    recordChimeMeeting:any,
+    // recordChimeMeeting:any,
+    closedCaption:any,
     isOpen:any,
     handleInviteModalVisibility:any,
 }
 
 const MeetingBody: React.FC<Props> = ({
+    captions,
     meetingManager,
     meetingStatus,
     loading,
@@ -68,7 +71,8 @@ const MeetingBody: React.FC<Props> = ({
     setCurrentPanel,
     isHost,
     recordingLoading,
-    recordChimeMeeting,
+    // recordChimeMeeting,
+    closedCaption,
     isOpen,
     handleInviteModalVisibility,
 }) => {
@@ -120,6 +124,7 @@ const MeetingBody: React.FC<Props> = ({
                                         {recordingCountdown > 0 &&
                                             <RecordMeetingLoader number={recordingCountdown} />
                                         }
+                                        <span className="caption-style">{captions}</span>
                                         <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${isRecording ? "vision-recording" : ""}`} layout="standard" >
                                         </VideoTileGrid>
                                     </div>
@@ -188,6 +193,7 @@ const MeetingBody: React.FC<Props> = ({
                             />
                         </div>
 
+
                         <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                             <Attendees width="26px" css="width: 26px;color: #053F64;cursor: pointer"
                                 onClick={async (e: any) => {
@@ -200,13 +206,14 @@ const MeetingBody: React.FC<Props> = ({
                                 }
                             />
                         </div>
-                        {!isRecording && isHost &&
+                        <button onClick={() => closedCaption()}>Transcribe</button>
+                        {/* {!isRecording && isHost &&
                             <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon /></button>
                         }
 
                         {!recordingLoading && isRecording && isHost &&
                             <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
-                        }
+                        } */}
 
                     </ControlBar>
                 </div>
