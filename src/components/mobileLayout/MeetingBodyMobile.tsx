@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { MoreIcon, RecordIcon, AddPeople, VectorBackIcon, MicrophoneIcon } from '../icons'
+import { MoreIcon, RecordIcon, ShareScreenIcon, VectorBackIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenRedIcon } from '../icons'
 import Logo from '../Logo'
 import RecordMeetingLoader from '../../components/loaders/RecordMeetingLoader'
 import {
@@ -18,14 +18,10 @@ import {
     useVideoInputs,
     useLogger,
     PopOverItem,
-    Modal,
-    ModalBody,
-    PrimaryButton,
-    ModalHeader,
-    Notification,
-    Severity,
-    Attendees,
-    Chat
+    Microphone,
+    useToggleLocalMute,
+    useContentShareState,
+    useContentShareControls,
 } from 'amazon-chime-sdk-component-library-react';
 import GroupChatMessages from '../GroupChatMessages'
 import Roaster from '../../components/Roaster'
@@ -74,8 +70,28 @@ const MeetingBody: React.FC<Props> = ({
     isOpen,
     handleInviteModalVisibility,
 }) => {
+    // const { muted, toggleMute } = useToggleLocalMute();
+    const { isLocalUserSharing } = useContentShareState();
+    const { toggleContentShare, togglePauseContentShare, paused } = useContentShareControls();
     const [isModalMore, setIsModalMore] = useState(false)
     const [isModalMessage, setIsModalMessage] = useState(false)
+    const messageButtonProps = {
+        icon: isModalMessage ? <MessageRedIcon /> : <MessageIcon />,
+        onClick: () => setIsModalMessage(true),
+        label: 'Message'
+    };
+    // const microphoneButtonProps = {
+    //     icon: muted ? <Microphone muted/> : <MicrophoneIcon />,
+    //     onClick: () => toggleMute(),
+    //     label: 'Mute'
+    // }
+
+    const sharescreenButtonProps = {
+        icon: isLocalUserSharing ? <ShareScreenRedIcon /> : <ShareScreenIcon />,
+        onClick: () => toggleContentShare(),
+        label: 'Sharescreen'
+    }
+
     return (
         <>
 
@@ -155,9 +171,20 @@ const MeetingBody: React.FC<Props> = ({
                 </div>
 
                 <div className="w-full">
-                    <ControlBar layout="bottom" showLabels className="device-icon-wrapper flex flex-row">
+                    <ControlBar layout="bottom" showLabels={false} className="device-icon-wrapper flex flex-row">
+                        {/* <ControlBarButton {...microphoneButtonProps} isSelected={false} /> */}
                         <AudioInputControl className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""} />
-                        <ContentShareControl className="device-input-icon-wrapper" label={""} />
+                        <ControlBarButton className='flex' {...sharescreenButtonProps} isSelected={false}>
+                            {
+                                isLocalUserSharing && (
+                                    <PopOverItem as="button" onClick={() => { togglePauseContentShare() }}>
+                                        <span>Pause</span>
+                                    </PopOverItem>
+                                )
+                            }
+                        </ControlBarButton>
+
+                        {/* <ContentShareControl className="device-input-icon-wrapper" label={""} /> */}
                         <VideoInputControl className="device-input-icon-wrapper" label={""} >
                             <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
                                 <span>Change Background</span>
@@ -165,7 +192,7 @@ const MeetingBody: React.FC<Props> = ({
                         </VideoInputControl>
 
                         <AudioOutputControl label={""} className="input-icon-wrapper device-input-icon-wrapper" />
-                        <div className="input-icon-wrapper relative device-input-icon-wrapper">
+                        {/* <div className="input-icon-wrapper relative device-input-icon-wrapper">
                             <Chat width="26px" css="icon-control extra-icons"
                                 onClick={async (e: any) => {
                                     // if (currentPanel == 'chat') {
@@ -177,7 +204,8 @@ const MeetingBody: React.FC<Props> = ({
                                 }
                                 }
                             />
-                        </div>
+                        </div> */}
+                        <ControlBarButton {...messageButtonProps} isSelected={false} />
 
                         {/* <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
                             <Attendees width="26px" css="width: 26px;color: #053F64;cursor: pointer"

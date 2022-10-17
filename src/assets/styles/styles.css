@@ -678,6 +678,7 @@ body.full-screen-modal-active {
     overflow-y: visible !important;
 }
 
+
 /* Modal Animation */
 .fade-in-modal-mobile {
     animation: opac .5s;
