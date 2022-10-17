@@ -29,7 +29,7 @@ export default function Settings() {
             ) : ''
         }
         {/* <Header showSearchBar={false} showSubHeader={false} header={'Settings'} /> */}
-        <div className="flex flex-row py-10 h-[90%]">
+        <div className="flex flex-row py-10 h-[100%]">
 
           <div className="flex flex-col w-1/4 border border-gray-300 rounded-3xl pt-8 mr-4">
 

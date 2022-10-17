@@ -12,6 +12,8 @@ import Messages from './Messages'
 import { useMediaQuery } from 'react-responsive';
 import MeetingBodyMobile from './mobileLayout/MeetingBodyMobile';
 import MeetingBody from './MeetingBody';
+import { transcribe } from '../api/transcribe';
+
 import {
   AudioInputControl,
   AudioOutputControl,
@@ -83,6 +85,7 @@ const Meeting: FC = () => {
   const intervalId = React.useRef(5);
 
   const [recordingLoading, setRecordingLoading] = useState<boolean>(false)
+  const [closedCaptionStatus, setClosedCaptionStatus] = useState<boolean>(false)
   const [isHost, SetIsHost] = useState<boolean>(false)
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
   const [isRecording, setIsRecording] = useState<boolean>(false)
@@ -244,6 +247,7 @@ const Meeting: FC = () => {
     }
   }
 
+ 
   const clickedEndMeeting = async () => {
     const meetingId = meetingManager.meetingId
     if (meetingId) {
@@ -254,9 +258,12 @@ const Meeting: FC = () => {
   }
 
   const closedCaption = async () => {
+    let type = closedCaptionStatus == false ? "start" : 'stop'
+    await transcribe(meetingManager.meetingId ?? '', type)
     console.log(meetingManager)
     console.log("trigger transcript event")
     meetingManager.audioVideo?.transcriptionController?.subscribeToTranscriptEvent(transcriptEventHandler)
+    setClosedCaptionStatus(!closedCaptionStatus)
   }
 
   const createPipelineParams = {
@@ -411,6 +418,7 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             <MeetingBody
+              closedCaptionStatus={closedCaptionStatus}
               captions={captions}
               meetingManager={meetingManager}
               meetingStatus={meetingStatus}

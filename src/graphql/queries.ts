@@ -32,6 +32,11 @@ export const endChimeMeeting = /* GraphQL */ `
     }
   }
 `;
+export const visionTranscribe = /* GraphQL */ `
+  query VisionTranscribe($MeetingId: String, $type: String) {
+    visionTranscribe(MeetingId: $MeetingId, type: $type)
+  }
+`;
 export const sendEmailNotification = /* GraphQL */ `
   query SendEmailNotification(
     $email: String
