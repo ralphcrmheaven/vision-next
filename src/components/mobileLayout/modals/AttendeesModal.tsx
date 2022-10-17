@@ -12,14 +12,8 @@ const AttendeesModal: React.FC<Props> = ({
 }) => {
     const [isAddPeople, setIsAddPeople] = useState<boolean>(false)
     return (
-        <div className="bg-transparent absolute h-screen w-screen z-[1000]">
-            <div style={{
-                height: '85%',
-                width: '100%',
-                background: '#FFFFFF',
-                boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
-                borderRadius: '0px 0px 20px 20px'
-            }}>
+        <div className="bg-transparent absolute h-screen w-screen z-[1000] center-open-modal-mobile" onClick={() => { setIsAttendeesModal(false) }}>
+            <div className="h-[85%] w-full bg-[#FFFFFF] shadow-[0px_5px_15px_rgba(0,0,0,0.1)] rounded-b-[20px]" onClick={(e)=>{e.stopPropagation()}}>
                 {/* Modal Header */}
                 <div className="flex pt-[40px] items-center">
                     <div className='flex text-[20px] font-[700] flex-[2] justify-center pl-[59px]'>
@@ -36,11 +30,11 @@ const AttendeesModal: React.FC<Props> = ({
                 {/* Modal Body */}
                 {
                     isAddPeople ? (
-                        
-                            <div className='pt-[54px] flex flex-col gap-[33px] pl-[29px] pr-[28px] flex-1'>
-                                <AddPeopleComponent />
-                            </div>
-                       
+
+                        <div className='pt-[54px] flex flex-col gap-[33px] pl-[29px] pr-[28px] flex-1'>
+                            <AddPeopleComponent />
+                        </div>
+
                     ) : (
                         <div className="pt-[54px] flex flex-col gap-[33px] pl-[29px] pr-[28px] flex-1">
                             <span className='flex-1 flex flex-row justify-center pb-1'>

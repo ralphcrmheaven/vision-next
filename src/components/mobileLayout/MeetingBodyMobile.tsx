@@ -113,7 +113,6 @@ const MeetingBody: React.FC<Props> = ({
                                 </NavLink>
                             </div>
                             <div className='flex flex-row pt-[7px]'>
-
                                 <div className="flex flex-col items-center justify-between h-[43px] pr-[43px]" onClick={() => setIsModalMore(true)}>
                                     <MoreIcon />
                                     <span className="text-[12px] text-[#053F64]">More</span>
