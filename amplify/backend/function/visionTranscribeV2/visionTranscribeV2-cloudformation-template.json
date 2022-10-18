@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "visionTranscribe",
+            "visionTranscribeV2",
             {
               "Fn::Join": [
                 "",
                 [
-                  "visionTranscribe",
+                  "visionTranscribeV2",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "visionnextLambdaRole0db935ab",
+            "visionnextLambdaRole4a68fa32",
             {
               "Fn::Join": [
                 "",
                 [
-                  "visionnextLambdaRole0db935ab",
+                  "visionnextLambdaRole4a68fa32",
                   "-",
                   {
                     "Ref": "env"
