@@ -30,7 +30,7 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "LambdaExecutionRole": "string"
         },
-        "visionTranscribe": {
+        "visionTranscribeV2": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
