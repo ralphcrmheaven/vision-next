@@ -9,14 +9,8 @@ const MessagesModal: React.FC<Props> = ({
     setIsModalMessage
 }) => {
     return (
-        <div className="bg-transparent absolute h-screen w-screen z-[999]">
-            <div style={{
-                height: '85%',
-                width: '100%',
-                background: '#FFFFFF',
-                boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
-                borderRadius: '0px 0px 20px 20px'
-            }}>
+        <div className="bg-transparent absolute h-screen w-screen z-[999] reveal center-open-modal-mobile" onClick={() => { setIsModalMessage(false) }}>
+            <div className="h-[85%] w-full bg-[#FFFFFF] shadow-[0px_5px_15px_rgba(0,0,0,0.1)] rounded-b-[20px]" onClick={(e)=>{e.stopPropagation()}}>
                 {/* Modal Header */}
                 <div className="flex pt-[40px] items-center">
                     <div className='flex text-[20px] font-[700] flex-[2] justify-center pl-[59px]'>

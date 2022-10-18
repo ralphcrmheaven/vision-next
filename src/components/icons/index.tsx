@@ -26,5 +26,8 @@ import LaughSmileyIcon from "./LaughSmiley";
 import ClappingHandIcon from "./ClappingHand";
 import ThumbsUpIcon from "./ThumbsUp";
 import MicrophoneIcon from "./Microphone"
-
-export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon }
+import MessageIcon from "./Message";
+import MessageRedIcon from "./MessageRed";
+import ShareScreenIcon from "./ShareScreen";
+import ShareScreenRedIcon from "./ShareScreenRed";
+export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon }

@@ -679,8 +679,11 @@ body.full-screen-modal-active {
     overflow-y: visible !important;
 }
 
-.reveal {
-    animation: opac .3s;
+
+/* Modal Animation */
+
+.fade-in-modal-mobile {
+    animation: opac .5s;
 }
 
 @keyframes opac {
@@ -702,4 +705,30 @@ body.full-screen-modal-active {
     border-radius: 11px;
     background: #063f64cc;
     color: #fff;
+}
+
+.center-open-modal-mobile {
+    animation: center-open .5s;
+}
+
+@keyframes center-open {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+.center-close-modal-mobile {
+    animation: center-close .5s;
+}
+
+@keyframes center-close {
+    from {
+        transform: scaleY(1);
+    }
+    to {
+        transform: scaleY(0);
+    }
 }

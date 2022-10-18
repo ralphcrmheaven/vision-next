@@ -14,8 +14,8 @@ const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore }) => {
                 <AttendeesModal setIsAttendeesModal={setIsAttendeesModal}/>
             )
         }
-            <div className="bg-transparent absolute h-screen w-screen z-[999]">
-                <div className="h-[479px] w-full bg-[#FFFFFF] shadow-[0px_5px_15px_rgba(0,0,0,0.1)] rounded-b-[20px]">
+            <div className="bg-transparent absolute h-screen w-screen z-[999] fade-in-modal-mobile" onClick={()=>{setIsModalMore(false)}}>
+                <div className="h-[479px] w-full bg-[#FFFFFF] shadow-[0px_5px_15px_rgba(0,0,0,0.1)] rounded-b-[20px]" onClick={(e)=>{e.stopPropagation()}}>
                     {/* Modal Header */}
                     <div className="flex pt-[40px] items-center">
                         <div className='flex text-[20px] font-[700] flex-[2] justify-center pl-[59px]'>

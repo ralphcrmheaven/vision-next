@@ -230,7 +230,7 @@ const AddPeople = (props: any) => {
         setSendButtonDisabled(false)
     };
     return (
-        <div>
+        <div className='fade-in-modal-mobile'>
             {/* <Modal className="invite-modal" onClose={() => props.setModalVisibility(false)} rootId="modal-root"> */}
             {/* <div  className="flex justify-center items-center mb-2  no-'bo'rder tab-contact">
                         <span><span className={ `tab-select  ${selectedInvitationType == 'send_mail' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('send_mail')}>Send Email </span> | <span className={ `tab-select  ${selectedInvitationType == 'search_contacts' ? 'active' : ''}` } onClick={() => setSelectedInvitationType('search_contacts')} >Search Contacts</span></span>
@@ -253,7 +253,7 @@ const AddPeople = (props: any) => {
             <div className="divide-y pb-10">
 
                 {selectedInvitationType === 'send_mail' && (
-                    <div >
+                    <div className='fade-in-modal-mobile'>
                         <div className='flex-1 flex justify-center pt-[47px] pb-[30px] text-[18px] text-[#053F64] font-[500]'>
                             Invite a Vision contact
                         </div>
@@ -281,7 +281,7 @@ const AddPeople = (props: any) => {
                                 }}
                             />
                         </div>
-                        <div className="flex justify-center items-center mb-2  no-border">
+                        <div className="flex justify-center items-center mb-2 no-border">
                             <span className="invite-sm-message">
                                 If this use accepts your request, your profile information (including your status) will be visible to this contact. You can also meet and chat with this contact.
                             </span>
@@ -290,7 +290,7 @@ const AddPeople = (props: any) => {
                         <div className="flex justify-center w-full flex-1">
 
                             <VButton
-                                className="basis-1/6 h-10  modal-top send-invite-btn disabled:cursor-not-allowed flex-1 max-w-[403px]"
+                                className="basis-1/6 h-10 modal-top send-invite-btn disabled:cursor-not-allowed flex-1 max-w-[403px]"
                                 label="Send Invite"
                                 ref={sendInviteButton}
                                 disabled={sendButtonDisabled}
@@ -310,7 +310,7 @@ const AddPeople = (props: any) => {
                 )
                 }
                 {selectedInvitationType === 'search_contacts' && (
-                    <div className="flex justify-center items-center pt-[47px]">
+                    <div className="flex justify-center items-center pt-[47px] fade-in-modal-mobile">
                         <div className="mt-2 overflow-y-auto h-64 p-2 w-[400px]">
                             <table className="table-fixed">
                                 {/* <thead>
