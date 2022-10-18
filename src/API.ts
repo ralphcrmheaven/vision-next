@@ -908,6 +908,15 @@ export type EndChimeMeetingQuery = {
   } | null,
 };
 
+export type VisionTranscribeQueryVariables = {
+  MeetingId?: string | null,
+  type?: string | null,
+};
+
+export type VisionTranscribeQuery = {
+  visionTranscribe?: string | null,
+};
+
 export type SendEmailNotificationQueryVariables = {
   email?: string | null,
   fromName?: string | null,

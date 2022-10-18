@@ -32,6 +32,7 @@ import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
 import Toaster from './modals/Toast'
 interface Props {
+    closedCaptionStatus:Boolean,
     captions:string,
     meetingManager:any,
     meetingStatus:any,
@@ -55,6 +56,7 @@ interface Props {
 }
 
 const MeetingBody: React.FC<Props> = ({
+    closedCaptionStatus,
     captions,
     meetingManager,
     meetingStatus,
@@ -124,8 +126,10 @@ const MeetingBody: React.FC<Props> = ({
                                         {recordingCountdown > 0 &&
                                             <RecordMeetingLoader number={recordingCountdown} />
                                         }
-                                        <span className="caption-style">{captions}</span>
-                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${isRecording ? "vision-recording" : ""}`} layout="standard" >
+                                        {closedCaptionStatus &&
+                                            <span className="caption-style">{captions}</span>
+                                        }
+                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${isRecording ? "vision-recording" : ""}`} layout="featured" >
                                         </VideoTileGrid>
                                     </div>
 
@@ -206,7 +210,9 @@ const MeetingBody: React.FC<Props> = ({
                                 }
                             />
                         </div>
-                        <button onClick={() => closedCaption()}>Transcribe</button>
+                        {!closedCaptionStatus &&  <button onClick={() => closedCaption()}>CC OFF</button>}
+                        {closedCaptionStatus &&  <button onClick={() => closedCaption()}>CC ON</button>}
+
                         {/* {!isRecording && isHost &&
                             <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon /></button>
                         }

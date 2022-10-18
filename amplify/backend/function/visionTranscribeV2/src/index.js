@@ -12,14 +12,26 @@ chime.endpoint = new AWS.Endpoint('https://service.chime.aws.amazon.com/console'
 const chimeSDKMeetings = new AWS.ChimeSDKMeetings({ region: 'us-east-1' });
 
 
-const transcribe = async() => {
-    let meetingid = "d726ee28-83bf-4561-98e6-5c54eb7e0706"
+const transcribe = async(event) => {
+
+    const { MeetingId, type } = event
+    // const MeetingId = "72fb85a8-2a9c-4e6c-a27f-fb8171cd0706"
+    // const type = "start"
+
+
     let client = chime
 
     const languageCode = 'en-US';
     const region = 'us-east-1';
     let transcriptionConfiguration = {};
     let transcriptionStreamParams = {};
+
+    if (type == 'stop') {
+        return await client.stopMeetingTranscription({
+            MeetingId: MeetingId
+        }).promise();
+    }
+
 
     transcriptionConfiguration = {
         EngineTranscribeMedicalSettings: {
@@ -37,13 +49,13 @@ const transcribe = async() => {
 
     // start transcription for the meeting
     return await client.startMeetingTranscription({
-        MeetingId: meetingid,
+        MeetingId: MeetingId,
         TranscriptionConfiguration: transcriptionConfiguration
     }).promise();
 }
 
 exports.handler = async(event) => {
-    return await transcribe()
+    return await transcribe(event)
     return {
         statusCode: 200,
         //  Uncomment below to enable CORS requests
