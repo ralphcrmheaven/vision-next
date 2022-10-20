@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.4.0\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"10.3.0\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}",
   "Parameters": {
     "env": {
       "Type": "String"
@@ -590,7 +590,6 @@
               ]
             }
           },
-          
           {
             "PolicyName": {
               "Fn::Sub": "${resourceName}-ApiGateWay-${env}"
@@ -598,20 +597,20 @@
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
-                  {
-                      "Action": [
-                          "execute-api:Invoke"
-                      ],
-                      "Resource": [
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings/*",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*",
-                          "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*/*/meetings/*",
-                          "arn:aws:execute-api:us-east-1:205131113421:9tr8p432d6n7b6izvwsi/*/*/meetings",
-                          "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*"
-                      ],
-                      "Effect": "Allow"
-                  }
+                {
+                  "Action": [
+                    "execute-api:Invoke"
+                  ],
+                  "Resource": [
+                    "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings/*",
+                    "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*/*/meetings",
+                    "arn:aws:execute-api:us-east-1:205131113421:9tr8izvwsi/*",
+                    "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*/*/meetings/*",
+                    "arn:aws:execute-api:us-east-1:205131113421:9tr8p432d6n7b6izvwsi/*/*/meetings",
+                    "arn:aws:execute-api:us-east-1:205131113421:p432d6n7b6/*"
+                  ],
+                  "Effect": "Allow"
+                }
               ]
             }
           }

@@ -19,7 +19,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 let tableName = "MeetingTable";
 if (process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + '-' + process.env.ENV;
+    tableName = tableName + '-' + process.env.ENV;
 }
 
 const userIdPresent = false; // TODO: update in case is required to use that definition
@@ -40,60 +40,61 @@ app.use(awsServerlessExpressMiddleware.eventContext())
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "*")
-  next()
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "*")
+    next()
 });
 
 // convert url string param to expected Type
 const convertUrlType = (param, type) => {
-  switch(type) {
-    case "N":
-      return Number.parseInt(param);
-    default:
-      return param;
-  }
+    switch (type) {
+        case "N":
+            return Number.parseInt(param);
+        default:
+            return param;
+    }
 }
 
 // additional functions
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
-const secretKey =  `${process.env.REACT_APP_SK}`;
+const secretKey = `${process.env.REACT_APP_SK}`;
+
 
 const getRandomString = (instanceCount, charCount, separator) => {
-  let rs = '';
-  const finalCharCount = charCount + 2; // Compensate for the missing char since substring starts at 2
+    let rs = '';
+    const finalCharCount = charCount + 2; // Compensate for the missing char since substring starts at 2
 
-  for (let i = 1; i <= instanceCount; i++) {
-      rs += Math.random().toString(16).substring(2, finalCharCount);
-      if(i < instanceCount){
-          rs += separator;
-      }
-  }
+    for (let i = 1; i <= instanceCount; i++) {
+        rs += Math.random().toString(16).substring(2, finalCharCount);
+        if (i < instanceCount) {
+            rs += separator;
+        }
+    }
 
-  return rs;
+    return rs;
 }
 
 const encrypt = (text) => {
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv)
-  let encrypted = cipher.update(text)
-  encrypted = Buffer.concat([encrypted, cipher.final()])
-  return [
-    encrypted.toString('hex'),
-    iv.toString('hex'),
-  ].join('|');
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv)
+    let encrypted = cipher.update(text)
+    encrypted = Buffer.concat([encrypted, cipher.final()])
+    return [
+        encrypted.toString('hex'),
+        iv.toString('hex'),
+    ].join('|');
 }
 
 const decrypt = (encryptedText) => {
-  const [encrypted, iv] = encryptedText.split('|');
-  if (!iv) throw new Error('IV not found');
-  const decipher = crypto.createDecipheriv(
-    algorithm,
-    secretKey,
-    Buffer.from(iv, 'hex')
-  );
-  return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
+    const [encrypted, iv] = encryptedText.split('|');
+    if (!iv) throw new Error('IV not found');
+    const decipher = crypto.createDecipheriv(
+        algorithm,
+        secretKey,
+        Buffer.from(iv, 'hex')
+    );
+    return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
 }
 
 /********************************
@@ -101,60 +102,60 @@ const decrypt = (encryptedText) => {
  ********************************/
 
 app.get(path + hashKeyPath, function(req, res) {
-  const condition = {}
-  condition[partitionKeyName] = {
-    ComparisonOperator: 'EQ'
-  }
-
-  if (userIdPresent && req.apiGateway) {
-    condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  } else {
-    try {
-      condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
+    const condition = {}
+    condition[partitionKeyName] = {
+        ComparisonOperator: 'EQ'
     }
-  }
 
-  let queryParams = {
-    TableName: tableName,
-    KeyConditions: condition
-  }
-
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: 'Could not load items: ' + err});
+    if (userIdPresent && req.apiGateway) {
+        condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH];
     } else {
-      const finalItems = data.Items.map(item => {
-
-        const password = () => {
-          try{
-            return (item.Password)? item.Password.split('|')[0] : '';
-          }catch(err){
-            return '';
-          }
-        };
-
-        const url = () => {
-          try{
-            return `/${item.MeetingId}/${(item.Password)? item.Password.split('|')[0] : ''}`;
-          }catch(err){
-            return '';
-          }
-        };
-
-        return {
-          ...item,
-          Password: password(),
-          Url: url(),
+        try {
+            condition[partitionKeyName]['AttributeValueList'] = [convertUrlType(req.params[partitionKeyName], partitionKeyType)];
+        } catch (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Wrong column type ' + err });
         }
-      });
-      //res.json(data.Items);
-      res.json(finalItems);
     }
-  });
+
+    let queryParams = {
+        TableName: tableName,
+        KeyConditions: condition
+    }
+
+    dynamodb.query(queryParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Could not load items: ' + err });
+        } else {
+            const finalItems = data.Items.map(item => {
+
+                const password = () => {
+                    try {
+                        return (item.Password) ? item.Password.split('|')[0] : '';
+                    } catch (err) {
+                        return '';
+                    }
+                };
+
+                const url = () => {
+                    try {
+                        return `/${item.MeetingId}/${(item.Password)? item.Password.split('|')[0] : ''}`;
+                    } catch (err) {
+                        return '';
+                    }
+                };
+
+                return {
+                    ...item,
+                    Password: password(),
+                    Url: url(),
+                }
+            });
+            //res.json(data.Items);
+            res.json(finalItems);
+        }
+    });
 });
 
 /*****************************************
@@ -162,185 +163,186 @@ app.get(path + hashKeyPath, function(req, res) {
  *****************************************/
 
 app.get(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
-  const params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName];
-    try {
-      params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
-  }
-  if (hasSortKey) {
-    try {
-      params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
-  }
-
-  let getItemParams = {
-    TableName: tableName,
-    Key: params
-  }
-
-  dynamodb.get(getItemParams,(err, data) => {
-    if(err) {
-      res.statusCode = 500;
-      res.json({error: 'Could not load items: ' + err.message});
+    const params = {};
+    if (userIdPresent && req.apiGateway) {
+        params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
     } else {
-      if (data.Item) {
-        res.json(data.Item);
-      } else {
-        res.json(data) ;
-      }
+        params[partitionKeyName] = req.params[partitionKeyName];
+        try {
+            params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
+        } catch (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Wrong column type ' + err });
+        }
     }
-  });
+    if (hasSortKey) {
+        try {
+            params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
+        } catch (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Wrong column type ' + err });
+        }
+    }
+
+    let getItemParams = {
+        TableName: tableName,
+        Key: params
+    }
+
+    dynamodb.get(getItemParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Could not load items: ' + err.message });
+        } else {
+            if (data.Item) {
+                res.json(data.Item);
+            } else {
+                res.json(data);
+            }
+        }
+    });
 });
 
 /************************************
-* HTTP put method for insert object *
-*************************************/
+ * HTTP put method for insert object *
+ *************************************/
 
 app.put(path, function(req, res) {
 
-  if (userIdPresent) {
-    req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  }
-
-  let queryParams = {
-    TableName: tableName,
-    IndexName: 'MeetingId-index',
-    KeyConditionExpression: '#MeetingId = :meeting_id',
-    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
-    ExpressionAttributeValues: { ':meeting_id': req.body.MeetingId }
-  }
-
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: err});
-    } else {
-      if (!data.Items.length) {
-        res.statusCode = 401;
-        res.json({error: 'Meeting invalid!'});
-        return;
-      }
-
-      try{
-        const timeStamp = new Date().toISOString();
-        const attendees = [...data.Items[0].Attendees, ...req.body.Attendees];
-        const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
-
-        const item = {
-          ...data.Items[0],
-          Attendees: uniqueAttendees,
-          UpdatedAt: timeStamp
-        };
-
-        let putItemParams = {
-          TableName: tableName,
-          Item: item
-        }
-        dynamodb.put(putItemParams, (err, dataPut) => {
-          if (err) {
-            res.statusCode = 500;
-            res.json({ error: err, url: req.url, body: req.body });
-          } else{
-            res.json({success: 'put call succeed!', url: req.url, data: {...item, Password: ''}});
-          }
-        });
-      }catch(e){
-        res.statusCode = 500;
-        res.json({error: 'Something went wrong!'});
-        return;
-      }
+    if (userIdPresent) {
+        req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
     }
-  });
+
+    let queryParams = {
+        TableName: tableName,
+        IndexName: 'MeetingId-index',
+        KeyConditionExpression: '#MeetingId = :meeting_id',
+        ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+        ExpressionAttributeValues: { ':meeting_id': req.body.MeetingId }
+    }
+
+    dynamodb.query(queryParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: err });
+        } else {
+            if (!data.Items.length) {
+                res.statusCode = 401;
+                res.json({ error: 'Meeting invalid!' });
+                return;
+            }
+
+            try {
+                const timeStamp = new Date().toISOString();
+                const attendees = [...data.Items[0].Attendees, ...req.body.Attendees];
+                const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+                const item = {
+                    ...data.Items[0],
+                    Attendees: uniqueAttendees,
+                    UpdatedAt: timeStamp
+                };
+
+                let putItemParams = {
+                    TableName: tableName,
+                    Item: item
+                }
+                dynamodb.put(putItemParams, (err, dataPut) => {
+                    if (err) {
+                        res.statusCode = 500;
+                        res.json({ error: err, url: req.url, body: req.body });
+                    } else {
+                        res.json({ success: 'put call succeed!', url: req.url, data: {...item, Password: '' } });
+                    }
+                });
+            } catch (e) {
+                res.statusCode = 500;
+                res.json({ error: 'Something went wrong!' });
+                return;
+            }
+        }
+    });
 });
 
 /************************************
-* HTTP post method for insert object *
-*************************************/
+ * HTTP post method for insert object *
+ *************************************/
 
 app.post(path, function(req, res) {
 
-  if (userIdPresent) {
-    req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  }
-
-  const timeStamp = new Date().toISOString();
-
-  const plainPassword = getRandomString(1, 6, '');
-  console.log('plainPassword', plainPassword);
-  const encPassword = encrypt(plainPassword);
-
-  const item = {
-    ...req.body,
-    Password: encPassword,
-    CreatedAt: timeStamp,
-    UpdatedAt: timeStamp
-  };
-
-  const password = item.Password.split('|')[0];
-  const url = `/${item.MeetingId}/${password}`;
-
-  let putItemParams = {
-    TableName: tableName,
-    Item: item
-  }
-  dynamodb.put(putItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: err, url: req.url, body: req.body});
-    } else {
-      res.json({success: 'post call succeed!', url: req.url, data: {...item, Password: '', Url: url}});
+    if (userIdPresent) {
+        req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
     }
-  });
+
+    const timeStamp = new Date().toISOString();
+
+    const plainPassword = getRandomString(1, 6, '');
+    console.log('plainPassword', plainPassword);
+    const encPassword = encrypt(plainPassword);
+
+    const item = {
+        ...req.body,
+        Password: encPassword,
+        CreatedAt: timeStamp,
+        UpdatedAt: timeStamp
+    };
+
+    const password = item.Password.split('|')[0];
+    const url = `/${item.MeetingId}/${password}`;
+
+    let putItemParams = {
+        TableName: tableName,
+        Item: item
+    }
+    dynamodb.put(putItemParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: err, url: req.url, body: req.body });
+        } else {
+            res.json({ success: 'post call succeed!', url: req.url, data: {...item, Password: '', Url: url } });
+        }
+    });
 });
 
 /**************************************
-* HTTP remove method to delete object *
-***************************************/
+ * HTTP remove method to delete object *
+ ***************************************/
 
 app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
-  const params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName];
-     try {
-      params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
-  }
-  if (hasSortKey) {
-    try {
-      params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
-  }
-
-  let removeItemParams = {
-    TableName: tableName,
-    Key: params
-  }
-  dynamodb.delete(removeItemParams, (err, data)=> {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: err, url: req.url});
+    const params = {};
+    if (userIdPresent && req.apiGateway) {
+        params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
     } else {
-      res.json({url: req.url, data: { [partitionKeyName]: req.params[partitionKeyName]}});
+        params[partitionKeyName] = req.params[partitionKeyName];
+        try {
+            params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
+        } catch (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Wrong column type ' + err });
+        }
     }
-  });
+    if (hasSortKey) {
+        try {
+            params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
+        } catch (err) {
+            res.statusCode = 500;
+            res.json({ error: 'Wrong column type ' + err });
+        }
+    }
+
+    let removeItemParams = {
+        TableName: tableName,
+        Key: params
+    }
+    dynamodb.delete(removeItemParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: err, url: req.url });
+        } else {
+            res.json({ url: req.url, data: {
+                    [partitionKeyName]: req.params[partitionKeyName] } });
+        }
+    });
 });
 
 /*******************************************
@@ -348,99 +350,99 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
  *******************************************/
 
 app.get(path + '/:meeting_id/attendees', function(req, res) {
-  let queryParams = {
-    TableName: tableName,
-    IndexName: 'MeetingId-index',
-    KeyConditionExpression: '#MeetingId = :meeting_id',
-    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
-    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
-  }
-
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: err});
-    } else {
-      if (!data.Items.length) {
-        res.statusCode = 401;
-        res.json({error: 'Meeting invalid!'});
-        return;
-      }
-
-      try{
-        const attendees = data.Items[0].Attendees;
-        const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
-
-        res.json({success: 'Attendees retrieved!', url: req.url, data: {Attendees: uniqueAttendees}});
-      }catch(e){
-        res.statusCode = 500;
-        res.json({error: 'Something went wrong!'});
-        return;
-      }
+    let queryParams = {
+        TableName: tableName,
+        IndexName: 'MeetingId-index',
+        KeyConditionExpression: '#MeetingId = :meeting_id',
+        ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+        ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
     }
-  });
+
+    dynamodb.query(queryParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: err });
+        } else {
+            if (!data.Items.length) {
+                res.statusCode = 401;
+                res.json({ error: 'Meeting invalid!' });
+                return;
+            }
+
+            try {
+                const attendees = data.Items[0].Attendees;
+                const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+                res.json({ success: 'Attendees retrieved!', url: req.url, data: { Attendees: uniqueAttendees } });
+            } catch (e) {
+                res.statusCode = 500;
+                res.json({ error: 'Something went wrong!' });
+                return;
+            }
+        }
+    });
 });
 
 /*******************************************
  * HTTP post method for meeting validation *
  *******************************************/
- 
+
 app.post(path + '/:meeting_id/validate', function(req, res) {
-  const reqPassword = req.body.password;
-  const isEncrypted = req.body.ie;
+    const reqPassword = req.body.password;
+    const isEncrypted = req.body.ie;
 
-  let queryParams = {
-    TableName: tableName,
-    IndexName: 'MeetingId-index',
-    KeyConditionExpression: '#MeetingId = :meeting_id',
-    ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
-    ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
-  }
-
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({error: err});
-    } else {
-      if (!data.Items.length) {
-        res.statusCode = 401;
-        res.json({error: 'Meeting invalid!'});
-        return;
-      }
-
-      const encPassword = data.Items[0].Password;
-      const passwordPart = encPassword.split('|')[0];
-      try{
-        let password = '';
-
-        if(isEncrypted === true){
-          password = decrypt(encPassword);
-        }else{
-          password = passwordPart;
-        }
-
-        if (password === reqPassword) {
-          const url = `/${req.params.meeting_id}/${passwordPart}`;
-          const ivPart = encPassword.split('|')[1];
-          const attendees = data.Items[0].Attendees;
-          const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
-          
-          res.json({success: 'Meeting validated!', url: req.url, data: {Url: url, I: ivPart, Attendees: uniqueAttendees}});
-        }else{
-          res.statusCode = 401;
-          res.json({error: 'Meeting invalid!'});
-        }
-      }catch(e){
-        res.statusCode = 500;
-        res.json({error: 'Something went wrong!'});
-        return;
-      }
+    let queryParams = {
+        TableName: tableName,
+        IndexName: 'MeetingId-index',
+        KeyConditionExpression: '#MeetingId = :meeting_id',
+        ExpressionAttributeNames: { '#MeetingId': 'MeetingId' },
+        ExpressionAttributeValues: { ':meeting_id': req.params.meeting_id }
     }
-  });
+
+    dynamodb.query(queryParams, (err, data) => {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ error: err });
+        } else {
+            if (!data.Items.length) {
+                res.statusCode = 401;
+                res.json({ error: 'Meeting invalid!' });
+                return;
+            }
+
+            const encPassword = data.Items[0].Password;
+            const passwordPart = encPassword.split('|')[0];
+            try {
+                let password = '';
+
+                if (isEncrypted === true) {
+                    password = decrypt(encPassword);
+                } else {
+                    password = passwordPart;
+                }
+
+                if (password === reqPassword) {
+                    const url = `/${req.params.meeting_id}/${passwordPart}`;
+                    const ivPart = encPassword.split('|')[1];
+                    const attendees = data.Items[0].Attendees;
+                    const uniqueAttendees = attendees.filter((a, i) => attendees.findIndex((s) => a.UserName === s.UserName) === i);
+
+                    res.json({ success: 'Meeting validated!', url: req.url, data: { Url: url, I: ivPart, Attendees: uniqueAttendees } });
+                } else {
+                    res.statusCode = 401;
+                    res.json({ error: 'Meeting invalid!' });
+                }
+            } catch (e) {
+                res.statusCode = 500;
+                res.json({ error: 'Something went wrong!' });
+                return;
+            }
+        }
+    });
 });
 
 app.listen(3000, function() {
-  console.log("App started")
+    console.log("App started")
 });
 
 // Export the app object. When executing the application local this does nothing. However,

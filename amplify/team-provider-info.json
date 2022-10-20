@@ -229,7 +229,8 @@
       "UnauthRoleName": "amplify-visionnext-tester-95737-unauthRole",
       "StackName": "amplify-visionnext-tester-95737",
       "StackId": "arn:aws:cloudformation:us-east-1:205131113421:stack/amplify-visionnext-tester-95737/9536ed10-501a-11ed-974e-0e965e160c41",
-      "AmplifyAppId": "d34rgk8hhv6zt9"
+      "AmplifyAppId": "d34rgk8hhv6zt9",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-visionnext-tester-95737-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -248,11 +249,26 @@
         }
       },
       "function": {
-        "visionHandleMeeting": {},
-        "MeetingPath": {},
-        "visionEmailNotification": {},
-        "meetingrecorderdev": {},
-        "visionHandlePipeline": {},
+        "visionHandleMeeting": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/visionHandleMeeting-6f4c41514334506b435a-build.zip"
+        },
+        "MeetingPath": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/MeetingPath-796b762f776d616d5932-build.zip"
+        },
+        "visionEmailNotification": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/visionEmailNotification-42464844354d2b647239-build.zip"
+        },
+        "meetingrecorderdev": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/meetingrecorderdev-61642f53756f584d6530-build.zip"
+        },
+        "visionHandlePipeline": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/visionHandlePipeline-75627947526b55697848-build.zip"
+        },
         "visionTranscribeV2": {}
       }
     }
