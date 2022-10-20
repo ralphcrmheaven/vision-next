@@ -99,7 +99,7 @@ html {
     background-color: #fff !important;
     border: #fff !important;
     height: 100% !important;
-    padding: 9px;
+    padding: 19px;
     position: relative !important;
 }
 
@@ -115,7 +115,7 @@ html {
     background: #EB311B;
     border-radius: 15px;
     color: #fff;
-    /* margin: 17px; */
+    margin: 17px;
     cursor: pointer;
 }
 
@@ -128,6 +128,17 @@ html {
 .ch-control-bar-item-iconButton:hover {
     background: #2AA8F2 !important;
 }
+
+.ch-control-bar-item-iconButton:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 0px !important;
+}
+/* .ch-control-bar-item-caret {
+    position: relative !important;
+    left:0px;
+    padding-left:1px !important
+} */
 
 .profile-topbar {
     margin-top: 30px;
