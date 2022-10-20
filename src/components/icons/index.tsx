@@ -33,4 +33,7 @@ import ShareScreenRedIcon from "./ShareScreenRed";
 import EndCallIcon from "./EndCall";
 import CheckIcon from "./Check";
 import VideoInputIcon from "./VideoInput";
-export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon }
+import AttendeesButtontIcon from "./AttendeesButton";
+import EndCallDesktopIcon from "./EndCallDesktop";
+import TripleDotIcon from "./TripleDot";
+export { CameraIcon, SettingsIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon }
