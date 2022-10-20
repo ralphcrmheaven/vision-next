@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, BackIcon, CameraColoredIcon } from './icons'
+import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, BackIcon, CameraColoredIcon, MicrophoneIcon, CheckIcon } from './icons'
 import Logo from './Logo'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import {
@@ -25,7 +25,9 @@ import {
     Notification,
     Severity,
     Attendees,
-    Chat
+    Chat,
+    useToggleLocalMute,
+    useAudioInputs
 } from 'amazon-chime-sdk-component-library-react';
 import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
@@ -78,6 +80,13 @@ const MeetingBody: React.FC<Props> = ({
     isOpen,
     handleInviteModalVisibility,
 }) => {
+    const { muted, toggleMute } = useToggleLocalMute();
+    const { devices, selectedDevice } = useAudioInputs();
+    const microphoneButtonProps = {
+        icon: muted ? <MicrophoneIcon color="#FF6355" /> : <MicrophoneIcon color="#053F64" />,
+        onClick: () => toggleMute(),
+        label: 'Mute'
+    }
     return (
         <>
 
@@ -169,7 +178,29 @@ const MeetingBody: React.FC<Props> = ({
                 </div>
 
                 <div className="w-full relative">
-                    <ControlBar layout="bottom" showLabels className="device-icon-wrapper grid grid-cols-7 gap-2">
+                    <ControlBar layout="bottom" showLabels={false} className="device-icon-wrapper grid grid-cols-7 gap-2">
+                        {/* <ControlBarButton {...microphoneButtonProps} isSelected={false} className=''>
+                            {
+                                devices.map((device) => (
+                                    <>
+                                        <PopOverItem as="button" onClick={
+                                            async () => {
+                                                await meetingManager.startAudioInputDevice(device.deviceId);
+                                            }
+                                        }>
+                                            <span>
+                                                {
+                                                    device.deviceId === selectedDevice && (
+                                                        <CheckIcon />
+                                                    )
+                                                }
+                                                {device.label}
+                                            </span>
+                                        </PopOverItem>
+                                    </>
+                                ))
+                            }
+                        </ControlBarButton> */}
                         <AudioInputControl className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""} />
                         <ContentShareControl className="device-input-icon-wrapper" label={""} />
                         <VideoInputControl className="device-input-icon-wrapper" label={""} >
