@@ -269,7 +269,11 @@
           "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
           "s3Key": "amplify-builds/visionHandlePipeline-75627947526b55697848-build.zip"
         },
-        "visionTranscribeV2": {}
+        "visionTranscribeV2": {},
+        "visionTranscribe": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/visionTranscribe-4f504478667958396369-build.zip"
+        }
       }
     }
   }
