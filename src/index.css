@@ -44,7 +44,7 @@
   }
 
   .mobile-view-cham3-img {
-    @apply fixed  h-[250px] -left-[15px] -bottom-[0px]
+    @apply absolute  h-[250px] -left-[27px] top-[85%]
   }
 
   .sign-up-mobile-view-form {
