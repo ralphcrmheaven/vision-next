@@ -15,28 +15,15 @@ import MeetingBody from './MeetingBody';
 import { transcribe } from '../api/transcribe';
 
 import {
-  AudioInputControl,
-  AudioOutputControl,
-  ControlBar,
-  ControlBarButton,
-  Phone,
   useMeetingManager,
-  MeetingStatus,
   useMeetingStatus,
-  VideoTileGrid,
-  ContentShareControl,
-  VideoInputControl,
   useVideoInputs,
   useLogger,
-  PopOverItem,
-  Modal,
-  ModalBody,
-  PrimaryButton,
-  ModalHeader,
-  Notification,
-  Severity,
-  Attendees,
-  Chat
+  useLocalVideo,
+  useAudioInputs,
+  useToggleLocalMute,
+  useContentShareState,
+  useContentShareControls,
 } from 'amazon-chime-sdk-component-library-react';
 import {
   BackgroundBlurVideoFrameProcessor,
@@ -44,7 +31,7 @@ import {
   DefaultVideoTransformDevice,
   isVideoTransformDevice,
 } from 'amazon-chime-sdk-js';
-import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, BackIcon, CameraColoredIcon } from './icons'
+import { MicrophoneIcon, VideoInputIcon, ShareScreenIcon } from './icons'
 import { ChatAlt2Icon, UserAddIcon, ViewListIcon } from '@heroicons/react/outline'
 import { ReactMultiEmail } from 'react-multi-email';
 import * as queries from '../graphql/queries';
@@ -400,6 +387,30 @@ const Meeting: FC = () => {
     doActionsOnLoad();
   }, []);
 
+  //Custom icons
+  const { isVideoEnabled, toggleVideo } = useLocalVideo();
+  const videoInputs = useVideoInputs();
+  const audioInputs = useAudioInputs();
+  const { muted, toggleMute } = useToggleLocalMute();
+  const { isLocalUserSharing } = useContentShareState();
+  const { toggleContentShare, togglePauseContentShare, paused } = useContentShareControls();
+
+  const microphoneButtonProps = {
+    icon: muted ? <MicrophoneIcon color="#FF6355" /> : <MicrophoneIcon color="#053F64" />,
+    onClick: () => toggleMute(),
+    label: 'Mute'
+  }
+
+  const sharescreenButtonProps = {
+    icon: isLocalUserSharing ? <ShareScreenIcon color="#FF6355" /> : <ShareScreenIcon color="#053F64"/>,
+    onClick: () => toggleContentShare(),
+    label: 'Sharescreen'
+  }
+  const videoButtonProps = {
+    icon: isVideoEnabled ? <VideoInputIcon color="#FF6355" /> : <VideoInputIcon color="#053F64" />,
+    onClick: () => toggleVideo(),
+    label: 'Video'
+  }
 
 
   if (isValidMeeting === false) {
@@ -411,6 +422,7 @@ const Meeting: FC = () => {
       setIsOpen={() => { }}
     />
   }
+
 
   return (
     <>
@@ -439,6 +451,13 @@ const Meeting: FC = () => {
               closedCaption={closedCaption}
               isOpen={isOpen}
               handleInviteModalVisibility={handleInviteModalVisibility}
+              microphoneButtonProps={microphoneButtonProps}
+              sharescreenButtonProps={sharescreenButtonProps}
+              isLocalUserSharing={isLocalUserSharing}
+              togglePauseContentShare={togglePauseContentShare}
+              videoButtonProps={videoButtonProps}
+              videoInputs={videoInputs}
+              audioInputs={audioInputs}
             />
           </>
         ) : isTabletOrMobile ? (
@@ -448,20 +467,22 @@ const Meeting: FC = () => {
               meetingStatus={meetingStatus}
               loading={loading}
               clickedEndMeeting={clickedEndMeeting}
-              initials={initials}
-              fullname={fullname}
-              currentPanel={currentPanel}
               recordingCountdown={recordingCountdown}
               isRecording={isRecording}
-              setIsOpen={setIsOpen}
               setShowModal={setShowModal}
               showModal={showModal}
-              setCurrentPanel={setCurrentPanel}
               isHost={isHost}
               recordingLoading={recordingLoading}
               //recordChimeMeeting={recordChimeMeeting}
               isOpen={isOpen}
               handleInviteModalVisibility={handleInviteModalVisibility}
+              microphoneButtonProps={microphoneButtonProps}
+              sharescreenButtonProps={sharescreenButtonProps}
+              isLocalUserSharing={isLocalUserSharing}
+              togglePauseContentShare={togglePauseContentShare}
+              videoButtonProps={videoButtonProps}
+              videoInputs={videoInputs}
+              audioInputs={audioInputs}
             />
           </>
         ) : ''

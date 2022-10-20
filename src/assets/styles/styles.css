@@ -126,7 +126,7 @@ html {
 }
 
 .ch-control-bar-item-iconButton:hover {
-    background: #2AA8F2 !important;
+    background: transparent!important;
 }
 
 .ch-control-bar-item-iconButton:focus {

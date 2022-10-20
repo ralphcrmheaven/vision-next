@@ -1,33 +1,15 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { HomeIcon, CameraIcon, RecordIcon, SettingsIcon, AddPeople, OnlineIcon, UsersIcon, BackIcon, CameraColoredIcon, MicrophoneIcon, CheckIcon } from './icons'
+import { HomeIcon, CameraIcon, RecordIcon, AddPeople, OnlineIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon } from './icons'
 import Logo from './Logo'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import {
-    AudioInputControl,
-    AudioOutputControl,
     ControlBar,
     ControlBarButton,
-    Phone,
-    useMeetingManager,
     MeetingStatus,
-    useMeetingStatus,
     VideoTileGrid,
-    ContentShareControl,
-    VideoInputControl,
-    useVideoInputs,
-    useLogger,
     PopOverItem,
-    Modal,
-    ModalBody,
-    PrimaryButton,
-    ModalHeader,
-    Notification,
-    Severity,
-    Attendees,
-    Chat,
-    useToggleLocalMute,
-    useAudioInputs
+    useRosterState,
 } from 'amazon-chime-sdk-component-library-react';
 import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
@@ -55,6 +37,14 @@ interface Props {
     closedCaption:any,
     isOpen:any,
     handleInviteModalVisibility:any,
+    microphoneButtonProps: any,
+    sharescreenButtonProps: any,
+    isLocalUserSharing: any,
+    togglePauseContentShare: any,
+    videoButtonProps: any,
+    videoInputs: any,
+    audioInputs: any,
+    //recordChimeMeeting: any,
 }
 
 const MeetingBody: React.FC<Props> = ({
@@ -79,13 +69,35 @@ const MeetingBody: React.FC<Props> = ({
     closedCaption,
     isOpen,
     handleInviteModalVisibility,
+    microphoneButtonProps,
+    sharescreenButtonProps,
+    isLocalUserSharing,
+    togglePauseContentShare,
+    videoButtonProps,
+    videoInputs,
+    audioInputs,
 }) => {
-    const { muted, toggleMute } = useToggleLocalMute();
-    const { devices, selectedDevice } = useAudioInputs();
-    const microphoneButtonProps = {
-        icon: muted ? <MicrophoneIcon color="#FF6355" /> : <MicrophoneIcon color="#053F64" />,
-        onClick: () => toggleMute(),
-        label: 'Mute'
+    const { roster } = useRosterState();
+    const attendees = Object.values(roster);
+    const attendessButtonProps = {
+        icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
+        onClick: () => {(currentPanel === 'roaster')?setCurrentPanel(''):setCurrentPanel('roaster')},
+        label: 'Attendees'
+    };
+    // if (currentPanel == 'chat') {
+    //     setCurrentPanel('')
+    // } else {
+    //     setCurrentPanel('chat')
+    const messageButtonProps = {
+        icon: currentPanel === 'chat' ? <MessageIcon color="#2AA8F2" /> : <MessageIcon color="#053F64" />,
+        onClick: () => {(currentPanel === 'chat')?setCurrentPanel(''):setCurrentPanel('chat')},
+        label: 'Message'
+    };
+
+    const tripleDotButtonProps = {
+        icon: <TripleDotIcon color="#053F64" />,
+        onClick: () => '',
+        label: 'Triple DOt'
     }
     return (
         <>
@@ -179,9 +191,9 @@ const MeetingBody: React.FC<Props> = ({
 
                 <div className="w-full relative">
                     <ControlBar layout="bottom" showLabels={false} className="device-icon-wrapper grid grid-cols-7 gap-2">
-                        {/* <ControlBarButton {...microphoneButtonProps} isSelected={false} className=''>
+                        <ControlBarButton {...microphoneButtonProps} isSelected={false} className=''>
                             {
-                                devices.map((device) => (
+                                audioInputs.devices.map((device: any) => (
                                     <>
                                         <PopOverItem as="button" onClick={
                                             async () => {
@@ -190,7 +202,7 @@ const MeetingBody: React.FC<Props> = ({
                                         }>
                                             <span>
                                                 {
-                                                    device.deviceId === selectedDevice && (
+                                                    device.deviceId === audioInputs.selectedDevice && (
                                                         <CheckIcon />
                                                     )
                                                 }
@@ -200,47 +212,69 @@ const MeetingBody: React.FC<Props> = ({
                                     </>
                                 ))
                             }
-                        </ControlBarButton> */}
-                        <AudioInputControl className="device-input-icon-wrapper" unmuteLabel={""} muteLabel={""} />
-                        <ContentShareControl className="device-input-icon-wrapper" label={""} />
-                        <VideoInputControl className="device-input-icon-wrapper" label={""} >
+                        </ControlBarButton>
+                        <ControlBarButton className='relative pr-[12px]' {...sharescreenButtonProps} isSelected={false}>
+                            {
+                                isLocalUserSharing && (
+                                    <PopOverItem as="button" onClick={() => { togglePauseContentShare() }}>
+                                        <span>Pause</span>
+                                    </PopOverItem>
+                                )
+                            }
+                        </ControlBarButton>
+                        <ControlBarButton {...videoButtonProps} isSelected={false} className="relative top-[5px]" >
+                            {
+                                videoInputs.devices.map((device: any) => (
+                                    <>
+
+                                        <PopOverItem as="button" onClick={
+                                            async () => {
+                                                await meetingManager.startVideoInputDevice(device.deviceId);
+                                            }
+                                        }>
+                                            <span>
+                                                {
+                                                    device.deviceId === videoInputs.selectedDevice && (
+                                                        <CheckIcon />
+                                                    )
+                                                }
+                                                {device.label}
+                                            </span>
+                                        </PopOverItem>
+                                    </>
+                                ))
+                            }
                             <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
                                 <span>Change Background</span>
                             </PopOverItem>
-                        </VideoInputControl>
+                        </ControlBarButton>
                         <ControlBarButton
-                            icon={<Phone />}
+                            icon={<EndCallDesktopIcon />}
                             onClick={clickedEndMeeting}
                             label={""}
-                            className="end-meeting end-input-icon-wrapper"
+                            className="relative -top-[26px] pr-[50px]"
                         />
-                        <AudioOutputControl label={""} className="input-icon-wrapper device-input-icon-wrapper" />
-                        <div className="input-icon-wrapper relative device-input-icon-wrapper">
-                            <Chat width="26px" css="icon-control extra-icons"
-                                onClick={async (e: any) => {
-                                    if (currentPanel == 'chat') {
-                                        setCurrentPanel('')
-                                    } else {
-                                        setCurrentPanel('chat')
-                                    }
-                                }
-                                }
-                            />
-                        </div>
+                        {/* <AudioOutputControl label={""} className="input-icon-wrapper device-input-icon-wrapper" /> */}
+                        <ControlBarButton {...messageButtonProps} isSelected={false} />
+
+                        <ControlBarButton {...attendessButtonProps} isSelected={false} />
+                        <span className="text-[14px]  font-[500] relative -left-[33px] -top-[16px]">
+
+                            {
+                                currentPanel === 'roaster' ? (
+                                    <span className="text-[#2AA8F2]">
+                                        {attendees.length}
+                                    </span>
+                                ) : (
+                                    <span className="text-[#053F64]">
+                                        {attendees.length}
+                                    </span>
+                                )
+                            }
+                        </span>
 
 
-                        <div className="input-icon-wrapper extra-icons relative device-input-icon-wrapper">
-                            <Attendees width="26px" css="width: 26px;color: #053F64;cursor: pointer"
-                                onClick={async (e: any) => {
-                                    if (currentPanel == 'roaster') {
-                                        setCurrentPanel('')
-                                    } else {
-                                        setCurrentPanel('roaster')
-                                    }
-                                }
-                                }
-                            />
-                        </div>
+    
                         {!closedCaptionStatus &&  <button onClick={() => closedCaption()}>CC OFF</button>}
                         {closedCaptionStatus &&  <button onClick={() => closedCaption()}>CC ON</button>}
 
@@ -251,6 +285,8 @@ const MeetingBody: React.FC<Props> = ({
                         {!recordingLoading && isRecording && isHost &&
                             <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
                         } */}
+                        
+                        <ControlBarButton {...tripleDotButtonProps} isSelected={false} className="relative pt-[13px]" />
 
                     </ControlBar>
                 </div>
