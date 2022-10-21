@@ -291,7 +291,7 @@ const MeetingBody: React.FC<Props> = ({
                                     </span>
                                 }
                             >
-                                <MenuItem>
+                                <MenuItem onClick={() => closedCaption(true)}>
                                     <span className="text-sm">Closed Caption</span>
                                 </MenuItem>
 
