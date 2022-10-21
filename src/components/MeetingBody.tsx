@@ -11,6 +11,7 @@ import {
     PopOverItem,
     useRosterState,
 } from 'amazon-chime-sdk-component-library-react';
+import { Menu, MenuItem } from '@aws-amplify/ui-react';
 import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
@@ -74,7 +75,7 @@ const MeetingBody: React.FC<Props> = ({
     const attendees = Object.values(roster);
     const attendessButtonProps = {
         icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
-        onClick: () => {(currentPanel === 'roaster')?setCurrentPanel(''):setCurrentPanel('roaster')},
+        onClick: () => { (currentPanel === 'roaster') ? setCurrentPanel('') : setCurrentPanel('roaster') },
         label: 'Attendees'
     };
     // if (currentPanel == 'chat') {
@@ -83,7 +84,7 @@ const MeetingBody: React.FC<Props> = ({
     //     setCurrentPanel('chat')
     const messageButtonProps = {
         icon: currentPanel === 'chat' ? <MessageIcon color="#2AA8F2" /> : <MessageIcon color="#053F64" />,
-        onClick: () => {(currentPanel === 'chat')?setCurrentPanel(''):setCurrentPanel('chat')},
+        onClick: () => { (currentPanel === 'chat') ? setCurrentPanel('') : setCurrentPanel('chat') },
         label: 'Message'
     };
 
@@ -263,23 +264,63 @@ const MeetingBody: React.FC<Props> = ({
                             }
                         </span>
 
-                        {!isRecording && isHost &&
+                        {/* {!isRecording && isHost &&
                             <button disabled={recordingLoading} onClick={() => recordChimeMeeting("record")}><RecordIcon /></button>
                         }
 
                         {!recordingLoading && isRecording && isHost &&
                             <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop</button></div>
-                        }
-                        <ControlBarButton {...tripleDotButtonProps} isSelected={false} className="relative pt-[13px]" />
+                        } */}
 
+                        {/* <ControlBarButton {...tripleDotButtonProps} isSelected={false} className="relative pt-[13px]" /> */}
+                        <div className=''>
+                            <Menu
+                                trigger={
+                                    <span className='relative top-[2px] cursor-pointer py-[10px]'>
+                                        <TripleDotIcon color="#053F64" />
+                                    </span>
+                                }
+                            >
+                                <MenuItem>
+                                    <span className="text-sm">Closed Caption</span>
+                                </MenuItem>
+
+                                <MenuItem>
+                                    <span className="text-sm">
+                                        Record Meeting
+                                        {/* {
+                                            !isRecording && isHost &&
+                                            (
+                                                <span className='pointer-events-none' onClick={() => recordChimeMeeting("record")}>Record Meeting</span>
+                                            )
+
+                                        }
+
+                                        {
+                                            !recordingLoading && isRecording && isHost &&
+                                            (
+                                                <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop Recording</button></div>
+                                            )
+
+                                        } */}
+                                    </span>
+                                </MenuItem>
+
+                                <MenuItem>
+                                    <span className="text-sm">Video Layout</span>
+                                </MenuItem>
+                            </Menu>
+                        </div>
                     </ControlBar>
+
                 </div>
 
             </div>
 
-            {isOpen && (
-                <InviteModal setModalVisibility={handleInviteModalVisibility} />
-            )
+            {
+                isOpen && (
+                    <InviteModal setModalVisibility={handleInviteModalVisibility} />
+                )
             }
             <Toaster />
         </>
