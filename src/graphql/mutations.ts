@@ -373,3 +373,45 @@ export const deleteConversationUserMessage = /* GraphQL */ `
     }
   }
 `;
+export const createRecordedMeetingPipeline = /* GraphQL */ `
+  mutation CreateRecordedMeetingPipeline(
+    $input: CreateRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    createRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateRecordedMeetingPipeline = /* GraphQL */ `
+  mutation UpdateRecordedMeetingPipeline(
+    $input: UpdateRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    updateRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteRecordedMeetingPipeline = /* GraphQL */ `
+  mutation DeleteRecordedMeetingPipeline(
+    $input: DeleteRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    deleteRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;

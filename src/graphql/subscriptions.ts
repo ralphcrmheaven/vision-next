@@ -281,3 +281,42 @@ export const onDeleteConversationUserMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateRecordedMeetingPipeline = /* GraphQL */ `
+  subscription OnCreateRecordedMeetingPipeline(
+    $filter: ModelSubscriptionRecordedMeetingPipelineFilterInput
+  ) {
+    onCreateRecordedMeetingPipeline(filter: $filter) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateRecordedMeetingPipeline = /* GraphQL */ `
+  subscription OnUpdateRecordedMeetingPipeline(
+    $filter: ModelSubscriptionRecordedMeetingPipelineFilterInput
+  ) {
+    onUpdateRecordedMeetingPipeline(filter: $filter) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteRecordedMeetingPipeline = /* GraphQL */ `
+  subscription OnDeleteRecordedMeetingPipeline(
+    $filter: ModelSubscriptionRecordedMeetingPipelineFilterInput
+  ) {
+    onDeleteRecordedMeetingPipeline(filter: $filter) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;

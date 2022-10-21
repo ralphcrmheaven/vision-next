@@ -278,6 +278,39 @@ export type DeleteConversationUserMessageInput = {
   id: string,
 };
 
+export type CreateRecordedMeetingPipelineInput = {
+  id?: string | null,
+  meetingId: string,
+  data: string,
+};
+
+export type ModelRecordedMeetingPipelineConditionInput = {
+  meetingId?: ModelStringInput | null,
+  data?: ModelStringInput | null,
+  and?: Array< ModelRecordedMeetingPipelineConditionInput | null > | null,
+  or?: Array< ModelRecordedMeetingPipelineConditionInput | null > | null,
+  not?: ModelRecordedMeetingPipelineConditionInput | null,
+};
+
+export type recordedMeetingPipeline = {
+  __typename: "recordedMeetingPipeline",
+  id: string,
+  meetingId: string,
+  data: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateRecordedMeetingPipelineInput = {
+  id: string,
+  meetingId?: string | null,
+  data?: string | null,
+};
+
+export type DeleteRecordedMeetingPipelineInput = {
+  id: string,
+};
+
 export type Response = {
   __typename: "Response",
   statusCode: string,
@@ -371,6 +404,21 @@ export type ModelConversationUserMessageFilterInput = {
   conversationUserMessagesId?: ModelIDInput | null,
 };
 
+export type ModelRecordedMeetingPipelineFilterInput = {
+  id?: ModelIDInput | null,
+  meetingId?: ModelStringInput | null,
+  data?: ModelStringInput | null,
+  and?: Array< ModelRecordedMeetingPipelineFilterInput | null > | null,
+  or?: Array< ModelRecordedMeetingPipelineFilterInput | null > | null,
+  not?: ModelRecordedMeetingPipelineFilterInput | null,
+};
+
+export type ModelRecordedMeetingPipelineConnection = {
+  __typename: "ModelRecordedMeetingPipelineConnection",
+  items:  Array<recordedMeetingPipeline | null >,
+  nextToken?: string | null,
+};
+
 export type ModelSubscriptionContactFilterInput = {
   email?: ModelSubscriptionStringInput | null,
   userId?: ModelSubscriptionStringInput | null,
@@ -429,6 +477,14 @@ export type ModelSubscriptionConversationUserMessageFilterInput = {
   body?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionConversationUserMessageFilterInput | null > | null,
   or?: Array< ModelSubscriptionConversationUserMessageFilterInput | null > | null,
+};
+
+export type ModelSubscriptionRecordedMeetingPipelineFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  meetingId?: ModelSubscriptionStringInput | null,
+  data?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionRecordedMeetingPipelineFilterInput | null > | null,
+  or?: Array< ModelSubscriptionRecordedMeetingPipelineFilterInput | null > | null,
 };
 
 export type UpdateMeetingGraphQLMutationVariables = {
@@ -863,6 +919,54 @@ export type DeleteConversationUserMessageMutation = {
   } | null,
 };
 
+export type CreateRecordedMeetingPipelineMutationVariables = {
+  input: CreateRecordedMeetingPipelineInput,
+  condition?: ModelRecordedMeetingPipelineConditionInput | null,
+};
+
+export type CreateRecordedMeetingPipelineMutation = {
+  createRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateRecordedMeetingPipelineMutationVariables = {
+  input: UpdateRecordedMeetingPipelineInput,
+  condition?: ModelRecordedMeetingPipelineConditionInput | null,
+};
+
+export type UpdateRecordedMeetingPipelineMutation = {
+  updateRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteRecordedMeetingPipelineMutationVariables = {
+  input: DeleteRecordedMeetingPipelineInput,
+  condition?: ModelRecordedMeetingPipelineConditionInput | null,
+};
+
+export type DeleteRecordedMeetingPipelineMutation = {
+  deleteRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateChimeMeetingQueryVariables = {
   title?: string | null,
   name?: string | null,
@@ -926,6 +1030,22 @@ export type SendEmailNotificationQueryVariables = {
 
 export type SendEmailNotificationQuery = {
   sendEmailNotification?: string | null,
+};
+
+export type RecordMeetingPipelineQueryVariables = {
+  meetingId?: string | null,
+  data?: string | null,
+  action?: string | null,
+};
+
+export type RecordMeetingPipelineQuery = {
+  recordMeetingPipeline?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
 };
 
 export type GetMeetingQueryVariables = {
@@ -1221,6 +1341,42 @@ export type ListConversationUserMessagesQuery = {
       createdAt: string,
       updatedAt: string,
       conversationUserMessagesId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRecordedMeetingPipelineQueryVariables = {
+  id: string,
+};
+
+export type GetRecordedMeetingPipelineQuery = {
+  getRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListRecordedMeetingPipelinesQueryVariables = {
+  filter?: ModelRecordedMeetingPipelineFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRecordedMeetingPipelinesQuery = {
+  listRecordedMeetingPipelines?:  {
+    __typename: "ModelRecordedMeetingPipelineConnection",
+    items:  Array< {
+      __typename: "recordedMeetingPipeline",
+      id: string,
+      meetingId: string,
+      data: string,
+      createdAt: string,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1559,5 +1715,50 @@ export type OnDeleteConversationUserMessageSubscription = {
     createdAt: string,
     updatedAt: string,
     conversationUserMessagesId?: string | null,
+  } | null,
+};
+
+export type OnCreateRecordedMeetingPipelineSubscriptionVariables = {
+  filter?: ModelSubscriptionRecordedMeetingPipelineFilterInput | null,
+};
+
+export type OnCreateRecordedMeetingPipelineSubscription = {
+  onCreateRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateRecordedMeetingPipelineSubscriptionVariables = {
+  filter?: ModelSubscriptionRecordedMeetingPipelineFilterInput | null,
+};
+
+export type OnUpdateRecordedMeetingPipelineSubscription = {
+  onUpdateRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteRecordedMeetingPipelineSubscriptionVariables = {
+  filter?: ModelSubscriptionRecordedMeetingPipelineFilterInput | null,
+};
+
+export type OnDeleteRecordedMeetingPipelineSubscription = {
+  onDeleteRecordedMeetingPipeline?:  {
+    __typename: "recordedMeetingPipeline",
+    id: string,
+    meetingId: string,
+    data: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
