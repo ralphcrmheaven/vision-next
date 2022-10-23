@@ -1,8 +1,14 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { NavLink } from 'react-router-dom'
 import { HomeIcon, CameraIcon, RecordIcon, AddPeople, OnlineIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon } from './icons'
 import Logo from './Logo'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
+import {
+    BackgroundBlurVideoFrameProcessor,
+    BackgroundReplacementVideoFrameProcessor,
+    DefaultVideoTransformDevice,
+    isVideoTransformDevice,
+  } from 'amazon-chime-sdk-js';
 import {
     ControlBar,
     ControlBarButton,
@@ -10,13 +16,19 @@ import {
     VideoTileGrid,
     PopOverItem,
     useRosterState,
+    useLogger,
+    useVideoInputs
 } from 'amazon-chime-sdk-component-library-react';
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
 import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
 import Toaster from './modals/Toast'
+import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
+
 interface Props {
+    record:any,
+    recordingStatus:Boolean,
     closedCaptionStatus:Boolean,
     captions:string,
     meetingManager:any,
@@ -49,6 +61,8 @@ interface Props {
 }
 
 const MeetingBody: React.FC<Props> = ({
+    recordingStatus,
+    record,
     closedCaptionStatus,
     captions,
     meetingManager,
@@ -79,6 +93,9 @@ const MeetingBody: React.FC<Props> = ({
     audioInputs,
 }) => {
     const { roster } = useRosterState();
+    const logger = useLogger()
+    const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
+    const [background, setBackground] = useState<string>('')
     const attendees = Object.values(roster);
     const attendessButtonProps = {
         icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
@@ -100,8 +117,54 @@ const MeetingBody: React.FC<Props> = ({
         onClick: () => '',
         label: 'Triple DOt'
     }
+    const createBackgroundReplacementDevice = async (device: any) => {
+        const processors: Array<any> = []
+    
+        if (await BackgroundBlurVideoFrameProcessor.isSupported()) {
+          const image = await fetch(background)
+          const replacementProcessor =
+            await BackgroundReplacementVideoFrameProcessor.create(undefined, {
+              imageBlob: await image.blob(),
+            })
+          processors.push(replacementProcessor)
+        }
+    
+        return new DefaultVideoTransformDevice(logger, device, processors)
+      }
+
+    const toggleBackgroundReplacement = async () => {
+        try {
+          let current = selectedDevice
+    
+          if (background) {
+            current = await createBackgroundReplacementDevice(selectedDevice)
+          }
+    
+          if (background === '' && isVideoTransformDevice(selectedDevice)) {
+          const intrinsicDevice = await selectedDevice.intrinsicDevice()
+            selectedDevice.stop()
+            current = intrinsicDevice
+          }
+    
+          await meetingManager.startVideoInputDevice(current)
+        } catch (error) {
+          console.log('Failed to toggle Background Replacement')
+        }
+      }
+
+    useEffect(() => {
+        toggleBackgroundReplacement()
+      }, [background])
+
     return (
         <>
+
+            <SelectBackgroundImagesModal
+                setShowModal={setShowModal}
+                setBackground={setBackground}
+                showModal={showModal}
+            />
+
 
             {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
                 <div className="grid h-screen place-items-center">
@@ -145,13 +208,13 @@ const MeetingBody: React.FC<Props> = ({
                                 <div className={`h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}`}>
 
                                     <div className="h-full w-full video-tile-wrap">
-                                        {recordingCountdown > 0 &&
-                                            <RecordMeetingLoader number={recordingCountdown} />
+                                        {recordingCountdown  &&
+                                            <RecordMeetingLoader  />
                                         }
                                         {closedCaptionStatus &&
                                             <span className="caption-style">{captions}</span>
                                         }
-                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${isRecording ? "vision-recording" : ""}`} layout="featured" >
+                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`} layout="featured" >
                                         </VideoTileGrid>
                                     </div>
 
@@ -294,27 +357,30 @@ const MeetingBody: React.FC<Props> = ({
                                 <MenuItem onClick={() => closedCaption(true)}>
                                     <span className="text-sm">Closed Caption</span>
                                 </MenuItem>
+                                
+                                {isHost &&
+                                    <MenuItem>
+                                        <span className="text-sm" onClick={() => record()}>
+                                            { !recordingStatus && <span>Record Meeting</span> }
+                                            { recordingStatus  && <span>Stop Recording</span> }
+                                            {/* {
+                                                !isRecording && isHost &&
+                                                (
+                                                    <span className='pointer-events-none' onClick={() => recordChimeMeeting("record")}>Record Meeting</span>
+                                                )
 
-                                <MenuItem>
-                                    <span className="text-sm">
-                                        Record Meeting
-                                        {/* {
-                                            !isRecording && isHost &&
-                                            (
-                                                <span className='pointer-events-none' onClick={() => recordChimeMeeting("record")}>Record Meeting</span>
-                                            )
+                                            }
 
-                                        }
+                                            {
+                                                !recordingLoading && isRecording && isHost &&
+                                                (
+                                                    <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop Recording</button></div>
+                                                )
 
-                                        {
-                                            !recordingLoading && isRecording && isHost &&
-                                            (
-                                                <div onClick={() => recordChimeMeeting("stop")}><button disabled={recordingLoading}>Stop Recording</button></div>
-                                            )
-
-                                        } */}
-                                    </span>
-                                </MenuItem>
+                                            } */}
+                                        </span>
+                                    </MenuItem>
+                                }
 
                                 <MenuItem>
                                     <span className="text-sm">Video Layout</span>

@@ -122,6 +122,7 @@ const AuthProvider = ({ children }) => {
     getAwsCredentialsFromCognito();
   };
 
+
   const userSignIn = (username, password) => {
     Auth.signIn({ username, password })
         .then(setAuthenticatedUserFromCognito)

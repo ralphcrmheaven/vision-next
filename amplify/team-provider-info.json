@@ -89,7 +89,7 @@
         },
         "MeetingPath": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/MeetingPath-67377742426e6e493348-build.zip"
+          "s3Key": "amplify-builds/MeetingPath-796b762f776d616d5932-build.zip"
         },
         "visionEmailNotification": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
@@ -103,7 +103,11 @@
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
           "s3Key": "amplify-builds/visionHandlePipeline-75627947526b55697848-build.zip"
         },
-        "visionTranscribeV2": {}
+        "visionTranscribeV2": {},
+        "visionTranscribe": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/visionTranscribe-4f504478667958396369-build.zip"
+        }
       }
     }
   },
@@ -273,6 +277,14 @@
         "visionTranscribe": {
           "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
           "s3Key": "amplify-builds/visionTranscribe-4f504478667958396369-build.zip"
+        },
+        "visionRecord": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/visionRecord-6a536f2f6e69726a6f75-build.zip"
+        },
+        "downloadRecordedMeeting": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/downloadRecordedMeeting-4c4f6770616f6138776c-build.zip"
         }
       }
     }

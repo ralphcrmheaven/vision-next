@@ -58,6 +58,7 @@ export const createAttendeeGraphQL = /* GraphQL */ `
     createAttendeeGraphQL(input: $input, condition: $condition) {
       attendeeId
       name
+      isHost
       createdAt
       updatedAt
     }
@@ -71,6 +72,7 @@ export const deleteAttendeeGraphQL = /* GraphQL */ `
     deleteAttendeeGraphQL(input: $input, condition: $condition) {
       attendeeId
       name
+      isHost
       createdAt
       updatedAt
     }
@@ -370,6 +372,48 @@ export const deleteConversationUserMessage = /* GraphQL */ `
       createdAt
       updatedAt
       conversationUserMessagesId
+    }
+  }
+`;
+export const createRecordedMeetingPipeline = /* GraphQL */ `
+  mutation CreateRecordedMeetingPipeline(
+    $input: CreateRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    createRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateRecordedMeetingPipeline = /* GraphQL */ `
+  mutation UpdateRecordedMeetingPipeline(
+    $input: UpdateRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    updateRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteRecordedMeetingPipeline = /* GraphQL */ `
+  mutation DeleteRecordedMeetingPipeline(
+    $input: DeleteRecordedMeetingPipelineInput!
+    $condition: ModelRecordedMeetingPipelineConditionInput
+  ) {
+    deleteRecordedMeetingPipeline(input: $input, condition: $condition) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
     }
   }
 `;

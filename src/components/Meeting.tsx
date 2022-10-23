@@ -13,6 +13,7 @@ import { useMediaQuery } from 'react-responsive';
 import MeetingBodyMobile from './mobileLayout/MeetingBodyMobile';
 import MeetingBody from './MeetingBody';
 import { transcribe } from '../api/transcribe';
+import { recordingMeeting } from '../api/recordMeeting';
 
 import {
   useMeetingManager,
@@ -44,7 +45,6 @@ import { IUser, selectUser } from '../redux/features/userSlice'
 import FormInput, { InputTypes } from '../components/form/FormInput'
 import Roaster from '../components/Roaster'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
-import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/loading5.gif'
@@ -68,11 +68,12 @@ const Meeting: FC = () => {
 
   const user: IUser = useSelector(selectUser);
 
-  const [recordingCountdown, setRecordingCountdown] = useState<number>(0)
+  const [recordingCountdown, setRecordingCountdown] = useState<boolean>(false)
   const intervalId = React.useRef(5);
 
   const [recordingLoading, setRecordingLoading] = useState<boolean>(false)
   const [closedCaptionStatus, setClosedCaptionStatus] = useState<boolean>(false)
+  const [recordingStatus, setRecordingStatus] = useState<boolean>(false)
   const [isHost, SetIsHost] = useState<boolean>(false)
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
   const [isRecording, setIsRecording] = useState<boolean>(false)
@@ -116,7 +117,8 @@ const Meeting: FC = () => {
     updateTheDbMeeting,
     meetingId,
     getDbFromDb,
-    meeting
+    meeting,
+    isHostMeeting
   } = useMeetings();
 
 
@@ -158,7 +160,7 @@ const Meeting: FC = () => {
       }
 
       if (background === '' && isVideoTransformDevice(selectedDevice)) {
-        const intrinsicDevice = await selectedDevice.intrinsicDevice()
+      const intrinsicDevice = await selectedDevice.intrinsicDevice()
         selectedDevice.stop()
         current = intrinsicDevice
       }
@@ -227,8 +229,8 @@ const Meeting: FC = () => {
         await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
       }
       dbMeetingData = await getDbFromDb?.()
-      setIsRecording(dbMeetingData.data.getMeeting.isRecording)
-
+      setRecordingStatus(dbMeetingData.data.getMeeting.isRecording ?? false)
+      SetIsHost(await isHostMeeting?.())
     } catch (error) {
       setIsValidMeeting(false);
     }
@@ -251,6 +253,35 @@ const Meeting: FC = () => {
     console.log("trigger transcript event")
     meetingManager.audioVideo?.transcriptionController?.subscribeToTranscriptEvent(transcriptEventHandler)
     setClosedCaptionStatus(!closedCaptionStatus)
+  }
+
+  const record = async () => {
+
+    setRecordingCountdown(true)
+
+    let action = recordingStatus == false ? "record" : 'stop'
+    const record_response = await recordingMeeting(meetingManager.meetingId ?? '', action)
+
+    console.log(record_response)
+
+    if(record_response.data.recordMeeting.statusCode == "200") {
+
+      if(action == "record") {
+        let is_recording = true
+        await updateTheDbMeeting?.(is_recording)
+      }else{
+        let is_recording = false
+        await updateTheDbMeeting?.(is_recording)
+      }
+
+      setRecordingStatus(!recordingStatus)
+    }
+
+    console.log(meetingManager)
+    console.log("trigger recording event")
+
+    setRecordingCountdown(false)
+
   }
 
   const createPipelineParams = {
@@ -283,18 +314,9 @@ const Meeting: FC = () => {
     setIsOpen(value)
   };
 
-  const startRecordingCountdown = async (is_recording: boolean) => {
-    setRecordingCountdown(5)
-    intervalId.current = window.setInterval(() => {
-      setRecordingCountdown((recordingCountdown) => recordingCountdown - 1)
-    }, 1000)
-    return () => clear();
-  }
-
-
   const downloadRecording = async () => {
     AttachmentService.listFiles(meetingManager.meetingId)
-      .then((result) => {
+      .then((result:any) => {
         console.log(result)
         result.forEach(async (file: any) => {
           console.log(file)
@@ -310,9 +332,8 @@ const Meeting: FC = () => {
               });
           }
         });
-        console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err)
       });
   }
@@ -367,22 +388,9 @@ const Meeting: FC = () => {
 
   }, [])
 
-  useEffect(() => {
-    toggleBackgroundReplacement()
-  }, [background])
+  
 
-  useEffect(() => {
-    if (recordingCountdown == 0) {
-      console.log("clear interval")
-      console.log(intervalId.current)
-
-      clear()
-
-      setRecordingLoading(false)
-      setIsRecording(true)
-    }
-  }, [recordingCountdown])
-
+  
   useEffect(() => {
     doActionsOnLoad();
   }, []);
@@ -432,6 +440,8 @@ const Meeting: FC = () => {
             <MeetingBody
               closedCaptionStatus={closedCaptionStatus}
               captions={captions}
+              recordingStatus={recordingStatus}
+              record={record}
               meetingManager={meetingManager}
               meetingStatus={meetingStatus}
               loading={loading}

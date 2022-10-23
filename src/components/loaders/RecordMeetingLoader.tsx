@@ -1,13 +1,14 @@
+import { RippleIcon } from '../icons';
+
 
 const RecordMeetingLoader = (props:any) => {
     interface Props {
-        number?: number
+        recordingCountdown?: boolean
     }
 
     return (
         <div className="record-meeting-loader">
-            <span className="label">Recording meeting in...</span>
-            <span className="num">{props.number}</span>
+            <span className="label"><RippleIcon/></span>
         </div>
     );
 };

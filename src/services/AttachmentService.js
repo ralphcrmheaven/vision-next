@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import Storage from '@aws-amplify/storage';
+import { Amplify, Auth, Storage } from 'aws-amplify';
+
+
 
 /**
  * @class AttachmentService
@@ -12,7 +14,7 @@ class AttachmentService {
     /**
      * userLevel : private|protected|public
      */
-    static userLevel = 'protected';
+    static userLevel = 'public';
 
     /**
      * userUploadDir : Default prefix of upload directory
@@ -63,13 +65,22 @@ class AttachmentService {
     }
 
     static downloadRecording(fileKey) {
-        return Storage.get(fileKey);
+        return Storage.get(fileKey, { download: true, level: "public" });
     }
 
 
 
     static listFiles(fileKey) {
-        return Storage.list(fileKey);
+        Amplify.configure({
+            Storage: {
+                AWSS3: {
+                    bucket: 'visionnextbucket224155-dev', //REQUIRED -  Amazon S3 bucket name
+                    region: 'us-east-1', //OPTIONAL -  Amazon service region
+                }
+            }
+        });
+
+        return Amplify.Storage.list(fileKey);
     }
 }
 

@@ -11,6 +11,7 @@ type Meeting @model(mutations: {update:"updateMeetingGraphQL" , create: "createM
 type Attendee @model(mutations: {create: "createAttendeeGraphQL", delete: "deleteAttendeeGraphQL"}, subscriptions: null) {
   attendeeId: String! @primaryKey
   name: String!
+  isHost: Boolean
 }
 
 type Contact @model(mutations: {
@@ -37,6 +38,7 @@ type ConversationUser @model {
   messages: [ConversationUserMessage] @hasMany
 }
 
+
 type ConversationUserMessage @model {
   id: ID!
   body: String!
@@ -49,6 +51,8 @@ type Query {
   endChimeMeeting(meetingId: String): Response  @function(name: "visionHandleMeeting-${env}")
   visionTranscribe(MeetingId: String, type: String): String @function(name: "visionTranscribe-${env}")
   sendEmailNotification(email: String, fromName: String, meetingUrl: String, topic: String): String @function(name: "visionEmailNotification-${env}")
+  recordMeeting(meetingId: String, action: String): Response @function(name: "visionRecord-${env}")
+  downloadRecordedMeeting(key: String): Response @function(name: "downloadRecordedMeeting-${env}")
 }
 
 type Response {
@@ -56,6 +60,13 @@ type Response {
   headers: String
   body: String
   isBase64Encoded: String
+}
+
+
+type recordedMeetingPipeline @model {
+  id: ID!
+  meetingId: String!
+  data: String!
 }
 
 

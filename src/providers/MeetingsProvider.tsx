@@ -59,6 +59,7 @@ import { REGION } from '../constants';
 import appConfig from '../Config';
 
 interface IMeetingsContext {
+    isHostMeeting?: () => any;
     currentMeetingId?: string,
     activeMeeting?: any,
     meetings?: Array<IMeetingRecord>,
@@ -95,7 +96,7 @@ const defaultState = {
         url: null,
         type: '',
     },
-    meetingId: '',
+    meetingId: ''
 };
 
 const MeetingsContext = createContext<IMeetingsContext>(defaultState);
@@ -311,7 +312,8 @@ export const MeetingsProvider: FC = ({ children }) => {
         try {
             const joinInfo = await createMeeting(mtId, given_name, REGION); // TODO
             const dbMeeting = await addMeetingToDB(mtId, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString());    
-            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
+            const isHost = true
+            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name, isHost);
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               joinInfo.Meeting, joinInfo.Attendee
             );
@@ -334,7 +336,8 @@ export const MeetingsProvider: FC = ({ children }) => {
           if (meetingJson) {
             const meetingData = JSON.parse(meetingJson.data);
             const joinInfo = await joinMeeting(meetingData.MeetingId, given_name);
-            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name);
+            const isHost = false
+            await addAttendeeToDB(joinInfo.Attendee.AttendeeId, given_name, isHost);
       
             const meetingSessionConfiguration = new MeetingSessionConfiguration(
               meetingData,
@@ -370,6 +373,13 @@ export const MeetingsProvider: FC = ({ children }) => {
         await dispatch(meetingRead(username, data));
     };
 
+
+    const isHostMeeting = () => {
+        const attendees = activeMeeting.attendees;
+        const attendee = attendees.find((a:any) => a.UserName === username);
+        return attendee.isHost == undefined ? false : true
+    }
+
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any='0', durationTimeInMinutes:any='0', isScheduled:any) => {
         // Save to a cloud db
         const startDateTimeUTC = moment(`${startDate} ${startTime}`);
@@ -389,6 +399,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                 {
                     UserName: username,
                     Name: given_name,
+                    isHost: true,
                 }
             ],
         };
@@ -450,6 +461,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     return (
         <MeetingsContext.Provider 
             value={{ 
+                    isHostMeeting,
                     currentMeetingId,
                     updateTheDbMeeting,
                     activeMeeting,

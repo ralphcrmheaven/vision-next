@@ -52,6 +52,26 @@ export const sendEmailNotification = /* GraphQL */ `
     )
   }
 `;
+export const recordMeeting = /* GraphQL */ `
+  query RecordMeeting($meetingId: String, $action: String) {
+    recordMeeting(meetingId: $meetingId, action: $action) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
+export const downloadRecordedMeeting = /* GraphQL */ `
+  query DownloadRecordedMeeting($key: String) {
+    downloadRecordedMeeting(key: $key) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
@@ -98,6 +118,7 @@ export const getAttendee = /* GraphQL */ `
     getAttendee(attendeeId: $attendeeId) {
       attendeeId
       name
+      isHost
       createdAt
       updatedAt
     }
@@ -121,6 +142,7 @@ export const listAttendees = /* GraphQL */ `
       items {
         attendeeId
         name
+        isHost
         createdAt
         updatedAt
       }
@@ -316,6 +338,39 @@ export const listConversationUserMessages = /* GraphQL */ `
         createdAt
         updatedAt
         conversationUserMessagesId
+      }
+      nextToken
+    }
+  }
+`;
+export const getRecordedMeetingPipeline = /* GraphQL */ `
+  query GetRecordedMeetingPipeline($id: ID!) {
+    getRecordedMeetingPipeline(id: $id) {
+      id
+      meetingId
+      data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRecordedMeetingPipelines = /* GraphQL */ `
+  query ListRecordedMeetingPipelines(
+    $filter: ModelRecordedMeetingPipelineFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRecordedMeetingPipelines(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        meetingId
+        data
+        createdAt
+        updatedAt
       }
       nextToken
     }

@@ -17,6 +17,10 @@ import {
 import {
   getMeetingFromDB,
 } from '../../utils/api';
+
+import { downloadMeeting } from '../../api/recordMeeting';
+
+
 interface IMeetingCardProps {
   meeting: IMeetingRecord,
   openInviteModal: any,
@@ -50,31 +54,35 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     props.openInviteModal(true)
   }
 
-  const downloadMeeting = async (mtid: string) => {
+  const downloadRecordedMeeting = async (file: any) => {
+    let key = "public/"+file.key
+    const response = await downloadMeeting(key)
+    console.log(response)
+
+    Object.assign(document.createElement('a'), {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      href: response
+    }).click();
+
+  }
+
+  const getFileKey = async (mtid: string) => {
     let dbMeeting: any = await getMeetingFromDB?.(mtid)
-    AttachmentService.listFiles("merged/" + dbMeeting.data.getMeeting.meetingId)
-      .then((result) => {
+    let url = "merged/" + dbMeeting.data.getMeeting.meetingId+"/composited-video/"
+    AttachmentService.listFiles(url)
+      .then((result:any) => {
         console.log(result)
         result.forEach(async (file: any) => {
           console.log(file)
           var ext = file.key.substr(file.key.lastIndexOf('.') + 1);
           if (ext == "mp4") {
-            AttachmentService.downloadRecording(file.key)
-              .then((result) => {
-                console.log(result!)
-
-                if (result !== null) {
-                  window?.open(result, '_blank')?.focus();
-                }
-              })
-              .catch((err) => {
-                console.log(err)
-              });
+              downloadRecordedMeeting(file)
           }
         });
         console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err)
       });
   };
@@ -109,7 +117,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
         <span className="px-2 text-gray-600 border-r border-r-gray-500 home-time-card">{startsIn}</span>
         <span className="flex pl-2">
           <span className="w-4 h-4 pt-1"><CameraRecordIcon /></span>
-          <span className="px-1 text-gray-600 home-time-card" onClick={() => downloadMeeting(meeting.MeetingId)}>
+          <span className="px-1 text-gray-600 home-time-card" onClick={() => getFileKey(meeting.MeetingId)}>
             Recorded meeting
           </span>
         </span>
