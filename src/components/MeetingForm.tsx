@@ -115,7 +115,8 @@ const MeetingForm: FC = () => {
       if (meetingJson) {
         const meetingData = JSON.parse(meetingJson.data);
         const joinInfo = await joinMeeting(meetingData.MeetingId, name);
-        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
+        const isHost = false
+        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name, isHost);
   
         const meetingSessionConfiguration = new MeetingSessionConfiguration(
           meetingData,
@@ -126,7 +127,8 @@ const MeetingForm: FC = () => {
       } else {
         const joinInfo = await createMeeting(title, name, 'us-east-1'); // TODO
         await addMeetingToDB(title, joinInfo.Meeting.MeetingId, JSON.stringify(joinInfo.Meeting), randomString(5));       
-        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
+        const isHost = true
+        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name, isHost);
         const meetingSessionConfiguration = new MeetingSessionConfiguration(
           joinInfo.Meeting, joinInfo.Attendee
         );

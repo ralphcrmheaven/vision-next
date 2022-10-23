@@ -8,12 +8,14 @@ const {
     ChimeSDKMediaPipelinesClient,
     CreateMediaConcatenationPipelineCommand,
     CreateMediaConcatenationPipelineCommandInput,
+    CreateMediaCapturePipelineCommand,
+    CreateMediaCapturePipelineCommandOutput,
+    DeleteMediaCapturePipelineCommand,
+    DeleteMediaCapturePipelineCommandOutput
 } = require('@aws-sdk/client-chime-sdk-media-pipelines')
 const chime = new AWS.Chime({ region: 'us-east-1' });
 const ivs = new AWS.IVS({ apiVersion: '2020-07-14' });
 const ddb = new AWS.DynamoDB();
-const chimePipe = new AWS.ChimeSDKMediaPipelines({ region: 'us-east-1', apiVersion: '2021-07-15' })
-chimePipe.endpoint = new AWS.Endpoint('https://service.chime.aws.amazon.com/console');
 
 const MEETINGS_TABLE_NAME = "recordedMeetingPipeline-fep4lur3avb35l67vzhbyxsega-tester"
 
@@ -48,9 +50,17 @@ const stopRecord = async(title) => {
     //const { MeetingId, type } = event
     const pipelineInfo = await getCapturePipeline(title);
     if (pipelineInfo) {
-        await chime.deleteMediaCapturePipeline({
-            MediaPipelineId: pipelineInfo.MediaCapturePipeline.MediaPipelineId
-        }).promise();
+
+        const chimeSdkMediaPipelinesClient = new ChimeSDKMediaPipelinesClient({
+            region: 'us-east-1',
+        });
+
+        chimeSdkMediaPipelinesClient.send(
+            new DeleteMediaCapturePipelineCommand({ MediaPipelineId: pipelineInfo.MediaCapturePipeline.MediaPipelineId }),
+        ).catch(function(error) {
+            console.log(error);
+        });
+
     } else {
         return JSON.stringify({ msg: "No pipeline to stop for this meeting" })
     }
@@ -64,49 +74,47 @@ const concatVideos = async(MeetingId) => {
         region: 'us-east-1',
     });
 
-    var params = {}
+    var params = {
+        Sinks: [{
+            S3BucketSinkConfiguration: { Destination: `arn:aws:s3:::visionnextbucket95737-tester/public/merged/${MeetingId}` },
+            Type: 'S3Bucket',
+        }, ],
+        Sources: [{
+            MediaCapturePipelineSourceConfiguration: {
+                ChimeSdkMeetingConfiguration: {
+                    ArtifactsConfiguration: {
+                        Audio: { State: 'Enabled' },
+                        CompositedVideo: { State: 'Enabled' },
+                        Content: { State: 'Disabled' },
+                        DataChannel: { State: 'Enabled' },
+                        MeetingEvents: { State: 'Enabled' },
+                        TranscriptionMessages: { State: 'Enabled' },
+                        Video: { State: 'Disabled' },
+                    },
+                },
+                MediaPipelineArn: `arn:aws:chime:us-east-1:205131113421:media-pipeline/${pipelineInfo.MediaCapturePipeline.MediaPipelineId}`,
+            },
+            Type: 'MediaCapturePipeline',
+        }, ],
+    };
 
-    params.CreateMediaConcatenationPipelineCommandInput = {
-        "Sources": [{
-            "Type": "MediaCapturePipeline",
-            "MediaCapturePipelineSourceConfiguration": {
-                "MediaPipelineArn": `arn:aws:chime:us-east-1:205131113421:media-pipeline/${pipelineInfo.MediaCapturePipeline.MediaPipelineId}`,
-                "ChimeSdkMeetingConfiguration": {
-                    "ArtifactsConfiguration": {
-                        "Audio": {
-                            "State": "Enabled"
-                        },
-                        "Video": {
-                            "State": "Enabled"
-                        },
-                        "Content": {
-                            "State": "Enabled"
-                        },
-                        "DataChannel": {
-                            "State": "Enabled"
-                        },
-                        "MeetingEvents": {
-                            "State": "Enabled"
-                        },
-                        "CompositedVideo": {
-                            "State": "Enabled"
-                        }
-                    }
-                }
-            }
-        }],
-        "Sinks": [{
-            "Type": "S3Bucket",
-            "S3BucketSinkConfiguration": {
-                "Destination": `arn:aws:s3:::visionnextbucket224155-dev/public/merged/${MeetingId}`
-            }
-        }]
-    }
 
-    console.log(JSON.stringify(params));
-    return await chimeSdkMediaPipelinesClient.send(
+    const response = await chimeSdkMediaPipelinesClient.send(
         new CreateMediaConcatenationPipelineCommand(params),
-    );
+    ).catch(function(error) {
+        console.log(error);
+        return {
+            status: false,
+            statusCode: 403,
+            body: JSON.stringify(error),
+        };
+    });
+
+    return {
+        status: true,
+        statusCode: 200,
+        body: JSON.stringify(response),
+    };
 
 }
 const record = async(MeetingId) => {
@@ -117,7 +125,8 @@ const record = async(MeetingId) => {
     const languageCode = 'en-US';
     const region = 'us-east-1';
 
-    let captureS3Destination = `arn:aws:s3:::visionnextbucket224155-dev/public/${MeetingId}/`
+    let captureS3Destination = `arn:aws:s3:::visionnextbucket95737-tester/public/${MeetingId}`
+
     const request = {
         SourceType: "ChimeSdkMeeting",
         SourceArn: `arn:aws:chime::205131113421:meeting:${MeetingId}`,
@@ -126,49 +135,108 @@ const record = async(MeetingId) => {
         ChimeSdkMeetingConfiguration: {
             "ArtifactsConfiguration": {
                 "Audio": {
-                    "MuxType": "AudioWithActiveSpeakerVideo"
+                    "MuxType": "AudioOnly"
                 },
                 "Video": {
-                    "State": "Enabled",
+                    "State": "Disabled",
                     "MuxType": "VideoOnly"
                 },
                 "Content": {
-                    "State": "Enabled",
+                    "State": "Disabled",
                     "MuxType": "ContentOnly"
+                },
+                "CompositedVideo": {
+                    "Layout": "GridView",
+                    "Resolution": "FHD",
+                    "GridViewConfiguration": {
+                        "ContentShareLayout": "PresenterOnly",
+                        "PresenterOnlyConfiguration": {
+                            "PresenterPosition": "TopRight"
+                        }
+                    }
                 }
             }
         }
     };
-    console.log("Creating new media capture pipeline: ", request)
 
-    pipelineInfo = await chime.createMediaCapturePipeline(request).promise();
+    const chimeSdkMediaPipelinesClient = new ChimeSDKMediaPipelinesClient({
+        region: 'us-east-1',
+    });
 
-    await putCapturePipeline(MeetingId, pipelineInfo)
+    try {
+        const createMediaCapturePipelineResponse = await chimeSdkMediaPipelinesClient.send(
+            new CreateMediaCapturePipelineCommand(request)
+        );
+        console.log(createMediaCapturePipelineResponse)
 
-    return await pipelineInfo;
+        await putCapturePipeline(MeetingId, createMediaCapturePipelineResponse)
+
+        return {
+            status: true,
+            statusCode: 200,
+            body: JSON.stringify(createMediaCapturePipelineResponse),
+        };
+    } catch (error) {
+        return {
+            status: false,
+            statusCode: 403,
+            body: JSON.stringify(error),
+        };
+    }
+
+
 }
-
 
 exports.handler = async(event) => {
 
-    //const { MeetingId, action } = event
+    const { meetingId, action } = event
 
-    const MeetingId = "4f2d1e84-df04-4529-b7f6-41dc7bfa0706"
-    const action = "stop"
-    if (action === 'record') {
-        return await record(MeetingId)
-    } else if (action === 'stop') {
-        //await stopRecord(MeetingId)
-        return concatVideos(MeetingId)
+    // const meetingId = "96d06ef4-ef20-4cd3-b4ae-4a6d00550706"
+    // const action = "record"
+
+    try {
+        if (action === 'record') {
+            const record_response = await record(meetingId)
+
+            if (record_response.status) {
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(record_response.body),
+                }
+            } else {
+                return {
+                    statusCode: 403,
+                    body: JSON.stringify(record_response.body),
+                };
+            }
+        } else if (action === 'stop') {
+            await stopRecord(meetingId)
+            const concat_response = await concatVideos(meetingId)
+
+            if (concat_response.status) {
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(concat_response.body),
+                }
+            } else {
+                return {
+                    statusCode: 403,
+                    body: JSON.stringify(concat_response.body),
+                };
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            statusCode: 403,
+            body: JSON.stringify(error),
+        };
     }
+
 
     return {
         statusCode: 200,
-        //  Uncomment below to enable CORS requests
-        //  headers: {
-        //      "Access-Control-Allow-Origin": "*",
-        //      "Access-Control-Allow-Headers": "*"
-        //  }, 
-        body: JSON.stringify('Hello from Lambda!'),
+        body: JSON.stringify('Video Recording done'),
     };
 };

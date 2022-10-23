@@ -57,7 +57,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     const downloadMeeting = async (mtid: string) => {
         let dbMeeting: any = await getMeetingFromDB?.(mtid)
         AttachmentService.listFiles("merged/" + dbMeeting.data.getMeeting.meetingId)
-            .then((result) => {
+            .then((result:any) => {
                 console.log(result)
                 result.forEach(async (file: any) => {
                     console.log(file)
@@ -67,9 +67,9 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                             .then((result) => {
                                 console.log(result!)
 
-                                if (result !== null) {
-                                    window?.open(result, '_blank')?.focus();
-                                }
+                                // if (result !== null) {
+                                //     window?.open(result, '_blank')?.focus();
+                                // }
                             })
                             .catch((err) => {
                                 console.log(err)
@@ -78,7 +78,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
                 });
                 console.log("s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3s3")
             })
-            .catch((err) => {
+            .catch((err:any) => {
                 console.log(err)
             });
     };

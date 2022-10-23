@@ -280,7 +280,11 @@
         },
         "visionRecord": {
           "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
-          "s3Key": "amplify-builds/visionRecord-7965586e4d614f555075-build.zip"
+          "s3Key": "amplify-builds/visionRecord-6a536f2f6e69726a6f75-build.zip"
+        },
+        "downloadRecordedMeeting": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/downloadRecordedMeeting-4c4f6770616f6138776c-build.zip"
         }
       }
     }

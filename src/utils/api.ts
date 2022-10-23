@@ -45,8 +45,8 @@ export async function addMeetingToDB(title: string, meetingId: string, meetingDa
   return meetingInfo
 }
 
-export async function addAttendeeToDB(attendeeID: string, attendeeName: string) {
-  await API.graphql(graphqlOperation(createAttendeeGraphQL, {input: {attendeeId: attendeeID, name: attendeeName }}));
+export async function addAttendeeToDB(attendeeID: string, attendeeName: string, isHost: boolean) {
+  await API.graphql(graphqlOperation(createAttendeeGraphQL, {input: {attendeeId: attendeeID, name: attendeeName, isHost: isHost }}));
 }
 
 export async function getMeetingFromDB(title: string | undefined) {

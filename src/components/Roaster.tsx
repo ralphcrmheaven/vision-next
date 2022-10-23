@@ -12,9 +12,11 @@ const Roaster = () => {
   const attendees = Object.values(roster);
 
   const attendeeItems = attendees.map(attendee => {
+    console.log("----------")
     const { chimeAttendeeId } = attendee;
+    console.log(attendee)
     return (
-      <RosterAttendee  key={chimeAttendeeId} attendeeId={chimeAttendeeId} />
+      <RosterAttendee   key={chimeAttendeeId} attendeeId={chimeAttendeeId} />
     );
   });
 

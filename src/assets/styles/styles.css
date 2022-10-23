@@ -134,6 +134,8 @@ html {
     box-shadow: none !important;
     border: 0px !important;
 }
+
+
 /* .ch-control-bar-item-caret {
     position: relative !important;
     left:0px;
@@ -633,7 +635,7 @@ aside.emoji-picker-react {
     border-radius: 16px;
     z-index: 9999;
     text-align: center;
-    padding-top: 164px;
+    padding-top: 15%;
 }
 
 .record-meeting-loader .label {
@@ -652,6 +654,10 @@ aside.emoji-picker-react {
     line-height: 124px;
     color: #FFFFFF;
     display: block;
+}
+
+.record-meeting-loader img {
+    margin: 0px auto;
 }
 
 .video-tile-wrap {

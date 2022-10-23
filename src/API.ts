@@ -93,10 +93,12 @@ export type DeleteMeetingInput = {
 export type CreateAttendeeInput = {
   attendeeId: string,
   name: string,
+  isHost?: boolean | null,
 };
 
 export type ModelAttendeeConditionInput = {
   name?: ModelStringInput | null,
+  isHost?: ModelBooleanInput | null,
   and?: Array< ModelAttendeeConditionInput | null > | null,
   or?: Array< ModelAttendeeConditionInput | null > | null,
   not?: ModelAttendeeConditionInput | null,
@@ -106,6 +108,7 @@ export type Attendee = {
   __typename: "Attendee",
   attendeeId: string,
   name: string,
+  isHost?: boolean | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -345,6 +348,7 @@ export type ModelMeetingConnection = {
 export type ModelAttendeeFilterInput = {
   attendeeId?: ModelStringInput | null,
   name?: ModelStringInput | null,
+  isHost?: ModelBooleanInput | null,
   and?: Array< ModelAttendeeFilterInput | null > | null,
   or?: Array< ModelAttendeeFilterInput | null > | null,
   not?: ModelAttendeeFilterInput | null,
@@ -551,6 +555,7 @@ export type CreateAttendeeGraphQLMutation = {
     __typename: "Attendee",
     attendeeId: string,
     name: string,
+    isHost?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -566,6 +571,7 @@ export type DeleteAttendeeGraphQLMutation = {
     __typename: "Attendee",
     attendeeId: string,
     name: string,
+    isHost?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1032,14 +1038,27 @@ export type SendEmailNotificationQuery = {
   sendEmailNotification?: string | null,
 };
 
-export type RecordMeetingPipelineQueryVariables = {
+export type RecordMeetingQueryVariables = {
   meetingId?: string | null,
-  data?: string | null,
   action?: string | null,
 };
 
-export type RecordMeetingPipelineQuery = {
-  recordMeetingPipeline?:  {
+export type RecordMeetingQuery = {
+  recordMeeting?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
+export type DownloadRecordedMeetingQueryVariables = {
+  key?: string | null,
+};
+
+export type DownloadRecordedMeetingQuery = {
+  downloadRecordedMeeting?:  {
     __typename: "Response",
     statusCode: string,
     headers?: string | null,
@@ -1099,6 +1118,7 @@ export type GetAttendeeQuery = {
     __typename: "Attendee",
     attendeeId: string,
     name: string,
+    isHost?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1119,6 +1139,7 @@ export type ListAttendeesQuery = {
       __typename: "Attendee",
       attendeeId: string,
       name: string,
+      isHost?: boolean | null,
       createdAt: string,
       updatedAt: string,
     } | null >,

@@ -52,13 +52,19 @@ export const sendEmailNotification = /* GraphQL */ `
     )
   }
 `;
-export const recordMeetingPipeline = /* GraphQL */ `
-  query RecordMeetingPipeline(
-    $meetingId: String
-    $data: String
-    $action: String
-  ) {
-    recordMeetingPipeline(meetingId: $meetingId, data: $data, action: $action) {
+export const recordMeeting = /* GraphQL */ `
+  query RecordMeeting($meetingId: String, $action: String) {
+    recordMeeting(meetingId: $meetingId, action: $action) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
+export const downloadRecordedMeeting = /* GraphQL */ `
+  query DownloadRecordedMeeting($key: String) {
+    downloadRecordedMeeting(key: $key) {
       statusCode
       headers
       body
@@ -112,6 +118,7 @@ export const getAttendee = /* GraphQL */ `
     getAttendee(attendeeId: $attendeeId) {
       attendeeId
       name
+      isHost
       createdAt
       updatedAt
     }
@@ -135,6 +142,7 @@ export const listAttendees = /* GraphQL */ `
       items {
         attendeeId
         name
+        isHost
         createdAt
         updatedAt
       }
