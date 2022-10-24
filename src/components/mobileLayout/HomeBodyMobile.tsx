@@ -3,12 +3,12 @@ import VCard from '../Cards'
 import { Loader } from '@aws-amplify/ui-react';
 import MeetingList from '../meetinglist/MeetingList';
 interface Props {
-    currentDate:any,
-    isLoading:boolean,
-    onNewMeetingCardClick:any,
-    setTheCurrentMeetingId:any,
-    setShowNewMeetingModal:any,
-    setShowJoinMeetingModal:any,
+    currentDate: any,
+    isLoading: boolean,
+    onNewMeetingCardClick: any,
+    setTheCurrentMeetingId: any,
+    setShowNewMeetingModal: any,
+    setShowJoinMeetingModal: any,
 }
 const HomeBody: React.FC<Props> = ({
     currentDate,

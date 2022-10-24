@@ -90,7 +90,9 @@ export default function Home() {
                 <HeaderMobile showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'} />
                 <HomeBodyMobile currentDate={currentDate} isLoading={isLoading} onNewMeetingCardClick={onNewMeetingCardClick} setTheCurrentMeetingId={setTheCurrentMeetingId} setShowNewMeetingModal={setShowNewMeetingModal} setShowJoinMeetingModal={setShowJoinMeetingModal} />
               </>
-            ) : ''
+            )
+              :
+              ''
         }
         <HomeFooter />
       </div>
