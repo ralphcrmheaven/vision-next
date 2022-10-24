@@ -177,9 +177,9 @@ html {
     width: 97%;
     height: auto;
     bottom: auto;
-    display: contents;
+    display: block;
     top: 21px;
-    left: 12px;
+    left: 6px;
 }
 
 .chatbox-wrapper {
