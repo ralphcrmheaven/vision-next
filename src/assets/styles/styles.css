@@ -172,7 +172,7 @@ html {
     /* margin: -15px 17px 17px 17px; */
 }
 
-.video-grid-vision div:first-child {
+.video-grid-vision-mobile div:first-child {
     border-radius: 10px !important;
     width: 97%;
     height: auto;

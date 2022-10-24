@@ -188,7 +188,7 @@ const MeetingBody: React.FC<Props> = ({
                                                     {recordingCountdown > 0 &&
                                                         <RecordMeetingLoader number={recordingCountdown} />
                                                     }
-                                                    <VideoTileGrid className={` video-grid-vision ${isRecording ? "vision-recording" : ""}`} layout="standard" >
+                                                    <VideoTileGrid className={` video-grid-vision-mobile ${isRecording ? "vision-recording" : ""}`} layout="standard" >
                                                     </VideoTileGrid>
                                                 </div>
 
