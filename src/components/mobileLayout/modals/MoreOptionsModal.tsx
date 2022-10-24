@@ -3,9 +3,10 @@ import AttendeesModal from './AttendeesModal'
 import { ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 } from '../../icons'
 interface Props {
     setIsModalMore: any
+    setBackground: any
 }
 
-const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore }) => {
+const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore, setBackground }) => {
     const [isAttendeesModal, setIsAttendeesModal] = useState(false)
     const [isChangeBackground, setIsChangeBackground] = useState(false)
     return (
@@ -48,14 +49,14 @@ const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore }) => {
                                     </span>
 
                                     <div className="w-full flex flex-row gap-[16px] justify-between pb-[17px]">
-                                        <BackgroundImageIcon1 />
-                                        <BackgroundImageIcon2 />
-                                        <BackgroundImageIcon3 />
+                                        <BackgroundImageIcon1 setBackground={setBackground} />
+                                        <BackgroundImageIcon2 setBackground={setBackground}/>
+                                        <BackgroundImageIcon3 setBackground={setBackground}/>
                                     </div>
                                     <div className="w-full flex flex-row gap-[16px] justify-between">
-                                        <BackgroundImageIcon4 />
-                                        <BackgroundImageIcon5 />
-                                        <BackgroundImageIcon6 />
+                                        <BackgroundImageIcon4 setBackground={setBackground}/>
+                                        <BackgroundImageIcon5 setBackground={setBackground}/>
+                                        <BackgroundImageIcon6 setBackground={setBackground}/>
                                     </div>
 
 

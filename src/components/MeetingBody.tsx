@@ -18,6 +18,7 @@ import {
     useRosterState,
     useLogger,
     useVideoInputs
+    
 } from 'amazon-chime-sdk-component-library-react';
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
 import GroupChatMessages from './GroupChatMessages'
@@ -309,6 +310,7 @@ const MeetingBody: React.FC<Props> = ({
                                 ))
                             }
                             <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
+
                                 <span>Change Background</span>
                             </PopOverItem>
                         </ControlBarButton>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { MoreIcon, RecordIcon, VectorBackIcon, MessageIcon, EndCallIcon, CheckIcon } from '../icons'
 import RecordMeetingLoader from '../../components/loaders/RecordMeetingLoader'
@@ -8,8 +8,18 @@ import {
     MeetingStatus,
     VideoTileGrid,
     PopOverItem,
-
+    useLogger,
+    useVideoInputs,
+    LocalVideo
 } from 'amazon-chime-sdk-component-library-react';
+
+import {
+    BackgroundBlurVideoFrameProcessor,
+    BackgroundReplacementVideoFrameProcessor,
+    DefaultVideoTransformDevice,
+    isVideoTransformDevice,
+  } from 'amazon-chime-sdk-js';
+
 import InviteModal from '../modals/InviteModal'
 import Toaster from '../modals/Toast'
 import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
@@ -60,12 +70,62 @@ const MeetingBody: React.FC<Props> = ({
 }) => {
     const [isModalMore, setIsModalMore] = useState(false)
     const [isModalMessage, setIsModalMessage] = useState(false)
+    const [background, setBackground] = useState<string>('')
+    const logger = useLogger()
+    const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
+
 
     const messageButtonProps = {
         icon: isModalMessage ? <MessageIcon color="#FF6355" /> : <MessageIcon color="#053F64" />,
         onClick: () => setIsModalMessage(true),
         label: 'Message'
     };
+
+    const selectBackground = (bg: string) => {
+        setBackground(bg !== "bg0" ? bg : '')
+    }
+
+    const createBackgroundReplacementDevice = async (device: any) => {
+        const processors: Array<any> = []
+        
+        if (await BackgroundBlurVideoFrameProcessor.isSupported()) {
+          const image = await fetch(background)
+          const replacementProcessor =
+            await BackgroundReplacementVideoFrameProcessor.create(undefined, {
+              imageBlob: await image.blob(),
+            })
+          processors.push(replacementProcessor)
+        }else{
+            alert("not supported")
+        }
+    
+        return new DefaultVideoTransformDevice(logger, device, processors)
+      }
+
+    const toggleBackgroundReplacement = async () => {
+        try {
+          let current = selectedDevice
+    
+          if (background) {
+            current = await createBackgroundReplacementDevice(selectedDevice)
+          }
+    
+          if (background === '' && isVideoTransformDevice(selectedDevice)) {
+          const intrinsicDevice = await selectedDevice.intrinsicDevice()
+            selectedDevice.stop()
+            current = intrinsicDevice
+          }
+    
+          await meetingManager.startVideoInputDevice(current)
+        } catch (error) {
+          console.log('Failed to toggle Background Replacement')
+        }
+      }
+
+    useEffect(() => {
+        toggleBackgroundReplacement()
+      }, [background])
+
     return (
         <>
             {
@@ -78,7 +138,7 @@ const MeetingBody: React.FC<Props> = ({
                         <div className='flex flex-col h-screen'>
                             {
                                 isModalMore && (
-                                    <MoreOptionsModal setIsModalMore={setIsModalMore} />
+                                    <MoreOptionsModal setBackground={selectBackground} setIsModalMore={setIsModalMore} />
                                 )
                             }
                             {
@@ -195,9 +255,9 @@ const MeetingBody: React.FC<Props> = ({
                                                 </>
                                             ))
                                         }
-                                        <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
-                                            <span>Change Background</span>
-                                        </PopOverItem>
+                                        {/* <PopOverItem as="button" onClick={() => setShowModal(!showModal)}>
+                                            <span>Change Background {background} </span>
+                                        </PopOverItem> */}
                                     </ControlBarButton>
                                     <ControlBarButton {...messageButtonProps} isSelected={false} />
                                     {/* {!isRecording && isHost &&

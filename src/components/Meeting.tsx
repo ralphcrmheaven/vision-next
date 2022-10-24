@@ -421,15 +421,15 @@ const Meeting: FC = () => {
   }
 
 
-  if (isValidMeeting === false) {
-    return <ErrorModal
-      message="Invalid meeting id or password"
-      showButton={true}
-      buttonText="Leave"
-      buttonAction={() => { navigate('/') }}
-      setIsOpen={() => { }}
-    />
-  }
+  // if (isValidMeeting === false) {
+  //   return <ErrorModal
+  //     message="Invalid meeting id or password"
+  //     showButton={true}
+  //     buttonText="Leave"
+  //     buttonAction={() => { navigate('/') }}
+  //     setIsOpen={() => { }}
+  //   />
+  // }
 
 
   return (
