@@ -89,7 +89,7 @@ const MeetingBody: React.FC<Props> = ({
                             <div className="w-[98%] pl-[20px]">
                                 {meetingStatus === MeetingStatus.Succeeded && (
                                     <div className="flex items-center justify-between h-24 w-full">
-                                        <div className="">
+                                        <div className="bg-[#FFFFFF] shadow-[0px_5px_15px_rgba(0,0,0,0.1)] rounded-[12px]">
                                             <NavLink
                                                 to="/">
                                                 <div className="flex flex-row w-[148px] items-center back-to-home" onClick={clickedEndMeeting}>

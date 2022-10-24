@@ -213,7 +213,7 @@ const MeetingBody: React.FC<Props> = ({
                                 )
                             }
                         </ControlBarButton>
-                        <ControlBarButton {...videoButtonProps} isSelected={false} className="relative top-[5px]" >
+                        <ControlBarButton {...videoButtonProps} isSelected={false} className="relative top-[3px]" >
                             {
                                 videoInputs.devices.map((device: any) => (
                                     <>
