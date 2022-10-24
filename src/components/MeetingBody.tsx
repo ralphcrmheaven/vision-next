@@ -360,7 +360,7 @@ const MeetingBody: React.FC<Props> = ({
                                     <span className="text-sm">Closed Caption</span>
                                 </MenuItem>
                                 
-                                {isHost &&
+                               
                                     <MenuItem>
                                         <span className="text-sm" onClick={() => record()}>
                                             { !recordingStatus && <span>Record Meeting</span> }
@@ -382,7 +382,7 @@ const MeetingBody: React.FC<Props> = ({
                                             } */}
                                         </span>
                                     </MenuItem>
-                                }
+                                
 
                                 <MenuItem>
                                     <span className="text-sm">Video Layout</span>
