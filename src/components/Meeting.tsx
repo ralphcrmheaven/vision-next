@@ -430,7 +430,7 @@ const Meeting: FC = () => {
   //     setIsOpen={() => { }}
   //   />
   // }
-
+  const [videoLayout, setVideoLayout] = useState('featured')
 
   return (
     <>
@@ -438,6 +438,8 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             <MeetingBody
+              videoLayout={videoLayout}
+              setVideoLayout={setVideoLayout}
               closedCaptionStatus={closedCaptionStatus}
               captions={captions}
               recordingStatus={recordingStatus}
@@ -473,6 +475,8 @@ const Meeting: FC = () => {
         ) : isTabletOrMobile ? (
           <>
             <MeetingBodyMobile
+              videoLayout={videoLayout}
+              setVideoLayout={setVideoLayout}
               record={record}
               closedCaptionStatus={closedCaptionStatus}
               captions={captions}

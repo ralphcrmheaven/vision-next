@@ -50,6 +50,8 @@ interface Props {
     audioInputs: any,
     closedCaptionStatus: boolean,
     captions: string,
+    videoLayout: string,
+    setVideoLayout: any,
 }
 const MeetingBody: React.FC<Props> = ({
     record,
@@ -77,6 +79,8 @@ const MeetingBody: React.FC<Props> = ({
     audioInputs,
     closedCaptionStatus,
     captions,
+    videoLayout,
+    setVideoLayout,
 }) => {
     const [isModalMore, setIsModalMore] = useState(false)
     const [isModalMessage, setIsModalMessage] = useState(false)
