@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { MoreIcon, RecordIcon, VectorBackIcon, MessageIcon, EndCallIcon, CheckIcon } from '../icons'
+import { MoreIcon, RecordIcon, VectorBackIcon, MessageIcon, EndCallIcon, CheckIcon, RippleIcon } from '../icons'
 import RecordMeetingLoader from '../../components/loaders/RecordMeetingLoader'
 import {
     ControlBar,
@@ -18,13 +18,15 @@ import {
     BackgroundReplacementVideoFrameProcessor,
     DefaultVideoTransformDevice,
     isVideoTransformDevice,
-  } from 'amazon-chime-sdk-js';
+} from 'amazon-chime-sdk-js';
 
 import InviteModal from '../modals/InviteModal'
 import Toaster from '../modals/Toast'
 import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
 import MessageModal from '../mobileLayout/modals/MessagesModal'
 interface Props {
+    record: any,
+    recordingStatus: boolean,
     meetingManager: any,
     meetingStatus: any,
     loading: any,
@@ -36,6 +38,7 @@ interface Props {
     isHost: any,
     recordingLoading: any,
     // recordChimeMeeting: any,
+    closedCaption: any,
     isOpen: any,
     handleInviteModalVisibility: any,
     microphoneButtonProps: any,
@@ -45,8 +48,12 @@ interface Props {
     videoButtonProps: any,
     videoInputs: any,
     audioInputs: any,
+    closedCaptionStatus: boolean,
+    captions: string,
 }
 const MeetingBody: React.FC<Props> = ({
+    record,
+    recordingStatus,
     meetingManager,
     meetingStatus,
     loading,
@@ -58,6 +65,7 @@ const MeetingBody: React.FC<Props> = ({
     isHost,
     recordingLoading,
     // recordChimeMeeting,
+    closedCaption,
     isOpen,
     handleInviteModalVisibility,
     microphoneButtonProps,
@@ -67,6 +75,8 @@ const MeetingBody: React.FC<Props> = ({
     videoButtonProps,
     videoInputs,
     audioInputs,
+    closedCaptionStatus,
+    captions,
 }) => {
     const [isModalMore, setIsModalMore] = useState(false)
     const [isModalMessage, setIsModalMessage] = useState(false)
@@ -87,45 +97,48 @@ const MeetingBody: React.FC<Props> = ({
 
     const createBackgroundReplacementDevice = async (device: any) => {
         const processors: Array<any> = []
-        
+
         if (await BackgroundBlurVideoFrameProcessor.isSupported()) {
-          const image = await fetch(background)
-          const replacementProcessor =
-            await BackgroundReplacementVideoFrameProcessor.create(undefined, {
-              imageBlob: await image.blob(),
-            })
-          processors.push(replacementProcessor)
-        }else{
+            const image = await fetch(background)
+            const replacementProcessor =
+                await BackgroundReplacementVideoFrameProcessor.create(undefined, {
+                    imageBlob: await image.blob(),
+                })
+            processors.push(replacementProcessor)
+        } else {
             alert("not supported")
         }
-    
+
         return new DefaultVideoTransformDevice(logger, device, processors)
-      }
+    }
 
     const toggleBackgroundReplacement = async () => {
         try {
-          let current = selectedDevice
-    
-          if (background) {
-            current = await createBackgroundReplacementDevice(selectedDevice)
-          }
-    
-          if (background === '' && isVideoTransformDevice(selectedDevice)) {
-          const intrinsicDevice = await selectedDevice.intrinsicDevice()
-            selectedDevice.stop()
-            current = intrinsicDevice
-          }
-    
-          await meetingManager.startVideoInputDevice(current)
+            let current = selectedDevice
+
+            if (background) {
+                current = await createBackgroundReplacementDevice(selectedDevice)
+            }
+
+            if (background === '' && isVideoTransformDevice(selectedDevice)) {
+                const intrinsicDevice = await selectedDevice.intrinsicDevice()
+                selectedDevice.stop()
+                current = intrinsicDevice
+            }
+
+            await meetingManager.startVideoInputDevice(current)
         } catch (error) {
-          console.log('Failed to toggle Background Replacement')
+            console.log('Failed to toggle Background Replacement')
         }
-      }
+    }
 
     useEffect(() => {
         toggleBackgroundReplacement()
-      }, [background])
+    }, [background])
 
+    useEffect(() => {
+        console.log(isRecording)
+    }, [isRecording])
     return (
         <>
             {
@@ -138,7 +151,7 @@ const MeetingBody: React.FC<Props> = ({
                         <div className='flex flex-col h-screen'>
                             {
                                 isModalMore && (
-                                    <MoreOptionsModal setBackground={selectBackground} setIsModalMore={setIsModalMore} />
+                                    <MoreOptionsModal setBackground={selectBackground} setIsModalMore={setIsModalMore} closedCaption={closedCaption} recordingStatus={recordingStatus} record={record} />
                                 )
                             }
                             {
@@ -178,17 +191,25 @@ const MeetingBody: React.FC<Props> = ({
                                 )}
                             </div>
 
-                            <div className="w-full row-span-4 pb-[48px] h-[70%]">
+                            <div className="w-full row-span-4 h-[70%]">
                                 {meetingStatus === MeetingStatus.Succeeded ? (
                                     <>
                                         <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
                                             <div className={`h-full w-full col-span-4`}>
 
                                                 <div className="h-full w-full video-tile-wrap">
-                                                    {recordingCountdown > 0 &&
-                                                        <RecordMeetingLoader number={recordingCountdown} />
+                                                    {
+                                                        recordingCountdown > 0 && (
+                                                            <div className="flex justify-center w-screen bg-[#020202b3] absolute h-full z-[9999]">
+                                                                <RippleIcon />
+                                                            </div>
+                                                        )
                                                     }
-                                                    <VideoTileGrid className={` video-grid-vision-mobile ${isRecording ? "vision-recording" : ""}`} layout="standard" >
+                                                    {
+                                                        closedCaptionStatus &&
+                                                        <span className="caption-style">{captions}</span>
+                                                    }
+                                                    <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout="standard" >
                                                     </VideoTileGrid>
                                                 </div>
 

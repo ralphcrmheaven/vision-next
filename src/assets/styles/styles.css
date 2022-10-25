@@ -720,7 +720,7 @@ body.full-screen-modal-active {
 
 .caption-style {
     position: absolute;
-    z-index: 999;
+    z-index: 998;
     bottom: 59.099999999999994px;
     left: 82.6px;
     border: 1px solid #fff;

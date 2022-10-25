@@ -130,7 +130,7 @@ const Meeting: FC = () => {
     processCaption(transcriptEvent)
   };
 
-  const processCaption = async (event:any) => {
+  const processCaption = async (event: any) => {
     let caption = event['results'][0]['alternatives'][0]['transcript']
     console.log(caption)
     setCaptions(caption)
@@ -160,7 +160,7 @@ const Meeting: FC = () => {
       }
 
       if (background === '' && isVideoTransformDevice(selectedDevice)) {
-      const intrinsicDevice = await selectedDevice.intrinsicDevice()
+        const intrinsicDevice = await selectedDevice.intrinsicDevice()
         selectedDevice.stop()
         current = intrinsicDevice
       }
@@ -236,7 +236,7 @@ const Meeting: FC = () => {
     }
   }
 
- 
+
   const clickedEndMeeting = async () => {
     const meetingId = meetingManager.meetingId
     if (meetingId) {
@@ -264,12 +264,12 @@ const Meeting: FC = () => {
 
     console.log(record_response)
 
-    if(record_response.data.recordMeeting.statusCode == "200") {
+    if (record_response.data.recordMeeting.statusCode == "200") {
 
-      if(action == "record") {
+      if (action == "record") {
         let is_recording = true
         await updateTheDbMeeting?.(is_recording)
-      }else{
+      } else {
         let is_recording = false
         await updateTheDbMeeting?.(is_recording)
       }
@@ -316,7 +316,7 @@ const Meeting: FC = () => {
 
   const downloadRecording = async () => {
     AttachmentService.listFiles(meetingManager.meetingId)
-      .then((result:any) => {
+      .then((result: any) => {
         console.log(result)
         result.forEach(async (file: any) => {
           console.log(file)
@@ -333,7 +333,7 @@ const Meeting: FC = () => {
           }
         });
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.log(err)
       });
   }
@@ -388,9 +388,9 @@ const Meeting: FC = () => {
 
   }, [])
 
-  
 
-  
+
+
   useEffect(() => {
     doActionsOnLoad();
   }, []);
@@ -410,7 +410,7 @@ const Meeting: FC = () => {
   }
 
   const sharescreenButtonProps = {
-    icon: isLocalUserSharing ? <ShareScreenIcon color="#FF6355" /> : <ShareScreenIcon color="#053F64"/>,
+    icon: isLocalUserSharing ? <ShareScreenIcon color="#FF6355" /> : <ShareScreenIcon color="#053F64" />,
     onClick: () => toggleContentShare(),
     label: 'Sharescreen'
   }
@@ -473,6 +473,10 @@ const Meeting: FC = () => {
         ) : isTabletOrMobile ? (
           <>
             <MeetingBodyMobile
+              record={record}
+              closedCaptionStatus={closedCaptionStatus}
+              captions={captions}
+              recordingStatus={recordingStatus}
               meetingManager={meetingManager}
               meetingStatus={meetingStatus}
               loading={loading}
@@ -484,6 +488,7 @@ const Meeting: FC = () => {
               isHost={isHost}
               recordingLoading={recordingLoading}
               //recordChimeMeeting={recordChimeMeeting}
+              closedCaption={closedCaption}
               isOpen={isOpen}
               handleInviteModalVisibility={handleInviteModalVisibility}
               microphoneButtonProps={microphoneButtonProps}
