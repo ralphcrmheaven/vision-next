@@ -4,19 +4,8 @@ var urlsToCache = [
     '/completed'
 ];
 
-console.log("update on worker.js s2")
+console.log("update on worker.js s3")
 
-caches.keys().then(cacheNames => {
-    console.log("update on worker.js deleting")
-
-    return Promise.all(
-        cacheNames.map(cacheName => {
-            if ('pwa-task-manager'.indexOf(cacheName) === -1) {
-                return caches.delete(cacheName);
-            }
-        })
-    );
-})
 
 // Install a service worker
 self.addEventListener('install', event => {

@@ -37,7 +37,7 @@ export function register(config?: Config) {
     
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/worker.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -64,11 +64,12 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-  
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
 
         alert('New version available!  Ready to update?');
+
         window.location.reload();
           if (registration && registration.waiting) {
             registration.waiting.postMessage({ type: 'SKIP_WAITING' });
@@ -87,8 +88,13 @@ function registerValidSW(swUrl: string, config?: Config) {
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
 
-              
-            
+              registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
+
+              let text;
+              if (confirm("New update available") == true) {
+                window.location.reload();
+                return
+              }
 
               // Execute callback
               if (config && config.onUpdate) {
