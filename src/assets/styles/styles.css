@@ -5,8 +5,10 @@ html {
 
 body {
     height: 100%;
+    position: fixed;
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch !important;
+    width: -webkit-fill-available;
     /* iOS velocity scrolling */
 }
 
