@@ -24,6 +24,7 @@ import InviteModal from '../modals/InviteModal'
 import Toaster from '../modals/Toast'
 import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
 import MessageModal from '../mobileLayout/modals/MessagesModal'
+import VideoLayoutModal from '../modals/VideoLayoutModal'
 interface Props {
     record: any,
     recordingStatus: boolean,
@@ -50,7 +51,7 @@ interface Props {
     audioInputs: any,
     closedCaptionStatus: boolean,
     captions: string,
-    videoLayout: string,
+    videoLayout: any,
     setVideoLayout: any,
 }
 const MeetingBody: React.FC<Props> = ({
@@ -143,19 +144,23 @@ const MeetingBody: React.FC<Props> = ({
     useEffect(() => {
         console.log(isRecording)
     }, [isRecording])
+    const [isModalVideoLayout, setIsModalVideoLayout] = useState(false)
+    const handleModalVideoLayoutVisibility = async (value: boolean) => {
+        setIsModalVideoLayout(value)
+    };
     return (
         <>
             {
                 (!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) ?
                     (
                         <div className="grid h-screen w-full place-items-center">
-                            <label><img src={loading} alt="loading" className="running-cham " />Cham is preparing your meeting ...</label>
+                            <label><img src={loading} alt="loading" className="running-cham"/>Cham is preparing your meeting ...</label>
                         </div>
                     ) : (
                         <div className='flex flex-col h-screen'>
                             {
                                 isModalMore && (
-                                    <MoreOptionsModal setBackground={selectBackground} setIsModalMore={setIsModalMore} closedCaption={closedCaption} recordingStatus={recordingStatus} record={record} />
+                                    <MoreOptionsModal setBackground={selectBackground} setIsModalMore={setIsModalMore} closedCaption={closedCaption} recordingStatus={recordingStatus} record={record} handleModalVideoLayoutVisibility={handleModalVideoLayoutVisibility} />
                                 )
                             }
                             {
@@ -213,7 +218,7 @@ const MeetingBody: React.FC<Props> = ({
                                                         closedCaptionStatus &&
                                                         <span className="caption-style">{captions}</span>
                                                     }
-                                                    <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout="standard" >
+                                                    <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout} >
                                                     </VideoTileGrid>
                                                 </div>
 
@@ -293,16 +298,22 @@ const MeetingBody: React.FC<Props> = ({
                                     } */}
                                 </ControlBar>
                             </div>
+
                         </div>
                     )
-
             }
 
-
-
-            {isOpen && (
-                <InviteModal setModalVisibility={handleInviteModalVisibility} />
-            )
+            {
+                isOpen && (
+                    <InviteModal setModalVisibility={handleInviteModalVisibility} />
+                )
+            }
+            {
+                isModalVideoLayout && (
+                    <div>
+                        <VideoLayoutModal setModalVisibility={handleModalVideoLayoutVisibility} videoLayout={videoLayout} setVideoLayout={setVideoLayout} />
+                    </div>
+                )
             }
             <Toaster />
         </>

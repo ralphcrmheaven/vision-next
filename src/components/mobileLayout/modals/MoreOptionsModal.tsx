@@ -2,17 +2,20 @@ import React, { useState } from 'react'
 import AttendeesModal from './AttendeesModal'
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
 import { ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 } from '../../icons'
+
 interface Props {
     setIsModalMore: any
     setBackground: any
     closedCaption: any
     recordingStatus: boolean
     record: any
+    handleModalVideoLayoutVisibility: any
 }
 
-const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore, setBackground, closedCaption, recordingStatus, record }) => {
+const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore, setBackground, closedCaption, recordingStatus, record, handleModalVideoLayoutVisibility, }) => {
     const [isAttendeesModal, setIsAttendeesModal] = useState(false)
     const [isChangeBackground, setIsChangeBackground] = useState(false)
+
     return (
         <>
             {
@@ -131,7 +134,10 @@ const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore, setBackground, clos
                                 </MenuItem>
 
 
-                                <MenuItem>
+                                <MenuItem onClick={() => {
+                                    setIsModalMore(false);
+                                    handleModalVideoLayoutVisibility(true)
+                                }}>
                                     <span className="text-sm">Video Layout</span>
                                 </MenuItem>
 
@@ -153,6 +159,7 @@ const MoreOptionsModal: React.FC<Props> = ({ setIsModalMore, setBackground, clos
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </>
