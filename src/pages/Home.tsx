@@ -75,6 +75,9 @@ export default function Home() {
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
       <div className="relative h-full px-[20px] md:px-14 pt-[15px] md:px-14 w-full">
         {
+          
+
+          
           isDesktopOrLaptop ?
             (
               // Desktop View Components
