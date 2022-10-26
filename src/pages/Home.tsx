@@ -82,7 +82,7 @@ export default function Home() {
             (
               // Desktop View Components
               <>
-                <Header showSearchBar={true} showSubHeader={true} header={'Welcome to VISION.'} />
+                <Header showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'} />
                 <HomeBody currentDate={currentDate} isLoading={isLoading} onNewMeetingCardClick={onNewMeetingCardClick} setTheCurrentMeetingId={setTheCurrentMeetingId} setShowNewMeetingModal={setShowNewMeetingModal} setShowJoinMeetingModal={setShowJoinMeetingModal} />
               </>
             )
@@ -90,7 +90,7 @@ export default function Home() {
             isTabletOrMobile ? (
               // Mobile View Component
               <>
-                <HeaderMobile showSearchBar={true} showSubHeader={true} header={'Welcome to VISION.'} />
+                <HeaderMobile showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'} />
                 <HomeBodyMobile currentDate={currentDate} isLoading={isLoading} onNewMeetingCardClick={onNewMeetingCardClick} setTheCurrentMeetingId={setTheCurrentMeetingId} setShowNewMeetingModal={setShowNewMeetingModal} setShowJoinMeetingModal={setShowJoinMeetingModal} />
               </>
             )
