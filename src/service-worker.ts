@@ -26,7 +26,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 console.log("new update from service worker")
 
-window.location.reload();
+location.reload();
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at

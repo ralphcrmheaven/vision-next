@@ -68,18 +68,13 @@ function registerValidSW(swUrl: string, config?: Config) {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
 
-        alert('New version available!  Ready to update?');
-
-        window.location.reload();
-          if (registration && registration.waiting) {
-            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-          }
         if (installingWorker == null) {
           return;
         }
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
+              location.reload();
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
@@ -88,10 +83,6 @@ function registerValidSW(swUrl: string, config?: Config) {
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
 
-              registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
-
-              alert("New updates available, reloading the page.")
-              window.location.reload();
 
               // Execute callback
               if (config && config.onUpdate) {
