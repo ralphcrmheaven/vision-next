@@ -6,6 +6,17 @@ var urlsToCache = [
 
 console.log("update on worker.js s3")
 
+caches.keys().then(cacheNames => {
+    console.log('Opened activate cachepwa-task-manager');
+    return Promise.all(
+        cacheNames.map(cacheName => {
+            if ('cacheWhitelist'.indexOf(cacheName) === -1) {
+                return caches.delete(cacheName);
+            }
+        })
+    );
+})
+
 
 // Install a service worker
 self.addEventListener('install', event => {
