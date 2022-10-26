@@ -1,5 +1,7 @@
 /// <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
+// eslint-disable-next-line no-restricted-globals
+
 
 // This service worker can be customized!
 // See https://developers.google.com/web/tools/workbox/modules
@@ -26,7 +28,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 console.log("new update from service worker")
 
-location.reload();
+window.location.reload();
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at

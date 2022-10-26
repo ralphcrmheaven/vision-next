@@ -9,6 +9,9 @@
 
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
+/* eslint-disable no-restricted-globals */
+// eslint-disable-next-line no-restricted-globals
+
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -74,7 +77,7 @@ function registerValidSW(swUrl: string, config?: Config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              location.reload();
+              window.location.reload();
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
