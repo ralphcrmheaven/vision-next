@@ -90,11 +90,8 @@ function registerValidSW(swUrl: string, config?: Config) {
 
               registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
 
-              let text;
-              if (confirm("New update available") == true) {
-                window.location.reload();
-                return
-              }
+              alert("New updates available, reloading the page.")
+              window.location.reload();
 
               // Execute callback
               if (config && config.onUpdate) {
