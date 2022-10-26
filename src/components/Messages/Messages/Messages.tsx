@@ -41,7 +41,7 @@ const Messages = ({
   const [editingMessageId, setEditingMessageId] = useState('');
 
   // Functions
-  const flattenedMessages = messages.map((m:any) => {
+  const flattenedMessages = messages.map((m: any) => {
     const content = !m.Content || m.Redacted ? '(Deleted)' : m.Content;
     let editedNote;
     if (m.LastEditedTimestamp && !m.Redacted) {
@@ -65,7 +65,7 @@ const Messages = ({
         <i style={{ fontStyle: 'italic' }}>{`     (${messageStatus})`}</i>
       );
     }
-    
+
     return {
       content: content,
       editedNote: editedNote,
@@ -82,11 +82,11 @@ const Messages = ({
 
   const listItems = () => {
     const items = [...flattenedMessages];
-    const dateMap:any = {};
-    let messageDate:any;
+    const dateMap: any = {};
+    let messageDate: any;
     let dateCount = 0;
-  
-    flattenedMessages.forEach((m:any, i:any) => {
+
+    flattenedMessages.forEach((m: any, i: any) => {
       if (!m || !m.content) {
         return; // not a message
       }
@@ -151,7 +151,7 @@ const Messages = ({
       showName = false;
     }
 
-    const attachment = (metadata:any) => {
+    const attachment = (metadata: any) => {
       try {
         const metadataJSON = JSON.parse(metadata);
         return metadataJSON?.attachments[0];
@@ -161,13 +161,13 @@ const Messages = ({
       return false;
     };
 
-    const getInitials = (str:any) => {
+    const getInitials = (str: any) => {
       return str.substring(0, 2);
     }
 
-    const getDisplayName = (attendeeId:any) => {  
-      if(activeMeeting.attendees.length > 0) {
-        return activeMeeting.attendees.find((a:any) => a.UserName === attendeeId)?.Name;
+    const getDisplayName = (attendeeId: any) => {
+      if (activeMeeting.attendees.length > 0) {
+        return activeMeeting.attendees.find((a: any) => a.UserName === attendeeId)?.Name;
       }
       return attendeeId;
     };
@@ -187,19 +187,19 @@ const Messages = ({
           ) : (
             <>
               <div>
-                <img src={ `https://ui-avatars.com/api/?name=${initials}` } alt="Avatar" className="h-24 border rounded-lg border-gray"/>
+                <img src={ `https://ui-avatars.com/api/?name=${initials}` } alt="Avatar" className="h-24 border rounded-lg border-gray" />
                 <ChatBubble
-                    variant={variant}
-                    senderName={displayName}
-                    redacted={m.redacted}
-                    showTail={showTail}
-                  >
-                    <div>
-                      {m.content}
-                      {m.editedNote}
-                      {m.statusNote}
-                    </div>
-                    {/* {m.metadata && attachment(m.metadata) && (
+                  variant={variant}
+                  senderName={displayName}
+                  redacted={m.redacted}
+                  showTail={showTail}
+                >
+                  <div>
+                    {m.content}
+                    {m.editedNote}
+                    {m.statusNote}
+                  </div>
+                  {/* {m.metadata && attachment(m.metadata) && (
                       <div style={{ marginTop: '10px' }}>
                         <AttachmentProcessor
                           senderId={m.senderId}
@@ -207,7 +207,7 @@ const Messages = ({
                         />
                       </div>
                     )} */}
-                  </ChatBubble>
+                </ChatBubble>
               </div>
             </>
           )}

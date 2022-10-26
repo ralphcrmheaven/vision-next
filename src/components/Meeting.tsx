@@ -404,7 +404,7 @@ const Meeting: FC = () => {
   const { toggleContentShare, togglePauseContentShare, paused } = useContentShareControls();
 
   const microphoneButtonProps = {
-    icon: muted ? <MicrophoneIcon color="#FF6355" /> : <MicrophoneIcon color="#053F64" />,
+    icon: muted ? <MicrophoneIcon color="#053F64" /> : <MicrophoneIcon color="#FF6355" />,
     onClick: () => toggleMute(),
     label: 'Mute'
   }
