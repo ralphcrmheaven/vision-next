@@ -77,12 +77,11 @@ function registerValidSW(swUrl: string, config?: Config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              window.location.reload();
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
               console.log(
-                'dsNew content is available and will be used when all ' +
+                'New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
 
@@ -90,6 +89,7 @@ function registerValidSW(swUrl: string, config?: Config) {
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
+                window.location.reload();
               }
             } else {
               // At this point, everything has been precached.
