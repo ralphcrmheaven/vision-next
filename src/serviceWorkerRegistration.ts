@@ -24,6 +24,7 @@ type Config = {
 };
 
 export function register(config?: Config) {
+
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
@@ -33,6 +34,7 @@ export function register(config?: Config) {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
+    
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
@@ -50,6 +52,7 @@ export function register(config?: Config) {
           );
         });
       } else {
+
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
@@ -61,8 +64,15 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+  
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
+
+        alert('New version available!  Ready to update?');
+        window.location.reload();
+          if (registration && registration.waiting) {
+            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+          }
         if (installingWorker == null) {
           return;
         }
@@ -76,6 +86,9 @@ function registerValidSW(swUrl: string, config?: Config) {
                 'New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
+
+              
+            
 
               // Execute callback
               if (config && config.onUpdate) {

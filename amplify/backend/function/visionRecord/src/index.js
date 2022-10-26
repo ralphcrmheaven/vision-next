@@ -17,7 +17,7 @@ const chime = new AWS.Chime({ region: 'us-east-1' });
 const ivs = new AWS.IVS({ apiVersion: '2020-07-14' });
 const ddb = new AWS.DynamoDB();
 
-const MEETINGS_TABLE_NAME = "recordedMeetingPipeline-fep4lur3avb35l67vzhbyxsega-tester"
+const MEETINGS_TABLE_NAME = "recordedMeetingPipeline-iitosspfsvgo5a2tzh2z7npsvy-live"
 
 // Set the AWS SDK Chime endpoint. The Chime endpoint is https://service.chime.aws.amazon.com.
 chime.endpoint = new AWS.Endpoint('https://service.chime.aws.amazon.com/console');
@@ -76,7 +76,7 @@ const concatVideos = async(MeetingId) => {
 
     var params = {
         Sinks: [{
-            S3BucketSinkConfiguration: { Destination: `arn:aws:s3:::visionnextbucket95737-tester/public/merged/${MeetingId}` },
+            S3BucketSinkConfiguration: { Destination: `arn:aws:s3:::visionnextbucket111151-live/public/merged/${MeetingId}` },
             Type: 'S3Bucket',
         }, ],
         Sources: [{
@@ -125,7 +125,7 @@ const record = async(MeetingId) => {
     const languageCode = 'en-US';
     const region = 'us-east-1';
 
-    let captureS3Destination = `arn:aws:s3:::visionnextbucket95737-tester/public/${MeetingId}`
+    let captureS3Destination = `arn:aws:s3:::visionnextbucket111151-live/public/${MeetingId}`
 
     const request = {
         SourceType: "ChimeSdkMeeting",

@@ -4,7 +4,7 @@ var urlsToCache = [
     '/completed'
 ];
 
-console.log("update on worker.js 2")
+console.log("update on worker.js s2")
 
 caches.keys().then(cacheNames => {
     console.log("update on worker.js deleting")
@@ -28,6 +28,12 @@ self.addEventListener('install', event => {
             return cache.addAll(urlsToCache);
         })
     );
+});
+
+self.addEventListener('message', function(event) {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
 });
 
 // Cache and return requests
