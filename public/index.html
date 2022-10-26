@@ -38,6 +38,15 @@
         if (last_path == "") {
             location.href = '/home';
         }
+
+        caches.keys().then(cacheNames => {
+            console.log('removing existing worker.js');
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
     </script>
 </body>
 
