@@ -26,7 +26,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 console.log("new update from service worker")
 
-alert("New updates available, reloading the page.")
 window.location.reload();
 
 // Set up App Shell-style routing, so that all navigation requests
