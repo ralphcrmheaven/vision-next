@@ -32,6 +32,7 @@ window.addEventListener('load', () => {
       </PersistGate>
     </Provider>,
     document.getElementById('root')
+    
   )
 })
 
