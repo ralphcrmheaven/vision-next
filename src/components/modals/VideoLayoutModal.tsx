@@ -23,7 +23,7 @@ const VideoLayoutModal = (props: any) => {
                 <ModalBody className='mb-[50px] flex flex-row gap-[10px] justify-center'>
                     <RadioGroup
                         options={[
-                            { value: 'featured', label: 'Featured' },
+                            // { value: 'featured', label: 'Featured' },
                             { value: 'standard', label: 'Standard' },
                         ]}
                         value={props.videoLayout}
