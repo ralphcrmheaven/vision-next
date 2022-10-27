@@ -191,7 +191,7 @@ html {
     width: 97%;
     height: auto;
     bottom: auto;
-    display: block;
+    display: contents;
     top: 21px;
     left: 6px;
 }
