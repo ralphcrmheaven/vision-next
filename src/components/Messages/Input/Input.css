@@ -20,6 +20,7 @@ span.text-input {
     background: #F3F3F3;
     position: relative;
     padding-left: 30px !important;
+    padding-right: 40px !important;
 }
 
 .text-input input::placeholder {
