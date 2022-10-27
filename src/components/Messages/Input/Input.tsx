@@ -197,7 +197,7 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
         <form onSubmit={onSubmit} className="message-input-form">
           {showEmojiPicker ? <Picker onEmojiClick={onEmojiClick} /> : null}
           <div>
-            <label className="relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
+            <label className="fixed bottom-[16%] md:relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
 
               <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
                 setShowEmojiPicker(!showEmojiPicker)

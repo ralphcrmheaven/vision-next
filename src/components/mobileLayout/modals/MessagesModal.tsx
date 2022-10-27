@@ -27,7 +27,7 @@ const MessagesModal: React.FC<Props> = ({
                 {/* Modal Body */}
                 <div className="pt-[54px] flex flex-col gap-[33px] pl-[29px] pr-[28px] flex-1">
                     <div className={`vision-tab`} >
-                        <div className="chatbox-wrapper ">
+                        <div className="">
                             <GroupChatMessages />
                         </div>
                     </div>
