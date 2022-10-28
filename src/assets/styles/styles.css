@@ -775,8 +775,15 @@ body.full-screen-modal-active {
     border-radius: 10px;
 }
 
+.videos-wrap-100 {
+    height: 100%;
+}
+
+.videos-wrap-70 {
+    height: 70%;
+}
+
 .videos-wrap {
-    height: 400px;
     position: relative;
     overflow-y: scroll;
     padding-bottom: 100px;
