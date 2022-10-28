@@ -32,6 +32,7 @@ import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
 import MessageModal from '../mobileLayout/modals/MessagesModal'
 import VideoLayoutModal from '../modals/VideoLayoutModal'
 interface Props {
+    progress: number,
     activeMeeting:any,
     record: any,
     recordingStatus: boolean,
@@ -62,6 +63,7 @@ interface Props {
     setVideoLayout: any,
 }
 const MeetingBody: React.FC<Props> = ({
+    progress,
     record,
     activeMeeting,
     recordingStatus,
@@ -165,6 +167,7 @@ const MeetingBody: React.FC<Props> = ({
                     (
                         <div className="grid h-screen w-full place-items-center">
                             <label><img src={loading} alt="loading" className="running-cham"/>Cham is preparing your meeting ...</label>
+                            <progress className="progress-cham" id="file" value={progress} max="100">{progress}%</progress>
                         </div>
                     ) : (
                         <div className='flex flex-col h-screen'>

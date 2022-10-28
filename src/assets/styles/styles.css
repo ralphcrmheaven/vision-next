@@ -801,3 +801,18 @@ body.full-screen-modal-active {
 .mobile-bg {
     background: #ccc;
 }
+
+.progress-cham {
+    position: absolute;
+    margin-top: 202px;
+    height: 8px;
+    width: 200px;
+    border: 1px solid grey;
+    margin-left: -19px;
+}
+
+progress[value]::-webkit-progress-value {
+    background-image: -webkit-linear-gradient(-45deg, transparent 33%, #ccc 33%, #ccc 66%, transparent 66%), -webkit-linear-gradient(top, #053F64, #053F64), -webkit-linear-gradient(left, #053F64, #053F64);
+    border-radius: 2px;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}

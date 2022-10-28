@@ -29,6 +29,7 @@ import Toaster from './modals/Toast'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 
 interface Props {
+    progress: number,
     record: any,
     recordingStatus: Boolean,
     closedCaptionStatus: Boolean,
@@ -65,6 +66,7 @@ interface Props {
 }
 
 const MeetingBody: React.FC<Props> = ({
+    progress,
     recordingStatus,
     record,
     closedCaptionStatus,
@@ -177,6 +179,7 @@ const MeetingBody: React.FC<Props> = ({
             {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
                 <div className="grid h-screen place-items-center">
                     <label><img src={loading} alt="loading" className="running-cham " />Cham is preparing your meeting ...</label>
+                    <progress className="progress-cham" id="file" value={progress} max="100">{progress}%</progress>
                 </div>
             }
 

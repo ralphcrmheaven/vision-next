@@ -86,6 +86,9 @@ const Meeting: FC = () => {
   const [currentPanel, setCurrentPanel] = useState<string>('roaster')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [captions, setCaptions] = useState<string>('')
+  const [progress, setProgress] = useState<number>(0)
+
+  
 
   var dbMeetingData = {
     data: {
@@ -217,23 +220,31 @@ const Meeting: FC = () => {
 
   // Events
   const doActionsOnLoad = async () => {
+    setProgress(3)
     console.log(meetingManager)
 
     try {
       const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
+      setProgress(10)
       console.log("doActionsOnLoad")
       console.log(res)
       if (res.success) {
         setIsValidMeeting(true);
         await createOrJoinTheMeeting?.();
+        setProgress(40)
         await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
+        setProgress(60)
       }
       dbMeetingData = await getDbFromDb?.()
+      setProgress(70)
       setRecordingStatus(dbMeetingData.data.getMeeting.isRecording ?? false)
       SetIsHost(await isHostMeeting?.())
+      setProgress(90)
     } catch (error) {
       setIsValidMeeting(false);
     }
+
+    setProgress(100)
   }
 
 
@@ -438,6 +449,7 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             <MeetingBody
+              progress={progress}
               videoLayout={videoLayout}
               setVideoLayout={setVideoLayout}
               closedCaptionStatus={closedCaptionStatus}
@@ -475,6 +487,7 @@ const Meeting: FC = () => {
         ) : isTabletOrMobile ? (
           <>
             <MeetingBodyMobile
+              progress={progress}
               activeMeeting={activeMeeting}
               videoLayout={videoLayout}
               setVideoLayout={setVideoLayout}
