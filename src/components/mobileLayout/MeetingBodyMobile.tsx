@@ -236,7 +236,7 @@ const MeetingBody: React.FC<Props> = ({
                                                         </div>
                                                     }
 
-                                                    <div className="grid grid-cols-2 gap-1 w-full videos-wrap">
+                                                    <div  className={`grid grid-cols-2 gap-1 w-full videos-wrap ${recordingStatus ? "vision-recording" : ""}`} >
                                                         <LocalVideo className="remove-video-tile" /> 
                                                         <RemoteVideos className="remove-video-tile" />
                                                     </div>
