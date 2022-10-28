@@ -680,11 +680,6 @@ aside.emoji-picker-react {
     margin: 0px auto;
 }
 
-.video-tile-wrap {
-    float: left;
-    position: relative;
-}
-
 
 /* .amplify-tabs {
     color: black;
@@ -768,4 +763,41 @@ body.full-screen-modal-active {
     to {
         transform: scaleY(0);
     }
+}
+
+.remove-video-tile {
+    object-fit: contain;
+    height: 200px !important;
+    background: transparent !important;
+}
+
+.remove-video-tile video {
+    border-radius: 10px;
+}
+
+.videos-wrap {
+    height: 400px;
+    position: relative;
+    overflow-y: scroll;
+    padding-bottom: 100px;
+    padding-top: 20px;
+    background: #ccc;
+    padding-left: 7px;
+}
+
+.video-tile-wrap {
+    float: left;
+    position: relative;
+}
+
+.content-wrap {
+    padding: 10px;
+}
+
+.content-wrap video {
+    border-radius: 10px;
+}
+
+.mobile-bg {
+    background: #ccc;
 }

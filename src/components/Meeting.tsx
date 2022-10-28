@@ -475,6 +475,7 @@ const Meeting: FC = () => {
         ) : isTabletOrMobile ? (
           <>
             <MeetingBodyMobile
+              activeMeeting={activeMeeting}
               videoLayout={videoLayout}
               setVideoLayout={setVideoLayout}
               record={record}

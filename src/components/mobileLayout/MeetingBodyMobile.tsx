@@ -10,8 +10,14 @@ import {
     PopOverItem,
     useLogger,
     useVideoInputs,
-    LocalVideo
+    LocalVideo,
+    RemoteVideo,
+    RemoteVideos,
+    ContentShare,
+    useContentShareState
+    
 } from 'amazon-chime-sdk-component-library-react';
+
 
 import {
     BackgroundBlurVideoFrameProcessor,
@@ -26,6 +32,7 @@ import MoreOptionsModal from '../mobileLayout/modals/MoreOptionsModal'
 import MessageModal from '../mobileLayout/modals/MessagesModal'
 import VideoLayoutModal from '../modals/VideoLayoutModal'
 interface Props {
+    activeMeeting:any,
     record: any,
     recordingStatus: boolean,
     meetingManager: any,
@@ -56,6 +63,7 @@ interface Props {
 }
 const MeetingBody: React.FC<Props> = ({
     record,
+    activeMeeting,
     recordingStatus,
     meetingManager,
     meetingStatus,
@@ -88,6 +96,8 @@ const MeetingBody: React.FC<Props> = ({
     const [background, setBackground] = useState<string>('')
     const logger = useLogger()
     const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
+
+    const { tileId  } = useContentShareState();
 
 
     const messageButtonProps = {
@@ -203,7 +213,7 @@ const MeetingBody: React.FC<Props> = ({
                             <div className="w-full row-span-4 h-[70%]">
                                 {meetingStatus === MeetingStatus.Succeeded ? (
                                     <>
-                                        <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
+                                        <div className="w-full h-full mobile-bg">
                                             <div className={`h-full w-full col-span-4`}>
 
                                                 <div className="h-full w-full video-tile-wrap">
@@ -218,8 +228,18 @@ const MeetingBody: React.FC<Props> = ({
                                                         closedCaptionStatus &&
                                                         <span className="caption-style">{captions}</span>
                                                     }
-                                                    <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout} >
-                                                    </VideoTileGrid>
+                                                    {/* <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout} >
+                                                    </VideoTileGrid> */}
+                                                    { tileId &&
+                                                        <div className="grid grid-rows-1 gap-1  h-[50%] w-full content-wrap">
+                                                            <ContentShare />
+                                                        </div>
+                                                    }
+
+                                                    <div className="grid grid-cols-2 gap-1 w-full videos-wrap">
+                                                        <LocalVideo className="remove-video-tile" /> 
+                                                        <RemoteVideos className="remove-video-tile" />
+                                                    </div>
                                                 </div>
 
                                             </div>
