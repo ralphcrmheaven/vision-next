@@ -25,6 +25,7 @@ import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
 import VideoLayoutModal from './modals/VideoLayoutModal'
+import CreatePollModal from './modals/CreatePollModal'
 import Toaster from './modals/Toast'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
 
@@ -164,7 +165,12 @@ const MeetingBody: React.FC<Props> = ({
     const [isModalVideoLayout, setIsModalVideoLayout] = useState(false)
     const handleModalVideoLayoutVisibility = async (value: boolean) => {
         setIsModalVideoLayout(value)
-      };
+    };
+
+    const [isModalCreatePoll, setIsModalCreatePoll] = useState(false)
+    const handleModalCreatePollVisibility = async (value: boolean) => {
+        setIsModalCreatePoll(value)
+    };
     return (
         <>
             <SelectBackgroundImagesModal
@@ -390,9 +396,12 @@ const MeetingBody: React.FC<Props> = ({
                                     </span>
                                 </MenuItem>
 
-
-                                <MenuItem onClick={()=>{handleModalVideoLayoutVisibility(true)}}>
+                                <MenuItem onClick={() => { handleModalVideoLayoutVisibility(true) }}>
                                     <span className="text-sm">Video Layout</span>
+                                </MenuItem>
+
+                                <MenuItem onClick={() => { handleModalCreatePollVisibility(true) }}>
+                                    <span className="text-sm">Create Poll</span>
                                 </MenuItem>
                             </Menu>
                         </div>
@@ -411,6 +420,12 @@ const MeetingBody: React.FC<Props> = ({
             {
                 isModalVideoLayout && (
                     <VideoLayoutModal setModalVisibility={handleModalVideoLayoutVisibility} videoLayout={videoLayout} setVideoLayout={setVideoLayout} />
+                )
+            }
+
+{
+                isModalCreatePoll && (
+                    <CreatePollModal setModalVisibility={handleModalCreatePollVisibility} />
                 )
             }
             <Toaster />
