@@ -215,7 +215,7 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
                   className="text-input"
                   ref={inputRef}
                 />
-                <div className="flex absolute right-4 cursor-pointer items-center z-[9999]" onClick={onSubmit}>
+                <div className="flex absolute right-4 cursor-pointer items-center z-[20]" onClick={onSubmit}>
                   <span><SendMessageIcon width="20px" height="20px" /></span>
                 </div>
               </div>

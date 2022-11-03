@@ -6,7 +6,7 @@ span.text-input {
     display: flex;
     flex-grow: 1;
     background: #ffff;
-    z-index: 9999;
+    z-index: 20;
     height: auto;
 }
 

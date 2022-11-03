@@ -223,7 +223,7 @@ html {
 .message-input-container {
     position: absolute;
     width: 83%;
-    z-index: 999;
+    z-index: 20;
     bottom: -26px;
 }
 
@@ -244,7 +244,7 @@ html {
     position: relative;
     left: 18px;
     top: 19px;
-    z-index: 998;
+    z-index: 20;
 }
 
 
