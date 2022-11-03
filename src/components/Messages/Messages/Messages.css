@@ -5,7 +5,7 @@
 
 .message-list-container {
     position: absolute !important;
-    height: 74%;
+    height: 99%!important;
     width: 83%;
     padding-bottom: 36px;
 }

@@ -197,26 +197,28 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
         <form onSubmit={onSubmit} className="message-input-form">
           {showEmojiPicker ? <Picker onEmojiClick={onEmojiClick} /> : null}
           <div>
-
-
-
-            <label className="relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
+            <label className="fixed bottom-[16%] md:relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
 
               <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
                 setShowEmojiPicker(!showEmojiPicker)
               }} />
               {/* <button  onClick={(_event) => { setShowEmojiPicker(!showEmojiPicker)} } ><ChamXsIcon   /></button> */}
 
-
-              <InputComponent
-                onChange={onChange}
-                value={text}
-                type="text"
-                placeholder="Send message"
-                autoFocus
-                className="text-input"
-                ref={inputRef}
-              />
+              <div className='flex flex-row items-center'>
+                <InputComponent
+                  showClear={false}
+                  onChange={onChange}
+                  value={text}
+                  type="text"
+                  placeholder="Send message"
+                  autoFocus
+                  className="text-input"
+                  ref={inputRef}
+                />
+                <div className="flex absolute right-4 cursor-pointer items-center z-[20]" onClick={onSubmit}>
+                  <span><SendMessageIcon width="20px" height="20px" /></span>
+                </div>
+              </div>
             </label>
 
           </div>

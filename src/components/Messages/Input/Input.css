@@ -6,7 +6,7 @@ span.text-input {
     display: flex;
     flex-grow: 1;
     background: #ffff;
-    z-index: 9999;
+    z-index: 20;
     height: auto;
 }
 
@@ -20,6 +20,7 @@ span.text-input {
     background: #F3F3F3;
     position: relative;
     padding-left: 30px !important;
+    padding-right: 40px !important;
 }
 
 .text-input input::placeholder {
