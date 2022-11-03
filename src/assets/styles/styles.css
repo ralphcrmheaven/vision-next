@@ -823,3 +823,17 @@ progress[value]::-webkit-progress-value {
     border-radius: 2px;
     background-size: 35px 20px, 100% 100%, 100% 100%;
 }
+
+.amplify-image-vision {
+    width: 100%;
+    height: auto;
+    margin-bottom: 11px;
+}
+
+.amplify-heading-vision {
+    margin: 26px 17px 22px;
+}
+
+.amplify-button-vision {
+    background-color: #053F64 !important;
+}

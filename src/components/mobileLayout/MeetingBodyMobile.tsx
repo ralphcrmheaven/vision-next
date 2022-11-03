@@ -130,6 +130,7 @@ const MeetingBody: React.FC<Props> = ({
     }
 
     const toggleBackgroundReplacement = async () => {
+
         try {
             let current = selectedDevice
 

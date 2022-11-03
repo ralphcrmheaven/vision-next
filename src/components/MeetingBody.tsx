@@ -24,6 +24,8 @@ import { Menu, MenuItem } from '@aws-amplify/ui-react';
 import GroupChatMessages from './GroupChatMessages'
 import Roaster from '../components/Roaster'
 import InviteModal from './modals/InviteModal'
+import BreakoutRoomsModal from './modals/BreakoutRoomsModal'
+import CreateBreakoutModal from './modals/CreateBreakoutModal'
 import VideoLayoutModal from './modals/VideoLayoutModal'
 import Toaster from './modals/Toast'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
@@ -104,16 +106,18 @@ const MeetingBody: React.FC<Props> = ({
     const logger = useLogger()
     const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
     const [background, setBackground] = useState<string>('')
+    const [toggleBreakoutRoomModal, setToggleBreakoutRoomModal] = useState<boolean>(false)
+    const [showBreakout, setShowBreakout] = useState<boolean>(false)
+    const [showCreateBreakout, setShowCreateBreakout] = useState<boolean>(false)
+
     const attendees = Object.values(roster);
     const attendessButtonProps = {
         icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
         onClick: () => { (currentPanel === 'roaster') ? setCurrentPanel('') : setCurrentPanel('roaster') },
         label: 'Attendees'
     };
-    // if (currentPanel == 'chat') {
-    //     setCurrentPanel('')
-    // } else {
-    //     setCurrentPanel('chat')
+
+
     const messageButtonProps = {
         icon: currentPanel === 'chat' ? <MessageIcon color="#2AA8F2" /> : <MessageIcon color="#053F64" />,
         onClick: () => { (currentPanel === 'chat') ? setCurrentPanel('') : setCurrentPanel('chat') },
@@ -138,6 +142,14 @@ const MeetingBody: React.FC<Props> = ({
         }
 
         return new DefaultVideoTransformDevice(logger, device, processors)
+    }
+
+    const toggleBreakoutRooms = async () => {
+        try {
+            setShowBreakout(!showBreakout)
+        } catch (error) {
+            alert('Breakout rooms problem, notify admin.')
+        }
     }
 
     const toggleBackgroundReplacement = async () => {
@@ -169,12 +181,24 @@ const MeetingBody: React.FC<Props> = ({
       };
     return (
         <>
+
+
+            <CreateBreakoutModal
+                setShowModal={setShowCreateBreakout}
+                showModal={showCreateBreakout}
+            />
+
+            <BreakoutRoomsModal
+                setShowModal={setShowBreakout}
+                showModal={showBreakout}
+                setShowCreateBreakout={setShowCreateBreakout}
+            />
+
             <SelectBackgroundImagesModal
                 setShowModal={setShowModal}
                 setBackground={setBackground}
                 showModal={showModal}
             />
-
 
             {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
                 <div className="grid h-screen place-items-center">
@@ -370,6 +394,9 @@ const MeetingBody: React.FC<Props> = ({
                                     <span className="text-sm">Closed Caption</span>
                                 </MenuItem>
 
+                                <MenuItem onClick={() => toggleBreakoutRooms()}>
+                                    <span className="text-sm">Breakout Rooms</span>
+                                </MenuItem>
 
                                 <MenuItem>
                                     <span className="text-sm" onClick={() => record()}>
