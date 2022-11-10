@@ -72,6 +72,24 @@ export const downloadRecordedMeeting = /* GraphQL */ `
     }
   }
 `;
+export const createChimeBreakout = /* GraphQL */ `
+  query CreateChimeBreakout(
+    $meetingId: String
+    $numRooms: String
+    $type: String
+  ) {
+    createChimeBreakout(
+      meetingId: $meetingId
+      numRooms: $numRooms
+      type: $type
+    ) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
@@ -184,6 +202,37 @@ export const listContacts = /* GraphQL */ `
         name
         phoneNumber
         group
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getBreakoutRooms = /* GraphQL */ `
+  query GetBreakoutRooms($id: ID!) {
+    getBreakoutRooms(id: $id) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listBreakoutRooms = /* GraphQL */ `
+  query ListBreakoutRooms(
+    $filter: ModelBreakoutRoomsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBreakoutRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        meetingId
+        body
+        break
+        id
         createdAt
         updatedAt
       }

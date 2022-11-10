@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState }  from 'react';
 import { Card, Image, Collection, Badge, View, Flex,Button, Divider, Heading } from '@aws-amplify/ui-react';
 import {
     Modal,
@@ -10,11 +10,12 @@ import {
   import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 import createBreakoutRoom  from '../../api/breakout';
 import '@aws-amplify/ui-react/styles.css';
+import breakout  from '../../api/breakout';
 
 
 const BreakoutRoomsModal = (props:any) => {
 
-    const items = [
+    const rooms = [
         {
             title: 'Milford - Room #1',
             badges: ['Waterfront'],
@@ -26,7 +27,6 @@ const BreakoutRoomsModal = (props:any) => {
     ];
 
     const [numRooms, setNumRooms] = useState(0);
-    if (!props.showModal) return <></>
 
     const toggleCreateBreakoutRoom = async () => {
         props.setShowCreateBreakout(true)
@@ -38,9 +38,23 @@ const BreakoutRoomsModal = (props:any) => {
         // }
     };
 
+    const getBreakoutRooms = async () => {
+        const request = {
+            meetingId: props.meetingId,
+            type: "get"
+        }
+       const rooms = await breakout(request);
+       console.log("getting breakout rooms")
+       console.table(rooms)
+    };
+
     const onNumRoomsChange = (value:any) => {
         setNumRooms(value);
     };
+
+    useEffect(() => {
+        getBreakoutRooms();
+    }, props.meetingId);
 
     return (
         <div>
@@ -59,7 +73,7 @@ const BreakoutRoomsModal = (props:any) => {
                     </div>
 
                 <Collection
-                items={items}
+                items={rooms}
                 type="list"
                 direction="row"
                 gap="20px"

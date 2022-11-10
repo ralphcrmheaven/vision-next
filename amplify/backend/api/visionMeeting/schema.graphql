@@ -26,6 +26,13 @@ type Contact @model(mutations: {
   group: String,
 }
 
+
+type BreakoutRooms @model {
+  meetingId: String!
+  body: String!
+  break: String!
+}
+
 type Conversation @model {
   id: ID!
   users: [ConversationUser] @hasMany
@@ -53,7 +60,7 @@ type Query {
   sendEmailNotification(email: String, fromName: String, meetingUrl: String, topic: String): String @function(name: "visionEmailNotification-${env}")
   recordMeeting(meetingId: String, action: String): Response @function(name: "visionRecord-${env}")
   downloadRecordedMeeting(key: String): Response @function(name: "downloadRecordedMeeting-${env}")
-  createChimeBreakout(meetingId: String, breakoutId: String): Response @function(name: "breakoutRoom-${env}")
+  createChimeBreakout(meetingId: String, numRooms: String type: String): Response @function(name: "breakoutRoom-${env}")
 }
 
 type Response {

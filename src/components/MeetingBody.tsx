@@ -190,11 +190,13 @@ const MeetingBody: React.FC<Props> = ({
 
 
             <CreateBreakoutModal
+                meetingId={meetingManager.meetingId}
                 setShowModal={setShowCreateBreakout}
                 showModal={showCreateBreakout}
             />
 
             <BreakoutRoomsModal
+                meetingId={meetingManager.meetingId}
                 setShowModal={setShowBreakout}
                 showModal={showBreakout}
                 setShowCreateBreakout={setShowCreateBreakout}

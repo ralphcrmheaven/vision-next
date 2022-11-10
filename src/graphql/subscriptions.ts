@@ -41,6 +41,48 @@ export const onDeleteContact = /* GraphQL */ `
     }
   }
 `;
+export const onCreateBreakoutRooms = /* GraphQL */ `
+  subscription OnCreateBreakoutRooms(
+    $filter: ModelSubscriptionBreakoutRoomsFilterInput
+  ) {
+    onCreateBreakoutRooms(filter: $filter) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateBreakoutRooms = /* GraphQL */ `
+  subscription OnUpdateBreakoutRooms(
+    $filter: ModelSubscriptionBreakoutRoomsFilterInput
+  ) {
+    onUpdateBreakoutRooms(filter: $filter) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteBreakoutRooms = /* GraphQL */ `
+  subscription OnDeleteBreakoutRooms(
+    $filter: ModelSubscriptionBreakoutRoomsFilterInput
+  ) {
+    onDeleteBreakoutRooms(filter: $filter) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateConversation = /* GraphQL */ `
   subscription OnCreateConversation(
     $filter: ModelSubscriptionConversationFilterInput

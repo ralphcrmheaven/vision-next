@@ -17,13 +17,13 @@ const CreateBreakoutModal = (props:any) => {
     if (!props.showModal) return <></>
 
     const createBreakoutRooms = async () => {
-        for (let i=1; i<=numRooms; i++) {
-            const request = {
-                room_id : i+1,
-                meetingId: props.meetingId
-            }
-            await breakout?.createBreakoutRoom(request)
+        const request = {
+            meetingId: props.meetingId,
+            numRooms: numRooms,
+            type: "create"
         }
+        await breakout(request)
+        props.setShowModal(!props.showModal)
     };
 
     const onNumRoomsChange = (value:any) => {

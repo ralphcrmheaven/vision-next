@@ -48,7 +48,7 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "LambdaExecutionRole": "string"
         },
-        "breakoutroom": {
+        "breakoutRoom": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",

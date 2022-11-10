@@ -126,6 +126,51 @@ export const updateContactGraphQL = /* GraphQL */ `
     }
   }
 `;
+export const createBreakoutRooms = /* GraphQL */ `
+  mutation CreateBreakoutRooms(
+    $input: CreateBreakoutRoomsInput!
+    $condition: ModelBreakoutRoomsConditionInput
+  ) {
+    createBreakoutRooms(input: $input, condition: $condition) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateBreakoutRooms = /* GraphQL */ `
+  mutation UpdateBreakoutRooms(
+    $input: UpdateBreakoutRoomsInput!
+    $condition: ModelBreakoutRoomsConditionInput
+  ) {
+    updateBreakoutRooms(input: $input, condition: $condition) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteBreakoutRooms = /* GraphQL */ `
+  mutation DeleteBreakoutRooms(
+    $input: DeleteBreakoutRoomsInput!
+    $condition: ModelBreakoutRoomsConditionInput
+  ) {
+    deleteBreakoutRooms(input: $input, condition: $condition) {
+      meetingId
+      body
+      break
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createConversation = /* GraphQL */ `
   mutation CreateConversation(
     $input: CreateConversationInput!

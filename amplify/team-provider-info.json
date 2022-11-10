@@ -288,13 +288,16 @@
         },
         "visionRecord": {
           "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
-          "s3Key": "amplify-builds/visionRecord-6a536f2f6e69726a6f75-build.zip"
+          "s3Key": "amplify-builds/visionRecord-4f4c73696d6275667278-build.zip"
         },
         "downloadRecordedMeeting": {
           "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
           "s3Key": "amplify-builds/downloadRecordedMeeting-4c4f6770616f6138776c-build.zip"
         },
-        "breakoutroom": {}
+        "breakoutRoom": {
+          "deploymentBucketName": "amplify-visionnext-tester-95737-deployment",
+          "s3Key": "amplify-builds/breakoutRoom-61666877414471566f62-build.zip"
+        }
       }
     }
   }
