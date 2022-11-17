@@ -209,7 +209,7 @@ const NewMeetingForm = (props:any) => {
                  id="topic-details" 
                  editorState={editorState} 
                  onEditorStateChange={onEditorStateChange}
-                 editorStyle={{ height: '400px' }}
+                 editorStyle={{ height: '200px' }}
                  wrapperClassName="v-rte-wrapper box-border v-ui-element"
                  />
             </div>
