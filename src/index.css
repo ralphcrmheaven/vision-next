@@ -60,3 +60,18 @@
   }
 
 }
+
+*::-webkit-scrollbar {    
+  width: 20px;        
+}
+ 
+*::-webkit-scrollbar-track {    
+  
+}
+ 
+*::-webkit-scrollbar-thumb {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;        
+  background-image: linear-gradient(180deg, #FF6355 0%, #FBA949 8.45%, #FAE442 15.02%, #8BD448 21.59%, #2AA8F2 30.04%, #053F64 50.69%);
+  border-radius: 20px;    
+}
