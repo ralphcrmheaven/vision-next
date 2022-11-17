@@ -75,3 +75,10 @@
   background-image: linear-gradient(180deg, #FF6355 0%, #FBA949 8.45%, #FAE442 15.02%, #8BD448 21.59%, #2AA8F2 30.04%, #053F64 50.69%);
   border-radius: 20px;    
 }
+
+.v-rte-editor::-webkit-scrollbar-thumb {
+  border: none;
+  background-clip: padding-box;        
+  background-image: none;
+  border-radius: 20px;    
+}
