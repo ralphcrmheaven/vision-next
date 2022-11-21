@@ -15,6 +15,8 @@ import breakout  from '../../api/breakout';
 
 const BreakoutRoomsModal = (props:any) => {
 
+    
+
     const rooms = [
         {
             title: 'Milford - Room #1',
@@ -55,6 +57,8 @@ const BreakoutRoomsModal = (props:any) => {
     useEffect(() => {
         getBreakoutRooms();
     }, props.meetingId);
+
+    if (!props.showModal) return <></>
 
     return (
         <div>

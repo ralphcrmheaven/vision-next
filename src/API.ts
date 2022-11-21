@@ -161,14 +161,12 @@ export type UpdateContactInput = {
 export type CreateBreakoutRoomsInput = {
   meetingId: string,
   body: string,
-  break: string,
   id?: string | null,
 };
 
 export type ModelBreakoutRoomsConditionInput = {
   meetingId?: ModelStringInput | null,
   body?: ModelStringInput | null,
-  break?: ModelStringInput | null,
   and?: Array< ModelBreakoutRoomsConditionInput | null > | null,
   or?: Array< ModelBreakoutRoomsConditionInput | null > | null,
   not?: ModelBreakoutRoomsConditionInput | null,
@@ -178,7 +176,6 @@ export type BreakoutRooms = {
   __typename: "BreakoutRooms",
   meetingId: string,
   body: string,
-  break: string,
   id: string,
   createdAt: string,
   updatedAt: string,
@@ -187,7 +184,6 @@ export type BreakoutRooms = {
 export type UpdateBreakoutRoomsInput = {
   meetingId?: string | null,
   body?: string | null,
-  break?: string | null,
   id: string,
 };
 
@@ -417,7 +413,6 @@ export type ModelContactConnection = {
 export type ModelBreakoutRoomsFilterInput = {
   meetingId?: ModelStringInput | null,
   body?: ModelStringInput | null,
-  break?: ModelStringInput | null,
   and?: Array< ModelBreakoutRoomsFilterInput | null > | null,
   or?: Array< ModelBreakoutRoomsFilterInput | null > | null,
   not?: ModelBreakoutRoomsFilterInput | null,
@@ -503,7 +498,6 @@ export type ModelSubscriptionStringInput = {
 export type ModelSubscriptionBreakoutRoomsFilterInput = {
   meetingId?: ModelSubscriptionStringInput | null,
   body?: ModelSubscriptionStringInput | null,
-  break?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionBreakoutRoomsFilterInput | null > | null,
   or?: Array< ModelSubscriptionBreakoutRoomsFilterInput | null > | null,
 };
@@ -701,7 +695,6 @@ export type CreateBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -718,7 +711,6 @@ export type UpdateBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -735,7 +727,6 @@ export type DeleteBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -1325,7 +1316,6 @@ export type GetBreakoutRoomsQuery = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -1345,7 +1335,6 @@ export type ListBreakoutRoomsQuery = {
       __typename: "BreakoutRooms",
       meetingId: string,
       body: string,
-      break: string,
       id: string,
       createdAt: string,
       updatedAt: string,
@@ -1628,7 +1617,6 @@ export type OnCreateBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -1644,7 +1632,6 @@ export type OnUpdateBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -1660,7 +1647,6 @@ export type OnDeleteBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    break: string,
     id: string,
     createdAt: string,
     updatedAt: string,

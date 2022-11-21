@@ -214,7 +214,6 @@ export const getBreakoutRooms = /* GraphQL */ `
     getBreakoutRooms(id: $id) {
       meetingId
       body
-      break
       id
       createdAt
       updatedAt
@@ -231,7 +230,6 @@ export const listBreakoutRooms = /* GraphQL */ `
       items {
         meetingId
         body
-        break
         id
         createdAt
         updatedAt

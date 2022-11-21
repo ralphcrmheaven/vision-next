@@ -28,9 +28,8 @@ type Contact @model(mutations: {
 
 
 type BreakoutRooms @model {
-  meetingId: String!
+  meetingId: String! @primaryKey
   body: String!
-  break: String!
 }
 
 type Conversation @model {
