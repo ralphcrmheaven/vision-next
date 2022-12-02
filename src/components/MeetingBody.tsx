@@ -104,13 +104,15 @@ const MeetingBody: React.FC<Props> = ({
     setVideoLayout,
 }) => {
     const { roster } = useRosterState();
+
     const logger = useLogger()
     const { selectedDevice }: { selectedDevice: any } = useVideoInputs()
     const [background, setBackground] = useState<string>('')
     const [toggleBreakoutRoomModal, setToggleBreakoutRoomModal] = useState<boolean>(false)
     const [showBreakout, setShowBreakout] = useState<boolean>(false)
     const [showCreateBreakout, setShowCreateBreakout] = useState<boolean>(false)
-
+    const [audio] = useState(new Audio("../assets/audio/cham-meeting-prepare.mp3"));
+    
     const attendees = Object.values(roster);
     const attendessButtonProps = {
         icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
@@ -175,6 +177,8 @@ const MeetingBody: React.FC<Props> = ({
 
     useEffect(() => {
         toggleBackgroundReplacement()
+        audio.play();
+
     }, [background])
     const [isModalVideoLayout, setIsModalVideoLayout] = useState(false)
     const handleModalVideoLayoutVisibility = async (value: boolean) => {
@@ -185,6 +189,8 @@ const MeetingBody: React.FC<Props> = ({
     const handleModalCreatePollVisibility = async (value: boolean) => {
         setIsModalCreatePoll(value)
     };
+
+
     return (
         <>
 
@@ -209,7 +215,7 @@ const MeetingBody: React.FC<Props> = ({
             />
 
             {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
-                <div className="grid h-screen place-items-center">
+                <div className="grid h-screen place-items-center text-center">
                     <label><img src={loading} alt="loading" className="running-cham " />Cham is preparing your meeting ...</label>
                     <progress className="progress-cham" id="file" value={progress} max="100">{progress}%</progress>
                 </div>

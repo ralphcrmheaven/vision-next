@@ -47,7 +47,7 @@ import Roaster from '../components/Roaster'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import ErrorModal from './modals/ErrorModal';
 import GroupChatMessages from './GroupChatMessages'
-import loading from '../assets/images/loading5.gif'
+import loading from '../assets/images/cham-loading.gif'
 import 'react-multi-email/style.css';
 import AttachmentService from '../services/AttachmentService';
 

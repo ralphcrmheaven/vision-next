@@ -118,7 +118,7 @@ html {
 }
 
 .running-cham {
-    height: 140px !important;
+    height: 260px !important;
     margin-top: 3px;
     /* margin-left: 30px; */
 }
@@ -810,18 +810,19 @@ body.full-screen-modal-active {
 }
 
 .progress-cham {
-    position: absolute;
-    margin-top: 202px;
-    height: 8px;
-    width: 200px;
+    position: relative;
+    margin-top: -376.8px;
+    height: 13px;
+    width: 217px;
     border: 1px solid grey;
     margin-left: -19px;
+    border-radius: 10px;
 }
 
 progress[value]::-webkit-progress-value {
-    background-image: -webkit-linear-gradient(-45deg, transparent 33%, #ccc 33%, #ccc 66%, transparent 66%), -webkit-linear-gradient(top, #053F64, #053F64), -webkit-linear-gradient(left, #053F64, #053F64);
+    background-image: linear-gradient(100deg, #FF6355 0%, #FBA949 8.45%, #FAE442 15.02%, #8BD448 21.59%, #2AA8F2 30.04%, #053F64 50.69%);
     border-radius: 2px;
-    background-size: 35px 20px, 100% 100%, 100% 100%;
+    background-clip: padding-box;
 }
 
 .amplify-image-vision {
