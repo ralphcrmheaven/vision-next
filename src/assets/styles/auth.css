@@ -1,0 +1,6 @@
+.auth-page {
+    background-image: url(../images/auth/bg-5.svg), url(../images/auth/bg-4.svg), url(../images/auth/bg-3.svg), url(../images/auth/bg-2.svg), url(../images/auth/bg-1.svg);
+    background-repeat: no-repeat;
+    background-position: top 51px right, bottom 0 right 34px, bottom 0 right, bottom 0 left, bottom 0 left;
+    background-size: auto, auto, auto, auto, contain;
+}
