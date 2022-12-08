@@ -6,8 +6,14 @@ import {
     ModalBody,
     ModalHeader,
   } from 'amazon-chime-sdk-component-library-react'
+import {
+useMeetings
+} from '../../providers/MeetingsProvider';
 
-  import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
+import BreakoutRoom from '../breakouts/BreakoutRoom';
+
+
+import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 import createBreakoutRoom  from '../../api/breakout';
 import '@aws-amplify/ui-react/styles.css';
 import breakout  from '../../api/breakout';
@@ -15,18 +21,18 @@ import breakout  from '../../api/breakout';
 
 const BreakoutRoomsModal = (props:any) => {
 
-    
+    const items = {
+        Meeting: ""
+    };
+      
 
-    const rooms = [
-        {
-            title: 'Milford - Room #1',
-            badges: ['Waterfront'],
-        },
-        {
-            title: 'Milford - Room #2',
-            badges: ['Mountain'],
-        },
-    ];
+    const [rooms, setRooms] = useState<any>([])
+
+    const {
+        setShowJoinMeetingModal,
+        setTheCurrentMeetingId,
+        setTheMeeting
+    } = useMeetings();
 
     const [numRooms, setNumRooms] = useState(0);
 
@@ -45,9 +51,15 @@ const BreakoutRoomsModal = (props:any) => {
             meetingId: props.meetingId,
             type: "get"
         }
-       const rooms = await breakout(request);
+       const rooms_result = await breakout(request);
+        let rooms = rooms_result.map(function(element:any){
+            return element.Meeting
+        });
+        
+       setRooms(rooms);
+
        console.log("getting breakout rooms")
-       console.table(rooms)
+       console.log(rooms)
     };
 
     const onNumRoomsChange = (value:any) => {
@@ -75,41 +87,7 @@ const BreakoutRoomsModal = (props:any) => {
                             Create Breakout Room
                         </VButton>
                     </div>
-
-                <Collection
-                items={rooms}
-                type="list"
-                direction="row"
-                gap="20px"
-                wrap="nowrap"
-                >
-                {(item, index) => (
-                    <Card
-                    key={index}
-                    borderRadius="medium"
-                    maxWidth="20rem"
-                    variation="outlined"
-                    >
-                    <Image
-                        className="amplify-image-vision"
-                        src="/images/BGRectangle1474.png"
-                        alt="Glittering stream with old log, snowy mountain peaks tower over a green field."
-                    />
-                    <View padding="xs">
-                        <Heading className="amplify-heading-vision" padding="medium">
-                            <Badge
-                                key={item.title}>
-                                    {item.title}
-                                </Badge>
-                            </Heading>
-                        <Button className="amplify-button-vision" variation="primary" isFullWidth>
-                                Enter Room
-                        </Button>
-                    </View>
-                    </Card>
-                )}
-                </Collection>
-                    
+                    <BreakoutRoom rooms={rooms}/>
                 </div>
                 </ModalBody>
             </Modal>

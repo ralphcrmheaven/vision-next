@@ -104,11 +104,11 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
   } catch (err) { }
 
   return (
-    <div className="v-card meeting-card text-sm" key={meeting.MeetingId + "-meetingcard"}>
+    <div className="v-card meeting-card text-sm mb-5" key={meeting.MeetingId + "-meetingcard"}>
       <div className="flex mb-2">
         <h1 onClick={() => setShowMeetingDetail(!showMeetingDetail)} className="w-3/4 text-xl font-bold text-vision-blue">{meeting?.Topic}</h1>
         <div className="grid w-1/4 justify-items-end">
-          <button className="self-center inline-block w-1/4 font-bold text-gray-600 bg-gray-300 border rounded-lg home-dropdown-cog"><UnionIcon /></button>
+          <button className="self-center inline-block w-1/4 font-bold text-gray-600 border rounded-lg home-dropdown-cog"><UnionIcon /></button>
         </div>
       </div>
       <div className="flex">

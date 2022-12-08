@@ -457,6 +457,12 @@ aside.emoji-picker-react {
     width: auto;
 }
 
+.meeting-list-bg {
+    padding: 20px;
+    background: #E5EBF0;
+    border-radius: 30px;
+}
+
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;
@@ -503,7 +509,7 @@ aside.emoji-picker-react {
     padding-left: 13px;
     width: 54px !important;
     height: 27px;
-    background: #ECECEC;
+    background: #ffff;
     border-radius: 10px !important;
 }
 
@@ -516,9 +522,10 @@ aside.emoji-picker-react {
 
 .meeting-card {
     height: 215px;
-    background: #FFFFFF;
-    border: 1px solid #C4C4C4;
     padding: 25px;
+    background: #EDF3F8;
+    border: 1px solid #F9FCFF;
+    border-radius: 15px;
 }
 
 .meeting-card h1 {

@@ -1,84 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
 @layer base {
-  body {
-    @apply bg-neutral-100 overflow-y-hidden
-  }
-
-  .v-ui-element {
-    @apply w-full p-2 mb-1 border border-black rounded-lg
-  }
-
-  .v-ui-button {
-    @apply w-full bg-sky-900 text-white border p-2 rounded-lg
-  }
-
-  /* Desktop View Classes */
-  .sign-up-desktop-view {
-    @apply relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36
-  }
-
-  .desktop-view-cham3-img {
-    @apply absolute -left-220px top-100px h-[594px]
-  }
-
-  .sign-up-desktop-view-form {
-    @apply mx-auto mt-10 mb-8 w-455 flex flex-col gap-3
-  }
-
-  .login-desktop-view {
-    @apply relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36
-  }
-
-  .login-desktop-view-form {
-    @apply mx-auto mt-10 mb-8 w-455 flex flex-col gap-3
-  }
-
-  /* Mobile View Classes */
-
-  .sign-up-mobile-view {
-    @apply relative text-center bg-white w-[90%] rounded-3xl px-9 pt-[38px] pb-36 mx-[5%] h-[500px]
-  }
-
-  .mobile-view-cham3-img {
-    @apply absolute  h-[250px] -left-[27px] top-[85%]
-  }
-
-  .sign-up-mobile-view-form {
-    @apply mx-auto mt-10 mb-8 flex flex-col gap-3 w-full
-  }
-
-  .login-mobile-view {
-    @apply relative text-center bg-white w-[90%] rounded-3xl px-9 pt-[38px] pb-36 mx-[5%] h-[450px]
-  }
-
-  .login-mobile-view-form {
-    @apply mx-auto mt-10 mb-8 flex flex-col gap-3 w-full
-  }
-
+    body {
+        @apply bg-neutral-100 overflow-y-hidden
+    }
+    .v-ui-element {
+        @apply w-full p-2 mb-1 border border-black rounded-lg
+    }
+    .v-ui-button {
+        @apply w-full bg-sky-900 text-white border p-2 rounded-lg
+    }
+    /* Desktop View Classes */
+    .sign-up-desktop-view {
+        @apply relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36
+    }
+    .desktop-view-cham3-img {
+        @apply absolute -left-220px top-100px h-[594px]
+    }
+    .sign-up-desktop-view-form {
+        @apply mx-auto mt-10 mb-8 w-455 flex flex-col gap-3
+    }
+    .login-desktop-view {
+        @apply relative mx-auto text-center bg-white w-972 rounded-3xl px-9 pt-14 pb-36
+    }
+    .login-desktop-view-form {
+        @apply mx-auto mt-10 mb-8 w-455 flex flex-col gap-3
+    }
+    /* Mobile View Classes */
+    .sign-up-mobile-view {
+        @apply relative text-center bg-white w-[90%] rounded-3xl px-9 pt-[38px] pb-36 mx-[5%] h-[500px]
+    }
+    .mobile-view-cham3-img {
+        @apply absolute h-[250px] -left-[27px] top-[85%]
+    }
+    .sign-up-mobile-view-form {
+        @apply mx-auto mt-10 mb-8 flex flex-col gap-3 w-full
+    }
+    .login-mobile-view {
+        @apply relative text-center bg-white w-[90%] rounded-3xl px-9 pt-[38px] pb-36 mx-[5%] h-[450px]
+    }
+    .login-mobile-view-form {
+        @apply mx-auto mt-10 mb-8 flex flex-col gap-3 w-full
+    }
 }
 
-*::-webkit-scrollbar {    
-  width: 20px;        
+*::-webkit-scrollbar {
+    width: 20px;
 }
- 
-*::-webkit-scrollbar-track {    
-  
-}
- 
+
+*::-webkit-scrollbar-track {}
+
 *::-webkit-scrollbar-thumb {
-  border: 4px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;        
-  background-image: linear-gradient(180deg, #FF6355 0%, #FBA949 8.45%, #FAE442 15.02%, #8BD448 21.59%, #2AA8F2 30.04%, #053F64 50.69%);
-  border-radius: 20px;    
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    background-image: linear-gradient(180deg, #FF6355 0%, #FBA949 8.45%, #FAE442 15.02%, #8BD448 21.59%, #2AA8F2 30.04%, #053F64 50.69%);
+    border-radius: 20px;
+    min-height: 100px;
 }
 
 .v-rte-editor::-webkit-scrollbar-thumb {
-  border: none;
-  background-clip: padding-box;        
-  background-image: none;
-  border-radius: 20px;    
+    border: none;
+    background-clip: padding-box;
+    background-image: none;
+    border-radius: 20px;
 }

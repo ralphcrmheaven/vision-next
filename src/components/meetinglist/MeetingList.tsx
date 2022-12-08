@@ -59,32 +59,38 @@ const MeetingList: FC = () => {
           </>
         )
       }
-      <div className="">
-        {
-          isDesktopOrLaptop ? (
-            <>
-              {
-                // eslint-disable-next-line array-callback-return
-                meetings?.slice(0, itemToShowCount).map((meeting, index) => {
-                  // eslint-disable-next-line no-lone-blocks
-                  return meeting.Attendees != undefined ? <MeetingCard handleCurrentMeeting={handleCurrentMeeting} openInviteModal={handleInviteModal} meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
-                })
-              }
-            </>
-          ) : isTabletOrMobile ? (
-            <>
-              {
-                // eslint-disable-next-line array-callback-return
-                meetings?.slice(0, itemToShowCount).map((meeting, index) => {
-                  // eslint-disable-next-line no-lone-blocks
-                  return meeting.Attendees != undefined ? <MeetingCardMobile handleCurrentMeeting={handleCurrentMeeting} openInviteModal={handleInviteModal} meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
-                })
-              }
-            </>
-          ) : ''
-        }
+      {
+        !isFetching && (
+          <>
+          <div className="meeting-list-bg">
+            {
+              isDesktopOrLaptop ? (
+                <>
+                  {
+                    // eslint-disable-next-line array-callback-return
+                    meetings?.slice(0, itemToShowCount).map((meeting, index) => {
+                      // eslint-disable-next-line no-lone-blocks
+                      return meeting.Attendees != undefined ? <MeetingCard handleCurrentMeeting={handleCurrentMeeting} openInviteModal={handleInviteModal} meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
+                    })
+                  }
+                </>
+              ) : isTabletOrMobile ? (
+                <>
+                  {
+                    // eslint-disable-next-line array-callback-return
+                    meetings?.slice(0, itemToShowCount).map((meeting, index) => {
+                      // eslint-disable-next-line no-lone-blocks
+                      return meeting.Attendees != undefined ? <MeetingCardMobile handleCurrentMeeting={handleCurrentMeeting} openInviteModal={handleInviteModal} meeting={meeting} key={meeting.MeetingId + "-meetinglist"} /> : <span key={meeting.MeetingId + "-meetinglist"} />
+                    })
+                  }
+                </>
+              ) : ''
+            }
 
-      </div>
+          </div>
+          </>
+        )
+      }
     </>
   );
 };

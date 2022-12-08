@@ -57,6 +57,7 @@ import { getRandomString, randomString } from '../utils/utils';
 import { decrypt } from '../utils/crypt';
 import { REGION } from '../constants';
 import appConfig from '../Config';
+import breakout  from '../api/breakout';
 
 interface IMeetingsContext {
     isHostMeeting?: () => any;
@@ -68,6 +69,7 @@ interface IMeetingsContext {
     dbMeeting?: any,
     showJoinMeetingModal: boolean,
     meeting: any;
+    breakoutrooms: any;
     meetingId: string;
     setShowNewMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
     setShowJoinMeetingModal?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -90,6 +92,7 @@ interface IMeetingsContext {
 const defaultState = {
     showNewMeetingModal: false,
     showJoinMeetingModal: false,
+    breakoutrooms: [],
     meeting: {
         id: null,
         password: null,
@@ -179,6 +182,17 @@ export const MeetingsProvider: FC = ({ children }) => {
         };
         const { payload } = await dispatch(meetingUpdate(data));
     };
+
+    const breakoutrooms = async (meetingId:string) => {
+
+        const request = {
+            meetingId: meetingId,
+            type: "get"
+        }
+        
+        return await breakout(request);
+    };
+
 
     const fetchAttendeesFromMeeting = async () => {
         const data = {};
@@ -462,6 +476,7 @@ export const MeetingsProvider: FC = ({ children }) => {
         <MeetingsContext.Provider 
             value={{ 
                     isHostMeeting,
+                    breakoutrooms,
                     currentMeetingId,
                     updateTheDbMeeting,
                     activeMeeting,
