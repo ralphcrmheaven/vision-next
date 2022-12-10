@@ -111,7 +111,6 @@ const MeetingBody: React.FC<Props> = ({
     const [toggleBreakoutRoomModal, setToggleBreakoutRoomModal] = useState<boolean>(false)
     const [showBreakout, setShowBreakout] = useState<boolean>(false)
     const [showCreateBreakout, setShowCreateBreakout] = useState<boolean>(false)
-    const [audio] = useState(new Audio("../assets/audio/cham-meeting-prepare.mp3"));
     
     const attendees = Object.values(roster);
     const attendessButtonProps = {
@@ -177,7 +176,6 @@ const MeetingBody: React.FC<Props> = ({
 
     useEffect(() => {
         toggleBackgroundReplacement()
-        audio.play();
 
     }, [background])
     const [isModalVideoLayout, setIsModalVideoLayout] = useState(false)
