@@ -23,7 +23,8 @@ import AttachmentService from '../../../services/AttachmentService';
 import { useChatMessagingState, useChatChannelState, } from '../../../providers/ChatMessagesProvider';
 import { useAuthContext, } from '../../../providers/AuthProvider';
 import { formatBytes } from '../../../utils/aws';
-import { SendMessageIcon, ChamXsIcon } from '../../icons';
+import { SendMessageIcon, EmojiPickerIcon } from '../../icons';
+
 import './Input.css';
 
 const uploadObjDefaults = {
@@ -189,7 +190,7 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
   const sendButton = <IconButton
     className="sendmessage"
     onClick={onSubmit}
-    icon={<SendMessageIcon width="1rem" height="1rem" />} label={''} />;
+    icon={<SendMessageIcon width="48px" height="12px" />} label={''} />;
 
   if (hasMembership) {
     return (
@@ -199,10 +200,6 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
           <div>
             <label className="fixed bottom-[16%] md:relative text-gray-400 focus-within:text-gray-600 block input-wrapper-emoji">
 
-              <EmojiPicker width="2rem" height="2rem" onClick={(_event) => {
-                setShowEmojiPicker(!showEmojiPicker)
-              }} />
-              {/* <button  onClick={(_event) => { setShowEmojiPicker(!showEmojiPicker)} } ><ChamXsIcon   /></button> */}
 
               <div className='flex flex-row items-center'>
                 <InputComponent
@@ -216,7 +213,7 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
                   ref={inputRef}
                 />
                 <div className="flex absolute right-4 cursor-pointer items-center z-[20]" onClick={onSubmit}>
-                  <span><SendMessageIcon width="20px" height="20px" /></span>
+                  <span><SendMessageIcon width="48px" height="12px" /></span>
                 </div>
               </div>
             </label>
@@ -235,7 +232,7 @@ const Input = ({ activeChannelArn, member, hasMembership }: any) => {
           ) : null}
         </form>
         {isAnonymous ? '\u00a0\u00a0' : uploadButton}
-        {isAnonymous ? '\u00a0\u00a0' : sendButton}
+        {/* {isAnonymous ? '\u00a0\u00a0' : sendButton} */}
         <input
           type="file"
           accept="file_extension|audio/*|video/*|image/*|media_type"

@@ -110,7 +110,7 @@
         },
         "visionRecord": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionRecord-6a477565523178343071-build.zip"
+          "s3Key": "amplify-builds/visionRecord-4f4c73696d6275667278-build.zip"
         },
         "downloadRecordedMeeting": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",

@@ -26,6 +26,7 @@ import LaughSmileyIcon from "./LaughSmiley";
 import ClappingHandIcon from "./ClappingHand";
 import ThumbsUpIcon from "./ThumbsUp";
 import MicrophoneIcon from "./Microphone"
+import EmojiPickerIcon from "./EmojiPicker";
 import MessageIcon from "./Message";
 import MessageRedIcon from "./MessageRed";
 import ShareScreenIcon from "./ShareScreen";
@@ -40,4 +41,4 @@ import RippleIcon from "./Ripple";
 
 import MeetingSettingsIcon from "./MeetingSettings";
 import { BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 } from "./BackGroundImage";
-export { CameraIcon, SettingsIcon, RippleIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 }
+export { CameraIcon,EmojiPickerIcon, SettingsIcon, RippleIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 }

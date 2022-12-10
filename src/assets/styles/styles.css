@@ -28,6 +28,15 @@ html {
     border-radius: 30px;
 }
 
+.vision-card:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background: #FFF;
+    color: #000;
+    z-index: 999999;
+    transition: .2s ease-in-out 0s;
+}
+
 .vision-card-sm {
     box-sizing: border-box;
     width: 69px;
