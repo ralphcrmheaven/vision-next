@@ -4,11 +4,13 @@ export enum InputTypes {
   Text = 'text',
   Password = 'password',
   Email = 'email',
+  Checkbox = 'checkbox'
 }
 
 interface Props {
   type?: InputTypes
   name: string
+  id?: string
   className?: string
   placeholder?: string
   error?: string
@@ -20,6 +22,7 @@ interface Props {
 const FormInput: React.FC<Props> = ({
   type = InputTypes.Text,
   name,
+  id = '',
   className = '',
   placeholder = '',
   error = '',
@@ -38,11 +41,16 @@ const FormInput: React.FC<Props> = ({
         type={type}
         name={name}
         className={className}
+        id={id}
         placeholder={placeholder}
         onChange={onChange}
         required={required}
         readOnly={readOnly}
       />
+      { type == InputTypes.Checkbox &&
+        <label htmlFor={id}>{placeholder}</label>
+      }
+      
     </>
   )
 }
