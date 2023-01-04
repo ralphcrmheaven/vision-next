@@ -47,101 +47,98 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="mt-[11px] w-full sm:mt-14">
-      <div className="flex justify-center mb-[26px] sm:mb-10 h-[66px] sm:h-auto">
-        <Logo />
+    <div className="h-[100vh] flex justify-center auth-page">
+      <div className="mt-[11px] max-w-[757px] sm:mt-14 px-[171px]">
+        <div className="flex justify-center mb-[26px] sm:mb-10 h-[66px] sm:h-auto">
+          <Logo />
+        </div>
+
+        <div className="text-center">
+          {isSuccessReset === false ? (
+            <>
+              <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue text-[22px] sm:text-[30px]">
+                Forgot Password?
+              </h1>
+
+              <Form className="login-mobile-view-form sm:login-desktop-view-form" onSubmit={() => false}>
+                {error && (
+                  <Alert variation="error" className="mb-3 text-left">
+                    {error}
+                  </Alert>
+                )}
+
+                <FormInput
+                  type={InputTypes.Text}
+                  name="username"
+                  className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+                  placeholder="Username"
+                  onChange={(e: any) => setUsername(e.target.value)}
+                  required
+                  readOnly={isCodeSent}
+                />
+
+                {isCodeSent && (
+                  <>
+                    <FormInput
+                      type={InputTypes.Text}
+                      name="code"
+                      className="w-full px-5 py-3 rounded-xl bg-slate-200"
+                      placeholder="Code"
+                      onChange={(e: any) => setCode(e.target.value)}
+                      required
+                    />
+                    <p className="mb-3 text-xs italic text-gray-600">
+                      Code sent to your email
+                    </p>
+
+                    <FormInput
+                      type={InputTypes.Password}
+                      name="newPassword"
+                      className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
+                      placeholder="New Password"
+                      onChange={(e: any) => setNewPassword(e.target.value)}
+                      required
+                    />
+                  </>
+                )}
+
+                {!isCodeSent ? (
+                  <Button
+                    type={ButtonTypes.Submit}
+                    isLoading={isLoading}
+                    handleClick={handleResetPassword}
+                  >
+                    Reset Password
+                  </Button>
+                ) : (
+                  <Button
+                    type={ButtonTypes.Submit}
+                    isLoading={isLoading}
+                    handleClick={handleSetNewPassword}
+                  >
+                    Set New Password
+                  </Button>
+                )}
+              </Form>
+            </>
+          ) : (
+            <>
+              <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
+                Successfully reset your password{' '}
+              </h1>
+            </>
+          )}
+
+          <span className="block mx-auto mb-3 text-center">
+            Go back to{' '}
+            <Link to={'/login'} className="font-bold text-vision-dark-blue">
+              Login
+            </Link>
+          </span>          
+        </div>
       </div>
-
-      <div className="login-mobile-view sm:login-desktop-view">
-        {isSuccessReset === false ? (
-          <>
-            <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue text-[22px] sm:text-[30px]">
-              Forgot Password?
-            </h1>
-
-            <Form className="login-mobile-view-form sm:login-desktop-view-form" onSubmit={() => false}>
-              {error && (
-                <Alert variation="error" className="mb-3 text-left">
-                  {error}
-                </Alert>
-              )}
-
-              <FormInput
-                type={InputTypes.Text}
-                name="username"
-                className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
-                placeholder="Username"
-                onChange={(e: any) => setUsername(e.target.value)}
-                required
-                readOnly={isCodeSent}
-              />
-
-              {isCodeSent && (
-                <>
-                  <FormInput
-                    type={InputTypes.Text}
-                    name="code"
-                    className="w-full px-5 py-3 rounded-xl bg-slate-200"
-                    placeholder="Code"
-                    onChange={(e: any) => setCode(e.target.value)}
-                    required
-                  />
-                  <p className="mb-3 text-xs italic text-gray-600">
-                    Code sent to your email
-                  </p>
-
-                  <FormInput
-                    type={InputTypes.Password}
-                    name="newPassword"
-                    className="w-full px-5 py-3 mb-3 rounded-xl bg-slate-200"
-                    placeholder="New Password"
-                    onChange={(e: any) => setNewPassword(e.target.value)}
-                    required
-                  />
-                </>
-              )}
-
-              {!isCodeSent ? (
-                <Button
-                  type={ButtonTypes.Submit}
-                  isLoading={isLoading}
-                  handleClick={handleResetPassword}
-                >
-                  Reset Password
-                </Button>
-              ) : (
-                <Button
-                  type={ButtonTypes.Submit}
-                  isLoading={isLoading}
-                  handleClick={handleSetNewPassword}
-                >
-                  Set New Password
-                </Button>
-              )}
-            </Form>
-          </>
-        ) : (
-          <>
-            <h1 className="mb-2 text-3xl font-bold text-vision-dark-blue">
-              Successfully reset your password{' '}
-            </h1>
-          </>
-        )}
-
-        <span className="block mx-auto mb-3">
-          Go back to{' '}
-          <Link to={'/login'} className="font-bold text-vision-dark-blue">
-            Login
-          </Link>
-        </span>
-
-        <img
-          src={cham3}
-          alt="Camera"
-          className="mobile-view-cham3-img sm:desktop-view-cham3-img"
-        />
-      </div>
-    </div>
+      <div className='w-full'></div>
+    </div>    
   )
 }
 
