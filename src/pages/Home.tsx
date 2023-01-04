@@ -73,7 +73,7 @@ export default function Home() {
       {(showNewMeetingModal === true) && <NewMeetingModal setIsOpen={() => setShowNewMeetingModal?.(false)} />}
 
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
-      <div className="relative h-full px-[20px] md:px-14 pt-[15px] md:px-14 w-full">
+      <div className="relative h-screen overflow-y-scroll px-[20px] md:px-14 pt-[15px] md:px-14 w-full">
         {
           
 

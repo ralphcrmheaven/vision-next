@@ -20,7 +20,7 @@ const HomeBody: React.FC<Props> = ({
 }) => {
     return (
         <>
-            <div className='overflow-auto xl:overflow-hidden h-4/5'>
+            <div className=' h-screen'>
                 <div className="flex gap-10 pt-10">
                     <div className="grid w-1/4 justify-start last:pb-10 xl:w-1/2">
                         <div className="grid grid-cols-1 gap-6 home-card-wrapper xl:grid-cols-2">
@@ -125,9 +125,54 @@ const HomeBody: React.FC<Props> = ({
                             </VCard>
 
                         </div>
+                        <div className="grid grid-cols-1 latest-news p-5 rounded-3xl">
+                            <label className="text-[18px] font-medium	dashboard-header mb-10">Latest News</label>
+                            <div className="grid grid-cols-4 gap-3 text-left mb-5">
+                                <div className="w-full">
+                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+
+                                    </div>
+                                </div>
+                                <div className="col-span-2">
+                                    <label>We're going in live</label>
+                                </div>
+                                <div className="">
+                                    <a href="">Read more</a>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-4 gap-3 text-left mb-5">
+                                <div className="w-full">
+                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+
+                                    </div>
+                                </div>
+                                <div className="col-span-2">
+                                    <label>We're going in live</label>
+                                </div>
+                                <div className="">
+                                    <a href="">Read more</a>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-4 gap-3 text-left mb-5">
+                                <div className="w-full">
+                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+
+                                    </div>
+                                </div>
+                                <div className="col-span-2">
+                                    <label>We're going in live</label>
+                                </div>
+                                <div className="">
+                                    <a href="">Read more</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="flex flex-col justify-end w-3/4 gap-3 xl:w-1/2">
+
+                    <div className="flex flex-col  w-3/4 gap-3 xl:w-1/2">
                         <div>
                             <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
                                 <div className="flex flex-row h-full pl-10">

@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { selectUser } from '../../redux/features/userSlice';
 import { ReactMultiEmail } from 'react-multi-email';
+import { API, graphqlOperation } from 'aws-amplify';
+import { toast } from 'react-toastify';
+import * as queries from '../../graphql/queries';
+import { CheckboxField, TabItem, Loader } from '@aws-amplify/ui-react';
 import {
     useMeetings
 } from '../../providers/MeetingsProvider';
 import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
+import { IUser } from '../../redux/features/userSlice'
+import { createContact, getContacts, ContactType, ContactNotificationType } from '../../api/contact';
+
 
 const NewMeetingForm = (props:any) => {
     const { setIsOpen } = props;
@@ -154,8 +161,24 @@ const NewMeetingForm = (props:any) => {
     const [durationTimeMinutes, setDurationTimeMinutes] = useState('30');
     const [timezone, setTimezone] = useState('');
     const [emails, setEmails] = useState<string[]>([]);
+    const user: IUser = useSelector(selectUser);
+    const [contacts, setContacts] = useState<ContactType[]>([]);
+    const [isLoadingSendInvite, setIsLoadingSendInvite] = useState<any>(null)
+    const [meetingTopic, setMeetingTopic] = useState<string>("");
+    const [sendButtonDisabled, setSendButtonDisabled] = useState<boolean>(false)
+    const [meetingUrl, setMeetingUrl] = useState<string>("");
+    const [invitedEmails, setInvitedEmails] = useState<any>([]);
+    const [invitedEmailsCheckbox, setInvitedEmailsCheckbox] = useState<any>([]);
 
-    
+    const getContactsAsync = async (userId: string) => {
+        return await getContacts(userId)
+    }
+
+    const setTheContacts = async () => {
+        const { data } = await getContactsAsync(user.id)
+        setContacts(data.listContacts?.items as ContactType[])
+    };
+
     const onTopicChange = (value:any) => {
         setTopic(value);
     };
@@ -176,6 +199,46 @@ const NewMeetingForm = (props:any) => {
         setDurationTimeHours(value);
     };
 
+    const sendEmailNotification = async (params: ContactNotificationType) => {
+        //console.log('params: ', params);
+        console.log("inside sendEmailNotification=======")
+        console.log(params)
+        await API.graphql(graphqlOperation(queries.sendEmailNotification, params))
+        toast.success("Email has been sent!")
+        //setIsOpen(false)
+    }
+
+    const setupEmailsInvited = async (data: any) => {
+        if(data.target.checked) {
+            let invited = invitedEmails
+            invited.push(data.target.defaultValue)
+            setInvitedEmails(invited);
+        }else{
+            var index = invitedEmails.indexOf(data.target.defaultValue);
+            if (index !== -1) {
+                invitedEmails.splice(index, 1);
+            }
+        }
+
+        console.log(invitedEmails)
+    }
+
+    const clickedExistingContactsSendInvite = async (d: any, meeting_data: any) => {
+        let topic = ""
+        topic = meeting_data.TopicDetails.trim();
+        topic = topic.replaceAll('"', "'");
+        topic = topic.replaceAll("\n", "");
+        console.log(topic);
+        console.log("here")
+
+        const res = await sendEmailNotification({
+            email: d.email,
+            fromName: `${user.family_name}`,
+            meetingUrl: `${window.location.origin}/meeting${meeting_data.Url}`,
+            topic: `${topic}`
+        })
+    };
+
     const onDurationTimeMinutesChange = (value:any) => {
         setDurationTimeMinutes(value);
     };
@@ -188,13 +251,26 @@ const NewMeetingForm = (props:any) => {
         setIsLoading(true);
         setLoadingText('Saving');
 
-        await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
+        let meeting_data = await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
+        console.log(invitedEmails)
+      
+        contacts.forEach(async (d: any) => {
+            invitedEmails.forEach(async (invited_email: any) => {
+                if(invited_email == d.email) {
+                    await clickedExistingContactsSendInvite(d,meeting_data)
+                }
+            })
+        });
 
         setIsLoading(false);
         setLoadingText('');
 
         setIsOpen();
     };
+
+    useEffect(() => {
+        setTheContacts();
+    }, [user.id])
 
     return (
         <div className="meeting-form">
@@ -247,6 +323,56 @@ const NewMeetingForm = (props:any) => {
                     />
                     </div>
                 </div>
+            </div>
+
+            <div className="mb-5">
+                <VLabel>Set Attendees</VLabel>
+                <div className="flex">
+                    <div className="mt-2 overflow-y-auto h-64 p-2 w-560px]">
+                        <table className="table-fixed">
+                            <tbody className=''>
+                                {contacts.map((d, i) => (
+                                    <tr key={"tr-" + i} className='r'>
+                                        <td>
+                                            <span className='flex flex-row items-center gap-5'>
+                                                <span className="p-3 text-white bg-gray-900 rounded-lg">
+                                                    {d.name ? d.name.substring(0, 1) : 'n/a'}
+                                                </span>
+                                                <span >
+                                                    {d.email}
+                                                </span>
+                                            </span>
+
+
+                                        </td>
+                                        {/* <td>{d.name ? d.name : 'n/a'}</td> */}
+                                        <td className='text-right'>
+                                        
+                                                <CheckboxField
+                                                    label="Send"
+                                                    name="send"
+                                                    value={d.email}
+                                                    onChange={setupEmailsInvited}
+                                                    checked={invitedEmailsCheckbox[i]}
+                                                />
+                                                {
+                                                    isLoadingSendInvite === i && (
+                                                        <Loader />
+                                                    )
+                                                }
+
+                                        
+                                        </td>
+
+                                    </tr>)
+                                )}
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
             </div>
 
             <div className="mb-5">

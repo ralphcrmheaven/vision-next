@@ -854,3 +854,27 @@ progress[value]::-webkit-progress-value {
 .amplify-button-vision {
     background-color: #053F64 !important;
 }
+
+.gap-y-5 {
+    row-gap: 3px;
+}
+
+.pyramid-dashbard-wrapper {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+
+.pyramid-dashbard-wrapper .img {
+    width: 158.07px;
+    height: 146.25px;
+}
+
+.latest-news {
+    background-color: #F7F7F7;
+    margin-top: 70px;
+}
+
+.dashboard-header {
+    color: #053F64;
+}

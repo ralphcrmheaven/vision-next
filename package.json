@@ -46,6 +46,8 @@
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.5",
     "styled-system": "^5.1.5",
+    "swiper": "^8.4.5",
+    "swiper-vue2": "^1.0.10",
     "typescript": "^4.6.3",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4"

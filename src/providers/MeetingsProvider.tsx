@@ -428,6 +428,8 @@ export const MeetingsProvider: FC = ({ children }) => {
                 type: ''
             });
         }
+
+        return payload.data
     };
 
     // Lifecycle hooks  

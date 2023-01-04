@@ -17,7 +17,7 @@ export default function Sidebar() {
     <div className="w-32 xl:w-60">
       <div className="flex flex-col items-center w-24 mx-auto mt-14 gap-y-16">
         <Logo />
-        <ul className="flex flex-col w-20 gap-y-10">
+        <ul className="flex flex-col w-20 gap-y-5">
           <li>
             <NavLink
               to="/login"
@@ -36,7 +36,7 @@ export default function Sidebar() {
           </li>
           <li>
             <NavLink
-              to="/contacts"
+              to="/schedule-meeting"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
@@ -52,7 +52,7 @@ export default function Sidebar() {
 
           <li>
             <NavLink
-              to="/schedule-meeting"
+              to="/contacts"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
@@ -94,7 +94,11 @@ export default function Sidebar() {
             </div>
           </li>
         </ul>
+        <img src="/images/pyramid.png" alt="loading" />
       </div>
+
+      
+
     </div>
   )
 }
