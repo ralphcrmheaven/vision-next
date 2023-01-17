@@ -83,11 +83,87 @@ export default function Pricing() {
                                     </div>
                                 </div>
                                 <div className="mt-4">
-                                    <a href="https://buy.stripe.com/test_4gw9ASbqU9eE6U8aEF?prefilled_email=" className='pricing__card--button'>Try Now</a>
+                                    <a target={'_blank'} href="https://buy.stripe.com/test_4gw9ASbqU9eE6U8aEF?prefilled_email=" className='pricing__card--button'>Try Now</a>
                                 </div>
                             </div>
                         </div>
                         
+                    </div>
+
+                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                        <div className="pricing__card flex flex-col justify-between">
+                            <div>
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <h4 className="pricing__card--title font-semibold">Large<br />Business</h4>
+                                        <h6 className="pricing__card--sub-title mt-1">$169.92</h6>
+                                    </div>
+                                    <div>
+                                        <img src="/images/pricing_3.svg" className="pricing-img"></img>
+                                    </div>
+                                </div>
+                                <div className="mt-5">
+                                    <ul className="pricing__card--list">
+                                        <li>Host up to 330 Participants</li>
+                                        <li>24 hours Meeting Duration</li>
+                                        <li>Group and Private Messaging</li>
+                                        <li>Screen Sharing</li>
+                                        <li>Schedule a meeting</li>
+                                        <li>Meeting reactions</li>
+                                        <li>Electronic Hand Raising</li>
+                                        <li>Unlimited Whiteboards</li>
+                                        <li>Multiple video layouts</li>
+                                        <li>Q&A and polls</li>
+                                        <li>Unlimited Breakout Rooms</li>
+                                        <li>Background Customization, up to 20 uploads of Customized Backgrounds (images or video)</li>
+                                        <li>Record Meeting  (8 GB Cloud/License)</li>
+                                        <li>Automated Captions</li>
+                                        <li>Attendance Tracking</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <a target={'_blank'} href="https://buy.stripe.com/test_cN26oGeD63Uk1zObIK" className='pricing__card--button'>Try Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                        <div className="pricing__card flex flex-col justify-between">
+                            <div>
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <h4 className="pricing__card--title font-semibold">Enterprise</h4>
+                                        <h6 className="pricing__card--sub-title mt-1">Contact Sales</h6>
+                                    </div>
+                                    <div>
+                                        <img src="/images/pricing_4.svg" className="pricing-img"></img>
+                                    </div>
+                                </div>
+                                <div className="mt-5">
+                                    <ul className="pricing__card--list">
+                                        <li>Host up to 500-1k Participants</li>
+                                        <li>24 hours Meeting Duration</li>
+                                        <li>Group and Private Messaging</li>
+                                        <li>Screen Sharing</li>
+                                        <li>Schedule a meeting</li>
+                                        <li>Meeting reactions</li>
+                                        <li>Electronic Hand Raising</li>
+                                        <li>Unlimited Whiteboards</li>
+                                        <li>Multiple video layouts</li>
+                                        <li>Q&A and polls</li>
+                                        <li>Unlimited Breakout Rooms</li>
+                                        <li>Background Customization, up to 20 uploads of Customized Backgrounds (images or video)</li>
+                                        <li>Record Meeting  (Unlimited)</li>
+                                        <li>Automated Captions</li>
+                                        <li>Attendance Tracking</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <a href="#" className='pricing__card--button'>Contact Sales</a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
