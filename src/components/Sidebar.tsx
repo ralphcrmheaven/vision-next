@@ -84,7 +84,7 @@ export default function Sidebar() {
             </NavLink>
           </li>
 
-          <li>
+          {/* <li>
             <div
               onClick={logout}
               className="flex flex-col items-center p-4 space-y-1 cursor-pointer rounded-2xl hover:bg-gray-200 hover:rounded-3xl"
@@ -92,7 +92,7 @@ export default function Sidebar() {
               <LogoutIcon className="h-6 text-vision-light-blue" />
               <span className="text-sm">Logout</span>
             </div>
-          </li>
+          </li> */}
         </ul>
         <img src="/images/pyramid.png" alt="loading" />
       </div>

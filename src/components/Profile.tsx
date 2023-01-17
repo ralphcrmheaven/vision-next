@@ -18,11 +18,11 @@ export default function Profile() {
 
         <div className="">
 
-            <div className='text-lg text-vision-blue font-semibold mb-10'>
+            <div className='text-lg font-semibold mb-10'>
                 Your Profile
             </div>
 
-            <div className='flex flex-col items-center h-full px-16'>
+            <div className='flex flex-col items-center h-full px-0 sm:px-0 md:px-16 lg:px-32'>
 
                 <div className='pb-4'>
                     <span className="flex-col items-center">

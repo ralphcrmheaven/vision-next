@@ -39,6 +39,32 @@ const HomeBody: React.FC<Props> = ({
                         </div>
                         <div className="pt-10 flex flex-col gap-[32px]">
                             <div className="flex flex-col gap-[20px] w-full">
+                            <VCard
+                                    {...{ className: 'rounded-[30px] h-[120px] bg-vision-red text-white h-40 hover:bg-vision-lighter-red hover:text-gray-900' }}
+                                >
+                                    <div className="w-full h-full cursor-pointer" onClick={() => {
+                                        setTheCurrentMeetingId?.('');
+                                        setShowJoinMeetingModal?.(true)
+                                    }
+                                    }>
+                                        <div className='flex flex-row items-center h-full pl-[26px] gap-[25px]'>
+                                            <div className="border border-vision-lighter-red vision-card-sm bg-vision-light-red rounded-2xl">
+                                                <img
+                                                    src="./images/subtract.svg"
+                                                    alt="Camera"
+                                                    className="p-4"
+                                                />
+                                            </div>
+                                            <div className="mt-2 flex w-[auto]  vision-card-sm">
+                                                <p className="flex flex-col text-white">
+                                                    <span className="text-lg font-semibold">Join Meeting</span>
+                                                    <span className="text-sm text-white">via invitation link</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </VCard>
+
                                 <VCard
                                     {...{ className: ' rounded-[30px] h-[120px] text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-gray-900' }}
                                 >
@@ -65,9 +91,9 @@ const HomeBody: React.FC<Props> = ({
                                                     )
                                                 }
                                             </div>
-                                            <div className="left-4 bottom-4">
+                                            <div className="mt-2 flex w-[auto]  vision-card-sm">
                                                 <p className="flex flex-col">
-                                                    <span>New Meeting</span>
+                                                    <span className="text-lg font-semibold">New Meeting</span>
                                                     <span className="text-sm">setup a new meeting</span>
                                                 </p>
                                             </div>
@@ -76,47 +102,21 @@ const HomeBody: React.FC<Props> = ({
                                 </VCard>
 
                                 <VCard
-                                    {...{ className: ' rounded-[30px] h-[120px] bg-vision-green h-40 cursor hover:bg-vision-lighter-green hover:text-gray-900' }}
-                                >
-                                    <div className="w-full h-full cursor-pointer" onClick={() => {
-                                        setTheCurrentMeetingId?.('');
-                                        setShowJoinMeetingModal?.(true)
-                                    }
-                                    }>
-                                        <div className='flex flex-row items-center h-full pl-[26px] gap-[25px]'>
-                                            <div className="border border-vision-lighter-green vision-card-sm bg-vision-light-green top-4 left-4 rounded-2xl">
-                                                <img
-                                                    src="./images/rectangle-white.png"
-                                                    alt="Camera"
-                                                    className="p-4"
-                                                />
-                                            </div>
-                                            <div className=" left-4 bottom-4">
-                                                <p className="flex flex-col text-white">
-                                                    <span>Join Meeting</span>
-                                                    <span className="text-sm text-white">via invitation link</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </VCard>
-
-                                <VCard
-                                    {...{ className: ' rounded-[30px] h-[120px] bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
+                                    {...{ className: ' rounded-[30px] h-[120px]  bg-vision-green text-white h-40 cursor hover:bg-vision-lighter-green hover:text-gray-900' }}
                                 >
                                     <div className="w-full h-full cursor-pointer " onClick={() => setShowNewMeetingModal?.(true)}>
                                         <div className='flex flex-row items-center h-full pl-[26px] gap-[25px]'>
-                                            <div className="border border-vision-lighter-sky top-4 left-4 bg-vision-light-sky rounded-2xl">
+                                            <div className="border border-vision-lighter-green bg-vision-light-green rounded-2xl">
                                                 <img
-                                                    src="./images/calendar-white.png"
+                                                    src="/images/calendar.svg"
                                                     alt="Camera"
-                                                    className="p-4"
+                                                    className="p-3"
                                                 />
                                             </div>
-                                            <div className="left-4 bottom-4">
+                                            <div className=" mt-2 flex w-[auto] vision-card-sm">
                                                 {/* onClick={() => {navigate('/schedule', {replace:true})}}  */}
                                                 <p className="flex flex-col">
-                                                    <span>Schedule</span>
+                                                    <span className="text-lg font-semibold">Schedule</span>
                                                     <span className="text-sm">plan your meetings</span>
                                                 </p>
                                             </div>
@@ -124,20 +124,20 @@ const HomeBody: React.FC<Props> = ({
                                     </div>
                                 </VCard>
                                 <VCard
-                                    {...{ className: ' rounded-[30px] h-[120px] bg-vision-red text-white h-40 hover:bg-vision-lighter-red hover:text-gray-900' }}
+                                    {...{ className: ' rounded-[30px] h-[120px] bg-vision-sky text-white h-40 hover:bg-vision-lighter-sky hover:text-gray-900' }}
                                 >
                                     <div className="w-full h-full cursor-pointer ">
                                         <div className='flex flex-row items-center h-full pl-[26px] gap-[25px]'>
-                                            <div className="border border-vision-lighter-red top-4 left-4 bg-vision-light-red rounded-2xl">
+                                            <div className="border border-vision-lighter-sky bg-vision-light-sky rounded-2xl">
                                                 <img
-                                                    src="./images/past.png"
+                                                    src="./images/clock.svg"
                                                     alt="Camera"
                                                     className="p-4"
                                                 />
                                             </div>
-                                            <div className="left-4 bottom-4">
+                                            <div className="mt-2 flex w-[auto] vision-card-sm">
                                                 <p className="flex flex-col">
-                                                    <span>Past Meetings</span>
+                                                    <span className="text-lg font-semibold">Past Meetings</span>
                                                     <span className="text-sm">view previous meetings</span>
                                                 </p>
                                             </div>

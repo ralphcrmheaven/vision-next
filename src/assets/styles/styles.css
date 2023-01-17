@@ -444,6 +444,22 @@ aside.emoji-picker-react {
     background-color: #F7BA49 !important;
 } */
 
+.bg-vision-sky {
+    background-color: #007AD9 !important;
+}
+
+.bg-vision-green {
+    background-color: #01798A !important;
+}
+
+.bg-vision-yellow {
+    background-color: #FFB630 !important;
+}
+
+.bg-vision-red {
+    background-color: #FF6355 !important;
+}
+
 .add-people span {
     display: inline-block;
     margin-left: 3px;
@@ -895,4 +911,95 @@ progress[value]::-webkit-progress-value {
 
 .daily-weekly {
     width: 270px;
+}
+
+.pricing__card--wrap {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.pricing__card--label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 208px;
+    height: 20px;
+    background: linear-gradient(90deg, #FF6355 -0.77%, #FBA949 8.3%, #FAE442 15.35%, #8BD448 22.41%, #2AA8F2 31.48%, #053F64 53.65%);
+    box-shadow: 0px 15px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 12px 12px 0px 0px;
+}
+
+.pricing__card--label h4 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 13px;
+    text-align: center;
+    letter-spacing: -0.04em;
+    color: #FFFFFF; 
+}
+
+.pricing__card {
+    position: relative;
+    width: 100%;
+    min-height: 610px;
+    padding: 20px 32px;
+    background: #FFFFFF;
+    box-shadow: 0px 15px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 25px;
+}
+
+.pricing__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    color: #010101;
+}
+
+.pricing__card--title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: -0.04em;
+    color: #053F64;
+}
+
+.pricing__card--sub-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    color: #F7941D;
+}
+
+.pricing__card--list li {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 24px;
+    color: #000000;
+}
+
+.pricing__card--list {
+    list-style: inside !important;
+}
+
+.pricing__card--button {
+    height: 55px;
+    width: 100%;
+    text-align: center;
+    background: #2378BB;
+    box-shadow: 0px 20px 25px -25px rgba(253, 213, 79, 0.35);
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
