@@ -6,7 +6,7 @@ html {
 body {
     height: 100%;
     position: fixed;
-    overflow-y: scroll;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch !important;
     width: -webkit-fill-available;
     /* iOS velocity scrolling */
@@ -913,6 +913,8 @@ progress[value]::-webkit-progress-value {
     width: 270px;
 }
 
+/* PRICING CSS */
+
 .pricing__card--wrap {
     width: 100%;
     height: auto;
@@ -1003,3 +1005,5 @@ progress[value]::-webkit-progress-value {
     justify-content: center;
     align-items: center;
 }
+
+
