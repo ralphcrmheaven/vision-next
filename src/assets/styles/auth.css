@@ -1,6 +1,89 @@
 .auth-page {
-    background-image: url(../images/auth/bg-5.svg), url(../images/auth/bg-4.svg), url(../images/auth/bg-3.svg), url(../images/auth/bg-2.svg), url(../images/auth/bg-1.svg);
+    width: 100%;
+    height: 950px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-page__bg {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    background-image: url('../../../public/images/auth_login_bg.svg');
     background-repeat: no-repeat;
-    background-position: top 51px right, bottom 0 right 34px, bottom 0 right, bottom 0 left, bottom 0 left;
-    background-size: auto, auto, auto, auto, contain;
+    background-position: right bottom;
+    background-size: contain;
+    height: 965px;
+    width: 100%;
+}
+
+.auth-page__bg-signup {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    background-image: url('../../../public/images/auth_signup_bg.svg');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: contain;
+    height: 965px;
+    width: 100%;
+}
+
+.auth-page__login {
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+
+.auth-page__title {
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 46px;
+    text-align: center;
+    color: #053F64;
+    font-weight: 700;
+}
+
+.auth-page__title-sub {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: #747474;
+}
+
+.auth-page__form {
+    padding: 98px 25px;
+    height: 950px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.auth-page__plant {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.auth-page__plant--1 {
+    position: absolute;
+    left: -10px;
+    width: 20%;
+    bottom: 0px;
+}
+
+.auth-page__plant--2 {
+    position: absolute;
+    left: 43%;
+    width: 30%;
+    bottom: 0px;
+}
+
+.auth-page__plant--3 {
+    position: absolute;
+    right: -10px;
+    width: 18%;
+    bottom: 0px;
 }
