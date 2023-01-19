@@ -48,7 +48,11 @@ const Login: React.FC = () => {
   return (
     <>
       <div className="auth-page">
-        <div className="auth-page__bg"></div>
+        {/* <div className="auth-page__bg"></div> */}
+        <img className="auth-page__image-1" src="/images/signup_image_clouds.svg" alt="" />
+        <img className="auth-page__image-2" src="/images/login_image_animal.svg" alt="" />
+        <img className="auth-page__image-3" src="/images/signup_image_grass.svg" alt="" />
+
         <div className="auth-page__login">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-11 lg:grid-cols-11">
             <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-6">
@@ -73,7 +77,7 @@ const Login: React.FC = () => {
 
                     <FormInput
                       name="username"
-                      className="px-5 py-3  rounded-xl bg-[#ECECEC] sm:md:w-[400px] md:w-[400px] lg:w-455 w-full placeholder-black"
+                      className="px-5 py-3 mx-auto  rounded-xl bg-[#ECECEC] sm:md:w-[400px] md:w-[400px] lg:w-455 w-full placeholder-black"
                       placeholder="Username"
                       onChange={(e: any) => setUsername(e.target.value)}
                       required
@@ -82,7 +86,7 @@ const Login: React.FC = () => {
                     <FormInput
                       type={InputTypes.Password}
                       name="password"
-                      className="px-5 py-3 rounded-xl bg-[#ECECEC] sm:md:w-[400px] md:w-[400px] lg:w-455 w-full placeholder-black"
+                      className="px-5 py-3 mx-auto rounded-xl bg-[#ECECEC] sm:md:w-[400px] md:w-[400px] lg:w-455 w-full placeholder-black"
                       placeholder="Password"
                       onChange={(e: any) => setPassword(e.target.value)}
                       required

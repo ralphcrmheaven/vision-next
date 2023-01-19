@@ -6,7 +6,7 @@ html {
 body {
     height: 100%;
     position: fixed;
-    overflow-y: scroll !important;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch !important;
     width: -webkit-fill-available;
     /* iOS velocity scrolling */
@@ -254,6 +254,23 @@ html {
     left: 18px;
     top: 19px;
     z-index: 20;
+    
+}
+
+.custom-tab-header {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 25px;
+    font-weight: 700;
+    color: #053F64;
+    padding: 0.7rem 1rem;
+}
+
+.chatbox-add-people {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #053F64;
 }
 
 
@@ -466,9 +483,9 @@ aside.emoji-picker-react {
 }
 
 .add-people img {
-    width: 15px;
+    width: 18px;
     margin: 4px;
-    height: 15px;
+    height: 19px;
 }
 
 .invite-modal-body {
@@ -1004,6 +1021,73 @@ progress[value]::-webkit-progress-value {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.microphone_activity {
+    width: 1.5rem !important;
+}
+
+.chatbox-wrapper .ch-name {
+    font-weight: 500;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: #053F64 !important;
+}
+
+.chatbox-wrapper .ch-mic {
+    margin-right: 30px !important;
+}
+
+.avatar-profile {
+    background: #747474;
+    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+.ch-menu{
+    color: #747474!important;
+}
+
+.ch-menu:hover {
+    background-color: #053F64 !important;
+    color: #fff !important;
+}
+
+.ch-menu .ch-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.custom-modal__bg {
+    background-color: #00000078 !important;
+}
+
+/* search */
+
+.search-chatbox {
+    padding: 0.625rem 1rem;
+    position: relative;
+    width: 100%;
+}
+
+.search-chatbox__input {
+    background: #ECECEC;
+    border-radius: 30px;
+    height: 39px;
+    font-size: 13px;
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0px 15px;
 }
 
 
