@@ -131,43 +131,43 @@ const HomeBody: React.FC<Props> = ({
                             <label className="text-[18px] font-medium	dashboard-header mb-10">Latest News</label>
                             <div className="grid grid-cols-4 gap-3 text-left mb-5">
                                 <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+                                    <div className="w-10 h-10 rounded-xl bg-[#007AD9]">
 
                                     </div>
                                 </div>
                                 <div className="col-span-2">
-                                    <label>We're going in live</label>
+                                    <label className="text-vision-blue">We're going in live</label>
                                 </div>
                                 <div className="">
-                                    <a href="">Read more</a>
+                                    <a href="" style={{color: '#008C8C'}}>Read more</a>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-4 gap-3 text-left mb-5">
                                 <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+                                    <div className="w-10 h-10 rounded-xl bg-[#FF6355]">
 
                                     </div>
                                 </div>
                                 <div className="col-span-2">
-                                    <label>We're going in live</label>
+                                    <label className="text-vision-blue">We're going in live</label>
                                 </div>
                                 <div className="">
-                                    <a href="">Read more</a>
+                                    <a href="" style={{color: '#008C8C'}}>Read more</a>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-4 gap-3 text-left mb-5">
                                 <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl border-solid border-2 border-sky-500">
+                                    <div className="w-10 h-10 rounded-xl bg-[#FF6355]">
 
                                     </div>
                                 </div>
                                 <div className="col-span-2">
-                                    <label>We're going in live</label>
+                                    <label className="text-vision-blue">We're going in live</label>
                                 </div>
                                 <div className="">
-                                    <a href="">Read more</a>
+                                    <a href="" style={{color: '#008C8C'}}>Read more</a>
                                 </div>
                             </div>
                         </div>

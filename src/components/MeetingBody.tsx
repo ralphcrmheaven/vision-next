@@ -266,13 +266,13 @@ const MeetingBody: React.FC<Props> = ({
                                     </div>
 
                                     <div className={`vision-tab ${currentPanel !== 'roaster' ? 'hidden' : ''}`}>
-                                        <span className="tab-header">Attendees</span>
-                                        <div className="chatbox-wrapper chatbox-wrapper-no-border">
-                                            <div className="text-left add-people">
-                                                <span>
-                                                    <button onClick={() => setIsOpen(true)} className="flex">
+                                        <div className="chatbox-wrapper chatbox-wrapper-no-border" style={{paddingTop: '20px'}}>
+                                            <span className="custom-tab-header">Attendees</span>
+                                            <div className="text-left add-people mt-8">
+                                                <span className='pl-2'>
+                                                    <button onClick={() => setIsOpen(true)} className="flex items-center">
                                                         <span><AddPeople /></span>
-                                                        <span>Add People</span>
+                                                        <span className="chatbox-add-people">Add People</span>
                                                     </button>
                                                 </span>
                                             </div>
