@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useRef } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Observable } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux'
 import InviteModal from './modals/InviteModal'
@@ -63,7 +63,7 @@ const Meeting: FC = () => {
   let recordUpdate: RecordUpdate | null = null;
 
 
-  // Hooks
+  // Hooks  
   let navigate = useNavigate();
 
   const user: IUser = useSelector(selectUser);
@@ -87,8 +87,6 @@ const Meeting: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [captions, setCaptions] = useState<string>('')
   const [progress, setProgress] = useState<number>(0)
-
-  
 
   var dbMeetingData = {
     data: {
@@ -221,8 +219,7 @@ const Meeting: FC = () => {
   // Events
   const doActionsOnLoad = async () => {
     setProgress(3)
-    console.log(meetingManager)
-
+    
     try {
       const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
       setProgress(10)
@@ -240,6 +237,7 @@ const Meeting: FC = () => {
       setRecordingStatus(dbMeetingData.data.getMeeting.isRecording ?? false)
       SetIsHost(await isHostMeeting?.())
       setProgress(90)
+
     } catch (error) {
       setIsValidMeeting(false);
     }
@@ -442,6 +440,20 @@ const Meeting: FC = () => {
   //   />
   // }
   const [videoLayout, setVideoLayout] = useState('standard')
+
+
+ 
+  const [searchParams] = useSearchParams();
+  if (searchParams.get('muted') == 'false') {
+      meetingManager.audioVideo?.realtimeMuteLocalAudio();
+  }
+
+  if (searchParams.get('isVideoEnabled') == 'true') {
+    meetingManager.audioVideo?.startVideoInput(selectedDevice);
+    meetingManager.audioVideo?.startLocalVideoTile();
+  }
+
+
 
   return (
     <>

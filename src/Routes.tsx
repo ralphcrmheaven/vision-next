@@ -20,6 +20,7 @@ import Schedule from './pages/Schedule'
 import VerifyAccount from './pages/VerifyAccount'
 import ProtectedRoute from './ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
+import JoinMeeting from './pages/JoinMeeting'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -92,6 +93,11 @@ const AppRoutes: React.FC = () => {
         <Route path="/meeting/:mId" element={
           <MeetingWrapper>
             <SingleMeetingPassword />
+          </MeetingWrapper>
+        } />
+        <Route path="/join-meeting/:mId/:ePass" element={
+          <MeetingWrapper>
+            <JoinMeeting />
           </MeetingWrapper>
         } />
         <Route path="/meeting/:mId/:ePass" element={

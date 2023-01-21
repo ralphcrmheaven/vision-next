@@ -468,7 +468,7 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     useEffect(() => {
         if(meeting?.id){
-            navigate('/meeting' + meeting?.url);
+            navigate('/join-meeting' + meeting?.url);
         }else{
             dispatch(resetActiveMeeting());
         }
