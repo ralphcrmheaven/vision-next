@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VCard from '../Cards'
 import { Loader } from '@aws-amplify/ui-react';
 import MeetingList from '../meetinglist/MeetingList';
+import moment from 'moment';
 interface Props {
     currentDate: any,
     isLoading: boolean,
@@ -18,6 +19,10 @@ const HomeBody: React.FC<Props> = ({
     setShowNewMeetingModal,
     setShowJoinMeetingModal,
 }) => {
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        setInterval(() => setTime(new Date()), 1000)
+    }, [])
     return (
         <>
             <div className='overflow-auto h-[90%]'>
@@ -26,12 +31,12 @@ const HomeBody: React.FC<Props> = ({
                         <div className='w-full'>
                             <VCard {...{ className: 'rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
                                 <div className="flex flex-row h-full pl-10">
-                                    <p className="flex flex-col w-1/2 my-auto text-dark">
-                                        <span className="text-white text-4xl font-bold tracking-wide">
-                                            {currentDate.format('h:mm:ss a')}
+                                    <p className="flex flex-col w-1/2 text-dark">
+                                        <span className="time-card-time text-white text-4xl font-bold tracking-wide uppercase">
+                                            {moment(time).format('h:mm a')}
                                         </span>
-                                        <span className="text-white">
-                                            {currentDate.format('MMMM Do YYYY, dddd')}
+                                        <span className="text-white time-card-text">
+                                            {currentDate.format('dddd, ll')}
                                         </span>
                                     </p>
                                 </div>

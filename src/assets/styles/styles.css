@@ -14,7 +14,7 @@ body {
 
 @font-face {
     font-family: FF Mark Pro;
-    src: url('../fonts/ff-regular.woff') format('woff');
+    src: url('../fonts/ff-regular.woff'),url('../fonts/ff-pro-m.woff'), url('../fonts/ff-mark-pro.woff')  format('woff');
 }
 
 html {
@@ -51,6 +51,23 @@ html {
 .time-card {
     height: 215px !important;
     width: auto;
+}
+
+.time-card-time {
+    margin-top: 30px;
+    font-size: 44px !important;
+    line-height: 56px !important;
+    font-weight: 900 !important;
+    color: #FFFFFF;
+    letter-spacing: 3px !important;
+}
+
+.time-card-text {
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    line-height: 25px !important;
+    margin-top: 5px !important;
+    color: #FFFFFF !important;
 }
 
 .end-meeting {
@@ -510,6 +527,7 @@ aside.emoji-picker-react {
     border-radius: 30px;
     overflow-y: scroll;
     height: 100vh;
+    margin-bottom: 20px;
 }
 
 ::-webkit-scrollbar {
@@ -566,7 +584,7 @@ aside.emoji-picker-react {
 /* metings */
 
 .meeting-card:first-child {
-    border-radius: 30px 30px 0px 0px;
+    /* border-radius: 30px 30px 0px 0px; */
 }
 
 .meeting-card {
@@ -579,10 +597,12 @@ aside.emoji-picker-react {
 
 .meeting-card h1 {
     font-style: normal;
-    font-weight: 500;
-    font-size: 22px;
+    font-weight: bolder;
+    font-size: 18px;
     line-height: 28px;
     color: #053F64;
+    text-transform: capitalize;
+    margin-bottom: 10px;
 }
 
 .meeting-schedule .meeting-form {
@@ -920,8 +940,8 @@ progress[value]::-webkit-progress-value {
 }
 
 .daily-weekly {
-    font-size: 22px;
-    font-weight: 700px;
+    font-size: 18px;
+    font-weight: bold;
     color: #053F64;
 }
 

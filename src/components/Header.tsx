@@ -32,7 +32,7 @@ const Header: React.FC<Props> = ({
         <>
             <div className="flex flex-wrap-reverse">
                 <div className="mt-5 sm:mt-5 md:mt-5 lg:mt-0">
-                    <h1 className="text-4xl text-vision-blue font-bold">{header}</h1>
+                    <h1 className="text-4xl text-vision-blue font-bold"><strong>{header}</strong></h1>
                     {
                         showSubHeader && (
                             <span className="text-xl italic text-slate-500">

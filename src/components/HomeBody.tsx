@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VCard from './Cards'
 import { Loader } from '@aws-amplify/ui-react';
 import MeetingList from './meetinglist/MeetingList';
+import moment from 'moment';
 interface Props {
     currentDate: any,
     isLoading: boolean,
@@ -18,6 +19,12 @@ const HomeBody: React.FC<Props> = ({
     setShowNewMeetingModal,
     setShowJoinMeetingModal,
 }) => {
+
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        setInterval(() => setTime(new Date()), 1000)
+    }, [])
+    
     return (
         <>
             <div className='h-screen'>
@@ -50,7 +57,7 @@ const HomeBody: React.FC<Props> = ({
                             
                             
                             <VCard
-                                {...{ className: 'relative vision-card text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-gray-900' }}
+                                {...{ className: 'relative vision-card text-white bg-vision-yellow h-40 hover:bg-vision-lighter-yellow hover:text-white' }}
                             >
                                 <div className={`px-5 w-full h-full flex items-center  ${isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => {
                                     //navigate(`/meeting/${getRandomString(3, 3, '-')}`, {replace:true})
@@ -129,47 +136,35 @@ const HomeBody: React.FC<Props> = ({
                         </div>
                         <div className="grid grid-cols-1 latest-news p-5 mt-[150px] rounded-3xl">
                             <label className="text-[18px] font-medium	dashboard-header mb-10">Latest News</label>
-                            <div className="grid grid-cols-4 gap-3 text-left mb-5">
-                                <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl bg-[#007AD9]">
-
+                            <div className="grid grid-cols-4 gap-3 text-left mb-5 justify-between">
+                               <div className="flex items-center col-span-3">
+                                    <div className="mr-3">
+                                        <div className="w-10 h-10 rounded-xl bg-[#007AD9]"></div>
                                     </div>
-                                </div>
-                                <div className="col-span-2">
-                                    <label className="text-vision-blue">We're going in live</label>
-                                </div>
+                                    <div>
+                                        <label className="text-vision-blue">We're going in live</label>
+                                    </div>
+                               </div>
                                 <div className="">
                                     <a href="" style={{color: '#008C8C'}}>Read more</a>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-4 gap-3 text-left mb-5">
-                                <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl bg-[#FF6355]">
-
+                                <div className="flex items-center col-span-3">
+                                    <div className="mr-3">
+                                        <div className="w-10 h-10 rounded-xl bg-[#FF6355]"></div>
+                                    </div>
+                                    <div>
+                                        <label className="text-vision-blue">We’ve got amazing bundles for you...</label>
                                     </div>
                                 </div>
-                                <div className="col-span-2">
-                                    <label className="text-vision-blue">We're going in live</label>
-                                </div>
+                               
                                 <div className="">
                                     <a href="" style={{color: '#008C8C'}}>Read more</a>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-4 gap-3 text-left mb-5">
-                                <div className="w-full">
-                                    <div className="w-10 h-10 rounded-xl bg-[#FF6355]">
-
-                                    </div>
-                                </div>
-                                <div className="col-span-2">
-                                    <label className="text-vision-blue">We're going in live</label>
-                                </div>
-                                <div className="">
-                                    <a href="" style={{color: '#008C8C'}}>Read more</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -178,12 +173,12 @@ const HomeBody: React.FC<Props> = ({
                         <div>
                             <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
                                 <div className="flex flex-row h-full pl-10">
-                                    <p className="flex flex-col w-1/2 my-auto text-dark">
-                                        <span className="text-white text-4xl font-bold tracking-wide">
-                                            {currentDate.format('h:mm:ss a')}
+                                    <p className="flex flex-col w-1/2 text-dark">
+                                        <span className="time-card-time text-white text-4xl font-bold tracking-wide uppercase">
+                                            {moment(time).format('h:mm a')}
                                         </span>
-                                        <span className="text-white">
-                                            {currentDate.format('MMMM Do YYYY, dddd')}
+                                        <span className="text-white time-card-text">
+                                            {currentDate.format('dddd, ll')}
                                         </span>
                                     </p>
                                 </div>
