@@ -17,7 +17,7 @@ exports.handler = async(event) => {
         "temperature": 0,
         "top_p": 1,
         "n": 1,
-        max_tokens: 30,
+        max_tokens: 100,
         model: "text-davinci-003",
         prompt: prompt,
     });
