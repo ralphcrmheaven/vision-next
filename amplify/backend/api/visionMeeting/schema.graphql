@@ -60,6 +60,7 @@ type Query {
   recordMeeting(meetingId: String, action: String): Response @function(name: "visionRecord-${env}")
   downloadRecordedMeeting(key: String): Response @function(name: "downloadRecordedMeeting-${env}")
   createChimeBreakout(meetingId: String, numRooms: String type: String): Response @function(name: "breakoutRoom-${env}")
+  sendPromptAi(prompt: String): Response @function(name: "sendPromptAi-${env}")
 }
 
 type Response {

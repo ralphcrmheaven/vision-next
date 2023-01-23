@@ -4,6 +4,7 @@ import Base from './layout/Base'
 import FullScreen from './layout/FullScreen'
 import MeetingWrapper from './wrappers/MeetingWrapper'
 import Contacts from './pages/Contacts'
+import VisionAi from './pages/VisionAi'
 import ScheduleMeeting from './pages/ScheduleMeeting'
 import SingleMeeting from './pages/SingleMeeting'
 import SingleMeetingPassword from './pages/SingleMeetingPassword'
@@ -67,6 +68,15 @@ const AppRoutes: React.FC = () => {
           element={
             <MeetingWrapper>
               <ScheduleMeeting />
+            </MeetingWrapper>
+          }
+        />
+
+        <Route
+          path="/vision-ai"
+          element={
+            <MeetingWrapper>
+              <VisionAi />
             </MeetingWrapper>
           }
         />

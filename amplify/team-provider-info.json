@@ -115,6 +115,10 @@
         "downloadRecordedMeeting": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
           "s3Key": "amplify-builds/downloadRecordedMeeting-4c4f6770616f6138776c-build.zip"
+        },
+        "sendPromptAi": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/sendPromptAi-306f2f5551636f4b4234-build.zip"
         }
       }
     }

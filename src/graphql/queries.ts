@@ -90,6 +90,16 @@ export const createChimeBreakout = /* GraphQL */ `
     }
   }
 `;
+export const sendPromptAi = /* GraphQL */ `
+  query SendPromptAi($prompt: String) {
+    sendPromptAi(prompt: $prompt) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
@@ -210,11 +220,10 @@ export const listContacts = /* GraphQL */ `
   }
 `;
 export const getBreakoutRooms = /* GraphQL */ `
-  query GetBreakoutRooms($id: ID!) {
-    getBreakoutRooms(id: $id) {
+  query GetBreakoutRooms($meetingId: String!) {
+    getBreakoutRooms(meetingId: $meetingId) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
@@ -222,15 +231,22 @@ export const getBreakoutRooms = /* GraphQL */ `
 `;
 export const listBreakoutRooms = /* GraphQL */ `
   query ListBreakoutRooms(
+    $meetingId: String
     $filter: ModelBreakoutRoomsFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listBreakoutRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listBreakoutRooms(
+      meetingId: $meetingId
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         meetingId
         body
-        id
         createdAt
         updatedAt
       }

@@ -134,7 +134,6 @@ export const createBreakoutRooms = /* GraphQL */ `
     createBreakoutRooms(input: $input, condition: $condition) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
@@ -148,7 +147,6 @@ export const updateBreakoutRooms = /* GraphQL */ `
     updateBreakoutRooms(input: $input, condition: $condition) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
@@ -162,7 +160,6 @@ export const deleteBreakoutRooms = /* GraphQL */ `
     deleteBreakoutRooms(input: $input, condition: $condition) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
