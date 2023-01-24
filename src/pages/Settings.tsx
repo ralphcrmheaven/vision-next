@@ -16,14 +16,14 @@ export default function Settings() {
             (
               // Desktop View Components
               <>
-                <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                <Header showSearchBar={false} showSubHeader={false} header={'Settings'} />
               </>
             )
             :
             isTabletOrMobile ? (
               // Mobile View Component
               <div className="px-10 sm:px-10 md:px-0 lg:px-0">
-                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Settings'} />
 
               </div>
             ) : ''

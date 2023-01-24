@@ -1317,3 +1317,12 @@ progress[value]::-webkit-progress-value {
     width: 28px !important;
     height: auto !important;
 }
+
+.display-linebreak {
+    white-space: pre-line;
+}
+
+.display-linebreak span {
+    position: relative;
+    top: -43px;
+}

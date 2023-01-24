@@ -48,8 +48,15 @@ export default function VisionAi() {
     setConversation(newConvo);
 
     setPrompt('')
-    const rules = "This is the previous conversation: "+JSON.stringify(conversations)+" then the next words are new ones "
-    const result: any = await sendToAi({prompt:rules+prompt})
+    //const rules = "This is the previous conversation: "+JSON.stringify(conversations)+" then the next words are new ones "
+    const rules = "Act as a joyful and very intelligent friend, but if you dont know the answer just politely tell me - .";
+    const identity = `
+          Here is your identity
+          Hi, I’m Cam the Chameleon.
+          In many cultures, seeing a chameleon is considered lucky because it represents good fortune and prosperity. Chameleons are frequently kept as pets in some cultures because they are thought to bring good fortune and luck to those who see them.
+          end of identity
+    `
+    const result: any = await sendToAi({prompt:rules+identity+prompt})
 
     console.log(result)
 
@@ -129,7 +136,7 @@ export default function VisionAi() {
               </div>
 
               <div className="w-full mx-2">
-                <input type="text" value={prompt} onChange={(e: any) => setPrompt(e.target.value)} className="w-full border border-gray-200 p-2"   />
+                <textarea  value={prompt} onChange={(e: any) => setPrompt(e.target.value)} className="w-full border border-gray-200 p-2"   />
               </div>
 
               <div>
