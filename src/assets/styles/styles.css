@@ -1,9 +1,9 @@
 @font-face {
     font-family: FF Mark Pro;
     src: url('../fonts/FontFont_FFMarkProBold.woff') format('woff');
-        font-weight: 800;
-        font-display: swap;
-        font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    font-style: normal;
 }
 
 @font-face {
@@ -13,7 +13,7 @@
     font-display: swap;
     font-style: normal;
 }
-  
+
 @font-face {
     font-family: FF Mark Pro;
     src: url('../fonts/FontFont_FFMarkProMedium.woff') format('woff');
@@ -29,8 +29,6 @@
     font-display: swap;
     font-style: normal;
 }
-  
-
 
 html {
     overflow: hidden;
@@ -303,7 +301,6 @@ html {
     left: 18px;
     top: 19px;
     z-index: 20;
-    
 }
 
 .custom-tab-header {
@@ -990,6 +987,7 @@ progress[value]::-webkit-progress-value {
     width: 270px;
 }
 
+
 /* PRICING CSS */
 
 .pricing__card--wrap {
@@ -1016,7 +1014,7 @@ progress[value]::-webkit-progress-value {
     line-height: 13px;
     text-align: center;
     letter-spacing: -0.04em;
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 
 .pricing__card {
@@ -1114,7 +1112,7 @@ progress[value]::-webkit-progress-value {
     text-transform: uppercase;
 }
 
-.ch-menu{
+.ch-menu {
     color: #747474!important;
 }
 
@@ -1131,6 +1129,7 @@ progress[value]::-webkit-progress-value {
 .custom-modal__bg {
     background-color: #00000078 !important;
 }
+
 
 /* search */
 
@@ -1149,6 +1148,7 @@ progress[value]::-webkit-progress-value {
     border: 1px solid transparent;
     padding: 0px 15px;
 }
+
 
 /* Join Meeting Design */
 
@@ -1193,7 +1193,6 @@ progress[value]::-webkit-progress-value {
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
-
     color: #FFFFFF;
 }
 
@@ -1209,7 +1208,6 @@ progress[value]::-webkit-progress-value {
     font-weight: 500;
     font-size: 12px;
     line-height: 15px;
-
     color: #FFFFFF;
 }
 
@@ -1217,7 +1215,6 @@ progress[value]::-webkit-progress-value {
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
-
     color: #053F64;
 }
 
@@ -1283,11 +1280,8 @@ progress[value]::-webkit-progress-value {
     font-size: 14px;
     line-height: 18px;
     /* identical to box height */
-
     text-align: center;
-
     color: #FFFFFF;
-
 }
 
 .join-meeting__live-video {
@@ -1306,7 +1300,7 @@ progress[value]::-webkit-progress-value {
     position: relative !important;
 }
 
-.meeting-form .table-fixed{
+.meeting-form .table-fixed {
     table-layout: auto !important;
 }
 
@@ -1314,8 +1308,12 @@ progress[value]::-webkit-progress-value {
     .home-responsive-1 {
         max-width: 500px;
     }
-
     .home-responsive-2 {
         max-width: 550px;
     }
+}
+
+.sidebar-icons svg {
+    width: 28px !important;
+    height: auto !important;
 }
