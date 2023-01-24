@@ -29,7 +29,8 @@ const HomeBody: React.FC<Props> = ({
                 <div className="flex pt-10 w-[100%]">
                     <div className="flex flex-col w-full">
                         <div className='w-full'>
-                            <VCard {...{ className: 'rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
+                            <VCard {...{ className: 'rounded-3xl border h-52 sm:h-60 md:h-60 bg-vision-cyan bg-time' }}>
+                            <img className="bg-time__chime" src="/images/image_bg_2.svg" alt="" />
                                 <div className="flex flex-row h-full pl-10">
                                     <p className="flex flex-col text-dark">
                                         <span className="time-card-time text-white text-4xl font-bold tracking-wide uppercase">

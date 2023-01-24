@@ -4,7 +4,7 @@ import { ClockIcon, UnionIcon, CameraRecordIcon } from '../icons';
 import '../../assets/styles/styles.css';
 const MeetingCardLoader = () => {
     return (
-        <div className="v-card meeting-card text-sm rounded-[30px]">
+        <div className="v-card meeting-card text-sm rounded-[30px] w-full">
             <div className="flex mb-2">
                 <h1 className="w-3/4 text-xl font-bold text-vision-blue"><Placeholder className="h-[28px] " /></h1>
                 <div className="grid w-1/4 justify-items-end">
