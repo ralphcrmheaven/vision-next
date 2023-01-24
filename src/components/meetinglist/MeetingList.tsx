@@ -55,7 +55,10 @@ const MeetingList: FC = () => {
       {
         isFetching && (
           <>
+          <div className="meeting-list-bg">
             <MeetingCardLoader />
+          </div>
+            
           </>
         )
       }

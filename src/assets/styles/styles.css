@@ -1,3 +1,37 @@
+@font-face {
+    font-family: FF Mark Pro;
+    src: url('../fonts/FontFont_FFMarkProBold.woff') format('woff');
+        font-weight: 800;
+        font-display: swap;
+        font-style: normal;
+}
+
+@font-face {
+    font-family: FF Mark Pro;
+    src: url('../fonts/FontFont_FFMarkProHeavy.woff') format('woff');
+    font-weight: 900;
+    font-display: swap;
+    font-style: normal;
+}
+  
+@font-face {
+    font-family: FF Mark Pro;
+    src: url('../fonts/FontFont_FFMarkProMedium.woff') format('woff');
+    font-weight: 600 700;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: FF Mark Pro;
+    src: url('../fonts/FontFont_FFMarkPro.woff') format('woff');
+    font-weight: 500 400;
+    font-display: swap;
+    font-style: normal;
+}
+  
+
+
 html {
     overflow: hidden;
     width: 100%;
@@ -10,11 +44,6 @@ body {
     -webkit-overflow-scrolling: touch !important;
     width: -webkit-fill-available;
     /* iOS velocity scrolling */
-}
-
-@font-face {
-    font-family: FF Mark Pro;
-    src: url('../fonts/ff-regular.woff'),url('../fonts/ff-pro-m.woff'), url('../fonts/ff-mark-pro.woff')  format('woff');
 }
 
 html {
@@ -30,7 +59,7 @@ html {
 
 .vision-card:hover {
     cursor: pointer;
-    transform: scale(1.1);
+    transform: scale(1.05);
     background: #FFF;
     color: #000;
     z-index: 999999;
@@ -57,9 +86,9 @@ html {
     margin-top: 30px;
     font-size: 44px !important;
     line-height: 56px !important;
-    font-weight: 900 !important;
+    font-weight: 800 !important;
     color: #FFFFFF;
-    letter-spacing: 3px !important;
+    letter-spacing: 2px !important;
 }
 
 .time-card-text {
@@ -447,11 +476,19 @@ aside.emoji-picker-react {
 }
 
 .bg-time {
-    background-image: url('../images/bg-time.png');
+    background-image: url('../../../public/images/image_bg.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 62%;
+    background-position: center;
     color: black;
+    position: relative;
+}
+
+.bg-time__chime {
+    position: absolute;
+    right: 70px;
+    bottom: 5px;
+    width: 25%;
 }
 
 
@@ -1269,5 +1306,16 @@ progress[value]::-webkit-progress-value {
     position: relative !important;
 }
 
+.meeting-form .table-fixed{
+    table-layout: auto !important;
+}
 
+@media (min-width: 1024px) {
+    .home-responsive-1 {
+        max-width: 500px;
+    }
 
+    .home-responsive-2 {
+        max-width: 550px;
+    }
+}
