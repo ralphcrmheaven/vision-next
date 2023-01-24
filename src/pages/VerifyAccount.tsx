@@ -90,7 +90,7 @@ const VerifyAccount = () => {
                 Verify your account
               </h1>
 
-              <span>Please enter your email address to verify your account.</span>
+              <span>Please enter your code to verify your account.</span>
 
               <Form className="mt-10 mb-8" onSubmit={handleSubmit}>
                 {error && (
