@@ -218,8 +218,9 @@ const Meeting: FC = () => {
 
   // Events
   const doActionsOnLoad = async () => {
+
     setProgress(3)
-    
+
     try {
       const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
       setProgress(10)
@@ -243,6 +244,15 @@ const Meeting: FC = () => {
     }
 
     setProgress(100)
+
+
+    setTimeout(function() {
+      if (searchParams.get('muted')) {
+          //toggleMute()
+          meetingManager.audioVideo?.realtimeMuteLocalAudio();
+
+      }
+    },1000)
   }
 
 
@@ -418,6 +428,10 @@ const Meeting: FC = () => {
     label: 'Mute'
   }
 
+  const toggleAudioManual = async () => {
+    await meetingManager.audioVideo?.realtimeUnmuteLocalAudio();
+  }
+
   const sharescreenButtonProps = {
     icon: isLocalUserSharing ? <ShareScreenIcon color="#FF6355" /> : <ShareScreenIcon color="#053F64" />,
     onClick: () => toggleContentShare(),
@@ -442,11 +456,10 @@ const Meeting: FC = () => {
   const [videoLayout, setVideoLayout] = useState('standard')
 
 
- 
+
   const [searchParams] = useSearchParams();
-  if (searchParams.get('muted') == 'false') {
-      meetingManager.audioVideo?.realtimeMuteLocalAudio();
-  }
+  
+
 
   if (searchParams.get('isVideoEnabled') == 'true') {
     meetingManager.audioVideo?.startVideoInput(selectedDevice);

@@ -108,7 +108,7 @@ const VerifyAccount = () => {
                   name="Email address"
                   type={InputTypes.Email}
                   className="px-5 py-3 mb-3 rounded-xl bg-[#ECECEC] placeholder-black w-full sm:w-[400px] md:w-[400px] lg:w-455"
-                  placeholder="Email address"
+                  placeholder="Verification code"
                   onChange={(e: any) => setCode(e.target.value)}
                   required
                 />

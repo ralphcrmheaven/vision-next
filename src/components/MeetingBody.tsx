@@ -146,6 +146,10 @@ const MeetingBody: React.FC<Props> = ({
         return new DefaultVideoTransformDevice(logger, device, processors)
     }
 
+    const startaudio = async (deviceId:string) => {
+        await meetingManager.startAudioInputDevice(deviceId);
+    }
+
     const toggleBreakoutRooms = async () => {
         try {
             setShowBreakout(!showBreakout)
@@ -294,11 +298,7 @@ const MeetingBody: React.FC<Props> = ({
                             {
                                 audioInputs.devices.map((device: any) => (
                                     <>
-                                        <PopOverItem as="button" onClick={
-                                            async () => {
-                                                await meetingManager.startAudioInputDevice(device.deviceId);
-                                            }
-                                        }>
+                                        <PopOverItem as="button" onClick={() => { startaudio(device.deviceId) }} >
                                             <span>
                                                 {
                                                     device.deviceId === audioInputs.selectedDevice && (
