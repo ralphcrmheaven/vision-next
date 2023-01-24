@@ -6,7 +6,7 @@ html {
 body {
     height: 100%;
     position: fixed;
-    overflow: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch !important;
     width: -webkit-fill-available;
     /* iOS velocity scrolling */
@@ -1257,6 +1257,16 @@ progress[value]::-webkit-progress-value {
     width: 100% !important;
     height: 100% !important;
     overflow: hidden !important;
+}
+
+@media (min-width: 1280px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+.amplify-checkbox .amplify-visually-hidden {
+    position: relative !important;
 }
 
 
