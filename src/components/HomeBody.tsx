@@ -169,11 +169,11 @@ const HomeBody: React.FC<Props> = ({
                     </div>
 
 
-                    <div className="flex flex-col col-span-1 sm:col-span-1 md:col-span-7 lg:col-span-7 gap-3 ">
+                    <div className="flex flex-col col-span-1 sm:col-span-1 md:col-span-7 lg:col-span-7 gap-3 pb-5 ">
                         <div>
                             <VCard {...{ className: 'time-card rounded-3xl border h-40 bg-vision-cyan bg-time' }}>
                                 <div className="flex flex-row h-full pl-10">
-                                    <p className="flex flex-col w-1/2 text-dark">
+                                    <p className="flex flex-col text-dark">
                                         <span className="time-card-time text-white text-4xl font-bold tracking-wide uppercase">
                                             {moment(time).format('h:mm a')}
                                         </span>

@@ -3,11 +3,16 @@ import { Outlet } from 'react-router-dom'
 
 export default function FullScreen() {
   return (
-    <div className="flex h-screen bg-nuetral-100">
-      {/* <Sidebar /> */}
-      <div className="flex-1 bg-white">
-        <Outlet />
+    <div className="flex justify-center">
+      <div className="container">
+          <div className="flex h-screen bg-nuetral-100">
+          {/* <Sidebar /> */}
+          <div className="flex-1 bg-white">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </div>
+   
   )
 }

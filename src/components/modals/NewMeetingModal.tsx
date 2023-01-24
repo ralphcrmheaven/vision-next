@@ -234,7 +234,7 @@ const NewMeetingForm = (props:any) => {
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
-            meetingUrl: `${window.location.origin}/meeting${meeting_data.Url}`,
+            meetingUrl: `${window.location.origin}/join-meeting${meeting_data.Url}`,
             topic: `${topic}`
         })
     };
@@ -328,7 +328,7 @@ const NewMeetingForm = (props:any) => {
             <div className="mb-5">
                 <VLabel>Set Attendees</VLabel>
                 <div className="flex">
-                    <div className="mt-2 overflow-y-auto h-64 p-2 w-560px]">
+                    <div className="mt-2 overflow-y-auto h-64 p-2 w-full">
                         <table className="table-fixed">
                             <tbody className=''>
                                 {contacts.map((d, i) => (
