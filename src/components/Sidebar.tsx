@@ -20,7 +20,7 @@ export default function Sidebar() {
         <ul className="flex flex-col w-20 gap-y-5 sidebar-icons">
           <li>
             <NavLink
-              to="/login"
+              to="/home"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
