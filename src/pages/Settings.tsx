@@ -16,29 +16,30 @@ export default function Settings() {
             (
               // Desktop View Components
               <>
-                <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                <Header showSearchBar={false} showSubHeader={false} header={'Pricing'} />
               </>
             )
             :
             isTabletOrMobile ? (
               // Mobile View Component
               <div className="px-10 sm:px-10 md:px-0 lg:px-0">
-                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                <HeaderMobile showSearchBar={false} showSubHeader={false} header={'Pricing'} />
 
               </div>
             ) : ''
         }
-        {/* <Header showSearchBar={false} showSubHeader={false} header={'Settings'} /> */}
-        <div className="bg-white rounded-3xl shadow-sm grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-5 p-5 sm:p-5 md:p-0 lg:p-0 pb-10 my-10 settings-page">
+      
+        
+        
+        <div className="bg-white rounded-3xl shadow-sm w-full p-5 sm:p-5 md:p-0 lg:p-0 pb-10 my-10 settings-page">
+          <Pricing/>
 
-          <div className="flex flex-col col-span-1 sm:col-span-1 md:col-span-3 lg:col-span-3 rounded-3xl pt-8 mr-4">
+          {/* <div className="flex flex-col col-span-1 sm:col-span-1 md:col-span-3 lg:col-span-3 rounded-3xl pt-8 mr-4">
 
             <h2 className={`text-lg font-semibold mb-3 cursor-pointer px-10 py-3 rounded-2xl ${selectedComponent === 'Profile' ? 'bg-[#F6F6F6]' : ''}`} onClick={() => { setSelectedComponent('Profile') }}>Profile</h2>
 
             <h2 className={`text-lg font-semibold mb-3 cursor-pointer px-10 py-3 rounded-2xl ${selectedComponent === 'Pricing' ? 'bg-[#F6F6F6]' : ''}`} onClick={() => { setSelectedComponent('Pricing') }}>Pricing</h2>
           </div>
-
-          {/* Profile Component */}
 
           {
             selectedComponent === 'Profile' ? (
@@ -50,7 +51,7 @@ export default function Settings() {
                 <Pricing/>
               </div>
             ) : ''
-          }
+          } */}
 
 
 

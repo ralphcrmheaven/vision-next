@@ -4,7 +4,8 @@ import FormInput, { InputTypes } from '../components/form/FormInput';
 import { IUser, logoutUser, selectUser } from '../redux/features/userSlice'
 import { SearchIcon, OnlineIcon, DownArrowIcon } from '../components/icons';
 import { useDispatch, useSelector } from 'react-redux'
-import { LogoutIcon } from '@heroicons/react/outline';
+import { LogoutIcon, UserIcon } from '@heroicons/react/outline';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
     showSearchBar?: boolean,
@@ -91,6 +92,10 @@ const Header: React.FC<Props> = ({
                                     {opendDropdown && (
                                         <div className="absolute border border-gray-400 rounded-2xl right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                                             <div className="py-1" role="none">
+                                            <NavLink to="/profile" className="flex align-center text-gray-700 block px-4 py-2 text-sm bg-white hover:bg-gray-100" role="menuitem" id="menu-item-0">
+                                                <UserIcon className="h-5 text-vision-light-blue" />
+                                                <span className="ml-3">Profile</span>
+                                            </NavLink>
                                             <a href="#" onClick={logout} className="flex align-center text-gray-700 block px-4 py-2 text-sm bg-white hover:bg-gray-100" role="menuitem" id="menu-item-0">
                                                 <LogoutIcon className="h-5 text-vision-light-blue" />
                                                 <span className="ml-3">Logout</span>
