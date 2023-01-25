@@ -83,7 +83,7 @@ export default function Sidebar() {
               }}
             >
               <SettingsIcon />
-              <span className="text-sm">Settings</span>
+              <span className="text-sm">Pricing</span>
             </NavLink>
           </li>
 
