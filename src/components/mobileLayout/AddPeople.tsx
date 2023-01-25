@@ -311,7 +311,7 @@ const AddPeople = (props: any) => {
                 }
                 {selectedInvitationType === 'search_contacts' && (
                     <div className="flex justify-center items-center pt-[47px] fade-in-modal-mobile">
-                        <div className="mt-2 overflow-y-auto h-64 p-2 w-[400px]">
+                        <div className="mt-2 overflow-y-auto h-64 p-2 w-[500px]">
                             <table className="table-fixed">
                                 {/* <thead>
                                         <tr>

@@ -191,8 +191,6 @@ const MeetingBody: React.FC<Props> = ({
     const handleModalCreatePollVisibility = async (value: boolean) => {
         setIsModalCreatePoll(value)
     };
-
-
     return (
         <>
 
@@ -205,9 +203,16 @@ const MeetingBody: React.FC<Props> = ({
             />
 
             {(!meetingManager.meetingId || meetingStatus === MeetingStatus.Loading) &&
-                <div className="grid h-screen place-items-center text-center">
-                    <label><img src={loading} alt="loading" className="running-cham " />Cham is preparing your meeting ...</label>
-                    <progress className="progress-cham" id="file" value={progress} max="100">{progress}%</progress>
+                <div className="flex justify-center items-center h-screen place-items-center text-center">
+                    <div>
+                        <div className='flex justify-center '>
+                            <img src={loading} alt="loading" className="running-cham " />
+                        </div>
+                        <div className='my-3'>
+                            <h6><strong>Cham is preparing your meeting ...</strong></h6>
+                        </div>
+                        <progress className="progress-cham" id="file" value={progress} max="100">{progress}%</progress>
+                    </div>
                 </div>
             }
 

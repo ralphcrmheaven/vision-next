@@ -22,6 +22,7 @@ import VerifyAccount from './pages/VerifyAccount'
 import ProtectedRoute from './ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
 import JoinMeeting from './pages/JoinMeeting'
+import UserProfile from './pages/Profile'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -82,6 +83,7 @@ const AppRoutes: React.FC = () => {
         />
 
         <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route
           path="/schedule"
           element={

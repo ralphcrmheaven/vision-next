@@ -11,9 +11,9 @@ export default function Pricing() {
 
     return (
            <div className="pricing">
-                <h2 className="pricing__title mb-4 font-semibold">Pricing</h2>
+                {/* <h2 className="pricing__title mb-4 font-semibold">Pricing</h2> */}
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4">
-                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                    <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-3 h-full">
                         <div className="pricing__card flex flex-col justify-between">
                             <div>
                                 <div className="flex justify-between items-center">
@@ -21,8 +21,8 @@ export default function Pricing() {
                                         <h4 className="pricing__card--title font-semibold">Free</h4>
                                         <h6 className="pricing__card--sub-title mt-1">FREE</h6>
                                     </div>
-                                    <div>
-                                        <img src="/images/pricing_1.svg" className="pricing-img"></img>
+                                    <div style={{marginRight: '-15px'}}>
+                                        <img src="/images/pricing_image_free.svg" className="pricing-img"></img>
                                     </div>
                                 </div>
                                 <div className="mt-5">
@@ -46,7 +46,7 @@ export default function Pricing() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                    <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-3 h-full">
                         <div className="pricing__card--wrap">
                             <div className="w-full flex justify-center">
                                 <div className="pricing__card--label">
@@ -55,13 +55,13 @@ export default function Pricing() {
                             </div>
                             <div className="pricing__card flex flex-col justify-between">
                                 <div>
-                                    <div className="flex justify-between items-center" style={{ marginTop: '-25px' }}>
+                                    <div className="flex justify-between items-center">
                                         <div>
                                             <h4 className="pricing__card--title font-semibold">Small<br />Business</h4>
                                             <h6 className="pricing__card--sub-title mt-2">$127.50</h6>
                                         </div>
-                                        <div style={{marginRight: '-30px'}}>
-                                            <img src="/images/pricing_2.svg" className="pricing-img"></img>
+                                        <div style={{marginRight: '-20px'}}>
+                                            <img src="/images/pricing_image_business.svg" className="pricing-img"></img>
                                         </div>
                                     </div>
                                     <div className="mt-5">
@@ -90,7 +90,7 @@ export default function Pricing() {
                         
                     </div>
 
-                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                    <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-3 h-full">
                         <div className="pricing__card flex flex-col justify-between">
                             <div>
                                 <div className="flex justify-between items-center">
@@ -98,8 +98,8 @@ export default function Pricing() {
                                         <h4 className="pricing__card--title font-semibold">Large<br />Business</h4>
                                         <h6 className="pricing__card--sub-title mt-1">$169.92</h6>
                                     </div>
-                                    <div>
-                                        <img src="/images/pricing_3.svg" className="pricing-img"></img>
+                                    <div style={{marginRight: '-20px'}}>
+                                        <img src="/images/pricing_image_large_business.svg" className="pricing-img"></img>
                                     </div>
                                 </div>
                                 <div className="mt-5">
@@ -128,7 +128,7 @@ export default function Pricing() {
                         </div>
                     </div>
 
-                    <div className="col-span-1 sm:col-span-1 md:col-span-12 lg:col-span-6">
+                    <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-3 h-full">
                         <div className="pricing__card flex flex-col justify-between">
                             <div>
                                 <div className="flex justify-between items-center">
@@ -136,8 +136,8 @@ export default function Pricing() {
                                         <h4 className="pricing__card--title font-semibold">Enterprise</h4>
                                         <h6 className="pricing__card--sub-title mt-1">Contact Sales</h6>
                                     </div>
-                                    <div>
-                                        <img src="/images/pricing_4.svg" className="pricing-img"></img>
+                                    <div style={{marginRight: '-20px'}}>
+                                        <img src="/images/pricing_image_enterpise.svg" className="pricing-img"></img>
                                     </div>
                                 </div>
                                 <div className="mt-5">

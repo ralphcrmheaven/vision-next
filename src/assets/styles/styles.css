@@ -174,7 +174,7 @@ html {
 }
 
 .running-cham {
-    height: 260px !important;
+    height: 90px !important;
     margin-top: 3px;
     /* margin-left: 30px; */
 }
@@ -991,8 +991,9 @@ progress[value]::-webkit-progress-value {
 /* PRICING CSS */
 
 .pricing__card--wrap {
+    margin-top: -20px;
     width: 100%;
-    height: auto;
+    height: 100%;
     position: relative;
 }
 
@@ -1020,8 +1021,8 @@ progress[value]::-webkit-progress-value {
 .pricing__card {
     position: relative;
     width: 100%;
-    min-height: 610px;
-    padding: 20px 32px;
+    height: 100%;
+    padding: 20px 20px;
     background: #FFFFFF;
     box-shadow: 0px 15px 24px rgba(0, 0, 0, 0.05);
     border-radius: 25px;
@@ -1061,7 +1062,8 @@ progress[value]::-webkit-progress-value {
 }
 
 .pricing__card--list {
-    list-style: inside !important;
+    list-style: disc !important;
+    padding: 0px 20px;
 }
 
 .pricing__card--button {
@@ -1313,16 +1315,36 @@ progress[value]::-webkit-progress-value {
     }
 }
 
-.sidebar-icons svg {
-    width: 28px !important;
-    height: auto !important;
+.invite-modal__success h6 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #747474;
 }
 
-.display-linebreak {
-    white-space: pre-line;
+.invite-modal__success p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: #747474;
 }
 
-.display-linebreak span {
-    position: relative;
-    top: -0px;
+.invite-modal__success--btn {
+    width: 135px;
+    height: 50px;
+    background: #053F64;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border: 1px solid transparent;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    /* identical to box height */
+    text-align: center;
+    color: #FFFFFF;
 }

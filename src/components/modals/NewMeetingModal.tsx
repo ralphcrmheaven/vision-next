@@ -250,8 +250,14 @@ const NewMeetingForm = (props:any) => {
     const onSetMeetingClick = async () => {
         setIsLoading(true);
         setLoadingText('Saving');
-
-        let meeting_data = await saveTheMeeting?.(topic, draftToHtml(convertToRaw(editorState.getCurrentContent())), startDate, startTime, durationTimeHours, durationTimeMinutes, true);
+        let content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        const newContent = content.replace('{topic}',topic)
+                                    .replace('{startDate}', moment(startDate).format('LL'))
+                                    .replace('{startTime}', moment(`${startDate} ${startTime}`).format('h:mm a'))
+                                    .replace('{durationTimeHours}', (parseInt(durationTimeHours) > 1) ? `${durationTimeHours} Hours`: `${durationTimeHours} Hour`)
+                                    .replace('{durationTimeMinutes}', (parseInt(durationTimeMinutes) > 1) ? `${durationTimeMinutes} Minutes`: `${durationTimeMinutes} Minute`)
+       
+        let meeting_data = await saveTheMeeting?.(topic, newContent, startDate, startTime, durationTimeHours, durationTimeMinutes, true);
         console.log(invitedEmails)
       
         contacts.forEach(async (d: any) => {
