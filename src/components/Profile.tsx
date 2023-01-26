@@ -1,9 +1,37 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { VInput, VLabel, VButton } from '../components/ui';
+import CustomModal from './modals/CustomModal';
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+
+
+const dataUrlToFile = (url: string, fileName: string) => {
+    const [mediaType, data] = url.split(",");
+  
+    const mime = mediaType.match(/:(.*?);/)?.[0];
+  
+    var n = data.length;
+  
+    const arr = new Uint8Array(n);
+  
+    while (n--) {
+      arr[n] = data.charCodeAt(n);
+    }
+  
+    return new File([arr], fileName, { type: mime });
+  };
+
 export default function Profile() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+    const [openModal, setOpenModal] = useState(false)
+
+    const [profileImage, setProfileImage] = useState('')
+    const [profilePhoto, setProfilePhoto] = useState<any>()
+
+    const [cropper, setCropper] = useState<any>();
+
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
@@ -14,6 +42,38 @@ export default function Profile() {
         console.log('password: ' + password)
         console.log('confirmPassword: ' + confirmPassword)
     }
+
+    const onChangeFile = (e: any) => {
+        e.preventDefault();
+
+        let files;
+        if (e.dataTransfer) {
+          files = e.dataTransfer.files;
+        } else if (e.target) {
+          files = e.target.files;
+        }
+
+        setProfilePhoto(files[0]);
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            setProfileImage(reader.result as any);
+        };
+        reader.readAsDataURL(files[0]);
+
+        setOpenModal(true)
+    }
+
+    const getCropData = () => {
+        if (typeof cropper !== "undefined") {
+            const imageUrl = cropper.getCroppedCanvas().toDataURL();
+            const file = dataUrlToFile(imageUrl, "profile.png")
+            setProfilePhoto(file)
+            setProfileImage(imageUrl);
+            setOpenModal(false);
+        }
+    };
+
     return (
 
         <div className="">
@@ -24,16 +84,27 @@ export default function Profile() {
 
             <div className='flex flex-col items-center h-full px-0 sm:px-0 md:px-16 lg:px-48'>
 
-                <div className='pb-4'>
-                    <span className="flex-col items-center">
-                        <span className="p-4 text-white bg-gray-900 rounded-lg">
-                            PC
+                <div className="flex flex-col items-center">
+                    <div className='pb-4'>
+                        <span className="flex-col items-center">
+                            {!profileImage ? (
+                                <label htmlFor="profile" className="flex justify-center items-center w-16 h-16 text-white bg-gray-900 rounded-lg">
+                                 PC
+                                </label>
+                            ) : (
+                                <label htmlFor="profile">
+                                    <img className='flex justify-center items-center w-16 h-16 rounded-lg' src={profileImage} alt="" />
+                                </label>
+                                
+                            )} 
                         </span>
-                    </span>
-                </div>
+                    </div>
 
-                <div className='font-medium text-[10px] underline text-[#747474] pb-5'>
-                    Change profile photo
+                    <label htmlFor="profile" className='font-medium text-[10px] underline text-[#747474] pb-5'>
+                        Change profile photo
+                    </label>
+
+                    <input type="file" onChange={onChangeFile} id='profile' name='profile' className="hidden" />
                 </div>
 
                 <div className='flex flex-row justify-center gap-2 w-full'>
@@ -88,6 +159,37 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
+
+
+            <CustomModal open={openModal} closeModal={() => setOpenModal(false)}>
+                <div className='mt-8'>
+                        <div>
+                            <Cropper
+                                src={profileImage}
+                                zoomTo={0.5}
+                                initialAspectRatio={1}
+                                preview=".img-preview"
+                                viewMode={1}
+                                minCropBoxHeight={10}
+                                minCropBoxWidth={10}
+                                background={false}
+                                responsive={true}
+                                autoCropArea={1}
+                                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                                onInitialized={(instance) => {
+                                    setCropper(instance);
+                                }}
+                                guides={true}
+                            />
+                            <button className="w-100  v-ui-button mt-5" onClick={getCropData}>Crop Image</button>
+                        </div>
+                   
+                    
+                    
+                </div>
+  
+            </CustomModal>
+  
         </div>
 
     )
