@@ -1124,9 +1124,14 @@ export type VisionTranscribeQuery = {
 
 export type SendEmailNotificationQueryVariables = {
   email?: string | null,
+  emails?: string | null,
   fromName?: string | null,
+  meetingDate?: string | null,
+  meetingTime?: string | null,
   meetingUrl?: string | null,
   topic?: string | null,
+  topticTitle?: string | null,
+  url?: string | null,
 };
 
 export type SendEmailNotificationQuery = {

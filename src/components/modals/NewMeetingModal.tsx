@@ -15,6 +15,7 @@ import {
 import { VInput, VSelect, VRichTextEditor, VLabel, VButton, VModal } from '../ui';
 import { IUser } from '../../redux/features/userSlice'
 import { createContact, getContacts, ContactType, ContactNotificationType } from '../../api/contact';
+import meeting from '../../api/meeting';
 
 
 const NewMeetingForm = (props:any) => {
@@ -201,7 +202,7 @@ const NewMeetingForm = (props:any) => {
 
     const sendEmailNotification = async (params: ContactNotificationType) => {
         //console.log('params: ', params);
-        console.log("inside sendEmailNotification=======")
+        console.log("inside sendEmailNotification=======", params, queries.sendEmailNotification)
         console.log(params)
         await API.graphql(graphqlOperation(queries.sendEmailNotification, params))
         toast.success("Email has been sent!")
@@ -223,7 +224,7 @@ const NewMeetingForm = (props:any) => {
         console.log(invitedEmails)
     }
 
-    const clickedExistingContactsSendInvite = async (d: any, meeting_data: any) => {
+    const clickedExistingContactsSendInvite = async (d: any, meeting_data: any, emails: string[]) => {
         let topic = ""
         topic = meeting_data.TopicDetails.trim();
         topic = topic.replaceAll('"', "'");
@@ -235,8 +236,15 @@ const NewMeetingForm = (props:any) => {
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/join-meeting${meeting_data.Url}`,
-            topic: `${topic}`
+            url: window.location.origin,
+            topic: `${topic}`,
+            meetingDate: moment(meeting_data.StartDate).format('dddd, ll'),
+            meetingTime: moment(`${meeting_data.StartDate} ${meeting_data.StartTime}`).format('h:mm a'),
+            topicTitle: meeting_data.Topic,
+            emails: emails.toString(),
         })
+
+        console.log('resssend', res);
     };
 
     const onDurationTimeMinutesChange = (value:any) => {
@@ -258,12 +266,14 @@ const NewMeetingForm = (props:any) => {
                                     .replace('{durationTimeMinutes}', (parseInt(durationTimeMinutes) > 1) ? `${durationTimeMinutes} Minutes`: `${durationTimeMinutes} Minute`)
        
         let meeting_data = await saveTheMeeting?.(topic, newContent, startDate, startTime, durationTimeHours, durationTimeMinutes, true);
-        console.log(invitedEmails)
-      
+        
+        let emails = invitedEmails;
+        emails.unshift(`${user.email} <span style='color: #00000073;'>(organiser)</span>`)
+        
         contacts.forEach(async (d: any) => {
             invitedEmails.forEach(async (invited_email: any) => {
                 if(invited_email == d.email) {
-                    await clickedExistingContactsSendInvite(d,meeting_data)
+                    await clickedExistingContactsSendInvite(d,meeting_data, emails)
                 }
             })
         });
