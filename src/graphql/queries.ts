@@ -40,15 +40,25 @@ export const visionTranscribe = /* GraphQL */ `
 export const sendEmailNotification = /* GraphQL */ `
   query SendEmailNotification(
     $email: String
+    $emails: String
     $fromName: String
+    $meetingDate: String
+    $meetingTime: String
     $meetingUrl: String
     $topic: String
+    $topicTitle: String
+    $url: String
   ) {
     sendEmailNotification(
       email: $email
+      emails: $emails
       fromName: $fromName
+      meetingDate: $meetingDate
+      meetingTime: $meetingTime
       meetingUrl: $meetingUrl
       topic: $topic
+      topicTitle: $topicTitle,
+      url: $url
     )
   }
 `;
