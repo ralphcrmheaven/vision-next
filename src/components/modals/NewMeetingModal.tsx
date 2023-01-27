@@ -236,7 +236,7 @@ const NewMeetingForm = (props:any) => {
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/join-meeting${meeting_data.Url}`,
-            url: "https://de13-2001-4455-459-b900-29d3-1ccd-1dc8-b71.ngrok.io",
+            url: window.location.origin,
             topic: `${topic}`,
             meetingDate: moment(meeting_data.StartDate).format('dddd, ll'),
             meetingID: meeting_data.MeetingId,
