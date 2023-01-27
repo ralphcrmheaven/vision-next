@@ -90,7 +90,7 @@ const VerifyAccount = () => {
                 Verify your account
               </h1>
 
-              <span>Please enter your email address to verify your account.</span>
+              <span>Please enter your code to verify your account.</span>
 
               <Form className="mt-10 mb-8" onSubmit={handleSubmit}>
                 {error && (
@@ -106,9 +106,9 @@ const VerifyAccount = () => {
 
                 <FormInput
                   name="Email address"
-                  type={InputTypes.Email}
+                  type={InputTypes.Text}
                   className="px-5 py-3 mb-3 rounded-xl bg-[#ECECEC] placeholder-black w-full sm:w-[400px] md:w-[400px] lg:w-455"
-                  placeholder="Email address"
+                  placeholder="Verification code"
                   onChange={(e: any) => setCode(e.target.value)}
                   required
                 />

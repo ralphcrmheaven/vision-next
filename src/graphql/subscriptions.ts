@@ -48,7 +48,6 @@ export const onCreateBreakoutRooms = /* GraphQL */ `
     onCreateBreakoutRooms(filter: $filter) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
@@ -61,7 +60,6 @@ export const onUpdateBreakoutRooms = /* GraphQL */ `
     onUpdateBreakoutRooms(filter: $filter) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }
@@ -74,7 +72,6 @@ export const onDeleteBreakoutRooms = /* GraphQL */ `
     onDeleteBreakoutRooms(filter: $filter) {
       meetingId
       body
-      id
       createdAt
       updatedAt
     }

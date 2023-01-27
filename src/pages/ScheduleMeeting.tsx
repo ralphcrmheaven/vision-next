@@ -24,7 +24,7 @@ export default function ScheduleMeeting() {
                             // Desktop View Components
                             <>
                                 <div className="relative h-full px-[20px] md:px-14 pt-[15px] md:px-14 w-full">
-                                    <Header showSearchBar={false} showSubHeader={false} header={'Meetings'} />
+                                    <Header showSearchBar={false} showSubHeader={false} header={'Calendar'} />
                                     <div className="overflow-hidden h-[90%]">
                                         <div className="flex flex-row gap-4 pt-4 h-full">
                                             <div className="w-[55%]">

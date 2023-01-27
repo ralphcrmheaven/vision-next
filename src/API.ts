@@ -161,11 +161,9 @@ export type UpdateContactInput = {
 export type CreateBreakoutRoomsInput = {
   meetingId: string,
   body: string,
-  id?: string | null,
 };
 
 export type ModelBreakoutRoomsConditionInput = {
-  meetingId?: ModelStringInput | null,
   body?: ModelStringInput | null,
   and?: Array< ModelBreakoutRoomsConditionInput | null > | null,
   or?: Array< ModelBreakoutRoomsConditionInput | null > | null,
@@ -176,19 +174,17 @@ export type BreakoutRooms = {
   __typename: "BreakoutRooms",
   meetingId: string,
   body: string,
-  id: string,
   createdAt: string,
   updatedAt: string,
 };
 
 export type UpdateBreakoutRoomsInput = {
-  meetingId?: string | null,
+  meetingId: string,
   body?: string | null,
-  id: string,
 };
 
 export type DeleteBreakoutRoomsInput = {
-  id: string,
+  meetingId: string,
 };
 
 export type CreateConversationInput = {
@@ -695,7 +691,6 @@ export type CreateBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -711,7 +706,6 @@ export type UpdateBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -727,7 +721,6 @@ export type DeleteBreakoutRoomsMutation = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1190,6 +1183,20 @@ export type CreateChimeBreakoutQuery = {
   } | null,
 };
 
+export type SendPromptAiQueryVariables = {
+  prompt?: string | null,
+};
+
+export type SendPromptAiQuery = {
+  sendPromptAi?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type GetMeetingQueryVariables = {
   title: string,
 };
@@ -1313,7 +1320,7 @@ export type ListContactsQuery = {
 };
 
 export type GetBreakoutRoomsQueryVariables = {
-  id: string,
+  meetingId: string,
 };
 
 export type GetBreakoutRoomsQuery = {
@@ -1321,16 +1328,17 @@ export type GetBreakoutRoomsQuery = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type ListBreakoutRoomsQueryVariables = {
+  meetingId?: string | null,
   filter?: ModelBreakoutRoomsFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListBreakoutRoomsQuery = {
@@ -1340,7 +1348,6 @@ export type ListBreakoutRoomsQuery = {
       __typename: "BreakoutRooms",
       meetingId: string,
       body: string,
-      id: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1622,7 +1629,6 @@ export type OnCreateBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1637,7 +1643,6 @@ export type OnUpdateBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1652,7 +1657,6 @@ export type OnDeleteBreakoutRoomsSubscription = {
     __typename: "BreakoutRooms",
     meetingId: string,
     body: string,
-    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,

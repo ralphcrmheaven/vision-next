@@ -17,10 +17,10 @@ export default function Sidebar() {
     <div className="w-32 xl:w-60">
       <div className="flex flex-col items-center w-24 mx-auto mt-14 gap-y-16">
         <Logo />
-        <ul className="flex flex-col w-20 gap-y-5">
+        <ul className="flex flex-col w-20 gap-y-5 sidebar-icons">
           <li>
             <NavLink
-              to="/login"
+              to="/home"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
@@ -47,6 +47,7 @@ export default function Sidebar() {
               }}
             >
               <CameraColoredIcon />
+              <span className="text-sm">Calendar</span>
             </NavLink>
           </li>
 
@@ -63,6 +64,7 @@ export default function Sidebar() {
               }}
             >
               <UsersIcon />
+              <span className="text-sm">Contacts</span>
             </NavLink>
           </li>
 
@@ -81,6 +83,7 @@ export default function Sidebar() {
               }}
             >
               <SettingsIcon />
+              <span className="text-sm">Pricing</span>
             </NavLink>
           </li>
 
@@ -96,9 +99,6 @@ export default function Sidebar() {
         </ul>
         <img src="/images/pyramid.png" alt="loading" />
       </div>
-
-      
-
     </div>
   )
 }
