@@ -17,6 +17,8 @@ type ContactNotificationType = {
     fromName: string,
     meetingDate?: string,
     meetingTime?: string,
+    meetingID?: string,
+    meetingPassword?: string,
     meetingUrl: string,
     topic: string,
     topicTitle?: string,

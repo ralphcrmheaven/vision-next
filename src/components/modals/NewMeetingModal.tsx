@@ -236,9 +236,11 @@ const NewMeetingForm = (props:any) => {
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/join-meeting${meeting_data.Url}`,
-            url: window.location.origin,
+            url: "https://de13-2001-4455-459-b900-29d3-1ccd-1dc8-b71.ngrok.io",
             topic: `${topic}`,
             meetingDate: moment(meeting_data.StartDate).format('dddd, ll'),
+            meetingID: meeting_data.MeetingId,
+            meetingPassword: meeting_data.Password,
             meetingTime: moment(`${meeting_data.StartDate} ${meeting_data.StartTime}`).format('h:mm a'),
             topicTitle: meeting_data.Topic,
             emails: emails.toString(),
@@ -269,7 +271,7 @@ const NewMeetingForm = (props:any) => {
         
         let emails = invitedEmails;
         emails.unshift(`${user.email} <span style='color: #00000073;'>(organiser)</span>`)
-        
+
         contacts.forEach(async (d: any) => {
             invitedEmails.forEach(async (invited_email: any) => {
                 if(invited_email == d.email) {

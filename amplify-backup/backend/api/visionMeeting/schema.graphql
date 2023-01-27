@@ -56,7 +56,7 @@ type Query {
   joinChimeMeeting(meetingId: String, name: String): Response @function(name: "visionHandleMeeting-${env}")
   endChimeMeeting(meetingId: String): Response  @function(name: "visionHandleMeeting-${env}")
   visionTranscribe(MeetingId: String, type: String): String @function(name: "visionTranscribe-${env}")
-  sendEmailNotification(email: String, emails: String, fromName: String, meetingDate: String, meetingTime: String, meetingUrl: String, topic: String, topticTitle: String, url: String): String @function(name: "visionEmailNotification-${env}")
+  sendEmailNotification(email: String, emails: String, fromName: String, meetingDate: String, meetingTime: String, meetingID: String, meetingPassword: String, meetingUrl: String, topic: String, topticTitle: String, url: String): String @function(name: "visionEmailNotification-${env}")
   recordMeeting(meetingId: String, action: String): Response @function(name: "visionRecord-${env}")
   downloadRecordedMeeting(key: String): Response @function(name: "downloadRecordedMeeting-${env}")
   createChimeBreakout(meetingId: String, numRooms: String type: String): Response @function(name: "breakoutRoom-${env}")

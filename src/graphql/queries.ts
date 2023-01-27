@@ -44,6 +44,8 @@ export const sendEmailNotification = /* GraphQL */ `
     $fromName: String
     $meetingDate: String
     $meetingTime: String
+    $meetingID: String
+    $meetingPassword: String
     $meetingUrl: String
     $topic: String
     $topicTitle: String
@@ -55,9 +57,11 @@ export const sendEmailNotification = /* GraphQL */ `
       fromName: $fromName
       meetingDate: $meetingDate
       meetingTime: $meetingTime
+      meetingID: $meetingID
+      meetingPassword: $meetingPassword
       meetingUrl: $meetingUrl
       topic: $topic
-      topicTitle: $topicTitle,
+      topicTitle: $topicTitle
       url: $url
     )
   }
