@@ -111,7 +111,10 @@ const MeetingBody: React.FC<Props> = ({
     const [toggleBreakoutRoomModal, setToggleBreakoutRoomModal] = useState<boolean>(false)
     const [showBreakout, setShowBreakout] = useState<boolean>(false)
     const [showCreateBreakout, setShowCreateBreakout] = useState<boolean>(false)
+    const [meetingObj, setMeetingObj] = useState<any>({})
     
+
+
     const attendees = Object.values(roster);
     const attendessButtonProps = {
         icon: currentPanel === 'roaster' ? <AttendeesButtontIcon color="#2AA8F2" /> : <AttendeesButtontIcon color="#053F64" />,
@@ -442,7 +445,7 @@ const MeetingBody: React.FC<Props> = ({
 
             {
                 isOpen && (
-                    <InviteModal setModalVisibility={handleInviteModalVisibility} />
+                    <InviteModal  setModalVisibility={handleInviteModalVisibility} />
                 )
             }
 
