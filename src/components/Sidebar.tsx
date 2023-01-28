@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import Logo from './Logo'
-import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon, CameraColoredIcon } from './icons'
+import { HomeIcon, CameraIcon, SettingsIcon, UsersIcon, CameraColoredIcon, CalendarIcon, MessagesIcon } from './icons'
 import { LogoutIcon } from '@heroicons/react/outline'
 import { PhoneIcon } from '@heroicons/react/solid'
 import { useDispatch } from 'react-redux'
@@ -31,9 +31,26 @@ export default function Sidebar() {
               }}
             >
               <HomeIcon />
-              <span className="text-sm">Home</span>
+              <span className="menu-text">Home</span>
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/meetings"
+              className={({ isActive }) => {
+                return [
+                  'p-4 rounded-2xl',
+                  'flex flex-col items-center space-y-1',
+                  `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
+                ].join(' ')
+              }}
+            >
+              <CameraColoredIcon />
+              <span className="menu-text">Meetings</span>
+            </NavLink>
+          </li>
+
           <li>
             <NavLink
               to="/schedule-meeting"
@@ -46,8 +63,25 @@ export default function Sidebar() {
                 ].join(' ')
               }}
             >
-              <CameraColoredIcon />
-              <span className="text-sm">Calendar</span>
+              <CalendarIcon />
+              <span className="menu-text">Calendar</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="#"
+              className={({ isActive }) => {
+                return [
+                  'p-4 rounded-2xl',
+                  'flex flex-col items-center space-y-1',
+                  `${isActive ? 'bg-white' : ''}`,
+                  'hover:bg-gray-200 hover:rounded-3xl'
+                ].join(' ')
+              }}
+            >
+              <MessagesIcon />
+              <span className="menu-text">Chat</span>
             </NavLink>
           </li>
 
@@ -64,7 +98,7 @@ export default function Sidebar() {
               }}
             >
               <UsersIcon />
-              <span className="text-sm">Contacts</span>
+              <span className="menu-text">Contacts</span>
             </NavLink>
           </li>
 
@@ -83,7 +117,7 @@ export default function Sidebar() {
               }}
             >
               <SettingsIcon />
-              <span className="text-sm">Pricing</span>
+              <span className="menu-text">Pricing</span>
             </NavLink>
           </li>
 

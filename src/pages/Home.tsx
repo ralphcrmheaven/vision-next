@@ -74,11 +74,7 @@ export default function Home() {
 
       {(showJoinMeetingModal === true) && <JoinMeetingModal meetingId={currentMeetingId} setIsOpen={() => setShowJoinMeetingModal?.(false)} />}
       <div className="relative h-screen pl-[20px] md:px-14 pt-[15px] md:px-14 w-full">
-        {
-          
-
-          
-          isDesktopOrLaptop ?
+        {isDesktopOrLaptop ?
             (
               // Desktop View Components
               <>
@@ -93,10 +89,7 @@ export default function Home() {
                 <HeaderMobile showSearchBar={true} showSubHeader={true} header={'Welcome to VISION'} />
                 <HomeBodyMobile currentDate={currentDate} isLoading={isLoading} onNewMeetingCardClick={onNewMeetingCardClick} setTheCurrentMeetingId={setTheCurrentMeetingId} setShowNewMeetingModal={setShowNewMeetingModal} setShowJoinMeetingModal={setShowJoinMeetingModal} />
               </>
-            )
-              :
-              ''
-        }
+            ) : ''}
         <HomeFooter />
       </div>
     </>

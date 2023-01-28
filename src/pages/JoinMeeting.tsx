@@ -38,23 +38,39 @@ const JoinMeeting: FC = () => {
 
     const { mId, ePass } = useParams();
 
-    console.log('attendees', attendees);
+    const { username, given_name } = useSelector(selectUser);
+
     const {
-        createOrJoinTheMeeting,
-        setTheActiveMeeting,
-        meetings
+        initializeJoinMeeting,
       } = useMeetings();
 
 
     const doActionsOnLoad = async () => {
+       
         setLoading(true);
 
-        try {
+        try { 
             const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
+            
             if (res.success) {
-                await createOrJoinTheMeeting?.();
-                await setTheActiveMeeting?.(res.data.I, res.data.Attendees, res.data.topic);
+                const attendees = res.data.Attendees;
+                const attendee = attendees.find((a:any) => a.isHost == true);
 
+                if (attendee) {
+                    const meetings = await meetingAPI().read(attendee.UserName, {});
+                    if (meetings && meetings.length >  0) {
+                        const meeting = meetings.find((item: any) => item.MeetingId == mId)
+                        if (meeting) {
+                            setTitle(meeting.Topic);
+                            setAttendees(meeting.Attendees.filter((a:any) => a.UserName != username) as Attendee[]);
+                        }
+                    }
+                   
+                }
+                
+
+                await initializeJoinMeeting?.(mId);
+                
                 setLoading(false)
             }
         } catch (error) {
@@ -70,21 +86,23 @@ const JoinMeeting: FC = () => {
           await meetingManager.leave()
             navigate('/')
         }
-      }
+    }
+
+    const joinMeeting = async() => {
+        const meetingId = meetingManager.meetingId
+        if (meetingId) {
+          await endMeeting(meetingId)
+          await meetingManager.leave()
+          navigate(`/meeting/${mId}/${ePass}?muted=${muted}&isVideoEnabled=${isVideoEnabled}`)
+        }
+        
+    }
 
     useEffect(() => {
         doActionsOnLoad();
     }, []);
+    
 
-    useEffect(() => {
-        const meeting = meetings?.find(item => item.MeetingId == mId);
-        if (meeting) {
-            setTitle(meeting.Topic);
-            setAttendees(meeting.Attendees as Attendee[]);
-        }
-    }, [meetings]);
-    
-    
 
     return (
         <div className="join-meeting">
@@ -156,40 +174,50 @@ const JoinMeeting: FC = () => {
                                             </span>
                                         ) : (
                                             <div>
-                                                <div className="my-5">
-                                                    <div className="join-meeting__attendee">
-                                                        {attendees.map((item, i) => (
-                                                        <div>
-                                                            {i <= 1 && (
-                                                                <div className="join-meeting__attendee--item uppercase">{item.Name?.charAt(0)}</div>
-                                                            )}
-                                                            
-                                                        </div> 
-                                                        ))}
+                                                {attendees.length > 0 ? (
+                                                    <div>
+                                                        <div className="my-5">
+                                                            <div className="join-meeting__attendee">
+                                                                {attendees.map((item, i) => (
+                                                                <div>
+                                                                    {i <= 1 && (
+                                                                        <div className="join-meeting__attendee--item uppercase">{item.Name?.charAt(0)}</div>
+                                                                    )}
+                                                                    
+                                                                </div> 
+                                                                ))}
 
-                                                        {attendees.length > 2 && (
-                                                            <div className="join-meeting__attendee--item-num">+{attendees.length - 2}</div>
-                                                        )}
-                                                    </div>   
-                                                </div>
-                                                {attendees.length > 0 && (
-                                                    <p className="join-meeting__attendee--text mb-5">
-                                                        {attendees.length > 2 ? (
-                                                            <span>
-                                                                {attendees.map((item, i) => (i <= 1 && (i == 1 ? `${item.Name}` : `${item.Name}, `)))} and others are in this call
-                                                            </span>
-                                                        ) : (
-                                                            <span>
-                                                            {attendees.map((item, i) => (i <= 1 && (i == 1 ? `${item.Name}` : `${item.Name}, `)))} are in this call
-                                                            </span>
-                                                        )}
+                                                                {attendees.length > 2 && (
+                                                                    <div className="join-meeting__attendee--item-num">+{attendees.length - 2}</div>
+                                                                )}
+                                                            </div>   
+                                                        </div>
+                                                        {attendees.length > 0 && (
+                                                            <p className="join-meeting__attendee--text mb-5">
+                                                                {attendees.length > 2 ? (
+                                                                    <span>
+                                                                        {attendees.map((item, i) => (i <= 1 && (i == 1 ? `${item.Name}` : `${item.Name}, `)))} and others are in this call
+                                                                    </span>
+                                                                ) : (
+                                                                    <span>
+                                                                    {attendees.map((item, i) => (i <= 1 && (i == 1 ? `${item.Name}` : `${item.Name}, `)))} are in this call
+                                                                    </span>
+                                                                )}
 
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <p className="join-meeting__attendee--text mb-5 mt-5">
+                                                        <span>No Attendees</span>
                                                     </p>
+                                                
                                                 )}
+                                                
                                             </div>
                                         )}
                                         {!loading && (
-                                            <a href={`/meeting/${mId}/${ePass}?muted=${muted}&isVideoEnabled=${isVideoEnabled}`} className="join-meeting__btn">
+                                            <a href="#" onClick={joinMeeting} className="join-meeting__btn">
                                              Join Meeting
                                             </a>
                                         )}

@@ -14,7 +14,7 @@ import {
     useMeetingStatus,
     useRosterState,
 } from 'amazon-chime-sdk-component-library-react';
-import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
+import { LogLevel, MeetingSessionConfiguration, DefaultMeetingSession, ConsoleLogger, DefaultDeviceController } from 'amazon-chime-sdk-js';
 import {
     useChatChannelState,
     useChatMessagingState,
@@ -85,6 +85,7 @@ interface IMeetingsContext {
     readTheMeetings?: () => void;
     testUpdate?: () => void;
     getDbFromDb?: () => any;
+    initializeJoinMeeting?: (mtId:any) => any;
     // recordMeeting?: (mtId:any, type:any, pipelineId:any) => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -319,7 +320,19 @@ export const MeetingsProvider: FC = ({ children }) => {
         console.log("===============================")
         return await updateDbMeeting(dbMeeting.data.getMeeting.title, isRecording);
     }
-    
+
+
+    const initializeJoinMeeting = async (mtId:any) => {
+        let meetingId = mId as string
+        const joinInfo = await createMeeting(meetingId, given_name, REGION);
+        const meetingSessionConfiguration = new MeetingSessionConfiguration(
+            joinInfo.Meeting, joinInfo.Attendee
+        ); 
+        
+        await meetingManager.join(meetingSessionConfiguration);
+        await meetingManager.start();
+
+    }
 
     const createTheMeeting = async(mtId:any) => {
         meetingManager.getAttendee = getAttendeeCallback();
@@ -396,7 +409,9 @@ export const MeetingsProvider: FC = ({ children }) => {
 
     const saveTheMeeting = async (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any='0', durationTimeInMinutes:any='0', isScheduled:any) => {
         // Save to a cloud db
-        const startDateTimeUTC = moment(`${startDate} ${startTime}`);
+        const time = startTime.split('-');
+        let startDateTimeUTC = moment(`${startDate} ${time[0]}`);
+        
         const id = getRandomString(3, 3, '-');
         const data = {
             MeetingId: id,
@@ -499,6 +514,7 @@ export const MeetingsProvider: FC = ({ children }) => {
                     createOrJoinTheMeeting,
                     getDbFromDb,
                     createTheMeeting,
+                    initializeJoinMeeting,
                     joinTheMeeting,
                     setTheCurrentMeetingId,
                     readTheMeetings,

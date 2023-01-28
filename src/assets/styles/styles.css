@@ -1348,3 +1348,51 @@ progress[value]::-webkit-progress-value {
     text-align: center;
     color: #FFFFFF;
 }
+
+.menu-text {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 13px;
+    text-align: center;
+    color: #053F64;
+}
+
+.create-meeting-form {
+    width: 100%;
+    padding: 20px;
+    background: #FBFBFB;
+    border-radius: 30px;
+}
+
+.create-meeting-form__title {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #053F64;
+}
+
+.meeting-calendar__text {
+    font-weight: 800;
+    font-size: 18px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #000000;
+}
+
+.meeting-calendar__btn {
+    border: 1px solid transparent;
+    height: 50px;
+    background: #053F64;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    color: #FFFFFF;
+}

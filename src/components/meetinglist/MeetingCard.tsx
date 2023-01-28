@@ -104,8 +104,15 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
     startDateTime = moment.utc(meeting?.StartDateTimeUTC);
     endDateTime = startDateTime.clone().add(meeting?.DurationHrs, 'hours').add(meeting?.DurationMins, 'minutes');
 
-    startTime = startDateTime.local().format('hh:mm A');
-    endTime = endDateTime.local().format('hh:mm A');
+    const time = meeting.StartTime.split('-');
+    if (time.length > 1) {
+      startTime = moment(`${meeting.StartDate} ${time[0]}`).format('hh:mm A');
+      endTime = moment(`${meeting.StartDate} ${time[1]}`).format('hh:mm A');
+    } else {
+      startTime = startDateTime.local().format('hh:mm A');
+      endTime = endDateTime.local().format('hh:mm A');
+    }
+    
 
     const currDTStartDTDiffMins = startDateTime.local().diff(moment(), 'minutes');
 
@@ -170,7 +177,7 @@ const MeetingCard: FC<IMeetingCardProps> = (props) => {
 
           {meeting.Attendees != undefined ?
             meeting.Attendees.slice(0, AttendeesToDisplay).map((d, i) => (
-              <span onClick={() => handleAttendeeClick(meeting)}  key={d.Name + "-atteedee"} className="flex justify-center home-avatar-input z-20 inline-block w-3/4 text-gray-600 bg-gray-300 border rounded-lg border-gray text-ellipsis items-center" >
+              <span onClick={() => handleAttendeeClick(meeting)}  key={i} className="flex justify-center home-avatar-input z-20 inline-block w-3/4 text-gray-600 bg-gray-300 border rounded-lg border-gray text-ellipsis items-center" >
                 {d.Name.charAt(0)}
               </span>
             )

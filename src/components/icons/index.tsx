@@ -38,7 +38,9 @@ import AttendeesButtontIcon from "./AttendeesButton";
 import EndCallDesktopIcon from "./EndCallDesktop";
 import TripleDotIcon from "./TripleDot";
 import RippleIcon from "./Ripple";
+import CalendarIcon from "./Calendar";
+import MessagesIcon from "./MessagesIcon";
 
 import MeetingSettingsIcon from "./MeetingSettings";
 import { BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 } from "./BackGroundImage";
-export { CameraIcon,EmojiPickerIcon, SettingsIcon, RippleIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 }
+export { CameraIcon, MessagesIcon, CalendarIcon, EmojiPickerIcon, SettingsIcon, RippleIcon, RecordIcon, OnlineIcon, HomeIcon, UsersIcon, SendMessageIcon, ClockIcon, UnionIcon, BackIcon, CameraColoredIcon, ChamXsIcon, AddPeople, CameraRecordIcon, SearchIcon, DownArrowIcon, MoreIcon, VectorBackIcon, ModalCloseIcon, ChangeBackgroundIcon, AttendeesIcon, RaiseHandIcon, RedHeartIcon, SurprisedFaceIcon, LaughSmileyIcon, ClappingHandIcon, ThumbsUpIcon, MicrophoneIcon, MessageIcon, MessageRedIcon, ShareScreenIcon, ShareScreenRedIcon, EndCallIcon, CheckIcon, VideoInputIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, MeetingSettingsIcon, BackgroundImageIcon1, BackgroundImageIcon2, BackgroundImageIcon3, BackgroundImageIcon4, BackgroundImageIcon5, BackgroundImageIcon6 }

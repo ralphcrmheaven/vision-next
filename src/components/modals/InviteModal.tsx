@@ -18,6 +18,7 @@ import { IUser, selectUser } from '../../redux/features/userSlice'
 import { useSelector } from 'react-redux'
 import { VButton } from '../ui';
 import { CircularLoader } from '../loaders';
+import moment from 'moment';
 const InviteModal = (props: any) => {
 
     const sendInviteButton = useRef<any>();
@@ -63,7 +64,7 @@ const InviteModal = (props: any) => {
 
     useEffect(() => {
         const doActions = async () => {
-            console.log(props.meeting)
+            console.log('props.meetingss', props.meeting, activeMeeting)
             if (props.meeting != undefined) {
                 setMeetingUrl(props.meeting.Url)
                 setMeetingTopic(props.meeting.TopicDetails)
@@ -135,7 +136,7 @@ const InviteModal = (props: any) => {
     const createContactsAsync = async () => {
         console.log("createContactsAsync", emails)
         
-
+        let inviteEmails = emails;
         let topic = ""
         if (meetingTopic == undefined || meetingTopic == '') {
             topic = "Hi you are invited by " + `${user.family_name}` + " to join a VISION meeting where you can see the world right in front of you!"
@@ -151,6 +152,18 @@ const InviteModal = (props: any) => {
             setIsSendingInvites(false)
             setSendButtonDisabled(false)
         }
+
+        let invite_emails = [...emails];
+        activeMeeting.attendees.map((item: any) => {
+            if (item.isHost) {
+                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+            } else {
+                invite_emails.push(item.UserName);
+            }
+        })
+
+        
+
         emails.forEach(async (email: string) => {
             console.log('checkContactExisting', await checkContactExisting(email))
             if (!(await checkContactExisting(email))) {
@@ -165,7 +178,13 @@ const InviteModal = (props: any) => {
                     email: email,
                     fromName: `${user.family_name}`,
                     meetingUrl: `${window.location.origin}/join-meeting${meetingUrl}`,
-                    topic: `${topic}`
+                    topic: `${topic}`,
+                    emails: invite_emails.toString(),
+                    url: window.location.origin,
+                    meetingDate: moment().format('dddd, ll'),
+                    meetingID: activeMeeting.id,
+                    meetingPassword: activeMeeting.password,
+                    meetingTime: moment().format('h:mm a'),
                 })
                 if (res !== null) {
                     setIsSendingInvites(false)
@@ -214,11 +233,27 @@ const InviteModal = (props: any) => {
             console.log("here")
         }
 
+
+        let invite_emails = [d.email];
+        activeMeeting.attendees.map((item: any) => {
+            if (item.isHost) {
+                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+            } else {
+                invite_emails.push(item.UserName);
+            }
+        })
+
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
             meetingUrl: `${window.location.origin}/join-meeting${meetingUrl}`,
-            topic: `${topic}`
+            topic: `${topic}`,
+            emails: invite_emails.toString(),
+            url: window.location.origin,
+            meetingDate: moment().format('dddd, ll'),
+            meetingID: activeMeeting.id,
+            meetingPassword: activeMeeting.password,
+            meetingTime: moment().format('h:mm a'),
         })
         if(res!==null){
             setIsLoadingSendInvite(null)
