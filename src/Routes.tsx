@@ -23,6 +23,7 @@ import ProtectedRoute from './ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
 import JoinMeeting from './pages/JoinMeeting'
 import UserProfile from './pages/Profile'
+import Chat from './pages/Chat'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -61,6 +62,14 @@ const AppRoutes: React.FC = () => {
           element={
             <MeetingWrapper>
               <Meetings />
+            </MeetingWrapper>
+          }
+        />
+         <Route 
+          path="/chat" 
+          element={
+            <MeetingWrapper>
+              <Chat />
             </MeetingWrapper>
           }
         />

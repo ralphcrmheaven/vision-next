@@ -70,7 +70,7 @@ export default function Sidebar() {
 
           <li>
             <NavLink
-              to="#"
+              to="/chat"
               className={({ isActive }) => {
                 return [
                   'p-4 rounded-2xl',
