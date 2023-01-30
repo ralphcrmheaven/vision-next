@@ -154,7 +154,14 @@ const InviteModal = (props: any) => {
         }
 
         let invite_emails = [...emails];
-        activeMeeting.attendees.map((item: any) => {
+        let meetingAttendees = [];
+        if (props.meeting != undefined) {
+            meetingAttendees = props.meeting.Attendees
+        } else {
+            meetingAttendees = activeMeeting.attendees
+        }
+
+        meetingAttendees.map((item: any) => {
             if (item.isHost) {
                 invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
             } else {
@@ -235,7 +242,16 @@ const InviteModal = (props: any) => {
 
 
         let invite_emails = [d.email];
-        activeMeeting.attendees.map((item: any) => {
+
+        let meetingAttendees = [];
+
+        if (props.meeting != undefined) {
+            meetingAttendees = props.meeting.Attendees
+        } else {
+            meetingAttendees = activeMeeting.attendees
+        }
+        
+        meetingAttendees.map((item: any) => {
             if (item.isHost) {
                 invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
             } else {
