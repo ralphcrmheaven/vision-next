@@ -24,6 +24,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import JoinMeeting from './pages/JoinMeeting'
 import UserProfile from './pages/Profile'
 import Chat from './pages/Chat'
+import Confirmation from './pages/Confirmation'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -93,6 +94,7 @@ const AppRoutes: React.FC = () => {
 
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/confirmation" element={<Confirmation />} />
         <Route
           path="/schedule"
           element={
