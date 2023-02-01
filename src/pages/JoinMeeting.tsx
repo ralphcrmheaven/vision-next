@@ -105,7 +105,7 @@ const JoinMeeting: FC = () => {
 
 
     return (
-        <div className="join-meeting">
+        <div className="join-meeting overflow-auto">
             <div className="w-full relative">
                 <div className="grid grid-cols-3 gap-4 h-24 w-full">
                     <div className="h-24 ">
