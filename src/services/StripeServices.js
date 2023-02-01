@@ -1,6 +1,6 @@
 import moment from "moment";
 import Stripe from "stripe";
-const stripe = new Stripe("sk_test_51MErmnAhtP9RzsHySQu8mfHbmCHYVe5U1d286XIIK5PwtR8PRLhtOQNJ5xW5XPAHuR84nSWln2dFa89ed2nZJVvp004ATXy2Qm");
+const stripe = new Stripe("sk_test_51MUDFFI1DrAa7pi6XYVupAXVPef9IaFahKIEEvgsAlZrvPFVfs898us7zj6i5eOZyp2AsIRP1q6Wcp3Zb00LGFrz002pcRzzKc");
 
 // this will create a customer in stripe
 export const createCustomer = async (email, name) => {
@@ -22,11 +22,8 @@ export const getCustomerByEmailName = async (email, name) => {
     }
 }
 // This will generate a subscription checkout link to subscribe the user.
-export const subscriptionCheckout = async (type, customer_id, price_id, old_sub_id=null) => {
-    if (old_sub_id) {
-        await cancelSubscription(old_sub_id);
-    }
-    
+export const subscriptionCheckout = async (type, customer_id, price_id) => {
+
     const session = await stripe.checkout.sessions.create({
         success_url: `${window.location.origin}/confirmation?type=${type}`,
         cancel_url: `${window.location.origin}/settings`,
@@ -59,6 +56,24 @@ export const getCustomerSubscriptions = async (customer_id, status='all') => {
     }
 }
 
+export const upgradeDowngradeSubscription = async (sub_id, price_id) => {
+    const subscription = await stripe.subscriptions.retrieve(sub_id);
+        stripe.subscriptions.update(subscription.id, {
+        cancel_at_period_end: false,
+        proration_behavior: 'always_invoice',
+        items: [{
+            id: subscription.items.data[0].id,
+            price: price_id,
+        }]
+    });
+
+    return subscription;
+}
+
+export const activateSubscription = async(sub_id) => {
+    return await stripe.subscriptions.update(sub_id, {status: 'active'});
+}
+
 export const cancelSubscription = async(sub_id) => {
-    return await stripe.subscriptions.del(sub_id, {prorate: true, invoice_now: true});
+    return await stripe.subscriptions.del(sub_id);
 }

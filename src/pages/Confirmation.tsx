@@ -47,7 +47,12 @@ export default function Confirmation() {
                     <img width={250} src="/images/pricing_2.svg" alt="" />
                   )}
               </div>
-              <h1>Thank you for subscribing to {type == 'large_business' ? 'Large Business' : 'Small Business'} plan.</h1>
+              {type == 'free' ? (
+                <h1>You successfully subscribed to free plan.</h1>
+              ) : (
+                <h1>Thank you for subscribing to {type == 'large_business' ? 'Large Business' : 'Small Business'} plan.</h1>
+              )}
+              
               <div className='flex justify-center mt-5'>
                   <NavLink to={'/'} className="w/14 w-[105px]  v-ui-button flex justify-center items-center">Go Home</NavLink>
               </div>

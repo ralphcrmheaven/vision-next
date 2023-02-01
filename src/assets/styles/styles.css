@@ -1158,6 +1158,7 @@ progress[value]::-webkit-progress-value {
     padding-bottom: 50px;
     background-color: #fff;
     overflow: auto;
+    height: 100vh;
 }
 
 .join-meeting__video {
