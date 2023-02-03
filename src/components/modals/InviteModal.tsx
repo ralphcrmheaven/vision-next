@@ -161,7 +161,7 @@ const InviteModal = (props: any) => {
         let meetingID = ''
         let meetingPassword = '';
 
-        if (props.meeting != undefined) {
+        if (Object.keys(activeMeeting).length == 0) {
             meetingAttendees = props.meeting.Attendees
             const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
             meetingID = props.meeting.MeetingId;
@@ -183,7 +183,7 @@ const InviteModal = (props: any) => {
             }
         })
 
-        console.log('activeMeeting', activeMeeting, props.meeting);
+        console.log('activeMeeting', activeMeeting, props.meeting, {meetingPassword}, {meetingID});
 
         emails.forEach(async (email: string) => {
             console.log('checkContactExisting', await checkContactExisting(email))
@@ -261,7 +261,7 @@ const InviteModal = (props: any) => {
         let meetingID = ''
         let meetingPassword = '';
 
-        if (props.meeting != undefined) {
+        if (Object.keys(activeMeeting).length == 0) {
             meetingAttendees = props.meeting.Attendees
             const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
             meetingID = props.meeting.MeetingId;
@@ -282,7 +282,7 @@ const InviteModal = (props: any) => {
                 invite_emails.push(item.UserName);
             }
         })
-        console.log('activeMeeting', activeMeeting, props.meeting);
+        console.log('activeMeeting', activeMeeting, props.meeting, {meetingPassword}, {meetingID});
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
