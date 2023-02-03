@@ -17,7 +17,7 @@ import {
     PopOverItem,
     useRosterState,
     useLogger,
-    useVideoInputs
+    useVideoInputs,
 
 } from 'amazon-chime-sdk-component-library-react';
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
@@ -261,12 +261,22 @@ const MeetingBody: React.FC<Props> = ({
                                         {closedCaptionStatus &&
                                             <span className="caption-style">{captions}</span>
                                         }
-                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout}>
-                                        </VideoTileGrid>
+                                        
+                                    
+                                            {/* <VideoGrid layout="featured" className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`}>
+                                                <ContentShare css="grid-area: ft;" />
+                                                <LocalVideo className={!featureTileId && !contentTileId ? 'feature_video' : ''} nameplate='Me'/>
+                                                <FeaturedRemoteVideos />   
+                                            </VideoGrid> */}
+                                    
+                                       
+                                        
+                                        <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout}></VideoTileGrid>
                                     </div>
 
                                 </div>
 
+                            
 
                                 <div className="h-full w-full">
 

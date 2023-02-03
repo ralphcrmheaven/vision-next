@@ -1422,3 +1422,8 @@ progress[value]::-webkit-progress-value {
     background: #10b16e !important;
     color: #fff !important;
 }
+
+.ch-featured-tile {
+    border: 2px solid #053F64;
+    grid-area: ft !important;
+}

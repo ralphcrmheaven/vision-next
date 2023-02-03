@@ -25,6 +25,7 @@ import JoinMeeting from './pages/JoinMeeting'
 import UserProfile from './pages/Profile'
 import Chat from './pages/Chat'
 import Confirmation from './pages/Confirmation'
+import Pricing from './pages/Pricing'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -93,6 +94,7 @@ const AppRoutes: React.FC = () => {
         />
 
         <Route path="/settings" element={<Settings />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route

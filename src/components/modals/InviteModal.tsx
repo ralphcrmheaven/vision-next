@@ -23,6 +23,8 @@ import moment from 'moment';
 import { 
     setActiveMeeting, 
 } from '../../redux/features/meetingSlice';
+import meetingAPI from '../../api/meeting';
+import { decrypt } from '../../utils/crypt';
 
 const InviteModal = (props: any) => {
 
@@ -160,25 +162,25 @@ const InviteModal = (props: any) => {
         }
 
         let invite_emails = [...emails];
-        if(Object.keys(activeMeeting).length > 0) {
-            activeMeeting.attendees.map((item: any) => {
-                if (item.isHost) {
-                    invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
-                } else {
-                    invite_emails.push(item.UserName);
-                }
-            })
-        }else{
-            props.meeting.Attendees.map((item: any) => {
-                if (item.isHost) {
-                    invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
-                } else {
-                    invite_emails.push(item.UserName);
-                }
-            })
+        let meetingAttendees = [];
+        let meetingID = ''
+        let meetingPassword = '';
+
+        if (props.meeting != undefined) {
+            meetingAttendees = props.meeting.Attendees
+            const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
+            meetingID = props.meeting.MeetingId;
+            if (res.success) {
+                meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+            }
+        } else {
+            meetingAttendees = activeMeeting.attendees
+            meetingID = activeMeeting.id;
+            meetingPassword = activeMeeting.password;
         }
 
 
+        console.log('activeMeeting', activeMeeting, props.meeting);
 
         emails.forEach(async (email: string) => {
             console.log('checkContactExisting', await checkContactExisting(email))
@@ -198,8 +200,8 @@ const InviteModal = (props: any) => {
                     emails: invite_emails.toString(),
                     url: window.location.origin,
                     meetingDate: moment().format('dddd, ll'),
-                    meetingID: Object.keys(activeMeeting).length > 0 ? activeMeeting.id : props.meeting.MeetingId,
-                    meetingPassword: Object.keys(activeMeeting).length > 0 ? activeMeeting.password : props.meeting.Password,
+                    meetingID: meetingID,
+                    meetingPassword: meetingPassword,
                     meetingTime: moment().format('h:mm a'),
                 })
                 if (res !== null) {
@@ -251,26 +253,33 @@ const InviteModal = (props: any) => {
 
 
         let invite_emails = [d.email];
-        if(Object.keys(activeMeeting).length > 0) {
-            activeMeeting.attendees.map((item: any) => {
-                if (item.isHost) {
-                    invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
-                } else {
-                    invite_emails.push(item.UserName);
-                }
-            })
-        }else{
-            props.meeting.Attendees.map((item: any) => {
-                if (item.isHost) {
-                    invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
-                } else {
-                    invite_emails.push(item.UserName);
-                }
-            })
+
+        let meetingAttendees = [];
+        let meetingID = ''
+        let meetingPassword = '';
+
+        if (props.meeting != undefined) {
+            meetingAttendees = props.meeting.Attendees
+            const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
+            meetingID = props.meeting.MeetingId;
+            if (res.success) {
+                meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+            }
+            
+        } else {
+            meetingAttendees = activeMeeting.attendees
+            meetingID = activeMeeting.id;
+            meetingPassword = activeMeeting.password;
         }
-      
-
-
+        
+        meetingAttendees.map((item: any) => {
+            if (item.isHost) {
+                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+            } else {
+                invite_emails.push(item.UserName);
+            }
+        })
+        console.log('activeMeeting', activeMeeting, props.meeting);
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
@@ -279,8 +288,8 @@ const InviteModal = (props: any) => {
             emails: invite_emails.toString(),
             url: window.location.origin,
             meetingDate: moment().format('dddd, ll'),
-            meetingID: Object.keys(activeMeeting).length > 0 ? activeMeeting.id : props.meeting.MeetingId,
-            meetingPassword: Object.keys(activeMeeting).length > 0 ? activeMeeting.password : props.meeting.Password,
+            meetingID: meetingID,
+            meetingPassword: meetingPassword,
             meetingTime: moment().format('h:mm a'),
         })
         if(res!==null){

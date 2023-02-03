@@ -453,7 +453,7 @@ const Meeting: FC = () => {
   //     setIsOpen={() => { }}
   //   />
   // }
-  const [videoLayout, setVideoLayout] = useState('standard')
+  const [videoLayout, setVideoLayout] = useState('featured')
 
 
 

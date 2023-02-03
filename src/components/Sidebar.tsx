@@ -104,7 +104,7 @@ export default function Sidebar() {
 
 
 
-          <li>
+          {/* <li>
             <NavLink
               to="/settings"
               className={({ isActive }) => {
@@ -119,7 +119,7 @@ export default function Sidebar() {
               <SettingsIcon />
               <span className="menu-text">Pricing</span>
             </NavLink>
-          </li>
+          </li> */}
 
           {/* <li>
             <div
