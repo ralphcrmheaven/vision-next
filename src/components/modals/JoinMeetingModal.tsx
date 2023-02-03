@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import meetingAPI from '../../api/meeting';
 import {
     useMeetings
@@ -18,6 +19,7 @@ const JoinMeetingForm = (props:any) => {
     const [password, setPassword] = useState('');
     const [disabled, setDisabled] = useState(true);
     const [notification, setNotification] = useState(defaultNotification);
+    let navigate = useNavigate();
 
     const onJoinMeetingClick = async() => {
         try{
@@ -25,14 +27,15 @@ const JoinMeetingForm = (props:any) => {
             setLoadingText('Joining...');
 
             const res = await meetingAPI().validateMeeting(meetingId, {password: password, ie: true});
-            console.log(res);
+            console.log('ress', res);
             if(res.success){
                 setNotification(defaultNotification);
                 setTheMeeting?.({
                     id: meetingId,
                     url: res.data.Url
                 });
-                return;
+
+                navigate('/join-meeting' + res.data.Url);
             }
         }catch(err){
             setNotification({show: true, type: 'error', message: 'Invalid meeting id or password'});
@@ -43,7 +46,7 @@ const JoinMeetingForm = (props:any) => {
     };
 
     useEffect(() => {
-        setDisabled(() => (meetingId && password ? false : true));
+        setDisabled(() => (meetingId ? false : true));
     }, [meetingId, password]);
     
     useEffect(() => {
@@ -59,7 +62,7 @@ const JoinMeetingForm = (props:any) => {
 
             <div className="mb-5">
                 <VLabel htmlFor="meeting-id">Meeting Id</VLabel>
-                <VInput id="meeting-id" value={meetingId} onChange={(e:any) => setMeetingId(e.target.value)} />
+                <VInput id="meeting-id" type="text" value={meetingId} onChange={(e:any) => setMeetingId(e.target.value)} />
             </div>
 
             <div className="mb-5">
@@ -71,7 +74,7 @@ const JoinMeetingForm = (props:any) => {
                 <VButton 
                     isLoading={isLoading}
                     loadingText={loadingText}
-                    className={(disabled)? 'bg-slate-500 w-[147px]' : ''} disabled={disabled} 
+                    className={(disabled)? 'bg-slate-500 w-[147px]' : 'w-[147px]'} disabled={disabled} 
                     onClick={(e:any) => onJoinMeetingClick()}
                 >
                     Join Meeting

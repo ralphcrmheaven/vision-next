@@ -56,6 +56,31 @@ const Header: React.FC<Props> = ({
                                 </span>
                             }
                         >
+                           
+                            <MenuItem>
+                                <NavLink
+                                    to="/meetings"
+                                >
+                                    <span className="text-sm">Meetings</span>
+                                </NavLink>
+                            </MenuItem>
+
+                            <MenuItem>
+                                <NavLink
+                                    to="/schedule-meeting"
+                                >
+                                    <span className="text-sm">Calendar</span>
+                                </NavLink>
+                            </MenuItem>
+
+                            <MenuItem>
+                                <NavLink
+                                    to="/chat"
+                                >
+                                    <span className="text-sm">Chat</span>
+                                </NavLink>
+                            </MenuItem>
+
                             <MenuItem>
                                 <NavLink
                                     to="/contacts"
@@ -64,19 +89,12 @@ const Header: React.FC<Props> = ({
                                 </NavLink>
                             </MenuItem>
 
-                            <MenuItem>
-                                <NavLink
-                                    to="/schedule-meeting"
-                                >
-                                    <span className="text-sm">Meetings</span>
-                                </NavLink>
-                            </MenuItem>
 
                             <MenuItem>
                                 <NavLink
-                                    to="/settings"
+                                    to="/pricing"
                                 >
-                                    <span className="text-sm">Settings</span>
+                                    <span className="text-sm">Pricing</span>
                                 </NavLink>
                             </MenuItem>
 

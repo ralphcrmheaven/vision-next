@@ -19,6 +19,9 @@ import { useSelector } from 'react-redux'
 import { VButton } from '../ui';
 import { CircularLoader } from '../loaders';
 import moment from 'moment';
+import meetingAPI from '../../api/meeting';
+import { decrypt } from '../../utils/crypt';
+
 const InviteModal = (props: any) => {
 
     const sendInviteButton = useRef<any>();
@@ -155,10 +158,21 @@ const InviteModal = (props: any) => {
 
         let invite_emails = [...emails];
         let meetingAttendees = [];
+        let meetingID = ''
+        let meetingPassword = '';
+
         if (props.meeting != undefined) {
             meetingAttendees = props.meeting.Attendees
+            const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
+            meetingID = props.meeting.MeetingId;
+            if (res.success) {
+                meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+            }
+            
         } else {
             meetingAttendees = activeMeeting.attendees
+            meetingID = activeMeeting.id;
+            meetingPassword = activeMeeting.password;
         }
 
         meetingAttendees.map((item: any) => {
@@ -169,7 +183,7 @@ const InviteModal = (props: any) => {
             }
         })
 
-        
+        console.log('activeMeeting', activeMeeting, props.meeting);
 
         emails.forEach(async (email: string) => {
             console.log('checkContactExisting', await checkContactExisting(email))
@@ -189,8 +203,8 @@ const InviteModal = (props: any) => {
                     emails: invite_emails.toString(),
                     url: window.location.origin,
                     meetingDate: moment().format('dddd, ll'),
-                    meetingID: activeMeeting.id,
-                    meetingPassword: activeMeeting.password,
+                    meetingID: meetingID,
+                    meetingPassword: meetingPassword,
                     meetingTime: moment().format('h:mm a'),
                 })
                 if (res !== null) {
@@ -244,11 +258,21 @@ const InviteModal = (props: any) => {
         let invite_emails = [d.email];
 
         let meetingAttendees = [];
+        let meetingID = ''
+        let meetingPassword = '';
 
         if (props.meeting != undefined) {
             meetingAttendees = props.meeting.Attendees
+            const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
+            meetingID = props.meeting.MeetingId;
+            if (res.success) {
+                meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+            }
+            
         } else {
             meetingAttendees = activeMeeting.attendees
+            meetingID = activeMeeting.id;
+            meetingPassword = activeMeeting.password;
         }
         
         meetingAttendees.map((item: any) => {
@@ -258,7 +282,7 @@ const InviteModal = (props: any) => {
                 invite_emails.push(item.UserName);
             }
         })
-
+        console.log('activeMeeting', activeMeeting, props.meeting);
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
@@ -267,8 +291,8 @@ const InviteModal = (props: any) => {
             emails: invite_emails.toString(),
             url: window.location.origin,
             meetingDate: moment().format('dddd, ll'),
-            meetingID: activeMeeting.id,
-            meetingPassword: activeMeeting.password,
+            meetingID: meetingID,
+            meetingPassword: meetingPassword,
             meetingTime: moment().format('h:mm a'),
         })
         if(res!==null){
