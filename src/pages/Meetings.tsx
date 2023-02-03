@@ -29,7 +29,7 @@ export default function Meetings() {
         ) : ''}
       </div>
 
-      <div className='p-5 sm:p-5 md:p-10 lg:p-10'>
+      <div className='p-5 sm:p-5 md:p-10 lg:p-10 h-full sm:h-auto  overflow-y-scroll'>
         <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4'>
           <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5">
               <CreateMeeting />
