@@ -161,7 +161,7 @@ const InviteModal = (props: any) => {
         let meetingID = ''
         let meetingPassword = '';
 
-        if (Object.keys(activeMeeting).length == 0) {
+        if (Object.keys(activeMeeting).length > 0) {
             meetingAttendees = props.meeting.Attendees
             const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
             meetingID = props.meeting.MeetingId;
