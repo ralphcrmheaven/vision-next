@@ -19,10 +19,6 @@ import { useSelector } from 'react-redux'
 import { VButton } from '../ui';
 import { CircularLoader } from '../loaders';
 import moment from 'moment';
-
-import { 
-    setActiveMeeting, 
-} from '../../redux/features/meetingSlice';
 import meetingAPI from '../../api/meeting';
 import { decrypt } from '../../utils/crypt';
 
@@ -71,8 +67,7 @@ const InviteModal = (props: any) => {
 
     useEffect(() => {
         const doActions = async () => {
-            console.log(Object.keys(activeMeeting).length > 0)
-            console.log('props.meetingss=========', props.meeting, activeMeeting)
+            console.log('props.meetingss', props.meeting, activeMeeting)
             if (props.meeting != undefined) {
                 setMeetingUrl(props.meeting.Url)
                 setMeetingTopic(props.meeting.TopicDetails)
@@ -90,7 +85,7 @@ const InviteModal = (props: any) => {
             }
         };
         doActions();
-    }, [props.meeting])
+    }, [])
 
 
 
@@ -173,12 +168,20 @@ const InviteModal = (props: any) => {
             if (res.success) {
                 meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
             }
+            
         } else {
             meetingAttendees = activeMeeting.attendees
             meetingID = activeMeeting.id;
             meetingPassword = activeMeeting.password;
         }
 
+        meetingAttendees.map((item: any) => {
+            if (item.isHost) {
+                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+            } else {
+                invite_emails.push(item.UserName);
+            }
+        })
 
         console.log('activeMeeting', activeMeeting, props.meeting);
 
