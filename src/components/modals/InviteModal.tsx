@@ -282,7 +282,7 @@ const InviteModal = (props: any) => {
                 invite_emails.push(item.UserName);
             }
         })
-        console.log('activeMeeting', activeMeeting, props.meeting, {meetingPassword}, {meetingID});
+       console.log('activeMeeting', activeMeeting, props.meeting, {meetingPassword}, {meetingID});
         const res = await sendEmailNotification({
             email: d.email,
             fromName: `${user.family_name}`,
