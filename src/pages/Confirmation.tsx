@@ -13,6 +13,18 @@ export default function Confirmation() {
   const [searchParams] = useSearchParams();
 
   const type = searchParams.get('type');
+  let title = '';
+  if (type == 'free') {
+    title = 'Free Plan'
+  } else if (type == 'large_business') {
+    title = 'Yearly Large Business Plan'
+  } else if (type == 'small_business') {
+    title = 'Yearly Small Business Plan'
+  } else if (type == 'monthly_small_business') {
+    title = 'Monthly Small Business Plan'
+  } else if (type == 'monthly_large_business') {
+    title = 'Monthly Large Business Plan'
+  }
 
   return (
     <>
@@ -50,7 +62,7 @@ export default function Confirmation() {
               {type == 'free' ? (
                 <h1>You successfully subscribed to free plan.</h1>
               ) : (
-                <h1>Thank you for subscribing to {type == 'large_business' ? 'Large Business' : 'Small Business'} plan.</h1>
+                <h1>Thank you for subscribing to {title}.</h1>
               )}
               
               <div className='flex justify-center mt-5'>

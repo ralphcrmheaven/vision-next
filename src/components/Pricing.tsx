@@ -40,6 +40,7 @@ export default function Pricing() {
     const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [upgradeLoading, setUpgradeLoading] = useState(false);
     const [activateLoading, setActivateLoading] = useState(false);
+    const [isMonthly, setIsMonthly] = useState(false);
 
     const [unsubscribeLoading, setUnsubscribeLoading] = useState(false);
     const [pricingStatus, setPricingStatus] = useState(''); 
@@ -57,12 +58,26 @@ export default function Pricing() {
         'small_business': {
             price_id: 'price_1MWCsVI1DrAa7pi6PzbV4yPz',
             amount: 12750,
-            title: 'Small Business'
+            price: '127.50',
+            title: 'Yearly Small Business'
         },
         'large_business': {
             price_id: 'price_1MWCvJI1DrAa7pi6WcR8u6UJ',
             amount: 16992,
-            title: 'Large Business'
+            price: '169.92',
+            title: 'Yearly Large Business'
+        },
+        'monthly_large_business': {
+            price_id: 'price_1MXM64I1DrAa7pi6BoRcXe67',
+            amount: 1615,
+            price: '16.15',
+            title: 'Monthly Large Business'
+        },
+        'monthly_small_business': {
+            price_id: 'price_1MXMwnI1DrAa7pi6nPSibQYt',
+            amount: 1190,
+            price: '11.90',
+            title: 'Monthly Small Business'
         }
     };
 
@@ -181,6 +196,17 @@ export default function Pricing() {
            <div className="pricing">
                 <ToastContainer />
                 {/* <h2 className="pricing__title mb-4 font-semibold">Pricing</h2> */}
+                <div className='flex justify-center mb-20'>
+                    <div className='flex items-center'>
+                        <span className="mr-4 text-sm font-medium text-gray-900 dark:text-gray-300"><strong>Billed Yearly</strong></span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" onChange={() => setIsMonthly(!isMonthly)} value="" className="sr-only peer" />
+                            <div className="w-14 h-8 bg-[#053F64] rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4.5px] after:left-[4px] after:bg-white after:shadow after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-gray-200"></div>
+                        </label>
+                        <span className="ml-4 text-sm font-medium text-gray-900 dark:text-gray-300"><strong>Billed Monthly</strong></span>
+                    </div>
+                </div>
+                
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4">
                     <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-3 h-full">
                         <div className="pricing__card flex flex-col justify-between">
@@ -230,7 +256,7 @@ export default function Pricing() {
                                                     <div>
                                                         {activeSubscription.status == 'canceled' ? 
                                                         (
-                                                            <a href="#" onClick={() => onCheckout('free', price_data['small_business'].price_id)} className='pricing__card--button'>
+                                                            <a href="#" onClick={() => onCheckout('free', price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price_id)} className='pricing__card--button'>
                                                                 {(pricingStatus == 'free' && checkoutLoading) && (
                                                                     <Loading />
                                                                 )}
@@ -281,7 +307,7 @@ export default function Pricing() {
                                     <div className="flex justify-between items-center">
                                         <div>
                                             <h4 className="pricing__card--title font-semibold">Small<br />Business</h4>
-                                            <h6 className="pricing__card--sub-title mt-2">$127.50</h6>
+                                            <h6 className="pricing__card--sub-title mt-2">${price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price}</h6>
                                         </div>
                                         <div style={{marginRight: '-20px'}}>
                                             <img src="/images/pricing_image_business.svg" className="pricing-img"></img>
@@ -306,9 +332,9 @@ export default function Pricing() {
                                     </div>
                                 </div>
                                 <div className="mt-4">
-                                    {activeSubscription && activeSubscription.plan.id == price_data['small_business'].price_id && activeSubscription.status == 'active'  ? (
+                                    {activeSubscription && activeSubscription.plan.id == price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price_id && activeSubscription.status == 'active'  ? (
                                         <div>
-                                            <a href="#" onClick={() => onUnsubscribe('small_business')} className='pricing__card--button unsubscribe'>
+                                            <a href="#" onClick={() => onUnsubscribe(isMonthly ? 'monthly_small_business' : 'small_business')} className='pricing__card--button unsubscribe'>
                                                Unsubscribe
                                             </a>
                                         </div>
@@ -316,7 +342,7 @@ export default function Pricing() {
                                         <div>
                                             {activeSubscription ? (
                                                 <div>
-                                                    {activeSubscription && activeSubscription.plan.id == price_data['small_business'].price_id && activeSubscription.status == 'canceled' ? (
+                                                    {activeSubscription && activeSubscription.plan.id == price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price_id && activeSubscription.status == 'canceled' ? (
                                                
                                                         <a href="#" className='pricing__card--button active_plan'>
                                                             <span>Active</span>
@@ -325,11 +351,11 @@ export default function Pricing() {
                                                         <div>
                                                             {activeSubscription.status == 'canceled' ? 
                                                             (
-                                                                <a href="#" onClick={() => onCheckout('small_business', price_data['small_business'].price_id)} className='pricing__card--button'>
-                                                                    {(pricingStatus == 'small_business' && checkoutLoading) && (
+                                                                <a href="#" onClick={() => onCheckout(isMonthly ? 'monthly_small_business' : 'small_business', price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price_id)} className='pricing__card--button'>
+                                                                    {((pricingStatus == 'small_business' || pricingStatus == 'monthly_small_business') && checkoutLoading) && (
                                                                         <Loading />
                                                                     )}
-                                                                    {activeSubscription.plan.amount > price_data['small_business'].amount ? (
+                                                                    {activeSubscription.plan.amount > price_data[isMonthly ? 'monthly_small_business' : 'small_business'].amount ? (
                                                                         <span>Downgrade</span>
                                                                     ) : (
                                                                         <span>Upgrade</span>
@@ -337,11 +363,11 @@ export default function Pricing() {
                                                                     
                                                                 </a>
                                                             ) : (
-                                                                <a href="#" onClick={() => onOpenUpgradeModal('small_business')} className='pricing__card--button'>
-                                                                    {(pricingStatus == 'small_business' && upgradeLoading) && (
+                                                                <a href="#" onClick={() => onOpenUpgradeModal(isMonthly ? 'monthly_small_business' : 'small_business')} className='pricing__card--button'>
+                                                                    {((pricingStatus == 'small_business' || pricingStatus == 'monthly_small_business') && upgradeLoading) && (
                                                                         <Loading />
                                                                     )}
-                                                                    {activeSubscription.plan.amount > price_data['small_business'].amount ? (
+                                                                    {activeSubscription.plan.amount > price_data[isMonthly ? 'monthly_small_business' : 'small_business'].amount ? (
                                                                         <span>Downgrade</span>
                                                                     ) : (
                                                                         <span>Upgrade</span>
@@ -356,8 +382,8 @@ export default function Pricing() {
                                                 </div>
                                             ) : (
                                                 <div>
-                                                    <a href="#" onClick={() => onCheckout('small_business', price_data['small_business'].price_id)} className='pricing__card--button'>
-                                                        {(pricingStatus == 'small_business' && checkoutLoading) && (
+                                                    <a href="#" onClick={() => onCheckout(isMonthly ? 'monthly_small_business' : 'small_business', price_data[isMonthly ? 'monthly_small_business' : 'small_business'].price_id)} className='pricing__card--button'>
+                                                        {((pricingStatus == 'small_business' || pricingStatus == 'monthly_small_business') && checkoutLoading) && (
                                                             <Loading />
                                                         )}
                                                         <span>Try Now</span>
@@ -381,7 +407,7 @@ export default function Pricing() {
                                 <div className="flex justify-between items-center">
                                     <div>
                                         <h4 className="pricing__card--title font-semibold">Large<br />Business</h4>
-                                        <h6 className="pricing__card--sub-title mt-1">$169.92</h6>
+                                        <h6 className="pricing__card--sub-title mt-1">${price_data[isMonthly ? 'monthly_large_business' : 'large_business'].price}</h6>
                                     </div>
                                     <div style={{marginRight: '-20px'}}>
                                         <img src="/images/pricing_image_large_business.svg" className="pricing-img"></img>
@@ -408,9 +434,9 @@ export default function Pricing() {
                                 </div>
                             </div>
                             <div className="mt-4">
-                                {activeSubscription && activeSubscription.plan.id == price_data['large_business'].price_id && activeSubscription.status == 'active' ? (
+                                {activeSubscription && activeSubscription.plan.id == price_data[isMonthly ? 'monthly_large_business' : 'large_business'].price_id && activeSubscription.status == 'active' ? (
                                         <div>
-                                            <a href="#" onClick={() => onUnsubscribe('large_business')} className='pricing__card--button unsubscribe'>
+                                            <a href="#" onClick={() => onUnsubscribe(isMonthly ? 'monthly_large_business' : 'large_business')} className='pricing__card--button unsubscribe'>
                                                Unsubscribe
                                             </a>
                                         </div>
@@ -418,7 +444,7 @@ export default function Pricing() {
                                         <div>
                                             {activeSubscription ? (
                                                 <div>
-                                                    {activeSubscription && activeSubscription.plan.id == price_data['large_business'].price_id && activeSubscription.status == 'canceled' ? (
+                                                    {activeSubscription && activeSubscription.plan.id == price_data[isMonthly ? 'monthly_large_business' : 'large_business'].price_id && activeSubscription.status == 'canceled' ? (
                                                         <a href="#" className='pricing__card--button active_plan'>
                                                             <span>Active</span>
                                                         </a>
@@ -426,22 +452,22 @@ export default function Pricing() {
                                                         <div>
                                                             {activeSubscription.status == 'canceled' ? 
                                                             (
-                                                                <a href="#" onClick={() => onCheckout('large_business', price_data['large_business'].price_id)} className='pricing__card--button'>
-                                                                    {(pricingStatus == 'large_business' && checkoutLoading) && (
+                                                                <a href="#" onClick={() => onCheckout(isMonthly ? 'monthly_large_business' : 'large_business', price_data[isMonthly ? 'monthly_large_business' : 'large_business'].price_id)} className='pricing__card--button'>
+                                                                    {((pricingStatus == 'large_business' || pricingStatus == 'monthly_large_business')  && checkoutLoading) && (
                                                                         <Loading />
                                                                     )}
-                                                                    {activeSubscription.plan.amount > price_data['large_business'].amount ? (
+                                                                    {activeSubscription.plan.amount > price_data[isMonthly ? 'monthly_large_business' : 'large_business'].amount ? (
                                                                         <span>Downgrade</span>
                                                                     ) : (
                                                                         <span>Upgrade</span>
                                                                     )}
                                                                 </a>
                                                             ) : (
-                                                                <a href="#" onClick={() => onOpenUpgradeModal('large_business')} className='pricing__card--button'>
-                                                                    {(pricingStatus == 'large_business' && upgradeLoading) && (
+                                                                <a href="#" onClick={() => onOpenUpgradeModal(isMonthly ? 'monthly_large_business' : 'large_business')} className='pricing__card--button'>
+                                                                    {((pricingStatus == 'large_business' || pricingStatus == 'monthly_large_business') && upgradeLoading) && (
                                                                         <Loading />
                                                                     )}
-                                                                    {activeSubscription.plan.amount > price_data['large_business'].amount ? (
+                                                                    {activeSubscription.plan.amount > price_data[isMonthly ? 'monthly_large_business' : 'large_business'].amount ? (
                                                                         <span>Downgrade</span>
                                                                     ) : (
                                                                         <span>Upgrade</span>
@@ -455,8 +481,8 @@ export default function Pricing() {
                                                 </div>
                                             ) : (
                                                 <div>
-                                                    <a href="#" onClick={() => onCheckout('large_business', price_data['large_business'].price_id)} className='pricing__card--button'>
-                                                        {(pricingStatus == 'large_business' && checkoutLoading) && (
+                                                    <a href="#" onClick={() => onCheckout(isMonthly ? 'monthly_large_business' : 'large_business', price_data[isMonthly ? 'monthly_large_business' : 'large_business'].price_id)} className='pricing__card--button'>
+                                                        {((pricingStatus == 'large_business' || pricingStatus == 'monthly_large_business') && checkoutLoading) && (
                                                             <Loading />
                                                         )}
                                                         <span>Try Now</span>

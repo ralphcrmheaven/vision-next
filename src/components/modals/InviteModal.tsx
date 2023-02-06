@@ -161,18 +161,20 @@ const InviteModal = (props: any) => {
         let meetingID = ''
         let meetingPassword = '';
 
-        if (Object.keys(activeMeeting).length > 0) {
+        if (props.meeting != undefined) {
             meetingAttendees = props.meeting.Attendees
             const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
             meetingID = props.meeting.MeetingId;
             if (res.success) {
                 meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+                console.log('meetingPassword', {meetingPassword}, props.meeting.Password, res.data.I);
             }
             
         } else {
             meetingAttendees = activeMeeting.attendees
             meetingID = activeMeeting.id;
             meetingPassword = activeMeeting.password;
+            console.log('meetingPassword2', {meetingPassword});
         }
 
         meetingAttendees.map((item: any) => {
@@ -261,18 +263,20 @@ const InviteModal = (props: any) => {
         let meetingID = ''
         let meetingPassword = '';
 
-        if (Object.keys(activeMeeting).length == 0) {
+        if (props.meeting != undefined) {
             meetingAttendees = props.meeting.Attendees
             const res = await meetingAPI().validateMeeting(props.meeting.MeetingId, { password: props.meeting.Password, ie: false });
             meetingID = props.meeting.MeetingId;
             if (res.success) {
                 meetingPassword = decrypt([props.meeting.Password, res.data.I].join('|'));
+                console.log('meetingPassword', {meetingPassword}, props.meeting.Password, res.data.I);
             }
             
         } else {
             meetingAttendees = activeMeeting.attendees
             meetingID = activeMeeting.id;
             meetingPassword = activeMeeting.password;
+            console.log('meetingPassword3', {meetingPassword});
         }
         
         meetingAttendees.map((item: any) => {
