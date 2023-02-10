@@ -61,7 +61,7 @@ export default function InviteDecline() {
                 })
 
                 const result = await sendEmailNotification({
-                    email: email as string,
+                    email: username as string,
                     fromName: username as string,
                     meetingUrl: `${window.location.origin}/join-meeting${meeting.Url}`,
                     topic: `${topic}`,
