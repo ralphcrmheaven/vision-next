@@ -179,7 +179,7 @@ const InviteModal = (props: any) => {
 
         meetingAttendees.map((item: any) => {
             if (item.isHost) {
-                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+                invite_emails.unshift(`${item.UserName} (organiser)`)
             } else {
                 invite_emails.push(item.UserName);
             }
@@ -281,7 +281,7 @@ const InviteModal = (props: any) => {
         
         meetingAttendees.map((item: any) => {
             if (item.isHost) {
-                invite_emails.unshift(`${item.UserName} <span style='color: #00000073;'>(organiser)</span>`)
+                invite_emails.unshift(`${item.UserName} (organiser)`)
             } else {
                 invite_emails.push(item.UserName);
             }

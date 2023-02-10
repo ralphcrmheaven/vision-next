@@ -272,7 +272,7 @@ const NewMeetingForm = (props:any) => {
         let meeting_data: any = await saveTheMeeting?.(topic, newContent, startDate, startTime, durationTimeHours, durationTimeMinutes, true);
         
         let emails = invitedEmails;
-        emails.unshift(`${user.email} <span style='color: #00000073;'>(organiser)</span>`)
+        emails.unshift(`${user.email} (organiser)`)
         let meetingPassword = '';
         if (meeting_data) {
             const password = meeting_data.Url.split('/')[2];

@@ -26,6 +26,7 @@ import UserProfile from './pages/Profile'
 import Chat from './pages/Chat'
 import Confirmation from './pages/Confirmation'
 import Pricing from './pages/Pricing'
+import InviteDecline from './pages/InviteDecline'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -34,7 +35,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify-account" element={<VerifyAccount />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-
+      <Route path="/invite-decline" element={<InviteDecline />} />
       <Route
         path="/"
         element={
@@ -92,7 +93,6 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
-
         <Route path="/settings" element={<Settings />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/profile" element={<UserProfile />} />

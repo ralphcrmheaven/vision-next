@@ -201,7 +201,7 @@ export default function Pricing() {
                         <span className="mr-4 text-sm font-medium text-gray-900 dark:text-gray-300"><strong>Billed Yearly</strong></span>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" onChange={() => setIsMonthly(!isMonthly)} value="" className="sr-only peer" />
-                            <div className="w-14 h-8 bg-[#053F64] rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4.5px] after:left-[4px] after:bg-white after:shadow after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-gray-200"></div>
+                            <div className="w-14 h-8 bg-[#053F64] rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:shadow after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-gray-200"></div>
                         </label>
                         <span className="ml-4 text-sm font-medium text-gray-900 dark:text-gray-300"><strong>Billed Monthly</strong></span>
                     </div>

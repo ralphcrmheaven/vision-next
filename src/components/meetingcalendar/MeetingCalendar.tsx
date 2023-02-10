@@ -9,6 +9,7 @@ import moment from 'moment'
 import { useMeetings } from '../../providers/MeetingsProvider'
 import styled from '@emotion/styled'
 import { VideoCameraIcon } from '@heroicons/react/solid'
+import CustomModal from '../modals/CustomModal'
 
 const StyleWrapper = styled.div`
   height: 100%;
@@ -114,7 +115,40 @@ const MeetingCalendar = (props: Props) => {
       />
 
       {selectedEvent && (
-        <Modal onClose={() => setSelectedEvent(null)}>
+        <CustomModal open={selectedEvent ? true : false} closeModal={() => setSelectedEvent(null)}>
+          <div className='modal-calendar'>
+            <div className='modal-calendar__header'>
+              <h1>{selectedEvent ? selectedEvent.title : ''}</h1>
+            </div>
+            <div className="inline-block my-3">
+                <span className="modal-calendar__clock inline-flex items-center">
+                  <img src="/images/calendar-clock.svg" className="w-4 h-4 mr-2" alt="" />
+                  
+                  {moment(selectedEvent.start).format('LLL')}
+                </span>
+              </div>
+            <div className='text-center my-7'>
+              <h4 className='modal-calendar__link-title'>Meeting Link:</h4>
+              <div className='text-center my-4 flex justify-center items-center'>
+                <a
+                  href={`${window.location.origin}/join-meeting${selectedEvent.meetingUrl}`}
+                  target="_blank"
+                  className="modal-calendar__link"
+                  role="alert"
+                  rel="noreferrer"
+                >
+               
+                  <img src="/images/calendar-video.svg" className="w-5 h-5 mr-2" alt="" />
+                  {`${window.location.origin}/join-meeting${selectedEvent.meetingUrl}`.substring(0, 18) + "..."}
+                </a>
+              </div>
+            </div>
+          </div>
+      </CustomModal>
+      )}
+
+        {/* {selectedEvent && (
+        <Modal className='calendar-modal' onClose={() => setSelectedEvent(null)}>
           <ModalHeader title={selectedEvent.title} />
           <ModalBody>
             <div className="mb-5">
@@ -169,13 +203,13 @@ const MeetingCalendar = (props: Props) => {
               role="alert"
               rel="noreferrer"
             >
-              {/* <img src={camera} alt="camera" className="inline-block mr-3" /> */}
+             
               <VideoCameraIcon className="inline-block w-5 h-5 mr-3 text-gray-900"/>
               {`${window.location.origin}/meeting${selectedEvent.meetingUrl}`}
             </a>
           </ModalBody>
         </Modal>
-      )}
+      )} */}
     </StyleWrapper>
   )
 }

@@ -70,8 +70,8 @@ const Roaster = () => {
   });
 
   return (
-    <div className="">
-      <Roster>
+    <div className="absolute w-full h-[350px]">
+      <Roster css='width: 100%'>
         {/* <RosterHeader
           title="Present"
           badge={attendeeItems.length}

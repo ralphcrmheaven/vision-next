@@ -214,7 +214,7 @@ const MeetingBody: React.FC<Props> = ({
                                 )}
                             </div>
 
-                            <div className="w-full row-span-4 h-[70%]">
+                            <div className="w-full row-span-4 h-[73%]">
                                 {meetingStatus === MeetingStatus.Succeeded ? (
                                     <>
                                         <div className="w-full h-full mobile-bg">
@@ -232,9 +232,9 @@ const MeetingBody: React.FC<Props> = ({
                                                         closedCaptionStatus &&
                                                         <span className="caption-style">{captions}</span>
                                                     }
-                                                    {/* <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout} >
-                                                    </VideoTileGrid> */}
-                                                    { tileId &&
+                                                    <VideoTileGrid className={`video-grid-vision-mobile ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout} >
+                                                    </VideoTileGrid>
+                                                    {/* { tileId &&
                                                         <div className="grid grid-rows-1 gap-1  h-[50%] w-full content-wrap">
                                                             <ContentShare />
                                                         </div>
@@ -243,7 +243,7 @@ const MeetingBody: React.FC<Props> = ({
                                                     <div  className={`grid grid-cols-2 gap-1 w-full videos-wrap ${tileId ? "videos-wrap-70" : "videos-wrap-100"} ${recordingStatus ? "vision-recording" : ""}`} >
                                                         <LocalVideo className="remove-video-tile" /> 
                                                         <RemoteVideos className="remove-video-tile" />
-                                                    </div>
+                                                    </div> */}
                                                 </div>
 
                                             </div>

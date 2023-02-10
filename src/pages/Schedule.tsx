@@ -12,6 +12,7 @@ import listPlugin from '@fullcalendar/list'
 import { useMeetings } from '../providers/MeetingsProvider'
 import camera from '../assets/images/camera.png'
 import { VideoCameraIcon } from '@heroicons/react/solid'
+import CustomModal from '../components/modals/CustomModal'
 
 interface IEvent {
   title: string
@@ -77,8 +78,41 @@ const Schedule = () => {
         eventClick={handleEventClick} 
       />
 
-      {selectedEvent && (
-        <Modal onClose={() => setSelectedEvent(null)}>
+  {selectedEvent && (
+        <CustomModal open={selectedEvent ? true : false} closeModal={() => setSelectedEvent(null)}>
+          <div className='modal-calendar'>
+            <div className='modal-calendar__header'>
+              <h1>{selectedEvent ? selectedEvent.title : ''}</h1>
+            </div>
+            <div className="inline-block my-3">
+                <span className="modal-calendar__clock inline-flex items-center">
+                  <img src="/images/calendar-clock.svg" className="w-4 h-4 mr-2" alt="" />
+                  
+                  {moment(selectedEvent.start).format('LLL')}
+                </span>
+              </div>
+            <div className='text-center my-7'>
+              <h4 className='modal-calendar__link-title'>Meeting Link:</h4>
+              <div className='text-center my-4 flex justify-center items-center'>
+                <a
+                  href={`${window.location.origin}/join-meeting/${selectedEvent.meetingId}`}
+                  target="_blank"
+                  className="modal-calendar__link"
+                  role="alert"
+                  rel="noreferrer"
+                >
+               
+                  <img src="/images/calendar-video.svg" className="w-5 h-5 mr-2" alt="" />
+                  {`${window.location.origin}/join-meeting/${selectedEvent.meetingId}`.substring(0, 18) + "..."}
+                </a>
+              </div>
+            </div>
+          </div>
+      </CustomModal>
+    )}
+
+      {/* {selectedEvent && (
+        <Modal className='calendar-modal' onClose={() => setSelectedEvent(null)}>
           <ModalHeader title={selectedEvent.title} />
           <ModalBody>
             <div className="mb-5">
@@ -133,13 +167,13 @@ const Schedule = () => {
               role="alert"
               rel="noreferrer"
             >
-              {/* <img src={camera} alt="camera" className="inline-block mr-3" /> */}
+    
               <VideoCameraIcon className="inline-block w-5 h-5 mr-3 text-gray-900"/>
               {`${window.location.origin}/meeting/${selectedEvent.meetingId}`}
             </a>
           </ModalBody>
         </Modal>
-      )}
+      )} */}
     </>
   )
 }

@@ -223,14 +223,14 @@ const MeetingBody: React.FC<Props> = ({
                 <div className="w-full relative">
                     {meetingStatus === MeetingStatus.Succeeded && (
                         <div className="grid grid-cols-3 gap-4 h-24 w-full">
-                            <div className="h-24 ">
+                            <div className="h-12 sm:h-12 md:h-24 lg:h-24">
                                 <NavLink
                                     to="/">
                                     <button className="absolute left-[28px] top-[34px] back-to-home" onClick={clickedEndMeeting}><BackIcon /> Back to Dashboard</button>
                                 </NavLink>
                             </div>
-                            <div className="h-24 m-auto topbar-logo"><Logo /></div>
-                            <div className=" h-24 ml-auto">
+                            <div className="h-12 sm:h-12 md:h-24 lg:h-24 m-auto topbar-logo"><Logo /></div>
+                            <div className=" h-12 sm:h-12 md:h-24 lg:h-24 ml-auto">
                                 <div className="w-full ">
                                     {initials && fullname && (
                                         <div className="profile-topbar flex flex-row items-center space-x-4">
@@ -250,9 +250,41 @@ const MeetingBody: React.FC<Props> = ({
                 <div className="w-full row-span-4  relative">
                     {meetingStatus === MeetingStatus.Succeeded ? (
                         <>
+                            <div className="p-5 absolute grid grid-cols-4 grid-flow-row gap-5  w-full h-full">
+                                
+                                <div className={`${currentPanel == 'chat' || currentPanel == 'roaster' ? 'col-span-3' : 'col-span-4 h-[62vh]'}`}>
+                                    {recordingCountdown &&
+                                            <RecordMeetingLoader />
+                                    }
+                                    {closedCaptionStatus &&
+                                        <span className="caption-style">{captions}</span>
+                                    }
+                                    <VideoTileGrid className={` video-grid-vision ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout}></VideoTileGrid>
+                                </div>
+                                <div className='col-span-1'>
+                                    <div className={`relative vision-tab  ${currentPanel !== 'chat' ? 'hidden' : ''}`} >
+                                        <span className="tab-header">Messages</span>
+                                        <div className="chatbox-wrapper ">
+                                            <GroupChatMessages />
+                                        </div>
+                                    </div>
 
-                            <div className="grid grid-cols-4 grid-flow-col gap-1  w-full h-full">
-                                <div className={`h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}`}>
+                                    
+                                        <div className={`relative chatbox-wrapper chatbox-wrapper-no-border ${currentPanel !== 'roaster' ? 'hidden' : ''}`} style={{paddingTop: '20px'}}>
+                                            <span className="custom-tab-header">Attendees</span>
+                                            <div className="text-left add-people mt-8">
+                                                <span className='pl-2'>
+                                                    <button onClick={() => setIsOpen(true)} className="flex items-center">
+                                                        <span><AddPeople /></span>
+                                                        <span className="chatbox-add-people">Add People</span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <Roaster />
+                                        </div>
+                                   
+                                </div>
+                                {/* <div className={`h-full w-full  ${currentPanel == 'chat' ? 'col-span-3' : 'col-span-4'}`}>
 
                                     <div className="h-full w-full video-tile-wrap">
                                         {recordingCountdown &&
@@ -261,16 +293,6 @@ const MeetingBody: React.FC<Props> = ({
                                         {closedCaptionStatus &&
                                             <span className="caption-style">{captions}</span>
                                         }
-                                        
-                                    
-                                            {/* <VideoGrid layout="featured" className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`}>
-                                                <ContentShare css="grid-area: ft;" />
-                                                <LocalVideo className={!featureTileId && !contentTileId ? 'feature_video' : ''} nameplate='Me'/>
-                                                <FeaturedRemoteVideos />   
-                                            </VideoGrid> */}
-                                    
-                                       
-                                        
                                         <VideoTileGrid className={` video-grid-vision mt-[-15px] mx-[17px] mb-[17px] ${recordingStatus ? "vision-recording" : ""}`} layout={videoLayout}></VideoTileGrid>
                                     </div>
 
@@ -302,7 +324,7 @@ const MeetingBody: React.FC<Props> = ({
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> */}
                             </div>
                         </>
                     ) : (
