@@ -13,6 +13,7 @@ export const updateMeetingGraphQL = /* GraphQL */ `
       title
       data
       passcode
+      hasStarted
       createdAt
       updatedAt
     }
@@ -29,6 +30,7 @@ export const createMeetingGraphQL = /* GraphQL */ `
       title
       data
       passcode
+      hasStarted
       createdAt
       updatedAt
     }
@@ -45,6 +47,7 @@ export const deleteMeetingGraphQL = /* GraphQL */ `
       title
       data
       passcode
+      hasStarted
       createdAt
       updatedAt
     }

@@ -1207,6 +1207,40 @@ export type SendPromptAiQuery = {
   } | null,
 };
 
+export type MeetingPermissionQueryVariables = {
+  channel: string,
+  event: string,
+  userNameFrom?: string | null,
+  userEmailFrom?: string | null,
+  userIdFrom?: string | null,
+};
+
+export type MeetingPermissionQuery = {
+  meetingPermission?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
+export type ApproveDisapproveJoinMeetingQueryVariables = {
+  channel: string,
+  event: string,
+  approved: string,
+};
+
+export type ApproveDisapproveJoinMeetingQuery = {
+  approveDisapproveJoinMeeting?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type GetMeetingQueryVariables = {
   title: string,
 };

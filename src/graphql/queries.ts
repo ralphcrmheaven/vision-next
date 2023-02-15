@@ -42,10 +42,10 @@ export const sendEmailNotification = /* GraphQL */ `
     $email: String
     $emails: String
     $fromName: String
-    $meetingDate: String
-    $meetingTime: String
     $meetingID: String
     $meetingPassword: String
+    $meetingDate: String
+    $meetingTime: String
     $meetingUrl: String
     $topic: String
     $topicTitle: String
@@ -55,10 +55,10 @@ export const sendEmailNotification = /* GraphQL */ `
       email: $email
       emails: $emails
       fromName: $fromName
-      meetingDate: $meetingDate
-      meetingTime: $meetingTime
       meetingID: $meetingID
       meetingPassword: $meetingPassword
+      meetingDate: $meetingDate
+      meetingTime: $meetingTime
       meetingUrl: $meetingUrl
       topic: $topic
       topicTitle: $topicTitle
@@ -114,6 +114,46 @@ export const sendPromptAi = /* GraphQL */ `
     }
   }
 `;
+export const meetingPermission = /* GraphQL */ `
+  query MeetingPermission(
+    $channel: String!
+    $event: String!
+    $userNameFrom: String
+    $userEmailFrom: String
+    $userIdFrom: String
+  ) {
+    meetingPermission(
+      channel: $channel
+      event: $event
+      userNameFrom: $userNameFrom
+      userEmailFrom: $userEmailFrom
+      userIdFrom: $userIdFrom
+    ) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
+export const approveDisapproveJoinMeeting = /* GraphQL */ `
+  query ApproveDisapproveJoinMeeting(
+    $channel: String!
+    $event: String!
+    $approved: String!
+  ) {
+    approveDisapproveJoinMeeting(
+      channel: $channel
+      event: $event
+      approved: $approved
+    ) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {
@@ -122,6 +162,7 @@ export const getMeeting = /* GraphQL */ `
       title
       data
       passcode
+      hasStarted
       createdAt
       updatedAt
     }
@@ -148,6 +189,7 @@ export const listMeetings = /* GraphQL */ `
         title
         data
         passcode
+        hasStarted
         createdAt
         updatedAt
       }
