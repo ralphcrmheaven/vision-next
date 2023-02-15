@@ -67,7 +67,7 @@ type Query {
   createChimeBreakout(meetingId: String, numRooms: String type: String): Response @function(name: "breakoutRoom-${env}")
   sendPromptAi(prompt: String): Response @function(name: "sendPromptAi-${env}")
   meetingPermission(channel: String!, event: String!, userNameFrom: String, userEmailFrom: String, userIdFrom: String): Response @function(name: "meetingPermission-${env}")
-  approveDisapproveJoinMeeting(channel: String!, event: String!): Response @function(name: "meetingPermission-${env}")
+  approveDisapproveJoinMeeting(channel: String!, event: String!, approved: String!): Response @function(name: "meetingPermission-${env}")
 }
 
 type Response {
