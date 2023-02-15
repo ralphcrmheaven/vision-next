@@ -8,12 +8,15 @@ import { NavLink } from 'react-router-dom'
 import { API, graphqlOperation } from 'aws-amplify';
 import { toast } from 'react-toastify';
 import Toaster from './modals/Toast'
+import PermissionMeetingModal from './modals/PermissionMeetingModal'
+import { approveDisapproveJoinMeetingApi } from '../api/notification';
 import Messages from './Messages'
 import { useMediaQuery } from 'react-responsive';
 import MeetingBodyMobile from './mobileLayout/MeetingBodyMobile';
 import MeetingBody from './MeetingBody';
 import { transcribe } from '../api/transcribe';
 import { recordingMeeting } from '../api/recordMeeting';
+import Pusher from 'pusher-js';
 
 import {
   useMeetingManager,
@@ -74,6 +77,8 @@ const Meeting: FC = () => {
   const [recordingLoading, setRecordingLoading] = useState<boolean>(false)
   const [closedCaptionStatus, setClosedCaptionStatus] = useState<boolean>(false)
   const [recordingStatus, setRecordingStatus] = useState<boolean>(false)
+  const [userJoin, setUserJoin] = useState<boolean>(false)
+  const [userJoinData, setUserJoinData] = useState<any>()
   const [isHost, SetIsHost] = useState<boolean>(false)
   const [isValidMeeting, setIsValidMeeting] = useState<boolean>(true)
   const [isRecording, setIsRecording] = useState<boolean>(false)
@@ -250,8 +255,8 @@ const Meeting: FC = () => {
       if (searchParams.get('muted')) {
           //toggleMute()
           meetingManager.audioVideo?.realtimeMuteLocalAudio();
-
       }
+
     },1000)
   }
 
@@ -358,40 +363,25 @@ const Meeting: FC = () => {
   }
 
 
+  const pusherInit = async () => {
+    const pusher = new Pusher("6176fdfc371652b03d80", {
+			cluster: 'ap2'
+		})
 
-  // const recordChimeMeeting = async (value: string) => {
+		const meetingChannel = pusher.subscribe("meetings-"+mId);
+		// You can bind more channels here like this
+		// const channel2 = pusher.subscribe('channel_name2')
+		meetingChannel.bind('permission-join',function(data:any) {
+        setUserJoin(true)
+        setUserJoinData(data)
+		})
 
-  //   setRecordingLoading(true)
-  //   const is_recording = value == 'record';
+		return (() => {
+			pusher.unsubscribe("meetings-"+mId)
+			// pusher.unsubscribe('channel_name2')
+		})
+  };
 
-  //   if (is_recording) {
-  //     startRecordingCountdown(true)
-  //   }
-
-  //   const recordUpdate = await updateTheDbMeeting?.(is_recording)
-  //   const recordInfo = await recordMeeting?.(meetingManager.meetingId, value, "record")
-  //   setDbMeetNew(recordUpdate)
-
-  //   const record = await recordUpdate?.['isRecording']
-
-  //   if (!is_recording) {
-  //     setRecordingLoading(false)
-  //     setIsRecording(false)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const doActions = async () => {
-  //     if(typeof activeMeeting.url !== 'undefined'){
-  //       const subscription = await handleSubscriptions();
-  //       return () => {
-  //         subscription.unsubscribe();
-  //       }
-  //     }
-  //   };
-
-  //   doActions();
-  // }, [activeMeeting])
 
   useEffect(() => {
     console.log("====meetingManager=====")
@@ -399,13 +389,10 @@ const Meeting: FC = () => {
     console.log(activeMeeting.attendees)
     console.log(user)
 
-    if (activeMeeting.attendees != undefined) {
-      if (activeMeeting.attendees[0].UserName == user.username) {
-        SetIsHost(true);
-      }
+    if(isHost) {
+      pusherInit()
     }
-
-  }, [])
+  }, [isHost])
 
 
 
@@ -432,6 +419,21 @@ const Meeting: FC = () => {
     await meetingManager.audioVideo?.realtimeUnmuteLocalAudio();
   }
 
+  const handlePermissionResult = async (result:String) => {
+    const data = {
+      channel: "meetings-"+mId,
+      event: "permission-join-"+userJoinData.data.user_id,
+      approved: result
+    }
+    if(result) {
+      await approveDisapproveJoinMeetingApi(data)
+    }else{
+      await approveDisapproveJoinMeetingApi(data)
+    }
+
+    setUserJoin(false)
+  }
+
   const sharescreenButtonProps = {
     icon: isLocalUserSharing ? <ShareScreenIcon color="#FF6355" /> : <ShareScreenIcon color="#053F64" />,
     onClick: () => toggleContentShare(),
@@ -455,11 +457,7 @@ const Meeting: FC = () => {
   // }
   const [videoLayout, setVideoLayout] = useState('featured')
 
-
-
   const [searchParams] = useSearchParams();
-  
-
 
   if (searchParams.get('isVideoEnabled') == 'true') {
     meetingManager.audioVideo?.startVideoInput(selectedDevice);
@@ -473,6 +471,7 @@ const Meeting: FC = () => {
       {
         isDesktopOrLaptop ? (
           <>
+            {userJoin && <PermissionMeetingModal handleConfirm={handlePermissionResult} data={userJoinData}/> }
             <MeetingBody
               progress={progress}
               videoLayout={videoLayout}

@@ -8,6 +8,7 @@ export type UpdateMeetingInput = {
   title: string,
   data?: string | null,
   passcode?: string | null,
+  hasStarted?: boolean | null,
 };
 
 export type ModelMeetingConditionInput = {
@@ -15,6 +16,7 @@ export type ModelMeetingConditionInput = {
   isRecording?: ModelBooleanInput | null,
   data?: ModelStringInput | null,
   passcode?: ModelStringInput | null,
+  hasStarted?: ModelBooleanInput | null,
   and?: Array< ModelMeetingConditionInput | null > | null,
   or?: Array< ModelMeetingConditionInput | null > | null,
   not?: ModelMeetingConditionInput | null,
@@ -74,6 +76,7 @@ export type Meeting = {
   title: string,
   data: string,
   passcode?: string | null,
+  hasStarted?: boolean | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -84,6 +87,7 @@ export type CreateMeetingInput = {
   title: string,
   data: string,
   passcode?: string | null,
+  hasStarted?: boolean | null,
 };
 
 export type DeleteMeetingInput = {
@@ -357,6 +361,7 @@ export type ModelMeetingFilterInput = {
   title?: ModelStringInput | null,
   data?: ModelStringInput | null,
   passcode?: ModelStringInput | null,
+  hasStarted?: ModelBooleanInput | null,
   and?: Array< ModelMeetingFilterInput | null > | null,
   or?: Array< ModelMeetingFilterInput | null > | null,
   not?: ModelMeetingFilterInput | null,
@@ -554,6 +559,7 @@ export type UpdateMeetingGraphQLMutation = {
     title: string,
     data: string,
     passcode?: string | null,
+    hasStarted?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -572,6 +578,7 @@ export type CreateMeetingGraphQLMutation = {
     title: string,
     data: string,
     passcode?: string | null,
+    hasStarted?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -590,6 +597,7 @@ export type DeleteMeetingGraphQLMutation = {
     title: string,
     data: string,
     passcode?: string | null,
+    hasStarted?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1126,11 +1134,13 @@ export type SendEmailNotificationQueryVariables = {
   email?: string | null,
   emails?: string | null,
   fromName?: string | null,
+  meetingID?: string | null,
+  meetingPassword?: string | null,
   meetingDate?: string | null,
   meetingTime?: string | null,
   meetingUrl?: string | null,
   topic?: string | null,
-  topticTitle?: string | null,
+  topicTitle?: string | null,
   url?: string | null,
 };
 
@@ -1209,6 +1219,7 @@ export type GetMeetingQuery = {
     title: string,
     data: string,
     passcode?: string | null,
+    hasStarted?: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1232,6 +1243,7 @@ export type ListMeetingsQuery = {
       title: string,
       data: string,
       passcode?: string | null,
+      hasStarted?: boolean | null,
       createdAt: string,
       updatedAt: string,
     } | null >,

@@ -10,6 +10,8 @@ import meetingAPI from '../api/meeting';
 import { useMeetings } from '../providers/MeetingsProvider';
 import { spawn } from 'child_process';
 import { endMeeting, getMeetingFromDB } from '../utils/api';
+import { meetingPermissionApi } from '../api/notification';
+import Pusher from 'pusher-js';
 
 interface Attendee {
     Name: string;
@@ -29,6 +31,8 @@ const JoinMeeting: FC = () => {
     const [loading, setLoading] = useState(false);
     const [attendees, setAttendees] = useState([] as Attendee[]);
     const [title, setTitle] = useState('');
+    const [isHost, setIsHost] = useState(Boolean);
+    const [joinButtonLabel, setJoinButtonLabel] = useState('Join Meeting');
 
     console.log('meetingManager', meetingManager);
 
@@ -49,9 +53,11 @@ const JoinMeeting: FC = () => {
        
         setLoading(true);
 
+        setIsHost(false)
+
         try { 
             const res = await meetingAPI().validateMeeting(mId, { password: ePass, ie: false });
-            
+
             if (res.success) {
                 const attendees = res.data.Attendees;
                 const attendee = attendees.find((a:any) => a.isHost == true);
@@ -63,20 +69,25 @@ const JoinMeeting: FC = () => {
                         if (meeting) {
                             setTitle(meeting.Topic);
                             setAttendees(meeting.Attendees.filter((a:any) => a.UserName != username) as Attendee[]);
+                            const host_check = meeting.Attendees.filter((a:any) => a.UserName == username && a.isHost)
+                            console.log(host_check)
+                            if(Object.keys(host_check).length > 0) {
+                                setIsHost(host_check[0]['isHost'])
+                            }
                         }
                     }
-                   
+
                 }
-                
+
 
                 await initializeJoinMeeting?.(mId);
-                
+
                 setLoading(false)
             }
         } catch (error) {
-            
+            console.log(error)
         }
-       
+
     }
 
     const clickedEndMeeting = async () => {
@@ -88,18 +99,77 @@ const JoinMeeting: FC = () => {
         }
     }
 
+    const leaveTemporaryMeeting = async (meetingId:any) => {
+        await endMeeting(meetingId)
+        await meetingManager.leave()
+    }
+
+    const listenPermissionJoin = async () => {
+        const pusher = new Pusher("6176fdfc371652b03d80", {
+			cluster: 'ap2'
+		})
+
+		const meetingChannel = pusher.subscribe("meetings-"+mId);
+		// You can bind more channels here like this
+		// const channel2 = pusher.subscribe('channel_name2')
+		meetingChannel.bind('permission-join-'+user.id,function(data:any) {
+            if(data.data.approved == "approved") {
+                const meetingId = meetingManager.meetingId
+                if (meetingId) {
+                    setJoinButtonLabel("Permission granted.")
+                    leaveTemporaryMeeting(meetingId)
+                    navigate(`/meeting/${mId}/${ePass}?muted=${muted}&isVideoEnabled=${isVideoEnabled}`)
+                }
+            }else{
+                console.log("no allow")
+                setJoinButtonLabel("Permission Denied.")
+                alert("Permission Denied")
+            }
+		})
+
+		return (() => {
+			pusher.unsubscribe("meetings-"+mId)
+			// pusher.unsubscribe('channel_name2')
+		})
+    }
+
     const joinMeeting = async() => {
-        const meetingId = meetingManager.meetingId
-        if (meetingId) {
-          await endMeeting(meetingId)
-          await meetingManager.leave()
-          navigate(`/meeting/${mId}/${ePass}?muted=${muted}&isVideoEnabled=${isVideoEnabled}`)
+
+        setLoading(true);
+
+        setJoinButtonLabel("Asking permission...")
+
+        if(isHost) {
+            const meetingId = meetingManager.meetingId
+            if (meetingId) {
+              await endMeeting(meetingId)
+              await meetingManager.leave()
+              navigate(`/meeting/${mId}/${ePass}?muted=${muted}&isVideoEnabled=${isVideoEnabled}`)
+            }
+            return;
         }
-        
+
+
+
+        let data = {
+            channel: "meetings-"+mId,
+            event: "permission-join",
+            userNameFrom: fullname,
+            userEmailFrom: username,
+            userIdFrom: user.id
+        }
+
+        setJoinButtonLabel("Waiting for host.")
+
+        await meetingPermissionApi(data)
+
+        setLoading(false);
+
     }
 
     useEffect(() => {
         doActionsOnLoad();
+        listenPermissionJoin();
     }, []);
     
 
@@ -218,7 +288,7 @@ const JoinMeeting: FC = () => {
                                         )}
                                         {!loading && (
                                             <a href="#" onClick={joinMeeting} className="join-meeting__btn">
-                                             Join Meeting
+                                             {joinButtonLabel}
                                             </a>
                                         )}
                                        

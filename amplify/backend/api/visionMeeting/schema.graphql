@@ -33,6 +33,10 @@ type BreakoutRooms @model {
   body: String!
 }
 
+type MeetingPermission {
+  channel: String!, event: String!, userNameFrom: String, userEmailFrom: String, userIdFrom: String
+}
+
 type Conversation @model {
   id: ID!
   users: [ConversationUser] @hasMany
@@ -62,6 +66,8 @@ type Query {
   downloadRecordedMeeting(key: String): Response @function(name: "downloadRecordedMeeting-${env}")
   createChimeBreakout(meetingId: String, numRooms: String type: String): Response @function(name: "breakoutRoom-${env}")
   sendPromptAi(prompt: String): Response @function(name: "sendPromptAi-${env}")
+  meetingPermission(channel: String!, event: String!, userNameFrom: String, userEmailFrom: String, userIdFrom: String): Response @function(name: "meetingPermission-${env}")
+  approveDisapproveJoinMeeting(channel: String!, event: String!): Response @function(name: "meetingPermission-${env}")
 }
 
 type Response {
