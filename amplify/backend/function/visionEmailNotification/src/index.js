@@ -9,56 +9,53 @@ Amplify Params - DO NOT EDIT */
 
 var aws = require("aws-sdk");
 var ses = new aws.SES({ region: process.env.REGION });
-exports.handler = async(event) => {
-    console.log('events: ', event);
+
+const sendEmailNotification = async(context) => {
     console.log("=============events=============")
-    const { email, fromName, meetingUrl, topic } = event
-    // var params = {
-    //     Destination: {
-    //         ToAddresses: [email]
-    //     },
-    //     Template: "NewMeetingInvite",
-    //     Source: "cham@crmheaven.com",
-    // };
+    const { email, emails, fromName, meetingDate, meetingID, meetingPassword, meetingTime, meetingUrl, topic, topicTitle, url } = context.arguments
+
     var params = {
-        Destination: { /* required */
-            // BccAddresses: [
-            //     email
-            //     /* more items */
-            // ],
-            // CcAddresses: [
-            //     email
-            //     /* more items */
-            // ],
+        Destination: {
             ToAddresses: [
                 email
-                /* more items */
             ]
         },
         Source: "cham@crmheaven.com",
         /* required */
         Template: 'NewMeetingInvite',
         /* required */
-        TemplateData: '{"fromName": "' + fromName + '","topic": "' + topic + '", "meetingUrl": "' + meetingUrl + '"}',
+        TemplateData: '{"fromName": "' + fromName + '","email": "' + email + '", "meetingPassword": "' + meetingPassword + '", "meetingID": "' + meetingID + '", "topicTitle": "' + topicTitle + '", "url": "' + url + '", "emails": "' + emails + '", "meetingTime": "' + meetingTime + '", "meetingDate": "' + meetingDate + '", "topic": "' + topic + '", "meetingUrl": "' + meetingUrl + '"}',
         /* required */
         ConfigurationSetName: '',
-        // ReplyToAddresses: [
-        //     'STRING_VALUE',
-        //     /* more items */
-        // ],
-        // ReturnPath: 'STRING_VALUE',
-        // ReturnPathArn: 'STRING_VALUE',
-        // SourceArn: 'STRING_VALUE',
-        // Tags: [{
-        //         Name: 'STRING_VALUE',
-        //         /* required */
-        //         Value: 'STRING_VALUE' /* required */
-        //     },
-        //     /* more items */
-        // ],
-        //TemplateArn: 'STRING_VALUE'
+
     };
     var result = await ses.sendTemplatedEmail(params).promise();
-    return result;
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify(result),
+    };
     //return ses.sendEmail(params).promise()
+};
+
+const resolvers = {
+    Query: {
+        sendEmailNotification: context => {
+            return sendEmailNotification(context);
+        },
+    },
+}
+
+
+exports.handler = async(event) => {
+    console.log(JSON.stringify(event));
+    const typeHandler = resolvers[event.typeName];
+
+    if (typeHandler) {
+        const resolver = typeHandler[event.fieldName];
+        if (resolver) {
+            return await resolver(event);
+        }
+    }
+    throw new Error('Resolver not found.');
 };

@@ -93,7 +93,7 @@
         },
         "visionEmailNotification": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionEmailNotification-42464844354d2b647239-build.zip"
+          "s3Key": "amplify-builds/visionEmailNotification-4b596a43623359332f64-build.zip"
         },
         "meetingrecorderdev": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
@@ -106,19 +106,27 @@
         "visionTranscribeV2": {},
         "visionTranscribe": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionTranscribe-4f504478667958396369-build.zip"
+          "s3Key": "amplify-builds/visionTranscribe-4b4c4331465657353058-build.zip"
         },
         "visionRecord": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/visionRecord-4f4c73696d6275667278-build.zip"
+          "s3Key": "amplify-builds/visionRecord-6761586a65484352596b-build.zip"
         },
         "downloadRecordedMeeting": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/downloadRecordedMeeting-4c4f6770616f6138776c-build.zip"
+          "s3Key": "amplify-builds/downloadRecordedMeeting-30456e7a503677776338-build.zip"
         },
         "sendPromptAi": {
           "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
-          "s3Key": "amplify-builds/sendPromptAi-3461733159797a655033-build.zip"
+          "s3Key": "amplify-builds/sendPromptAi-37664235642f63397633-build.zip"
+        },
+        "visionNotification": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/visionNotification-65614576614e43304d57-build.zip"
+        },
+        "meetingPermission": {
+          "deploymentBucketName": "amplify-visionnext-live-111151-deployment",
+          "s3Key": "amplify-builds/meetingPermission-6c486f657658654b4877-build.zip"
         }
       }
     }

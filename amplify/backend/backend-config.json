@@ -1,98 +1,36 @@
 {
-  "function": {
-    "visionHandleMeeting": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "MeetingPath": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
+  "api": {
+    "VisionRESTAPI": {
       "dependsOn": [
         {
-          "category": "storage",
-          "resourceName": "MeetingTable",
           "attributes": [
             "Name",
             "Arn"
           ],
-          "attributeEnvMap": {
-            "Name": "TABLE_NAME",
-            "Arn": "TABLE_ARN"
-          }
+          "category": "function",
+          "resourceName": "MeetingPath"
         }
-      ]
-    },
-    "visionEmailNotification": {
-      "build": true,
+      ],
       "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
+      "service": "API Gateway"
     },
-    "meetingrecorderdev": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "visionHandlePipeline": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "visionTranscribe": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "visionRecord": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "downloadRecordedMeeting": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "sendPromptAi": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "api": {
     "visionMeeting": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
               "apiKeyExpirationDate": "2023-06-08T14:48:28.518Z",
+              "apiKeyExpirationDays": 365,
               "description": ""
-            }
-          },
-          "additionalAuthenticationProviders": []
+            },
+            "authenticationType": "API_KEY"
+          }
         }
-      }
-    },
-    "VisionRESTAPI": {
-      "service": "API Gateway",
+      },
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "MeetingPath",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
+      "service": "AppSync"
     }
   },
   "auth": {
@@ -104,22 +42,323 @@
       "customAuth": false
     }
   },
-  "storage": {
-    "MeetingTable": {
-      "service": "DynamoDB",
-      "providerPlugin": "awscloudformation"
-    },
-    "visionFileStorage": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
-    }
-  },
   "custom": {
     "visionChatResources": {
-      "service": "customCloudformation",
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "service": "customCloudformation"
+    }
+  },
+  "function": {
+    "MeetingPath": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "MeetingTable"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "downloadRecordedMeeting": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "meetingrecorderdev": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sendPromptAi": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "visionEmailNotification": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "visionHandleMeeting": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "visionHandlePipeline": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "visionRecord": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "visionTranscribe": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "meetingPermission": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_visionnext34956236_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_auth_visionnext34956236_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "visionnext34956236"
+        }
+      ]
+    },
+    "AMPLIFY_function_MeetingPath_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "MeetingPath"
+        }
+      ]
+    },
+    "AMPLIFY_function_MeetingPath_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "MeetingPath"
+        }
+      ]
+    },
+    "AMPLIFY_function_downloadRecordedMeeting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "downloadRecordedMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_downloadRecordedMeeting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "downloadRecordedMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_meetingrecorderdev_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "meetingrecorderdev"
+        }
+      ]
+    },
+    "AMPLIFY_function_meetingrecorderdev_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "meetingrecorderdev"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendPromptAi_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendPromptAi"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendPromptAi_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendPromptAi"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionEmailNotification_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionEmailNotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionEmailNotification_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionEmailNotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionHandleMeeting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionHandleMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionHandleMeeting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionHandleMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionHandlePipeline_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionHandlePipeline"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionHandlePipeline_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionHandlePipeline"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionRecord_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionRecord"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionRecord_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionRecord"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionTranscribe_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionTranscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_visionTranscribe_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "visionTranscribe"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "MeetingTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "visionFileStorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

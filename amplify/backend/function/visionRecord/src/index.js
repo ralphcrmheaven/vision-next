@@ -118,9 +118,7 @@ const concatVideos = async(MeetingId) => {
 
 }
 const record = async(MeetingId) => {
-    //const { MeetingId, type } = event
-    //const MeetingId = "b9884f37-a4c4-46be-a117-48a561d10706"
-    // const type = "start"
+
 
     const languageCode = 'en-US';
     const region = 'us-east-1';
@@ -187,9 +185,32 @@ const record = async(MeetingId) => {
 
 }
 
-exports.handler = async(event) => {
 
-    const { meetingId, action } = event
+const resolvers = {
+    Query: {
+        recordMeeting: context => {
+            return recordMeeting(context);
+        },
+    },
+}
+
+
+exports.handler = async(event) => {
+    console.log(JSON.stringify(event));
+    const typeHandler = resolvers[event.typeName];
+
+    if (typeHandler) {
+        const resolver = typeHandler[event.fieldName];
+        if (resolver) {
+            return await resolver(event);
+        }
+    }
+    throw new Error('Resolver not found.');
+};
+
+const recordMeeting = async(context) => {
+
+    const { meetingId, action } = context.arguments
 
     // const meetingId = "96d06ef4-ef20-4cd3-b4ae-4a6d00550706"
     // const action = "record"

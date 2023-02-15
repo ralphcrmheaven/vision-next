@@ -1,70 +1,94 @@
 export type AmplifyDependentResourcesAttributes = {
-    "function": {
-        "visionHandleMeeting": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
+    "api": {
+        "VisionRESTAPI": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
         },
+        "visionMeeting": {
+            "GraphQLAPIKeyOutput": "string",
+            "GraphQLAPIIdOutput": "string",
+            "GraphQLAPIEndpointOutput": "string"
+        }
+    },
+    "custom": {
+        "visionChatResources": {
+            "cognitoUserPoolId": "string",
+            "cognitoAppClientId": "string",
+            "cognitoIdentityPoolId": "string",
+            "appInstanceArn": "string",
+            "attachmentsS3BucketName": "string"
+        }
+    },
+    "function": {
         "MeetingPath": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "visionEmailNotification": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "meetingrecorderdev": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "visionHandlePipeline": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "visionTranscribe": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "visionRecord": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
         },
         "downloadRecordedMeeting": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
-            "LambdaExecutionRole": "string"
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "meetingrecorderdev": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
         },
         "sendPromptAi": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
-            "LambdaExecutionRole": "string"
-        }
-    },
-    "api": {
-        "visionMeeting": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
         },
-        "VisionRESTAPI": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
+        "visionEmailNotification": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "visionHandleMeeting": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "visionHandlePipeline": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "visionRecord": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "visionTranscribe": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
+        "meetingPermission": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     },
     "storage": {
@@ -81,15 +105,6 @@ export type AmplifyDependentResourcesAttributes = {
         "visionFileStorage": {
             "BucketName": "string",
             "Region": "string"
-        }
-    },
-    "custom": {
-        "visionChatResources": {
-            "cognitoUserPoolId": "string",
-            "cognitoAppClientId": "string",
-            "cognitoIdentityPoolId": "string",
-            "appInstanceArn": "string",
-            "attachmentsS3BucketName": "string"
         }
     }
 }
