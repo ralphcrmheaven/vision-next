@@ -113,7 +113,7 @@ const JoinMeeting: FC = () => {
 		// You can bind more channels here like this
 		// const channel2 = pusher.subscribe('channel_name2')
 		meetingChannel.bind('permission-join-'+user.id,function(data:any) {
-            if(data.data.approved == "approved") {
+            if(data.approved == "approved") {
                 const meetingId = meetingManager.meetingId
                 if (meetingId) {
                     setJoinButtonLabel("Permission granted.")
@@ -138,8 +138,8 @@ const JoinMeeting: FC = () => {
         setLoading(true);
 
         setJoinButtonLabel("Asking permission...")
-
-        if(isHost) {
+        //isHost 
+        if(true) {
             const meetingId = meetingManager.meetingId
             if (meetingId) {
               await endMeeting(meetingId)
