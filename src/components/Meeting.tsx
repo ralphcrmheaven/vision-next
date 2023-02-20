@@ -53,8 +53,8 @@ import GroupChatMessages from './GroupChatMessages'
 import loading from '../assets/images/cham-loading.gif'
 import 'react-multi-email/style.css';
 import AttachmentService from '../services/AttachmentService';
-
-
+import useSound from 'use-sound'
+import clapSound from '../assets/audio/clap.mp3';
 
 const Meeting: FC = () => {
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 821 })
@@ -65,6 +65,9 @@ const Meeting: FC = () => {
 
   let recordUpdate: RecordUpdate | null = null;
 
+  const pusher = new Pusher("6176fdfc371652b03d80", {
+    cluster: 'ap2'
+  })
 
   // Hooks  
   let navigate = useNavigate();
@@ -92,6 +95,9 @@ const Meeting: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [captions, setCaptions] = useState<string>('')
   const [progress, setProgress] = useState<number>(0)
+  const [playClapSound] = useSound(clapSound)
+  const [reactionStatus, SetReactionStatus] = useState<string>('')
+
 
   var dbMeetingData = {
     data: {
@@ -101,7 +107,7 @@ const Meeting: FC = () => {
     }
   }
   const initials =
-    user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
+  user.given_name.substring(0, 1) + user.family_name.substring(0, 1)
   const fullname = user.given_name + ' ' + user.family_name
 
   const { mId, ePass } = useParams();
@@ -110,6 +116,7 @@ const Meeting: FC = () => {
   const meetingManager = useMeetingManager();
   const meetingStatus = useMeetingStatus();
   var timer: any;
+  const meetingChannel = pusher.subscribe("meetings-"+mId);
   const useChimeSDKMeetings = 'https://service.chime.aws.amazon.com';
 
 
@@ -363,12 +370,8 @@ const Meeting: FC = () => {
   }
 
 
-  const pusherInit = async () => {
-    const pusher = new Pusher("6176fdfc371652b03d80", {
-			cluster: 'ap2'
-		})
+  const pusherSubscriptionInit = async () => {
 
-		const meetingChannel = pusher.subscribe("meetings-"+mId);
 		// You can bind more channels here like this
 		// const channel2 = pusher.subscribe('channel_name2')
 		meetingChannel.bind('permission-join',function(data:any) {
@@ -382,6 +385,38 @@ const Meeting: FC = () => {
 		})
   };
 
+  const playReactionItself = async (reaction:string) => {
+    if(reaction == "clap") {
+      playClapSound()
+      SetReactionStatus("clap")
+    }else if(reaction == "smile") {
+      playClapSound()
+      SetReactionStatus("smile")
+    }
+
+    setTimeout(() => {
+      SetReactionStatus("")
+    }, 2000);
+  }
+
+  const pusherReactionInit = async () => {
+    await meetingManager.audioVideo?.realtimeSubscribeToReceiveDataMessage("meetingsReactions", async (data:any) => {
+      const res = data.json()
+      if(res?.reaction == "clap") {
+        playClapSound()
+        SetReactionStatus("clap")
+      }else if(res?.reaction == "smile") {
+        playClapSound()
+        SetReactionStatus("smile")
+      }
+
+      setTimeout(() => {
+        SetReactionStatus("")
+      }, 2000);
+    })
+
+};
+
 
   useEffect(() => {
     console.log("====meetingManager=====")
@@ -390,9 +425,21 @@ const Meeting: FC = () => {
     console.log(user)
 
     if(isHost) {
-      pusherInit()
+      pusherSubscriptionInit()
     }
+
+    setTimeout(function() {
+      pusherReactionInit()
+    },4000)
+
   }, [isHost])
+
+  useEffect(() => {
+    if(meetingManager.meetingId != null) {
+      pusherReactionInit()
+    }
+
+  }, [meetingManager])
 
 
 
@@ -472,7 +519,16 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             {userJoin && <PermissionMeetingModal handleConfirm={handlePermissionResult} data={userJoinData}/> }
+            { reactionStatus == "clap" && <div className="flex w-[100%] h-[100%] absolute z-50">
+              <img src="/images/clap-animation.gif" alt="reactions"/>
+            </div>
+            }
+            { reactionStatus == "smile" && <div className="flex w-[100%] h-[100%] absolute z-50">
+              <img src="/images/smiling-cham.gif" alt="reactions"/>
+            </div>
+            }
             <MeetingBody
+              playReactionItself={playReactionItself}
               progress={progress}
               videoLayout={videoLayout}
               setVideoLayout={setVideoLayout}

@@ -1241,6 +1241,22 @@ export type ApproveDisapproveJoinMeetingQuery = {
   } | null,
 };
 
+export type MeetingReactionQueryVariables = {
+  channel: string,
+  event: string,
+  reaction: string,
+};
+
+export type MeetingReactionQuery = {
+  meetingReaction?:  {
+    __typename: "Response",
+    statusCode: string,
+    headers?: string | null,
+    body?: string | null,
+    isBase64Encoded?: string | null,
+  } | null,
+};
+
 export type GetMeetingQueryVariables = {
   title: string,
 };

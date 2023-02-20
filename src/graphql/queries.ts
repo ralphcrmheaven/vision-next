@@ -154,6 +154,20 @@ export const approveDisapproveJoinMeeting = /* GraphQL */ `
     }
   }
 `;
+export const meetingReaction = /* GraphQL */ `
+  query MeetingReaction(
+    $channel: String!
+    $event: String!
+    $reaction: String!
+  ) {
+    meetingReaction(channel: $channel, event: $event, reaction: $reaction) {
+      statusCode
+      headers
+      body
+      isBase64Encoded
+    }
+  }
+`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($title: String!) {
     getMeeting(title: $title) {

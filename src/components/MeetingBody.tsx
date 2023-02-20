@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { HomeIcon, CameraIcon, RecordIcon, AddPeople, OnlineIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon } from './icons'
+import { HomeIcon, CameraIcon, RecordIcon, AddPeople, OnlineIcon,EmojiParentIcon,ClappingHandIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, LaughSmileyIcon } from './icons'
 import Logo from './Logo'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import {
@@ -30,6 +30,9 @@ import VideoLayoutModal from './modals/VideoLayoutModal'
 import CreatePollModal from './modals/CreatePollModal'
 import Toaster from './modals/Toast'
 import SelectBackgroundImagesModal from './modals/SelectBackgroundImagesModal'
+import { sendMeetingReaction } from '../api/reactions';
+
+
 
 interface Props {
     progress: number,
@@ -66,6 +69,7 @@ interface Props {
     //recordChimeMeeting: any,
     videoLayout: any,
     setVideoLayout: any,
+    playReactionItself: any
 }
 
 const MeetingBody: React.FC<Props> = ({
@@ -102,6 +106,7 @@ const MeetingBody: React.FC<Props> = ({
     audioInputs,
     videoLayout,
     setVideoLayout,
+    playReactionItself
 }) => {
     const { roster } = useRosterState();
 
@@ -112,7 +117,7 @@ const MeetingBody: React.FC<Props> = ({
     const [showBreakout, setShowBreakout] = useState<boolean>(false)
     const [showCreateBreakout, setShowCreateBreakout] = useState<boolean>(false)
     const [meetingObj, setMeetingObj] = useState<any>({})
-    
+
 
 
     const attendees = Object.values(roster);
@@ -181,6 +186,23 @@ const MeetingBody: React.FC<Props> = ({
         }
     }
 
+    const toggleEmojiReactionsMenu = async () => {
+    }
+    const handleSendReaction = async (reaction:string) => {
+        playReactionItself(reaction)
+        const reaction_data = {
+            reaction: reaction,
+            channel: "meetings-"+meetingManager.meetingId,
+            event: "reactions"
+        }
+        await meetingManager.audioVideo?.realtimeSendDataMessage(
+            "meetingsReactions",
+            JSON.stringify(reaction_data)// eslint-disable-line @typescript-eslint/no-explicit-any
+        );
+    }
+
+
+
     useEffect(() => {
         toggleBackgroundReplacement()
 
@@ -198,7 +220,7 @@ const MeetingBody: React.FC<Props> = ({
         <>
 
 
-           
+
             <SelectBackgroundImagesModal
                 setShowModal={setShowModal}
                 setBackground={setBackground}
@@ -251,7 +273,7 @@ const MeetingBody: React.FC<Props> = ({
                     {meetingStatus === MeetingStatus.Succeeded ? (
                         <>
                             <div className="p-5 absolute grid grid-cols-4 grid-flow-row gap-5  w-full h-full">
-                                
+
                                 <div className={`${currentPanel == 'chat' || currentPanel == 'roaster' ? 'col-span-3' : 'col-span-4 h-[62vh]'}`}>
                                     {recordingCountdown &&
                                             <RecordMeetingLoader />
@@ -422,6 +444,24 @@ const MeetingBody: React.FC<Props> = ({
                         } */}
 
                         {/* <ControlBarButton {...tripleDotButtonProps} isSelected={false} className="relative pt-[13px]" /> */}
+                        <div className=''>
+                            <Menu
+                                trigger={
+                                    <span onClick={() => { toggleEmojiReactionsMenu() }}  className='relative top-[2px] mr-5 cursor-pointer py-[10px]'>
+                                        <EmojiParentIcon />
+                                    </span>
+                                }
+                            >
+                                <div className="grid grid-cols-4 gap-4">
+                                    <MenuItem onClick={() => { handleSendReaction("clap") }}>
+                                        <span><ClappingHandIcon/></span>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => { handleSendReaction("smile") }}>
+                                        <span><LaughSmileyIcon/></span>
+                                    </MenuItem>
+                                </div>
+                            </Menu>
+                        </div>
                         <div className=''>
                             <Menu
                                 trigger={
