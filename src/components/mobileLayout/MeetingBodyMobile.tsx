@@ -157,9 +157,21 @@ const MeetingBody: React.FC<Props> = ({
     useEffect(() => {
         console.log(isRecording)
     }, [isRecording])
+
     const [isModalVideoLayout, setIsModalVideoLayout] = useState(false)
+    const [closeClick, setCloseClick] = useState(0);
+
+    const handleCloseVideoLayout = async (value: boolean) => {
+        
+        if (closeClick > 1) {
+            setIsModalVideoLayout(value)
+            setCloseClick(0);
+        } else {
+            setCloseClick(closeClick + 1);
+        }
+    }
     const handleModalVideoLayoutVisibility = async (value: boolean) => {
-        setIsModalVideoLayout(value)
+            setIsModalVideoLayout(value)
     };
     return (
         <>
@@ -335,7 +347,7 @@ const MeetingBody: React.FC<Props> = ({
             {
                 isModalVideoLayout && (
                     <div>
-                        <VideoLayoutModal setModalVisibility={handleModalVideoLayoutVisibility} videoLayout={videoLayout} setVideoLayout={setVideoLayout} />
+                        <VideoLayoutModal setModalVisibility={handleCloseVideoLayout} videoLayout={videoLayout} setVideoLayout={setVideoLayout} />
                     </div>
                 )
             }

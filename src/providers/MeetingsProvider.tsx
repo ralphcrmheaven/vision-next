@@ -42,6 +42,7 @@ import {
     describeChannel,
     listChannelMemberships,
     describeChannelFlow,
+    searchChannel,
 } from '../api/ChimeAPI';
 import { 
     addAttendeeToDB,
@@ -85,7 +86,9 @@ interface IMeetingsContext {
     readTheMeetings?: () => void;
     testUpdate?: () => void;
     getDbFromDb?: () => any;
+    searchChannels?: (memberUserIds: any, userId: string) => any;
     initializeJoinMeeting?: (mtId:any) => any;
+    initializeActiveChannel?: (channelArn: string) => void;
     // recordMeeting?: (mtId:any, type:any, pipelineId:any) => void;
     saveTheMeeting?: (topic:any, topicDetails:any, startDate:any, startTime:any, durationTimeInHours:any, durationTimeInMinutes:any, isScheduled:any) => void;
 }
@@ -129,6 +132,7 @@ export const MeetingsProvider: FC = ({ children }) => {
     const {
         setActiveChannel,
         activeChannel,
+        setChannelList,
         activeChannelMemberships,
         setActiveChannelMemberships,
         setChannelMessageToken,
@@ -271,6 +275,38 @@ export const MeetingsProvider: FC = ({ children }) => {
             };
         }
     };
+
+    const initializeActiveChannel = async(channelArn: string) => {
+        const newMessages = await listChannelMessages(channelArn, userId);
+        setMessages(newMessages.Messages);
+        setChannelMessageToken(newMessages.NextToken);
+
+        const channel = await describeChannel(channelArn, userId);
+        setActiveChannel(channel);
+        await loadChannelFlow(channel);
+        setUnreadChannels(unreadChannels.filter((c:any) => c !== channelArn));
+    }
+
+    const searchChannels = async (memberUserIds: any, userId: string) => {
+        const fields = [ 
+            { 
+               "Key": "MEMBERS",
+               "Operator": "INCLUDES",
+               "Values": memberUserIds
+            }
+        ]
+
+        let channels: any[] = [];
+        let nextToken: string | null = null;
+        do {
+            const channelsList: any = await searchChannel(userId, nextToken, fields);
+            channels = [...channels, ...channelsList.Channels];   
+            nextToken = channelsList.NextToken;
+        }
+        while (nextToken !== null);
+        setChannelList(channels);
+        return channels
+    }
 
     const getAvailableChannels = async() => {
         let availableChannels: any[] = [];
@@ -517,6 +553,8 @@ export const MeetingsProvider: FC = ({ children }) => {
                     initializeJoinMeeting,
                     joinTheMeeting,
                     setTheCurrentMeetingId,
+                    searchChannels,
+                    initializeActiveChannel,
                     readTheMeetings,
                     saveTheMeeting,
                 }}>

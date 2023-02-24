@@ -68,8 +68,16 @@ const AppRoutes: React.FC = () => {
             </MeetingWrapper>
           }
         />
-         <Route 
+        <Route 
           path="/chat" 
+          element={
+            <MeetingWrapper>
+              <Chat />
+            </MeetingWrapper>
+          }
+        />
+        <Route 
+          path="/chat/:chatId" 
           element={
             <MeetingWrapper>
               <Chat />

@@ -1531,3 +1531,204 @@ progress[value]::-webkit-progress-value {
     align-items: center;
     overflow: hidden;
 }
+
+.chat__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat__menu--item {
+    padding: 8px 15px;
+    font-family: 'FF Mark Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;  
+    line-height: 20px;
+    border-radius: 10px;
+    color: #C4C4C4;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+
+.chat__menu--item__active {
+    color: #053F64 !important;
+    background: #F5F5F5 !important;
+}
+
+.chat__channel-list__item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .2s ease-in-out;
+}
+
+.chat__channel-list__item:hover {
+    background-color: #00000009;
+}
+
+.chat__channel-list__item--img {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+}
+
+.chat__channel-list__item--name {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #747474;
+}
+
+.chat__channel-list__item--active {
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background: #4CAF50;
+}
+
+.chat__channel-list__item--inactive {
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background: #FF6355;
+}
+
+.chat__messages {
+    width: 100%;
+    height: 80vh;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 30px;
+    padding: 34px;
+}
+.chat__messages--body {
+    background: #FAFAFA;
+    border-radius: 22px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.chat__messages--body--send {
+
+    width: 100%;
+    padding: 0px 20px;
+}
+
+.chat__messages--body--send__input {
+    width: 100%;
+    height: 46px;
+    border: 0 !important;
+    color: #000;
+    box-shadow: none !important;
+    border-radius: 10px;
+    background: #eeecec;
+    position: relative;
+    padding: 10px 70px 10px 20px;
+}
+
+.chat__messages--body--send__button {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+
+.chat__messages--body__list {
+    width: 100%;
+    padding: 40px;
+    overflow-y: auto;
+    height: 90%;
+}
+
+.chat__menu--item__add {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #053f64;
+    cursor: pointer;
+}
+
+.chat__menu--item__add svg {
+    fill: #fff;
+}
+
+.chat__messages--body__list ul {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.chat__messages--body__list ul li {
+    width: 100%;
+}
+
+.chat__messages--body__list--item {
+    width: 40%;
+    margin-bottom: 30px
+}
+
+.chat__messages--body__list--item__body {
+    padding: 13px;
+    position: relative;
+    background: #FFFFFF;
+    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.chat__messages--body__list--item__info {
+    padding-left: 30px;
+}
+
+.chat__messages--body__list--item__info h4 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: #053F64;
+    margin-bottom: 5px;
+}
+
+.chat__messages--body__list--item__info p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #000000;
+}
+
+.chat__messages--body__list ul li img {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    top: -8px;
+    left: -8px;
+}
+
+.chat__messages--body__list--left {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 10px;
+}
+
+.chat__messages--body__list--right {
+    display: flex;
+    justify-content: end;
+    
+}
+
+.button-primary {
+    background: #053F64;
+    color: #fff;
+    padding: 10px 25px;
+    border: 1px solid transparent;
+    border-radius: 12px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
