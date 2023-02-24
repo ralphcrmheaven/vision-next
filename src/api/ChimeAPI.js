@@ -54,7 +54,7 @@ async function sendChannelMessage(
     persistence,
     type,
     member,
-    options = null
+    options
 ) {
     const chimeBearerArn = createMemberArn(member.userId);
 
@@ -152,6 +152,19 @@ async function createChannelMembership(channelArn, memberArn, userId) {
     const request = (await chimeMessagingClient()).createChannelMembership(params);
     const response = await request.promise();
     return response.Member;
+}
+
+async function searchChannel(userId, nextToken, fields) {
+    const chimeBearerArn = createMemberArn(userId);
+    const params = {
+        Fields: fields,
+        NextToken: nextToken,
+        ChimeBearer: chimeBearerArn
+    };
+
+    const request = (await chimeMessagingClient()).searchChannels(params);
+    const response = await request.promise();
+    return response;
 }
 
 async function deleteChannelMembership(channelArn, memberArn, userId) {
@@ -342,7 +355,7 @@ async function listChannels(appInstanceArn, userId, nextToken) {
     const params = {
         AppInstanceArn: appInstanceArn,
         ChimeBearer: chimeBearerArn,
-        NextToken: nextToken
+        NextToken: nextToken,
     };
 
     const request = (await chimeMessagingClient()).listChannels(params);
@@ -516,5 +529,6 @@ export {
     createMeeting,
     createAttendee,
     createGetAttendeeCallback,
-    endMeeting
+    endMeeting,
+    searchChannel
 };

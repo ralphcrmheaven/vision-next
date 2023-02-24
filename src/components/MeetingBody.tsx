@@ -483,7 +483,7 @@ const MeetingBody: React.FC<Props> = ({
 
             {
                 isModalVideoLayout && (
-                    <VideoLayoutModal setModalVisibility={handleModalVideoLayoutVisibility} videoLayout={videoLayout} setVideoLayout={setVideoLayout} />
+                    <VideoLayoutModal setModalVisibility={handleModalVideoLayoutVisibility} videoLayout={videoLayout} isModalVideoLayout={isModalVideoLayout} setVideoLayout={setVideoLayout} />
                 )
             }
 
