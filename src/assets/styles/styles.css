@@ -1556,6 +1556,11 @@ progress[value]::-webkit-progress-value {
     background: #F5F5F5 !important;
 }
 
+.chat__channel-list {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
 .chat__channel-list__item {
     display: flex;
     justify-content: start;
@@ -1563,10 +1568,17 @@ progress[value]::-webkit-progress-value {
     padding: 10px;
     border-radius: 10px;
     transition: all .2s ease-in-out;
+    border: 1px solid transparent;
 }
 
 .chat__channel-list__item:hover {
     background-color: #00000009;
+    border: 1px solid #00000023;
+}
+
+.chat__channel-list__item__active {
+    background-color: #00000009 !important;
+    border: 1px solid #00000023 !important;
 }
 
 .chat__channel-list__item--img {
@@ -1579,7 +1591,12 @@ progress[value]::-webkit-progress-value {
     font-weight: 600;
     font-size: 16px;
     line-height: 20px;
-    color: #747474;
+    color: #747474be;
+}
+
+.chat__unread {
+    color: #000 !important;
+    font-weight: 800 !important;
 }
 
 .chat__channel-list__item--active {
