@@ -17,6 +17,7 @@ import MeetingBody from './MeetingBody';
 import { transcribe } from '../api/transcribe';
 import { recordingMeeting } from '../api/recordMeeting';
 import Pusher from 'pusher-js';
+import ShowReactions from '../components/reactions/ShowReactions';
 
 import {
   useMeetingManager,
@@ -143,9 +144,23 @@ const Meeting: FC = () => {
     processCaption(transcriptEvent)
   };
 
+  const chamAi = async (str: string) => {
+    var substring = "Chameleon";
+    console.log(str)
+    str = str.toLowerCase()
+    substring = substring.toLowerCase()
+    if(str.indexOf(substring) !== -1) {
+      SetReactionStatus("cham")
+      setTimeout(() => {
+        SetReactionStatus("")
+      }, 2000);
+    }
+  }
+
   const processCaption = async (event: any) => {
     let caption = event['results'][0]['alternatives'][0]['transcript']
     console.log(caption)
+    chamAi(caption)
     setCaptions(caption)
   }
 
@@ -386,13 +401,8 @@ const Meeting: FC = () => {
   };
 
   const playReactionItself = async (reaction:string) => {
-    if(reaction == "clap") {
-      playClapSound()
-      SetReactionStatus("clap")
-    }else if(reaction == "smile") {
-      playClapSound()
-      SetReactionStatus("smile")
-    }
+    playClapSound()
+    SetReactionStatus(reaction)
 
     setTimeout(() => {
       SetReactionStatus("")
@@ -402,13 +412,9 @@ const Meeting: FC = () => {
   const pusherReactionInit = async () => {
     await meetingManager.audioVideo?.realtimeSubscribeToReceiveDataMessage("meetingsReactions", async (data:any) => {
       const res = data.json()
-      if(res?.reaction == "clap") {
-        playClapSound()
-        SetReactionStatus("clap")
-      }else if(res?.reaction == "smile") {
-        playClapSound()
-        SetReactionStatus("smile")
-      }
+
+      playClapSound()
+      SetReactionStatus(res?.reaction)
 
       setTimeout(() => {
         SetReactionStatus("")
@@ -519,14 +525,7 @@ const Meeting: FC = () => {
         isDesktopOrLaptop ? (
           <>
             {userJoin && <PermissionMeetingModal handleConfirm={handlePermissionResult} data={userJoinData}/> }
-            { reactionStatus == "clap" && <div className="flex w-[100%] h-[100%] absolute z-50">
-              <img src="/images/clap-animation.gif" alt="reactions"/>
-            </div>
-            }
-            { reactionStatus == "smile" && <div className="flex w-[100%] h-[100%] absolute z-50">
-              <img src="/images/smiling-cham.gif" alt="reactions"/>
-            </div>
-            }
+            <ShowReactions reaction={reactionStatus}/>
             <MeetingBody
               playReactionItself={playReactionItself}
               progress={progress}

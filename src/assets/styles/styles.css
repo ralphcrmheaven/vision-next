@@ -242,6 +242,7 @@ html {
     /* margin: -15px 17px 17px 17px; */
 }
 
+
 /* .video-grid-vision-mobile div:first-child {
     border-radius: 10px !important;
     width: 97%;
@@ -253,10 +254,8 @@ html {
 } */
 
 .video-grid-vision-mobile {
-    grid-template: repeat(2,1fr) / repeat(2,1fr);
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
 }
-
-
 
 .chatbox-wrapper {
     overflow: hidden;
@@ -931,7 +930,6 @@ body.full-screen-modal-active {
     }
 }
 
-
 .videos-wrap {
     position: relative;
     overflow-y: scroll;
@@ -1416,9 +1414,7 @@ progress[value]::-webkit-progress-value {
     font-weight: 800;
     font-size: 18px;
     /* identical to box height */
-
     text-align: center;
-
     color: #000000;
 }
 
@@ -1436,6 +1432,7 @@ progress[value]::-webkit-progress-value {
     text-align: center;
     color: #FFFFFF;
 }
+
 
 /* confirmation */
 
@@ -1469,7 +1466,6 @@ progress[value]::-webkit-progress-value {
 
 .invite-decline {
     height: 100vh;
-    
 }
 
 .invite-decline h1 {
@@ -1478,10 +1474,7 @@ progress[value]::-webkit-progress-value {
     color: #010101;
 }
 
-
-.modal-calendar {
-
-}
+.modal-calendar {}
 
 .modal-calendar__header h1 {
     margin-top: -10px;
@@ -1500,7 +1493,6 @@ progress[value]::-webkit-progress-value {
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
-
     color: #000000;
 }
 
@@ -1510,7 +1502,6 @@ progress[value]::-webkit-progress-value {
     font-weight: 600;
     font-size: 16px;
     line-height: 20px;
-
     color: #053F64;
 }
 
@@ -1543,7 +1534,7 @@ progress[value]::-webkit-progress-value {
     font-family: 'FF Mark Pro';
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;  
+    font-size: 16px;
     line-height: 20px;
     border-radius: 10px;
     color: #C4C4C4;
@@ -1604,6 +1595,7 @@ progress[value]::-webkit-progress-value {
     border-radius: 30px;
     padding: 34px;
 }
+
 .chat__messages--body {
     background: #FAFAFA;
     border-radius: 22px;
@@ -1613,7 +1605,6 @@ progress[value]::-webkit-progress-value {
 }
 
 .chat__messages--body--send {
-
     width: 100%;
     padding: 0px 20px;
 }
@@ -1719,7 +1710,6 @@ progress[value]::-webkit-progress-value {
 .chat__messages--body__list--right {
     display: flex;
     justify-content: end;
-    
 }
 
 .button-primary {
@@ -1731,4 +1721,15 @@ progress[value]::-webkit-progress-value {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.meeting-icon {
+    width: 150px;
+    height: fit-content;
+    display: block;
+    margin-left: 1%;
+    margin-right: auto;
+    position: absolute;
+    margin-top: 120px;
+    z-index: 999;
 }

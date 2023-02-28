@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { HomeIcon, CameraIcon, RecordIcon, AddPeople, OnlineIcon,EmojiParentIcon,ClappingHandIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, LaughSmileyIcon } from './icons'
+import { HomeIcon, CameraIcon, RaiseHandIcon, AddPeople, OnlineIcon,EmojiParentIcon,ClappingHandIcon, BackIcon, CheckIcon, MessageIcon, AttendeesButtontIcon, EndCallDesktopIcon, TripleDotIcon, LaughSmileyIcon } from './icons'
 import Logo from './Logo'
 import RecordMeetingLoader from '../components/loaders/RecordMeetingLoader'
 import {
@@ -458,6 +458,9 @@ const MeetingBody: React.FC<Props> = ({
                                     </MenuItem>
                                     <MenuItem onClick={() => { handleSendReaction("smile") }}>
                                         <span><LaughSmileyIcon/></span>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => { handleSendReaction("raise") }}>
+                                        <span><RaiseHandIcon/></span>
                                     </MenuItem>
                                 </div>
                             </Menu>
