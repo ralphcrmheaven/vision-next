@@ -223,6 +223,7 @@ const MessagingProvider = ({ children }) => {
   const messagesProcessor = async (message) => {
     const messageType = message?.headers['x-amz-chime-event-type'];
     const record = JSON.parse(message?.payload);
+    console.log('recordss', messageType, record, channelListRef.current);
     switch (messageType) {
       // Channel Messages
       case 'CREATE_CHANNEL_MESSAGE':
@@ -246,17 +247,40 @@ const MessagingProvider = ({ children }) => {
         }
 
         // Process typing indicator control message
-        if (record.Content && record.Content.match(/Typing/)) {
+        if (record.Content && (record.Content.match(/Typing/) || record.Content.match(/Send/) )) {
+          
           if (record.Sender.Arn !== createMemberArn(member.userId)) {
             if (activeChannelRef.current.ChannelArn === record?.ChannelArn) {
               const indicator = {
                 SenderName: record.Sender.Name,
                 LastUpdatedTimestamp: record.LastUpdatedTimestamp
               }
+
               setTypingIndicator(indicator);
             }
-            break;
+
+            if (record.Content.match(/Send/)) {
+              const audio = new Audio("/audio/phoone-sound.mp3")
+              audio.play();
+
+              let unread_messages = {};
+              if (localStorage.getItem('unread_messages')) {
+                unread_messages = JSON.parse(localStorage.getItem('unread_messages'))
+              }
+              unread_messages[JSON.parse(record.Content).chatId] = true;
+              localStorage.setItem('unread_messages', JSON.stringify(unread_messages));
+            
+            } 
+            
           }
+
+          if (record.Content.match(/Send/)) {
+            let channel = channelListRef.current.find(item => item.ChannelArn === record?.ChannelArn);
+            channel.LastMessageTimestamp = new Date(record.LastUpdatedTimestamp);
+            setChannelList(channelListRef.current.map(item => item.ChannelArn === record?.ChannelArn ? channel : item))
+          }
+
+          break;
         }
 
         // Process channel presence status control message

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { IUser, selectUser } from '../redux/features/userSlice';
 import { useMeetings } from '../providers/MeetingsProvider';
 import { useAuthContext } from '../providers/AuthProvider';
-import { createChannel, createChannelMembership, createMemberArn, getChannelMessage, MessageType, Persistence, sendChannelMessage } from '../api/ChimeAPI';
+import { createChannel, createChannelMembership, createMemberArn, getChannelMessage, MessageType, Persistence, sendChannelMessage, updateChannel } from '../api/ChimeAPI';
 import { useChatChannelState, useChatMessagingState } from '../providers/ChatMessagesProvider';
 import TypingIndicator from '../components/Messages/TypingIndicator/TypingIndicator';
 import { debounce } from 'lodash';
@@ -52,16 +52,11 @@ export default function Chat() {
   } = useMeetings();
 
   const {
-    activeChannelRef,
     activeChannel,
-    setChannelMessageToken,
-    hasMembership,
-    setTypingIndicator,
-    channelList
+    channelList,
   } = useChatChannelState();
   const {
     messages,
-    messagesRef,
     setMessages,
   } = useChatMessagingState();
 
@@ -74,30 +69,54 @@ export default function Chat() {
     );
   };
 
-  const createChannelMessage = async (channelArn: string) => {
+  const createChannelMessage = async (channel: any) => {
     const options = {
       Metadata: JSON.stringify({member})
     };
-    const sendMessageResponse = await sendChannelMessage(
-      channelArn, 
-      message, 
-      Persistence.PERSISTENT, 
-      MessageType.STANDARD, 
-      member,
-      options
-    );
+    if (message) {
+      const sendMessageResponse = await sendChannelMessage(
+        channel.ChannelArn, 
+        message, 
+        Persistence.PERSISTENT, 
+        MessageType.STANDARD, 
+        member,
+        options
+      );
+  
+      setMessage('');
 
-    setMessage('');
-    
-    if (sendMessageResponse.response.Status.Value == 'PENDING') {
-      const sentMessage = await getChannelMessage(channelArn, member, sendMessageResponse.response.MessageId);
-      const newMessages = [...messages, sentMessage];
-      setMessages(newMessages);
+      eventHandler({ Send: 'Indicator', chatId:  JSON.parse(channel.Metadata).chatId});
+
+      const datas = await updateChannel(
+          channel.ChannelArn,
+          channel.Name,
+          channel.Mode,
+          channel.Metadata,
+          member.userId
+      );
+
+      console.log('datas', datas);
+      
+      if (sendMessageResponse.response.Status.Value == 'PENDING') {
+        const sentMessage = await getChannelMessage(channel.ChannelArn, member, sendMessageResponse.response.MessageId);
+        const newMessages = [...messages, sentMessage];
+        setMessages(newMessages);
+      }
     }
   }
 
   const createChatChannel = async() => {
     const randomId = Math.floor(Math.random() * 10000000000);
+
+    if (memberUserIds.length == 1) {
+      const res = channels.find((item: any) => (JSON.parse(item.Metadata).type == 'chat' && JSON.parse(item.Metadata).userIds.includes(memberUserIds[0])));
+      if (res) {
+        setOpenModal(false);
+        navigate(`/chat/${JSON.parse(res.Metadata).chatId}`);
+        return;
+      }
+    }
+
     if (memberUserIds.length > 0) {
       const memberIds = [member.userId, ...memberUserIds];
       const memberUserNames = [member.givenName, ...memberNames];
@@ -112,15 +131,14 @@ export default function Chat() {
             appConfig.appInstanceArn,
             metadata,
             memberUserNames.toString() ,
-            
             'UNRESTRICTED',
             'PUBLIC',
             member.userId
       );
 
       memberIds.map(userId => addMember(channelArn, userId));
+      setOpenModal(false);
     }
-    
   }
 
   const removeAuthName = (names: string) => {
@@ -130,13 +148,16 @@ export default function Chat() {
     
   }
 
-  const eventHandler = async () => {
-    const content = JSON.stringify({ Typing: 'Indicator' });
+  const eventHandler = async (data: any | null = null) => {
+    if (!data) {
+      data = { Typing: 'Indicator' }
+    }
+    const content = JSON.stringify(data);
     await sendChannelMessage(
       activeChannel.ChannelArn,
       content,
       'NON_PERSISTENT',
-      'CONTROL',
+      'STANDARD',
       member,
     );
   };
@@ -181,12 +202,12 @@ export default function Chat() {
             } else {
               
               const users = data.Users?.filter((item: any) => result.includes(item.Username) && item.Username != member.username)
-              
+              console.log('Users:', users);
               setUsers(users);
 
               if (users) {
                 setUserSelects(users.map((item: any) => ({value: item.Attributes[0].Value, label: item.Username})))
-                console.log('Users:', users, userSelects, users.map((item: any) => ({value: item.Attributes[0].Value, label: item.Username})));
+                
               } 
             }
         });
@@ -206,6 +227,20 @@ export default function Chat() {
     setMemberUserIds(memeberUserIdList);
   }
 
+  const channelUnreadMessage = (channel: any) => {
+    const unread_messages = localStorage.getItem('unread_messages')
+    if (unread_messages) {
+      const unread = JSON.parse(unread_messages);
+      if (JSON.parse(channel.Metadata).chatId in unread) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   useEffect(() => {
     fetchContactList();
   }, [openModal]);
@@ -217,7 +252,8 @@ export default function Chat() {
                 (item.Metadata != null && (JSON.parse(item.Metadata).type == 'chat' || JSON.parse(item.Metadata).type == 'chat-group') && 
                 JSON.parse(item.Metadata).chatId));
       console.log('resultss', result);
-      setChannels(result);
+      setChannels(sortChannel(result));
+     
     }
   }, [channelList])
 
@@ -226,9 +262,35 @@ export default function Chat() {
       const channel = channels.find((item: any) => JSON.parse(item.Metadata).chatId == chatId);
       if (channel) {
         initializeActiveChannel?.(channel.ChannelArn);
+
+        const unread_messages = localStorage.getItem('unread_messages')
+        
+        if (unread_messages) {
+          const unread = JSON.parse(unread_messages);
+          if (JSON.parse(channel.Metadata).chatId in unread) {
+            delete unread[JSON.parse(channel.Metadata).chatId];
+            localStorage.setItem('unread_messages', JSON.stringify(unread))
+          } 
+        }
       }
     }
   }, [chatId, channels])
+
+  const sortChannel = (channel_list: any) => {
+    return channel_list.sort((channel1: any, channel2: any) => {
+      let channel1_message_date = 0;
+      let channel2_message_date = 0;
+      if (channel1.LastMessageTimestamp) {
+        channel1_message_date = channel1.LastMessageTimestamp.getTime();
+      }
+
+      if (channel2.LastMessageTimestamp) {
+        channel2_message_date = channel2.LastMessageTimestamp.getTime();
+      }
+    
+      return  channel2_message_date - channel1_message_date;
+    })
+  }
 
   useEffect(() => {
     // console.log('messages1', messages);
@@ -246,7 +308,12 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-
+  const enterPress = (e: any) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      createChannelMessage(activeChannel)
+    }
+  }
 
   return (
     <>
@@ -270,7 +337,7 @@ export default function Chat() {
       </div>
 
       <div className='p-5 sm:p-5 md:p-10 lg:p-10 chat'>
-          <div className='gap-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12'>
+          <div className='gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12'>
             <div className='col-span-1 sm:col-span-1 md:col-span-4 lg:col-span-3'>
                 <div className='chat__menu mb-8'>
                   <div className='chat__menu--item chat__menu--item__active'>
@@ -315,13 +382,13 @@ export default function Chat() {
                 ) : (
                 <div className='chat__channel-list'>
                   {channels.length > 0 && channels.map((item:any) => (
-                     <div onClick={() => channelActive(item)} className='chat__channel-list__item flex justify-between items-center pointer'>
+                     <div onClick={() => channelActive(item)} className={`chat__channel-list__item flex justify-between items-center pointer ${(item.Metadata && JSON.parse(item.Metadata).chatId == chatId) ? 'chat__channel-list__item__active' : ''}`}>
                       <div className='flex items-center'>
                         <img className='chat__channel-list__item--img mr-3' src={`https://ui-avatars.com/api/?name=${removeAuthName(item.Name)}&background=random&bold=true`} alt="" />
-                        <h6 className='chat__channel-list__item--name mr-2'>{removeAuthName(item.Name)}</h6>
+                        <h6 className={`${channelUnreadMessage(item) ? 'chat__unread' : ''} chat__channel-list__item--name mr-2`}>{removeAuthName(item.Name)}</h6>
                       </div>
                       <span className='chat__channel-list__item--active'></span>
-                    </div>
+                    </div> 
                   ))}
 
                   {channels.length == 0 && (
@@ -359,8 +426,8 @@ export default function Chat() {
                     </div>
                     <div className='chat__messages--body--send'>
                      <div className='relative w-full'>
-                      <textarea onChange={onChangeMessage} value={message} placeholder='Send message' rows={0} cols={0} className='chat__messages--body--send__input'></textarea>
-                      <button onClick={() => createChannelMessage(activeChannel.ChannelArn)} className='chat__messages--body--send__button'>
+                      <textarea onChange={onChangeMessage} onKeyDown={enterPress} value={message} placeholder='Send message' rows={0} cols={0} className='chat__messages--body--send__input'></textarea>
+                      <button onClick={() => createChannelMessage(activeChannel)} className='chat__messages--body--send__button'>
                         <img src="/images/angel-logo.png" alt="Send message" width="60px" />
                       </button>
                      </div>
