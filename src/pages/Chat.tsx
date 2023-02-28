@@ -96,7 +96,7 @@ export default function Chat() {
       );
 
       console.log('datas', datas);
-      
+
       if (sendMessageResponse.response.Status.Value == 'PENDING') {
         const sentMessage = await getChannelMessage(channel.ChannelArn, member, sendMessageResponse.response.MessageId);
         const newMessages = [...messages, sentMessage];
@@ -120,7 +120,7 @@ export default function Chat() {
     if (memberUserIds.length > 0) {
       const memberIds = [member.userId, ...memberUserIds];
       const memberUserNames = [member.givenName, ...memberNames];
-      
+
       const metadata = JSON.stringify({
         userIds: memberIds,
         type: memberIds.length <= 2 ? 'chat' : 'chat-group',
@@ -200,15 +200,15 @@ export default function Chat() {
             if (err) {
               console.log('Error listing users', err);
             } else {
-              
+
               const users = data.Users?.filter((item: any) => result.includes(item.Username) && item.Username != member.username)
               console.log('Users:', users);
               setUsers(users);
 
               if (users) {
                 setUserSelects(users.map((item: any) => ({value: item.Attributes[0].Value, label: item.Username})))
-                
-              } 
+
+              }
             }
         });
       }
@@ -231,11 +231,7 @@ export default function Chat() {
     const unread_messages = localStorage.getItem('unread_messages')
     if (unread_messages) {
       const unread = JSON.parse(unread_messages);
-      if (JSON.parse(channel.Metadata).chatId in unread) {
-        return true;
-      } else {
-        return false;
-      }
+      return JSON.parse(channel.Metadata).chatId in unread
     } else {
       return false;
     }
@@ -253,7 +249,7 @@ export default function Chat() {
                 JSON.parse(item.Metadata).chatId));
       console.log('resultss', result);
       setChannels(sortChannel(result));
-     
+
     }
   }, [channelList])
 
@@ -264,7 +260,7 @@ export default function Chat() {
         initializeActiveChannel?.(channel.ChannelArn);
 
         const unread_messages = localStorage.getItem('unread_messages')
-        
+
         if (unread_messages) {
           const unread = JSON.parse(unread_messages);
           if (JSON.parse(channel.Metadata).chatId in unread) {
@@ -287,7 +283,7 @@ export default function Chat() {
       if (channel2.LastMessageTimestamp) {
         channel2_message_date = channel2.LastMessageTimestamp.getTime();
       }
-    
+
       return  channel2_message_date - channel1_message_date;
     })
   }
@@ -323,7 +319,7 @@ export default function Chat() {
           // Desktop View Components
           <>
             <Header showSearchBar={false} showSubHeader={false} header={'Chat'} />
-           
+
           </>
         )
         :
@@ -331,7 +327,7 @@ export default function Chat() {
           // Mobile View Component
           <>
             <HeaderMobile showSearchBar={true} showSubHeader={false} header={'Chat'} />
-          
+
           </>
         ) : ''}
       </div>
@@ -443,7 +439,7 @@ export default function Chat() {
                       </div>
                     </div>
                   )}
-                  
+
               </div>
             </div>
           </div>
