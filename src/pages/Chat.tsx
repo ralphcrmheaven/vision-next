@@ -193,7 +193,7 @@ export default function Chat() {
 
           const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ region: 'us-east-1' });
           const params = {
-            UserPoolId: 'us-east-1_74LA0tWgg'
+            UserPoolId: 'us-east-1_pQUSKlPQS'
           };
 
           cognitoidentityserviceprovider.listUsers(params, (err, data) => {
