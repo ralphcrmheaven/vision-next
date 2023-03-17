@@ -74,7 +74,7 @@ class AttachmentService {
         Amplify.configure({
             Storage: {
                 AWSS3: {
-                    bucket: 'visionnextbucket224155-dev', //REQUIRED -  Amazon S3 bucket name
+                    bucket: 'visionnextbucket111151-live', //REQUIRED -  Amazon S3 bucket name
                     region: 'us-east-1', //OPTIONAL -  Amazon service region
                 }
             }
